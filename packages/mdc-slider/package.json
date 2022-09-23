@@ -28,6 +28,7 @@
     "@material/ripple": "^14.0.0",
     "@material/rtl": "^14.0.0",
     "@material/theme": "^14.0.0",
+    "@material/tokens": "^14.0.0",
     "@material/typography": "^14.0.0",
     "tslib": "^2.1.0"
   }

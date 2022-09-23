@@ -25,12 +25,15 @@
 
 @use 'sass:color';
 @use 'sass:map';
+@use '@material/elevation/elevation-theme';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
+@use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/tokens/resolvers';
 @use '@material/typography/typography';
 
 /// Default color for slider (track, thumb, ripple).
@@ -48,6 +51,8 @@ $track-inactive-opacity: 0.24;
 $tick-mark-active-color: on-primary;
 $tick-mark-inactive-color: primary;
 $tick-mark-opacity: 0.6;
+
+$_custom-property-prefix: 'slider';
 
 $light-theme: (
   active-track-color: $color,
@@ -80,9 +85,7 @@ $light-theme: (
   label-label-text-font: typography.get-font(subtitle2),
   label-label-text-font-size: typography.get-size(subtitle2),
   label-label-text-line-height: typography.get-line-height(subtitle2),
-  label-label-text-size: null,
   label-label-text-tracking: typography.get-tracking(subtitle2),
-  label-label-text-type: null,
   label-label-text-weight: typography.get-weight(subtitle2),
   pressed-handle-color: null,
   track-elevation: null,
@@ -97,12 +100,23 @@ $light-theme: (
   with-tick-marks-inactive-container-opacity: $tick-mark-opacity,
 );
 
-@mixin theme-styles($theme, $query: feature-targeting.all()) {
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-keys($light-theme, $theme);
+  $theme: _resolve-theme-elevation-keys($theme, $resolvers: $resolvers);
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+}
+
+@mixin theme-styles(
+  $theme,
+  $query: feature-targeting.all(),
+  $resolvers: resolvers.$material
+) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
 
   @include theme.validate-theme-keys($light-theme, $theme);
+  $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
 
   @include thumb-color(
     $color-or-map: (
@@ -164,34 +178,40 @@ $light-theme: (
 
   .mdc-slider__track {
     @include feature-targeting.targets($feat-structure) {
-      height: map.get($theme, 'inactive-track-height');
+      @include theme.property(height, map.get($theme, 'inactive-track-height'));
     }
   }
 
   .mdc-slider__track--active {
     @include feature-targeting.targets($feat-structure) {
-      height: map.get($theme, 'active-track-height');
+      @include theme.property(height, map.get($theme, 'active-track-height'));
     }
   }
 
   .mdc-slider__track--inactive {
     @include feature-targeting.targets($feat-structure) {
-      height: map.get($theme, 'inactive-track-height');
+      @include theme.property(height, map.get($theme, 'inactive-track-height'));
     }
   }
 
   .mdc-slider__tick-mark--active,
   .mdc-slider__tick-mark--inactive {
     @include feature-targeting.targets($feat-structure) {
-      height: map.get($theme, 'with-tick-marks-container-size');
-      width: map.get($theme, 'with-tick-marks-container-size');
+      @include theme.property(
+        height,
+        map.get($theme, 'with-tick-marks-container-size')
+      );
+      @include theme.property(
+        width,
+        map.get($theme, 'with-tick-marks-container-size')
+      );
     }
   }
 
   @include disabled-slider-opacity($disabled-slider-opacity, $feat-color);
   @include _value-indicator-typography($theme, $feat-typography);
   @include _slider-shape($theme, $feat-structure);
-  @include _slider-elevation($theme, $query);
+  @include _slider-elevation($theme, $resolvers, $query);
   @include _thumb-activated-theme-color($theme, $query);
   @include _thumb-overlap($theme, $query);
 }
@@ -370,8 +390,7 @@ $light-theme: (
   .mdc-slider__tick-mark--active {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
-
-      opacity: $opacity;
+      @include theme.property(opacity, $opacity);
     }
   }
 }
@@ -415,8 +434,7 @@ $light-theme: (
   .mdc-slider__tick-mark--inactive {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
-
-      opacity: $opacity;
+      @include theme.property(opacity, $opacity);
     }
   }
 }
@@ -520,7 +538,8 @@ $light-theme: (
       // Use border rather than background-color to fill thumb, for HCM.
       @include theme.property(
         border-width,
-        calc(#{$thumb-height} / 2) calc(#{$thumb-width} / 2)
+        'calc(thumb-height / 2) calc(thumb-width / 2)',
+        $replace: (thumb-height: $thumb-height, thumb-width: $thumb-width)
       );
     }
   }
@@ -533,18 +552,23 @@ $light-theme: (
   }
 }
 
-@mixin _slider-elevation($theme, $query: feature-targeting.all()) {
+@mixin _slider-elevation($theme, $resolver, $query: feature-targeting.all()) {
   $thumb-elevation: map.get($theme, 'handle-elevation');
   $thumb-shadow-color: map.get($theme, 'handle-shadow-color');
-  $value-indicator-elevation: map.get($theme, 'label-container-elevation');
-  $track-elevation: map.get($theme, 'track-elevation');
-  $disabled-thumb-elevation: map.get($theme, 'disabled-handle-elevation');
+  $value-indicator-elevation: keys.resolve(
+    map.get($theme, 'label-container-elevation')
+  );
+  $track-elevation: keys.resolve(map.get($theme, 'track-elevation'));
+  $disabled-thumb-elevation: keys.resolve(
+    map.get($theme, 'disabled-handle-elevation')
+  );
 
   .mdc-slider__thumb-knob {
-    @include elevation-mixins.elevation(
-      $z-value: $thumb-elevation,
-      $color: $thumb-shadow-color,
-      $query: $query
+    @include elevation-theme.with-resolver(
+      map.get($resolver, elevation),
+      $query,
+      $elevation: $thumb-elevation,
+      $shadow-color: $thumb-shadow-color
     );
   }
   .mdc-slider__value-indicator {
@@ -598,9 +622,28 @@ $light-theme: (
       .mdc-slider__thumb-knob,
       &.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
       &.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
-        border-color: $overlap-outline-color;
-        border-width: $overlap-outline-width;
+        @include theme.property(border-color, $overlap-outline-color);
+        @include theme.property(border-width, $overlap-outline-width);
       }
     }
   }
+}
+
+@function _resolve-elevation-keys($theme, $resolvers) {
+  $elevation-resolver: map.get($resolver, elevation);
+  $elevation: map.get($theme, handle-elevation);
+  $shadow-color: map.get($theme, thumb-shadow-color);
+
+  @if $elevation-resolver == null or $elevation == null or $shadow-color == null
+  {
+    @return $theme;
+  }
+
+  $resolved-value: meta.call(
+    $resolver,
+    $elevation: $elevation,
+    $shadow-color: $shadow-color
+  );
+
+  @return map.set($theme, $key, $resolved-value);
 }
