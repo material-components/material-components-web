@@ -101,7 +101,7 @@ $light-theme: (
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-keys($light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   $theme: _resolve-theme-elevation-keys($theme, $resolvers: $resolvers);
   @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }

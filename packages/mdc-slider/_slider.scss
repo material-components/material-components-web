@@ -63,13 +63,6 @@ $_track-inactive-height: 4px;
       slider-theme.$light-theme,
       $query: $query
     );
-
-    .mdc-slider__thumb {
-      @include feature-targeting.targets($feat-structure) {
-        height: $_thumb-ripple-size;
-        width: $_thumb-ripple-size;
-      }
-    }
   }
 }
 
@@ -223,6 +216,8 @@ $_track-inactive-height: 4px;
       outline: none;
       position: absolute;
       user-select: none;
+      height: $_thumb-ripple-size;
+      width: $_thumb-ripple-size;
     }
 
     &--top {
