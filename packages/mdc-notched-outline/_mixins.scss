@@ -142,7 +142,7 @@
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
     @include feature-targeting.targets($feat-structure) {
-      border-width: $width;
+      @include theme.property(border-width, $width);
     }
   }
 }

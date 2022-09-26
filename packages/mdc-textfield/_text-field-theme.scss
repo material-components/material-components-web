@@ -281,7 +281,7 @@ $_light-theme: (
 
 @mixin _set-caret-color($color) {
   .mdc-text-field__input {
-    caret-color: $color;
+    @include theme.property(caret-color, $color);
   }
 }
 

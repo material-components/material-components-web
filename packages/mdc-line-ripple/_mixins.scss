@@ -84,7 +84,7 @@
 
 @mixin height($height) {
   &::before {
-    border-bottom-width: $height;
+    @include theme.property(border-bottom-width, $height);
   }
 }
 

@@ -659,8 +659,14 @@ $_density-config: map.merge(
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
-    height: $height;
+    @include theme.property(height, $height);
   }
+
+  $height: if(
+    custom-properties.is-custom-prop($height),
+    custom-properties.get-declaration-value($height),
+    $height
+  );
 
   @if $height < $minimum-height-for-filled-label {
     @include _filled-no-label($query: $query);
