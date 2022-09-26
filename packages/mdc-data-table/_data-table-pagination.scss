@@ -7,7 +7,7 @@
 @use '@material/menu/mixins' as menu-theme;
 @use './data-table-theme';
 
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
 // NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
 // selectors.
 
