@@ -1,0 +1,133 @@
+//
+// !!! THIS FILE WAS AUTOMATICALLY GENERATED !!!
+// !!! DO NOT MODIFY IT BY HAND !!!
+// Design system display name: Google Material 3
+// Design system version: v0.132
+//
+
+@use 'sass:map';
+
+@use './md-sys-color';
+
+@use './md-sys-shape';
+
+@use './md-sys-state';
+
+$_default: (
+  'md-sys-color': md-sys-color.values-light(),
+  'md-sys-shape': md-sys-shape.values(),
+  'md-sys-state': md-sys-state.values(),
+);
+
+@function values($deps: $_default, $exclude-hardcoded-values: false) {
+  @return (
+    'container-height': if($exclude-hardcoded-values, null, 18px),
+    'container-shape': if($exclude-hardcoded-values, null, 2px),
+    'container-width': if($exclude-hardcoded-values, null, 18px),
+    'error-focus-state-layer-color': map.get($deps, 'md-sys-color', 'error'),
+    'error-hover-state-layer-color': map.get($deps, 'md-sys-color', 'error'),
+    'error-hover-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'hover-state-layer-opacity'),
+    'error-pressed-state-layer-color': map.get($deps, 'md-sys-color', 'error'),
+    'error-pressed-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'pressed-state-layer-opacity'),
+    'icon-size': if($exclude-hardcoded-values, null, 18px),
+    'selected-container-color': map.get($deps, 'md-sys-color', 'primary'),
+    'selected-disabled-container-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'selected-disabled-container-opacity':
+      if($exclude-hardcoded-values, null, 0.38),
+    'selected-disabled-container-outline-width':
+      if($exclude-hardcoded-values, null, 0px),
+    'selected-disabled-icon-color': map.get($deps, 'md-sys-color', 'surface'),
+    'selected-error-container-color': map.get($deps, 'md-sys-color', 'error'),
+    'selected-error-focus-container-color':
+      map.get($deps, 'md-sys-color', 'error'),
+    'selected-error-focus-icon-color':
+      map.get($deps, 'md-sys-color', 'on-error'),
+    'selected-error-focus-outline-width':
+      if($exclude-hardcoded-values, null, 0px),
+    'selected-error-hover-container-color':
+      map.get($deps, 'md-sys-color', 'error'),
+    'selected-error-hover-icon-color':
+      map.get($deps, 'md-sys-color', 'on-error'),
+    'selected-error-hover-outline-width':
+      if($exclude-hardcoded-values, null, 0px),
+    'selected-error-icon-color': map.get($deps, 'md-sys-color', 'on-error'),
+    'selected-error-pressed-container-color':
+      map.get($deps, 'md-sys-color', 'error'),
+    'selected-error-pressed-icon-color':
+      map.get($deps, 'md-sys-color', 'on-error'),
+    'selected-error-pressed-outline-width':
+      if($exclude-hardcoded-values, null, 0px),
+    'selected-focus-container-color': map.get($deps, 'md-sys-color', 'primary'),
+    'selected-focus-icon-color': map.get($deps, 'md-sys-color', 'on-primary'),
+    'selected-focus-outline-width': if($exclude-hardcoded-values, null, 0px),
+    'selected-focus-state-layer-color':
+      map.get($deps, 'md-sys-color', 'primary'),
+    'selected-focus-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'focus-state-layer-opacity'),
+    'selected-hover-container-color': map.get($deps, 'md-sys-color', 'primary'),
+    'selected-hover-icon-color': map.get($deps, 'md-sys-color', 'on-primary'),
+    'selected-hover-outline-width': if($exclude-hardcoded-values, null, 0px),
+    'selected-hover-state-layer-color':
+      map.get($deps, 'md-sys-color', 'primary'),
+    'selected-hover-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'hover-state-layer-opacity'),
+    'selected-icon-color': map.get($deps, 'md-sys-color', 'on-primary'),
+    'selected-outline-width': if($exclude-hardcoded-values, null, 0px),
+    'selected-pressed-container-color':
+      map.get($deps, 'md-sys-color', 'primary'),
+    'selected-pressed-icon-color': map.get($deps, 'md-sys-color', 'on-primary'),
+    'selected-pressed-outline-width': if($exclude-hardcoded-values, null, 0px),
+    'selected-pressed-state-layer-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'selected-pressed-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'pressed-state-layer-opacity'),
+    'state-layer-shape': map.get($deps, 'md-sys-shape', 'corner-full'),
+    'state-layer-size': if($exclude-hardcoded-values, null, 40px),
+    'unselected-disabled-container-opacity':
+      if($exclude-hardcoded-values, null, 0.38),
+    'unselected-disabled-outline-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'unselected-disabled-outline-width':
+      if($exclude-hardcoded-values, null, 2px),
+    'unselected-error-focus-outline-color':
+      map.get($deps, 'md-sys-color', 'error'),
+    'unselected-error-focus-outline-width':
+      if($exclude-hardcoded-values, null, 2px),
+    'unselected-error-hover-outline-color':
+      map.get($deps, 'md-sys-color', 'error'),
+    'unselected-error-hover-outline-width':
+      if($exclude-hardcoded-values, null, 2px),
+    'unselected-error-outline-color': map.get($deps, 'md-sys-color', 'error'),
+    'unselected-error-pressed-outline-color':
+      map.get($deps, 'md-sys-color', 'error'),
+    'unselected-error-pressed-outline-width':
+      if($exclude-hardcoded-values, null, 2px),
+    'unselected-focus-outline-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'unselected-focus-outline-width': if($exclude-hardcoded-values, null, 2px),
+    'unselected-focus-state-layer-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'unselected-focus-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'focus-state-layer-opacity'),
+    'unselected-hover-outline-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'unselected-hover-outline-width': if($exclude-hardcoded-values, null, 2px),
+    'unselected-hover-state-layer-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'unselected-hover-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'hover-state-layer-opacity'),
+    'unselected-outline-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'unselected-outline-width': if($exclude-hardcoded-values, null, 2px),
+    'unselected-pressed-outline-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'unselected-pressed-outline-width': if($exclude-hardcoded-values, null, 2px),
+    'unselected-pressed-state-layer-color':
+      map.get($deps, 'md-sys-color', 'primary'),
+    'unselected-pressed-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'pressed-state-layer-opacity')
+  );
+}

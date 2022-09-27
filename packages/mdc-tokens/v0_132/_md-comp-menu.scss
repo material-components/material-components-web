@@ -1,0 +1,115 @@
+//
+// !!! THIS FILE WAS AUTOMATICALLY GENERATED !!!
+// !!! DO NOT MODIFY IT BY HAND !!!
+// Design system display name: Google Material 3
+// Design system version: v0.132
+//
+
+@use 'sass:map';
+
+@use './md-sys-color';
+
+@use './md-sys-elevation';
+
+@use './md-sys-shape';
+
+@use './md-sys-state';
+
+@use './md-sys-typescale';
+
+$_default: (
+  'md-sys-color': md-sys-color.values-light(),
+  'md-sys-elevation': md-sys-elevation.values(),
+  'md-sys-shape': md-sys-shape.values(),
+  'md-sys-state': md-sys-state.values(),
+  'md-sys-typescale': md-sys-typescale.values(),
+);
+
+@function values($deps: $_default, $exclude-hardcoded-values: false) {
+  @return (
+    'cascading-menu-indicator-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'cascading-menu-indicator-icon-size':
+      if($exclude-hardcoded-values, null, 24px),
+    'container-color': map.get($deps, 'md-sys-color', 'surface'),
+    'container-elevation': map.get($deps, 'md-sys-elevation', 'level2'),
+    'container-shadow-color': map.get($deps, 'md-sys-color', 'shadow'),
+    'container-shape': map.get($deps, 'md-sys-shape', 'corner-extra-small'),
+    'container-surface-tint-layer-color':
+      map.get($deps, 'md-sys-color', 'surface-tint'),
+    'list-item-container-height': if($exclude-hardcoded-values, null, 48px),
+    'list-item-disabled-label-text-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-disabled-label-text-opacity':
+      if($exclude-hardcoded-values, null, 0.38),
+    'list-item-focus-label-text-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-focus-state-layer-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-focus-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'focus-state-layer-opacity'),
+    'list-item-hover-label-text-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-hover-state-layer-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-hover-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'hover-state-layer-opacity'),
+    'list-item-label-text-color': map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-label-text-font':
+      map.get($deps, 'md-sys-typescale', 'label-large-font'),
+    'list-item-label-text-line-height':
+      map.get($deps, 'md-sys-typescale', 'label-large-line-height'),
+    'list-item-label-text-size':
+      map.get($deps, 'md-sys-typescale', 'label-large-size'),
+    'list-item-label-text-tracking':
+      map.get($deps, 'md-sys-typescale', 'label-large-tracking'),
+    'list-item-label-text-type':
+      if(
+        $exclude-hardcoded-values,
+        null,
+        /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.menu.list-item.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
+          map.get($deps, 'md-sys-typescale', 'label-large-weight')
+          map.get($deps, 'md-sys-typescale', 'label-large-size') /
+          map.get($deps, 'md-sys-typescale', 'label-large-line-height')
+          map.get($deps, 'md-sys-typescale', 'label-large-font')
+      ),
+    'list-item-label-text-weight':
+      map.get($deps, 'md-sys-typescale', 'label-large-weight'),
+    'list-item-pressed-label-text-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-pressed-state-layer-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-pressed-state-layer-opacity':
+      map.get($deps, 'md-sys-state', 'pressed-state-layer-opacity'),
+    'list-item-selected-container-color':
+      map.get($deps, 'md-sys-color', 'surface-variant'),
+    'list-item-with-leading-icon-disabled-leading-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-with-leading-icon-disabled-leading-icon-opacity':
+      if($exclude-hardcoded-values, null, 0.38),
+    'list-item-with-leading-icon-focus-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'list-item-with-leading-icon-hover-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'list-item-with-leading-icon-leading-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'list-item-with-leading-icon-leading-icon-size':
+      if($exclude-hardcoded-values, null, 24px),
+    'list-item-with-leading-icon-pressed-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'list-item-with-trailing-icon-disabled-trailing-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface'),
+    'list-item-with-trailing-icon-disabled-trailing-icon-opacity':
+      if($exclude-hardcoded-values, null, 0.38),
+    'list-item-with-trailing-icon-focus-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'list-item-with-trailing-icon-hover-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'list-item-with-trailing-icon-pressed-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'list-item-with-trailing-icon-trailing-icon-color':
+      map.get($deps, 'md-sys-color', 'on-surface-variant'),
+    'list-item-with-trailing-icon-trailing-icon-size':
+      if($exclude-hardcoded-values, null, 24px)
+  );
+}
