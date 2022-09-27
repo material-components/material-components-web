@@ -1603,7 +1603,9 @@ $_density-config: map.merge(
     @include feature-targeting.targets($feat-structure) {
       // TODO(b/154349735): Investigate the neccessity of these styles
       display: flex;
-      border: none !important; // FF adds unwanted border in HC mode on windows.
+      // stylelint-disable-next-line declaration-no-important --
+      // FF adds unwanted border in HC mode on windows.
+      border: none !important;
       background-color: transparent;
     }
   }
