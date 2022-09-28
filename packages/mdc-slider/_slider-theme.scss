@@ -102,7 +102,7 @@ $light-theme: (
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($light-theme, $theme);
-  $theme: _resolve-theme-elevation-keys($theme, $resolvers: $resolvers);
+  $theme: _resolve-elevation-keys($theme, $resolvers);
   @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }
 
@@ -630,7 +630,7 @@ $light-theme: (
 }
 
 @function _resolve-elevation-keys($theme, $resolvers) {
-  $elevation-resolver: map.get($resolver, elevation);
+  $elevation-resolver: map.get($resolvers, elevation);
   $elevation: map.get($theme, handle-elevation);
   $shadow-color: map.get($theme, thumb-shadow-color);
 
