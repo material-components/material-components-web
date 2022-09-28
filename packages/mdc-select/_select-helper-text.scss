@@ -20,6 +20,9 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
 @use '@material/animation/variables';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
