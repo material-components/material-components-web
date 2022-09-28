@@ -31,6 +31,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.19.3",
     "@babel/traverse": "^7.3.4",
     "@babel/types": "^7.3.4",
     "@documentalist/compiler": "^2.7.0",
@@ -104,6 +105,7 @@
   "babel": {
     "presets": [
       [
+        "@babel/preset-env",
         "env",
         {
           "modules": false
