@@ -397,8 +397,8 @@
     }
   }
 
+  // stylelint-disable selector-max-type --
   // Override anchor tag styles for the use-case of a list being used for navigation
-  // stylelint-disable selector-max-type
   a.mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       color: inherit;
