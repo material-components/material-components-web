@@ -251,13 +251,11 @@
 
   // Extra specificity is to override .material-icons display style if used in
   // conjunction with mdc-deprecated-list-item__graphic
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-deprecated-list .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
     }
   }
-  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-deprecated-list-item__meta {
     &:not(.material-icons) {
@@ -316,7 +314,6 @@
       );
     }
 
-    // stylelint-disable plugin/selector-bem-pattern
     .mdc-deprecated-list--dense & {
       @include typography.text-baseline(
         $top: variables.$deprecated-dense-item-primary-text-baseline-height,
@@ -324,7 +321,6 @@
         $query: $query
       );
     }
-    // stylelint-enable plugin/selector-bem-pattern
   }
 
   .mdc-deprecated-list-item__secondary-text {
@@ -336,16 +332,13 @@
       $query: $query
     );
 
-    // stylelint-disable plugin/selector-bem-pattern
     .mdc-deprecated-list--dense & {
       @include feature-targeting.targets($feat-structure) {
         font-size: inherit;
       }
     }
-    // stylelint-enable plugin/selector-bem-pattern
   }
 
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-deprecated-list--dense .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       height: 40px;
@@ -406,14 +399,14 @@
   }
 
   // Override anchor tag styles for the use-case of a list being used for navigation
-  // stylelint-disable selector-max-type,selector-no-qualifying-type
+  // stylelint-disable selector-max-type
   a.mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       color: inherit;
       text-decoration: none;
     }
   }
-  // stylelint-enable selector-max-type,selector-no-qualifying-type
+  // stylelint-enable selector-max-type
 
   .mdc-deprecated-list-divider {
     @include feature-targeting.targets($feat-structure) {

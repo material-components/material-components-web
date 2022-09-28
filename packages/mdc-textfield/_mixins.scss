@@ -245,8 +245,6 @@ $_density-config: map.merge(
   }
 
   // postcss-bem-linter: define text-field-helper-text
-  // stylelint-disable plugin/selector-bem-pattern --
-  // TODO: document why this disable is neccessary
   .mdc-text-field-helper-line {
     @include feature-targeting.targets($feat-structure) {
       display: flex;
@@ -261,7 +259,6 @@ $_density-config: map.merge(
       }
     }
   }
-  // stylelint-enable plugin/selector-bem-pattern
   // postcss-bem-linter: end
 
   // mdc-form-field tweaks to align text field label correctly
@@ -1977,9 +1974,6 @@ $_density-config: map.merge(
     max-height: 100%;
     max-width: 100%;
     min-height: variables.$height;
-    // stylelint-disable declaration-block-no-duplicate-properties --
-    // TODO: document why this disable is neccessary
-
     // 'stretch' is the preferred rule here. It will allow the textarea to grow
     // to the min/max width of the container, but if an explicit width is set,
     // it cannot be resized horizontally.
@@ -1993,7 +1987,6 @@ $_density-config: map.merge(
     min-width: -moz-available;
     /* @alternate */
     min-width: -webkit-fill-available;
-    // stylelint-enable declaration-block-no-duplicate-properties
     overflow: hidden;
     resize: both;
   }

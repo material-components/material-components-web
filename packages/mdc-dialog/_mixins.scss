@@ -785,9 +785,6 @@
     // is fixed.
     .mdc-dialog__container {
       @include feature-targeting.targets($feat-structure) {
-        /* stylelint-disable */
-        // Disable stylelint here, as nesting depth > 3 is required to
-        // work around IE 11.
         @if $max-height {
           $max-height-breakpoint: $max-height + ($margin * 2);
 
@@ -796,7 +793,6 @@
             height: auto;
           }
         }
-        /* stylelint-enable*/
       }
     }
   }

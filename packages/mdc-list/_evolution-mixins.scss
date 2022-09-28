@@ -131,14 +131,14 @@ $ripple-target: variables.$ripple-target;
   }
 
   // Override anchor tag styles for the use-case of a list being used for navigation
-  // stylelint-disable selector-max-type,selector-no-qualifying-type
+  // stylelint-disable selector-max-type
   a.mdc-list-item {
     @include feature-targeting.targets($feat-structure) {
       color: inherit;
       text-decoration: none;
     }
   }
-  // stylelint-enable selector-max-type,selector-no-qualifying-type
+  // stylelint-enable selector-max-type
 
   .mdc-list-item__start {
     @include feature-targeting.targets($feat-structure) {

@@ -94,14 +94,12 @@
       }
     }
 
-    //stylelint-disable selector-no-qualifying-type
     a.mdc-deprecated-list-item .mdc-deprecated-list-item__text,
     a.mdc-deprecated-list-item .mdc-deprecated-list-item__graphic {
       @include feature-targeting.targets($feat-structure) {
         pointer-events: none;
       }
     }
-    // stylelint-enable selector-no-qualifying-type
   }
 
   // postcss-bem-linter: define menu
@@ -136,7 +134,6 @@
   }
   // postcss-bem-linter: end
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-menu-item--selected .mdc-menu__selection-group-icon {
     @include feature-targeting.targets($feat-structure) {
       display: inline;
