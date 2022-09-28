@@ -29,6 +29,7 @@
     "@material/shape": "^14.0.0",
     "@material/theme": "^14.0.0",
     "@material/tokens": "^14.0.0",
+    "safevalues": "^0.3.2",
     "tslib": "^2.1.0"
   },
   "publishConfig": {

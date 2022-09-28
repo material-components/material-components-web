@@ -23,10 +23,14 @@
 
 import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/types';
+import {safeAttrPrefix} from 'safevalues';
+import {safeElement} from 'safevalues/dom';
 
 import {MDCTooltipAdapter} from './adapter';
 import {AnchorBoundaryType, CssClasses, events, PositionWithCaret, XPosition, YPosition} from './constants';
 import {MDCTooltipFoundation} from './foundation';
+
+const ARIA_ATTR_PREFIX = [safeAttrPrefix`aria-`];
 
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   static override attachTo(root: Element) {
@@ -183,7 +187,8 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     const adapter: MDCTooltipAdapter = {
       getAttribute: (attr) => this.root.getAttribute(attr),
       setAttribute: (attr, value) => {
-        this.root.setAttribute(attr, value);
+        safeElement.setPrefixedAttribute(
+            ARIA_ATTR_PREFIX, this.root, attr, value);
       },
       removeAttribute: (attr) => {
         this.root.removeAttribute(attr);
@@ -225,7 +230,10 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
         return this.anchorElem ? this.anchorElem.getAttribute(attr) : null;
       },
       setAnchorAttribute: (attr, value) => {
-        this.anchorElem?.setAttribute(attr, value);
+        if (this.anchorElem) {
+          safeElement.setPrefixedAttribute(
+              ARIA_ATTR_PREFIX, this.anchorElem, attr, value);
+        }
       },
       isRTL: () => getComputedStyle(this.root).direction === 'rtl',
       anchorContainsElement: (element) => {

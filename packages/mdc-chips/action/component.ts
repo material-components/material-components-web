@@ -28,6 +28,8 @@ import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
+import {safeAttrPrefix} from 'safevalues';
+import {safeElement} from 'safevalues/dom';
 
 import {MDCChipActionAdapter} from './adapter';
 import {computePrimaryActionRippleClientRect, GRAPHIC_SELECTED_WIDTH_STYLE_PROP} from './component-ripple';
@@ -42,6 +44,15 @@ import {MDCChipTrailingActionFoundation} from './trailing-foundation';
  */
 export type MDCChipActionFactory =
     (el: Element, foundation?: MDCChipActionFoundation) => MDCChipAction;
+
+
+const ALLOWED_ATTR_PREFIXES = [
+  safeAttrPrefix`aria-`,
+  safeAttrPrefix`data-`,
+  safeAttrPrefix`disabled`,
+  safeAttrPrefix`role`,
+  safeAttrPrefix`tabindex`,
+];
 
 /**
  * MDCChipAction provides component encapsulation of the different foundation
@@ -113,7 +124,8 @@ export class MDCChipAction extends
         this.root.removeAttribute(name);
       },
       setAttribute: (name, value) => {
-        this.root.setAttribute(name, value);
+        safeElement.setPrefixedAttribute(
+            ALLOWED_ATTR_PREFIXES, this.root, name, value);
       },
     };
 
