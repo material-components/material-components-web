@@ -71,7 +71,7 @@ describe('announce', () => {
     expect(liveRegion!.textContent).toEqual('Baz');
   });
 
-  it('reuses same polite live region on successive calls per document', () => {
+  it('reuses same live region on successive calls per document', () => {
     const secondDocument = document.implementation.createHTMLDocument('Title');
     announce('aaa');
     announce('aaa', {ownerDocument: secondDocument});
@@ -87,25 +87,6 @@ describe('announce', () => {
         secondDocument.querySelectorAll(LIVE_REGION_SELECTOR);
     expect(secondDocumentLiveRegions.length).toEqual(1);
   });
-
-  it('reuses same assertive live region on successive calls per document',
-     () => {
-       const secondDocument =
-           document.implementation.createHTMLDocument('Title');
-       announce('aaa', {priority: AnnouncerPriority.ASSERTIVE});
-       announce('aaa', {priority: AnnouncerPriority.ASSERTIVE, ownerDocument: secondDocument});
-       announce('bbb', {priority: AnnouncerPriority.ASSERTIVE});
-       announce('bbb', {priority: AnnouncerPriority.ASSERTIVE, ownerDocument: secondDocument});
-       announce('ccc', {priority: AnnouncerPriority.ASSERTIVE});
-       announce('ccc', {priority: AnnouncerPriority.ASSERTIVE, ownerDocument: secondDocument});
-
-       const globalDocumentLiveRegions =
-           document.querySelectorAll(LIVE_REGION_SELECTOR);
-       expect(globalDocumentLiveRegions.length).toEqual(1);
-       const secondDocumentLiveRegions =
-           secondDocument.querySelectorAll(LIVE_REGION_SELECTOR);
-       expect(secondDocumentLiveRegions.length).toEqual(1);
-     });
 
   it('sets the latest message during immediate successive', () => {
     announce('1');
