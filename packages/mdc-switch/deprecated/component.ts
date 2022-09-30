@@ -29,6 +29,9 @@ import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
+import {safeAttrPrefix} from 'safevalues';
+import {safeElement} from 'safevalues/dom';
+
 import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
 
@@ -71,7 +74,8 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
       setNativeControlDisabled: (disabled) => this.nativeControl.disabled =
           disabled,
       setNativeControlAttr: (attr, value) => {
-        this.nativeControl.setAttribute(attr, value);
+        safeElement.setPrefixedAttribute(
+            [safeAttrPrefix`aria-`], this.nativeControl, attr, value);
       },
     };
     return new MDCSwitchFoundation(adapter);
