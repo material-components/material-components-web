@@ -249,10 +249,10 @@ $icon-enter-duration_: 180ms;
     }
   }
 
+  // stylelint-disable selector-max-type --
   // This allows for using SVGs within them to align properly in all browsers.
   // Can remove once: https://bugzilla.mozilla.org/show_bug.cgi?id=1294515 is resolved.
 
-  // stylelint-disable selector-max-type
   // postcss-bem-linter: ignore
   > svg {
     @include feature-targeting.targets($feat-structure) {
