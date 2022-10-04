@@ -638,7 +638,7 @@ $ripple-target: variables.$ripple-target;
   &.mdc-list-item--with-one-line,
   &.mdc-list-item--with-two-lines,
   &.mdc-list-item--with-three-lines {
-    height: $height;
+    @include theme.property(height, $height);
   }
 }
 
@@ -795,8 +795,8 @@ $ripple-target: variables.$ripple-target;
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
     .mdc-list-item__start {
-      width: $width;
-      height: $height;
+      @include theme.property(width, $width);
+      @include theme.property(height, $height);
     }
   }
 }
@@ -805,8 +805,8 @@ $ripple-target: variables.$ripple-target;
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
     .mdc-list-item__end {
-      width: $width;
-      height: $height;
+      @include theme.property(width, $width);
+      @include theme.property(height, $height);
     }
   }
 }
@@ -933,7 +933,7 @@ $ripple-target: variables.$ripple-target;
     .mdc-list-item__content,
     .mdc-list-item__end {
       @include feature-targeting.targets($feat-color) {
-        opacity: $opacity;
+        @include theme.property(opacity, $opacity);
       }
     }
   }

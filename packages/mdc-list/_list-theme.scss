@@ -28,9 +28,12 @@
 @use 'sass:map';
 @use '@material/tokens/resolvers';
 @use '@material/theme/theme';
+@use '@material/theme/keys';
 @use '@material/typography/typography';
 @use './evolution-mixins' as list;
+@use 'sass:meta';
 
+$custom-property-prefix: 'list';
 $_light-theme: (
   list-item-container-color: null,
   list-item-container-shape: null,
@@ -98,8 +101,52 @@ $_light-theme: (
   list-item-hover-trailing-icon-color: null,
 );
 
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme-keys($_light-theme, $theme);
+  $theme: _resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@function _resolve-theme($theme, $resolvers) {
+  @return map.merge(
+    $theme,
+    _resolve-theme-elevation(
+      $theme,
+      map.get($resolvers, elevation),
+      list-item-container-elevation
+    )
+  );
+}
+
+@function _resolve-theme-elevation($theme, $resolver, $keys...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $key in $keys {
+    // Resolve the value for each state key.
+    $resolved-value: meta.call(
+      $resolver,
+      $elevation: map.get($theme, $key),
+      $shadow-color: map.get($theme, container-shadow-color)
+    );
+
+    // Update the theme with the resolved value.
+    $theme: map.set($theme, $key, $resolved-value);
+  }
+
+  @return $theme;
+}
+
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-keys($_light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
 
   @include _list-item-container-color(
     map.get($theme, list-item-container-color)
@@ -241,7 +288,7 @@ $_light-theme: (
 
 @mixin _list-item-container-color($color) {
   .mdc-list-item {
-    background-color: $color;
+    @include theme.property(background-color, $color);
   }
 }
 
