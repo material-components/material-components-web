@@ -1,0 +1,214 @@
+@use 'true' as test;
+@use '../slider-theme';
+@use '@material/feature-targeting/feature-targeting';
+
+@include test.describe('slider-theme') {
+  @include test.describe('theme()') {
+    @include test.it('emits no styles without theme') {
+      $theme: ();
+
+      @include test.assert {
+        @include test.output {
+          @include slider-theme.theme($theme);
+        }
+
+        // stylelint-disable block-no-empty -- testing for empty
+        @include test.expect {
+        }
+        // stylelint-enable
+      }
+    }
+
+    @include test.it('emits custom properties with default theme') {
+      @include test.assert {
+        $theme: slider-theme.$light-theme;
+
+        @include test.output {
+          @include slider-theme.theme($theme);
+        }
+
+        // stylelint-disable color-hex-length --
+        // prettier-ignore
+        @include test.expect {
+          --mdc-slider-active-track-color: var(--mdc-theme-primary, #6200ee);
+          --mdc-slider-active-track-height: 6px;
+          --mdc-slider-active-track-shape: 9999px;
+          --mdc-slider-disabled-active-track-color: var(--mdc-theme-on-surface, #000);
+          --mdc-slider-disabled-handle-color: var(--mdc-theme-on-surface, #000);
+          --mdc-slider-disabled-inactive-track-color: var(--mdc-theme-on-surface, #000);
+          --mdc-slider-focus-handle-color: var(--mdc-theme-primary, #6200ee);
+          --mdc-slider-handle-color: var(--mdc-theme-primary, #6200ee);
+          --mdc-slider-handle-elevation: 1;
+          --mdc-slider-handle-height: 20px;
+          --mdc-slider-handle-shadow-color: black;
+          --mdc-slider-handle-shape: 50%;
+          --mdc-slider-handle-width: 20px;
+          --mdc-slider-hover-handle-color: var(--mdc-theme-primary, #6200ee);
+          --mdc-slider-inactive-track-color: var(--mdc-theme-primary, #6200ee);
+          --mdc-slider-inactive-track-height: 4px;
+          --mdc-slider-inactive-track-shape: 9999px;
+          --mdc-slider-label-container-color: #666666;
+          --mdc-slider-label-label-text-color: var(--mdc-theme-on-primary, #fff);
+          --mdc-slider-label-label-text-font: Roboto, sans-serif;
+          --mdc-slider-label-label-text-font-size: 0.875rem;
+          --mdc-slider-label-label-text-line-height: 1.375rem;
+          --mdc-slider-label-label-text-tracking: 0.0071428571em;
+          --mdc-slider-label-label-text-weight: 500;
+          --mdc-slider-with-overlap-handle-outline-color: #fff;
+          --mdc-slider-with-overlap-handle-outline-width: 1px;
+          --mdc-slider-with-tick-marks-active-container-color: var(--mdc-theme-on-primary, #fff);
+          --mdc-slider-with-tick-marks-active-container-opacity: 0.6;
+          --mdc-slider-with-tick-marks-container-shape: 50%;
+          --mdc-slider-with-tick-marks-container-size: 2px;
+          --mdc-slider-with-tick-marks-disabled-container-color: var(--mdc-theme-on-surface, #000);
+          --mdc-slider-with-tick-marks-inactive-container-color: var(--mdc-theme-primary, #6200ee);
+          --mdc-slider-with-tick-marks-inactive-container-opacity: 0.6;
+        }
+        // stylelint-enable
+      }
+    }
+
+    @include test.it('emits custom properties with fully populated theme') {
+      @include test.assert {
+        $theme: (
+          active-track-color: blue,
+          active-track-height: 6px,
+          active-track-shape: 9999px,
+          disabled-active-track-color: grey,
+          disabled-handle-color: grey,
+          disabled-handle-elevation: 3,
+          disabled-inactive-track-color: grey,
+          focus-handle-color: blue,
+          handle-color: blue,
+          handle-elevation: 1,
+          handle-height: 20px,
+          handle-shadow-color: black,
+          handle-shape: 50%,
+          handle-width: 20px,
+          hover-handle-color: blue,
+          inactive-track-color: blue,
+          inactive-track-height: 4px,
+          inactive-track-shape: 9999px,
+          label-container-color: blue,
+          label-container-elevation: 2,
+          label-container-height: 20px,
+          label-label-text-color: blue,
+          label-label-text-font: 'Comic Sans',
+          label-label-text-font-size: 16px,
+          label-label-text-line-height: 1em,
+          label-label-text-tracking: 0.01em,
+          label-label-text-weight: 500,
+          pressed-handle-color: blue,
+          track-elevation: 5,
+          with-overlap-handle-outline-color: #fff,
+          with-overlap-handle-outline-width: 1px,
+          with-tick-marks-active-container-color: blue,
+          with-tick-marks-active-container-opacity: 0.5,
+          with-tick-marks-container-shape: 50%,
+          with-tick-marks-container-size: 2px,
+          with-tick-marks-disabled-container-color: grey,
+          with-tick-marks-inactive-container-color: grey,
+          with-tick-marks-inactive-container-opacity: 0.75,
+        );
+
+        @include test.output {
+          @include slider-theme.theme($theme);
+        }
+
+        @include test.expect {
+          --mdc-slider-active-track-color: blue;
+          --mdc-slider-active-track-height: 6px;
+          --mdc-slider-active-track-shape: 9999px;
+          --mdc-slider-disabled-active-track-color: grey;
+          --mdc-slider-disabled-handle-color: grey;
+          --mdc-slider-disabled-handle-elevation: 3;
+          --mdc-slider-disabled-inactive-track-color: grey;
+          --mdc-slider-focus-handle-color: blue;
+          --mdc-slider-handle-color: blue;
+          --mdc-slider-handle-elevation: 1;
+          --mdc-slider-handle-height: 20px;
+          --mdc-slider-handle-shadow-color: black;
+          --mdc-slider-handle-shape: 50%;
+          --mdc-slider-handle-width: 20px;
+          --mdc-slider-hover-handle-color: blue;
+          --mdc-slider-inactive-track-color: blue;
+          --mdc-slider-inactive-track-height: 4px;
+          --mdc-slider-inactive-track-shape: 9999px;
+          --mdc-slider-label-container-color: blue;
+          --mdc-slider-label-container-elevation: 2;
+          --mdc-slider-label-container-height: 20px;
+          --mdc-slider-label-label-text-color: blue;
+          --mdc-slider-label-label-text-font: Comic Sans;
+          --mdc-slider-label-label-text-font-size: 16px;
+          --mdc-slider-label-label-text-line-height: 1em;
+          --mdc-slider-label-label-text-tracking: 0.01em;
+          --mdc-slider-label-label-text-weight: 500;
+          --mdc-slider-pressed-handle-color: blue;
+          --mdc-slider-track-elevation: 5;
+          --mdc-slider-with-overlap-handle-outline-color: #fff;
+          --mdc-slider-with-overlap-handle-outline-width: 1px;
+          --mdc-slider-with-tick-marks-active-container-color: blue;
+          --mdc-slider-with-tick-marks-active-container-opacity: 0.5;
+          --mdc-slider-with-tick-marks-container-shape: 50%;
+          --mdc-slider-with-tick-marks-container-size: 2px;
+          --mdc-slider-with-tick-marks-disabled-container-color: grey;
+          --mdc-slider-with-tick-marks-inactive-container-color: grey;
+          --mdc-slider-with-tick-marks-inactive-container-opacity: 0.75;
+        }
+      }
+    }
+  }
+
+  @include test.describe('theme-styles()') {
+    @include test.it('emits custom properties') {
+      $theme: (
+        active-track-color: yellow,
+        handle-color: blue,
+        label-label-text-font: 'Comic Sans',
+      );
+
+      @include test.assert {
+        @include test.output {
+          @include slider-theme.theme-styles($theme);
+        }
+
+        // stylelint-disable selector-class-pattern -- testing 'mdc-*''
+        // spot checking here as theme-styles emits many styles even with an empty theme.
+        @include test.contains {
+          .mdc-slider__track--active_fill {
+            border-color: yellow;
+            border-color: var(--mdc-slider-active-track-color, yellow);
+          }
+
+          .mdc-slider__thumb-knob {
+            background-color: blue;
+            background-color: var(--mdc-slider-handle-color, blue);
+            border-color: blue;
+            border-color: var(--mdc-slider-handle-color, blue);
+          }
+
+          .mdc-slider__value-indicator-text {
+            font-family: Comic Sans;
+            font-family: var(--mdc-slider-label-label-text-font, 'Comic Sans');
+          }
+        }
+        // stylelint-enable
+      }
+    }
+
+    @include test.it('emits no styles with feature targeting any') {
+      $theme: slider-theme.$light-theme;
+
+      @include test.assert {
+        @include test.output {
+          @include slider-theme.theme-styles($theme, feature-targeting.any());
+        }
+
+        // stylelint-disable block-no-empty -- testing for empty
+        @include test.expect {
+        }
+        // stylelint-enable
+      }
+    }
+  }
+}
