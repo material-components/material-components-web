@@ -31,17 +31,9 @@ const HEADLESS_LAUNCHERS = {
     flags: ['-headless'],
   },
 };
-const SAUCE_LAUNCHERS = {
-  'sl-ie': {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
-    version: '11',
-    platform: 'Windows 10',
-  },
-};
 const USE_SAUCE = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 const PROGRESS = USE_SAUCE ? 'dots' : 'progress';
-const customLaunchers = Object.assign({}, USE_SAUCE ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
+const customLaunchers = Object.assign({}, HEADLESS_LAUNCHERS);
 const browsers = USE_SAUCE ? Object.keys(customLaunchers) : ['Chrome'];
 
 // Files to include in Jasmine tests.
