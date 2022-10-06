@@ -273,33 +273,7 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @if custom-properties.is-custom-prop($box-shadow) {
-      // TODO(b/185188458): Use theme.property() once resolved.
-      $fallback: custom-properties.get-fallback($box-shadow);
-
-      // var(--<box-shadow-prop>, var(--m-elevation-box-shadow-for-gss))
-      $gss-custom-prop: custom-properties.create(
-        custom-properties.get-varname($box-shadow),
-        custom-properties.create(elevation-box-shadow-for-gss)
-      );
-
-      $value: custom-properties.create-var($gss-custom-prop);
-      @if $value == null {
-        // Custom properties are disabled, since $gss-custom-prop
-        // does not have a fallback. Avoid emitting two non-custom
-        // prop declarations by setting $fallback to null.
-        $value: $fallback;
-        $fallback: null;
-      }
-
-      @include custom-properties.declaration(
-        custom-properties.create(elevation-box-shadow-for-gss, $fallback)
-      );
-      @include css.declaration(box-shadow, $value, $fallback-value: $fallback);
-    } @else {
-      /* @alternate */
-      box-shadow: $box-shadow;
-    }
+    @include theme.property(box-shadow, $box-shadow);
   }
 }
 
