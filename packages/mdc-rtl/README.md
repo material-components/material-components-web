@@ -53,4 +53,4 @@ Both `reflexive-property` and `reflexive-box` work with one base box-model prope
 </html>
 ```
 
-Unfortunately, we've found that this is the best we can do for now. In the future, selectors such as [:dir](http://mdn.io/:dir) will help us mitigate this.
+Unfortunately, we've found that this is the best we can do for now. In the future, selectors such as [:dir](http://mdn.io/:dir) and [CSS logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Logical_Properties) will help us mitigate this.
