@@ -19,6 +19,8 @@
 // THE SOFTWARE.
 
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
+
 ///
 /// Emits necessary layout styles to set a transparent border around an element
 /// without interfering with the rest of its component layout. The border is
@@ -41,6 +43,7 @@
     width: 100%;
     height: 100%;
     top: 0;
+    @include rtl.ignore-next-line();
     left: 0;
     border: $border-width $border-style transparent;
     border-radius: inherit;
