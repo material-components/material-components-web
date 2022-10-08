@@ -82,7 +82,8 @@ $light-theme: (
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme-keys($light-theme, $theme);
+  // TODO(b/251881053): Replace with `validate-theme`.
+  @include theme.validate-theme-styles($light-theme, $theme);
   $theme: _resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties($theme, banner);
 }
@@ -123,7 +124,7 @@ $light-theme: (
   $resolver: resolvers.$material,
   $query: feature-targeting.all()
 ) {
-  @include theme.validate-theme-keys($light-theme, $theme);
+  @include theme.validate-theme-styles($light-theme, $theme);
   @include text-color(map.get($theme, supporting-text-color), $query: $query);
   @include _supporting-text-typography(
     (

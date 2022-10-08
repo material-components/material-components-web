@@ -142,7 +142,7 @@ $_light-theme: (
 );
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme-keys($_light-theme, $theme);
+  @include theme.validate-theme-styles($_light-theme, $theme);
 
   @include _caret-color(
     (

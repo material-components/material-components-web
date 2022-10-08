@@ -50,7 +50,7 @@ $light-theme: (
 }
 
 @mixin theme-styles($theme) {
-  @include theme.validate-theme-keys($light-theme, $theme);
+  @include theme.validate-theme-styles($light-theme, $theme);
 
   $theme: keys.create-theme-properties(
     $theme,

@@ -102,7 +102,8 @@ $_light-theme: (
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme-keys($_light-theme, $theme);
+  // TODO(b/251881053): Replace with `validate-theme`.
+  @include theme.validate-theme-styles($_light-theme, $theme);
   $theme: _resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
     $theme,
@@ -142,7 +143,7 @@ $_light-theme: (
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme-keys($_light-theme, $theme);
+  @include theme.validate-theme-styles($_light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $custom-property-prefix

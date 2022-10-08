@@ -118,7 +118,8 @@ $forced-colors-theme: (
 );
 
 @mixin theme($theme) {
-  @include theme.validate-theme-keys($light-theme, $theme);
+  // TODO(b/251881053): Replace with `validate-theme`.
+  @include theme.validate-theme-styles($light-theme, $theme);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -126,7 +127,7 @@ $forced-colors-theme: (
 }
 
 @mixin theme-styles($theme) {
-  @include theme.validate-theme-keys($light-theme, $theme);
+  @include theme.validate-theme-styles($light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $custom-property-prefix

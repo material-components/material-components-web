@@ -122,7 +122,7 @@ $light-theme: (
 }
 
 @mixin theme-styles($theme, $resolver: resolvers.$material) {
-  @include theme.validate-theme-keys($light-theme, $theme);
+  @include theme.validate-theme-styles($light-theme, $theme);
 
   .mdc-snackbar__action {
     @include button-text-theme.theme-styles(

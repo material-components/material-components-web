@@ -271,18 +271,24 @@
 /// Validates theme configuration keys by comparing it with original theme
 /// configuration, also validates theme values to see if it has any unsupported
 /// value formats.
+///
+/// Use this in internal `theme()` mixins to validate library-provided
+/// `$theme` maps and ensure that all tokens are correct and present.
+///
+/// @example
+///     @mixin theme($theme) {
+///       @include theme.validate-theme($light-theme, $theme);
+///       ...
+///     }
+///
+/// @see validate-theme-styles to validate only theme keys.
+///
 /// @param {Map} $origin-theme - Original theme configuration in Sass map format
 ///     that has all supported keys.
 /// @param {Map} $custom-theme - Provided theme configuration in Sass map format
 ///     that should be validated against `$origin-theme`.
-/// @examples
-///     @mixin theme($theme) {
-///       @include theme.validate-theme($light-theme, $theme);
-///
-///       // ...
-///     }
 @mixin validate-theme($origin-theme, $custom-theme, $test-only: false) {
-  @include validate-theme-keys(
+  @include validate-theme-styles(
     $origin-theme,
     $custom-theme,
     $test-only: $test-only
@@ -292,12 +298,23 @@
 
 /// Validates theme configuration keys by comparing it with original theme
 /// configuration.
-/// @see Use `validate-theme()` to validate both theme keys and theme values.
+///
+/// Use this in internal `theme-styles()` mixins to validate library-provided
+/// `$theme` maps and ensure that all tokens are correct and present.
+///
+/// @example
+///     @mixin theme-styles($theme) {
+///       @include theme.validate-theme-styles($light-theme, $theme);
+///       ...
+///     }
+///
+/// @see validate-theme to validate both theme keys and theme values.
+///
 /// @param {Map} $origin-theme - Original theme configuration in Sass map format
 ///     that has all supported keys.
 /// @param {Map} $custom-theme - Provided theme configuration in Sass map format
 ///     that should be validated against `$origin-theme`.
-@mixin validate-theme-keys($origin-theme, $custom-theme, $test-only: false) {
+@mixin validate-theme-styles($origin-theme, $custom-theme, $test-only: false) {
   $origin-keys: map.keys($origin-theme);
   $unsupported-keys: ();
 

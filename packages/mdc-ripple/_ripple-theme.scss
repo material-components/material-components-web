@@ -117,7 +117,7 @@ $_ripple-theme: (
 }
 
 @mixin internal-theme-styles($theme, $ripple-target: '&') {
-  @include theme.validate-theme-keys($_ripple-theme, $theme);
+  @include theme.validate-theme-styles($_ripple-theme, $theme);
 
   @include states-base-color(
     map.get($theme, hover-state-layer-color),
