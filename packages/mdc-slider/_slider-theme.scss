@@ -208,7 +208,7 @@ $light-theme: (
     }
   }
 
-  @include disabled-slider-opacity($disabled-slider-opacity, $feat-color);
+  @include disabled-slider-opacity($disabled-slider-opacity, $query);
   @include _value-indicator-typography($theme, $feat-typography);
   @include _slider-shape($theme, $feat-structure);
   @include _slider-elevation($theme, $resolvers, $query);
@@ -484,8 +484,10 @@ $light-theme: (
 }
 
 @mixin disabled-slider-opacity($opacity, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
   &.mdc-slider--disabled {
-    @include feature-targeting.targets($query) {
+    @include feature-targeting.targets($feat-color) {
       @include theme.property(opacity, $opacity);
     }
   }
