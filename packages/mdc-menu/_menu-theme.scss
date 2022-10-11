@@ -1,0 +1,121 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// Internal styling for Menu MDC component.
+
+@use 'sass:map';
+@use 'sass:meta';
+@use '@material/tokens/resolvers';
+@use '@material/theme/theme';
+@use '@material/theme/keys';
+
+$_custom-property-prefix: 'menu';
+$_light-theme: (
+  cascading-menu-indicator-icon-color: null,
+  cascading-menu-indicator-icon-size: null,
+  container-color: null,
+  container-elevation: null,
+  container-shadow-color: null,
+  container-shape: null,
+  container-surface-tint-layer-color: null,
+  list-item-container-height: null,
+  list-item-disabled-label-text-color: null,
+  list-item-disabled-label-text-opacity: null,
+  list-item-focus-label-text-color: null,
+  list-item-focus-state-layer-color: null,
+  list-item-focus-state-layer-opacity: null,
+  list-item-hover-label-text-color: null,
+  list-item-hover-state-layer-color: null,
+  list-item-hover-state-layer-opacity: null,
+  list-item-label-text-color: null,
+  list-item-label-text-font: null,
+  list-item-label-text-line-height: null,
+  list-item-label-text-size: null,
+  list-item-label-text-tracking: null,
+  list-item-label-text-type: null,
+  list-item-label-text-weight: null,
+  list-item-pressed-label-text-color: null,
+  list-item-pressed-state-layer-color: null,
+  list-item-pressed-state-layer-opacity: null,
+  list-item-selected-container-color: null,
+  list-item-with-leading-icon-disabled-leading-icon-color: null,
+  list-item-with-leading-icon-disabled-leading-icon-opacity: null,
+  list-item-with-leading-icon-focus-icon-color: null,
+  list-item-with-leading-icon-hover-icon-color: null,
+  list-item-with-leading-icon-leading-icon-color: null,
+  list-item-with-leading-icon-leading-icon-size: null,
+  list-item-with-leading-icon-pressed-icon-color: null,
+  list-item-with-trailing-icon-disabled-trailing-icon-color: null,
+  list-item-with-trailing-icon-disabled-trailing-icon-opacity: null,
+  list-item-with-trailing-icon-focus-icon-color: null,
+  list-item-with-trailing-icon-hover-icon-color: null,
+  list-item-with-trailing-icon-pressed-icon-color: null,
+  list-item-with-trailing-icon-trailing-icon-color: null,
+  list-item-with-trailing-icon-trailing-icon-size: null,
+);
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_light-theme, $theme);
+  $theme: _resolve-theme-elevation($theme, $resolvers: $resolvers);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme-styles($_light-theme, $theme);
+  $theme: _resolve-theme-elevation($theme, $resolvers: $resolvers);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+
+  .mdc-menu {
+    // TODO(b/200035636): Implement theming api.
+  }
+}
+
+@function _resolve-theme-elevation($theme, $resolvers) {
+  $elevation-resolver: map.get($resolvers, elevation);
+  $shadow-color: map.get($theme, container-shadow-color);
+  @if $elevation-resolver == null or $shadow-color == null {
+    @return $theme;
+  }
+
+  $elevation-keys: (container-elevation);
+
+  @each $key in $elevation-keys {
+    $elevation: map.get($theme, $key);
+    @if $elevation != null {
+      $resolved-value: meta.call(
+        $resolvers,
+        $elevation: $elevation,
+        $shadow-color: $shadow-color
+      );
+      $theme: map.set($theme, $key, $resolved-value);
+    }
+  }
+  @return $theme;
+}
