@@ -43,6 +43,8 @@ $primary-light-theme: (
   container-elevation: elevation-theme.get-elevation(0),
   container-height: 48px,
   container-shape: 0,
+  divider-color: null,
+  divider-height: null,
   inactive-focus-state-layer-color: theme-color.$on-surface,
   inactive-focus-state-layer-opacity: 0.12,
   inactive-hover-state-layer-color: theme-color.$on-surface,
@@ -81,6 +83,8 @@ $secondary-light-theme: (
   container-height: null,
   container-shadow-color: null,
   container-shape: null,
+  divider-color: null,
+  divider-height: null,
   focus-label-text-color: null,
   focus-state-layer-color: null,
   focus-state-layer-opacity: null,
@@ -147,6 +151,9 @@ $custom-property-prefix: 'tab';
   @include _container-elevation(map.get($theme, container-elevation));
   @include _container-height(map.get($theme, container-height));
   @include _container-shape(map.get($theme, container-shape));
+
+  @include _divider-color(map.get($theme, divider-color));
+  @include _divider-height(map.get($theme, divider-height));
 
   @include _with-icon-and-label-text-container-height(
     map.get($theme, with-icon-and-label-text-container-height)
@@ -226,6 +233,9 @@ $custom-property-prefix: 'tab';
   @include _container-elevation(map.get($theme, container-elevation));
   @include _container-height(map.get($theme, container-height));
   @include _container-shape(map.get($theme, container-shape));
+
+  @include _divider-color(map.get($theme, divider-color));
+  @include _divider-height(map.get($theme, divider-height));
 
   @include _active-label-text-color(
     (
@@ -480,6 +490,14 @@ $custom-property-prefix: 'tab';
 
 @mixin _container-shape($shape-radius) {
   @include theme.property(border-radius, $shape-radius);
+}
+
+@mixin _divider-color($color) {
+  @include theme.property('border-bottom-color', $color);
+}
+
+@mixin _divider-height($height) {
+  @include theme.property('border-bottom-width', $height);
 }
 
 @mixin _icon-size($size) {

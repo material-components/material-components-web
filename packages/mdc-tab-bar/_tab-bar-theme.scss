@@ -35,7 +35,6 @@
 
 $custom-property-prefix: 'tab-bar';
 
-// TODO: `divider-color` and `divider-height` are not supported by tabs.
 $primary-navigation-tabs-light-theme: (
   active-focus-state-layer-color: theme-color.$primary,
   active-focus-state-layer-opacity: 0.12,
@@ -56,7 +55,7 @@ $primary-navigation-tabs-light-theme: (
   container-height: 48px,
   container-shape: 0,
   divider-color: null,
-  divider-height: 1px,
+  divider-height: null,
   inactive-focus-state-layer-color: theme-color.$on-surface,
   inactive-focus-state-layer-opacity: 0.12,
   inactive-hover-state-layer-color: theme-color.$on-surface,
@@ -88,7 +87,6 @@ $primary-navigation-tabs-light-theme: (
   with-label-text-label-text-weight: typography.get-weight(subhead2),
 );
 
-// TODO: `divider-color` and `divider-height` are not supported by tabs.
 $secondary-navigation-tab-light-theme: (
   active-indicator-color: null,
   active-indicator-height: null,
