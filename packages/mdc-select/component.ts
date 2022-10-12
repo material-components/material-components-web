@@ -383,14 +383,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
           menuItem.getAttribute(attr),
       setSelectedText: (text: string) => {
         this.selectedText.textContent = text;
-
-        let index = this.menu.selectedIndex;
-        if (index === -1) return;
-        index = index instanceof Array ? index[0] : index;
-        const selectedItem = (this.menu.items[index] as HTMLElement);
-        if (!selectedItem) return;
-        this.selectedText.setAttribute(
-            'aria-label', selectedItem.getAttribute('aria-label') || '');
       },
       isSelectAnchorFocused: () => document.activeElement === this.selectAnchor,
       getSelectAnchorAttr: (attr: string) =>
