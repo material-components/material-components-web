@@ -129,14 +129,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
+    this.adapter.setSelectedIndex(index);
+
     if (index === numbers.UNSET_INDEX) {
       this.adapter.setSelectedText('');
     } else {
       this.adapter.setSelectedText(
           this.adapter.getMenuItemTextAtIndex(index).trim());
     }
-
-    this.adapter.setSelectedIndex(index);
 
     if (closeMenu) {
       this.adapter.closeMenu();
