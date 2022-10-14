@@ -25,8 +25,8 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
-@use '@material/theme/mixins' as theme-mixins;
 @use '@material/theme/state';
+@use '@material/theme/theme';
 @use '@material/theme/variables' as theme-variables;
 
 $icon-size: 24px !default;
@@ -86,7 +86,7 @@ $disabled-icon-color: rgba(
   @if $color {
     .mdc-select__icon {
       @include feature-targeting.targets($feat-color) {
-        @include theme-mixins.property(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
