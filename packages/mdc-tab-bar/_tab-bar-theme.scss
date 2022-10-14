@@ -113,6 +113,11 @@ $secondary-navigation-tab-light-theme: (
   pressed-label-text-color: null,
   pressed-state-layer-color: null,
   pressed-state-layer-opacity: null,
+  with-icon-active-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-hover-icon-color: null,
+  with-icon-inactive-icon-color: null,
+  with-icon-pressed-icon-color: null,
 );
 
 @mixin primary-navigation-tab-theme($theme) {
@@ -136,12 +141,12 @@ $secondary-navigation-tab-light-theme: (
     @include tab-theme.primary-navigation-tab-theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...)
     );
-  }
 
-  .mdc-tab-indicator {
-    @include tab-indicator-theme.theme-styles(
-      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
-    );
+    .mdc-tab-indicator {
+      @include tab-indicator-theme.theme-styles(
+        map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+      );
+    }
   }
 }
 
@@ -150,11 +155,11 @@ $secondary-navigation-tab-light-theme: (
     @include tab-theme.secondary-navigation-tab-theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...)
     );
-  }
 
-  .mdc-tab-indicator {
-    @include tab-indicator-theme.theme-styles(
-      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
-    );
+    .mdc-tab-indicator {
+      @include tab-indicator-theme.theme-styles(
+        map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+      );
+    }
   }
 }
