@@ -11,7 +11,6 @@
 @forward "@material/ripple/variables" as mdc-* hide $mdc-dark-ink-opacities, $mdc-fade-in-duration, $mdc-fade-out-duration, $mdc-light-ink-opacities, $mdc-pressed-dark-ink-opacity, $mdc-pressed-light-ink-opacity, $mdc-translate-duration;
 @forward "@material/ripple/variables" as mdc-ripple-* hide $mdc-ripple-states-wash-duration;
 @forward "icon" as mdc-select-*;
-@forward "variables" as mdc-select-*;
 @forward "@material/rtl/mixins" as mdc-* hide mdc-property-, mdc-reflexive, mdc-reflexive-box, mdc-reflexive-position, mdc-reflexive-property;
 @forward "@material/rtl/mixins" as mdc-rtl-* hide mdc-rtl-rtl;
 @forward "@material/theme/mixins" as mdc-theme-*;
