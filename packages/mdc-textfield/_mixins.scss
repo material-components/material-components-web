@@ -28,6 +28,7 @@
 @use 'sass:meta';
 @use 'sass:map';
 @use '@material/animation/animation';
+@use '@material/theme/css';
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/dom';
 @use '@material/floating-label/mixins' as floating-label-mixins;
@@ -658,14 +659,13 @@ $_density-config: map.merge(
     @include theme.property(height, $height);
   }
 
-  $height: if(
-    custom-properties.is-custom-prop($height),
-    custom-properties.get-declaration-value($height),
-    $height
-  );
-
-  @if $height < $minimum-height-for-filled-label {
-    @include _filled-no-label($query: $query);
+  // We can only hide the label (when there's not enough vertical space for it)
+  // if we know the container height at compilation time.
+  // That's not the case when $height is a custom property.
+  @if not custom-properties.is-custom-prop($height) {
+    @if $height < $minimum-height-for-filled-label {
+      @include _filled-no-label($query: $query);
+    }
   }
 }
 
@@ -817,6 +817,42 @@ $_density-config: map.merge(
   );
 
   $masked-radius: shape-functions.mask-radius($radius, 1 1 0 0);
+
+  $fallback: if(
+    custom-properties.is-custom-prop($radius),
+    custom-properties.get-fallback($radius),
+    null
+  );
+
+  @if meta.type-of($fallback) == 'list' {
+    $fallback: css.unpack-value($fallback);
+    $first: list.nth($masked-radius, 1);
+    $second: list.nth($masked-radius, 2);
+    $third: list.nth($masked-radius, 3);
+    $fourth: list.nth($masked-radius, 4);
+    $masked-radius: (
+      if(
+        custom-properties.is-custom-prop($first),
+        custom-properties.set-fallback($first, list.nth($fallback, 1)),
+        $first
+      ),
+      if(
+        custom-properties.is-custom-prop($second),
+        custom-properties.set-fallback($second, list.nth($fallback, 2)),
+        $second
+      ),
+      if(
+        custom-properties.is-custom-prop($third),
+        custom-properties.set-fallback($third, list.nth($fallback, 3)),
+        $third
+      ),
+      if(
+        custom-properties.is-custom-prop($fourth),
+        custom-properties.set-fallback($fourth, list.nth($fallback, 4)),
+        $fourth
+      )
+    );
+  }
 
   @include shape-mixins.radius(
     $masked-radius,

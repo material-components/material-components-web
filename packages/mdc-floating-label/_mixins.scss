@@ -23,6 +23,7 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use 'sass:meta';
 @use '@material/rtl/rtl';
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
@@ -180,22 +181,27 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
+  $translateY: if(
+    meta.type-of($positionY) == 'calculation',
+    calc(-1 * $positionY),
+    -1 * $positionY
+  );
 
   .mdc-floating-label--float-above {
     @include feature-targeting.targets($feat-structure) {
       @if $positionX > 0 or $positionX < 0 {
         @include rtl.ignore-next-line();
-        transform: translateY(-1 * $positionY)
+        transform: translateY($translateY)
           translateX(-1 * $positionX)
           scale($scale);
 
         @include rtl.rtl {
           @include rtl.ignore-next-line();
-          transform: translateY(-1 * $positionY) translateX($positionX)
+          transform: translateY($translateY) translateX($positionX)
             scale($scale);
         }
       } @else {
-        transform: translateY(-1 * $positionY) scale($scale);
+        transform: translateY($translateY) scale($scale);
       }
     }
   }

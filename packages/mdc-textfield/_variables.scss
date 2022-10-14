@@ -25,6 +25,7 @@
 @use '@material/density/variables' as density-variables;
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/notched-outline/variables' as notched-outline-variables;
+@use '@material/theme/custom-properties';
 @use '@material/theme/theme-color';
 
 ///
@@ -34,8 +35,23 @@
 ///     wrap label in a child element to apply `transitionY(-50%)` to automatically offset based on box height.
 ///
 @function get-outlined-label-position-y($text-field-height) {
-  @return math.div($text-field-height, 2) +
-    math.div(notched-outline-variables.$label-box-height, 2);
+  $offset: math.div(notched-outline-variables.$label-box-height, 2);
+
+  // If $text-field-height is not a primitive value, but a custom property or a custom property map,
+  // we cannot compute the label Y position at compilation time.
+  // We will have to defer it to the browser, using calc().
+  @if custom-properties.is-custom-prop($text-field-height) {
+    $text-field-height: custom-properties.get-declaration-value(
+      $text-field-height
+    );
+    @return calc($offset + $text-field-height / 2); // Evaluated in the browser.
+  }
+
+  @if custom-properties.is-custom-prop-string($text-field-height) {
+    @return calc($offset + $text-field-height / 2); // Evaluated in the browser.
+  }
+
+  @return $offset + math.div($text-field-height, 2); // Evaluated statically.
 }
 
 $error: error !default;

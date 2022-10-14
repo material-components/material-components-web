@@ -24,6 +24,7 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use 'sass:list';
+@use 'sass:meta';
 @use '@material/theme/custom-properties';
 @use '@material/theme/theme';
 @use '@material/shape/functions' as shape-functions;
@@ -312,11 +313,16 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
+  $float-positionY: if(
+    meta.type-of($positionY) == 'calculation',
+    calc($positionY + variables.$label-adjust-absolute),
+    $positionY + variables.$label-adjust-absolute
+  );
 
   @include floating-label-mixins.float-position(
-    $positionY + variables.$label-adjust-absolute,
+    $float-positionY,
     $positionX,
-    1,
+    $scale: 1,
     $query: $query
   );
 
