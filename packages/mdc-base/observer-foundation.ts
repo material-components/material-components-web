@@ -24,7 +24,7 @@
 import {MDCFoundation} from './foundation';
 import {observeProperty, Observer, ObserverRecord, setObserversEnabled} from './observer';
 
-export class MDCObserverFoundation<Adapter> extends MDCFoundation<Adapter> {
+export class MDCObserverFoundation<Adapter extends {}> extends MDCFoundation<Adapter> {
   /** A set of cleanup functions to unobserve changes. */
   protected unobserves = new Set<Function>();
 
