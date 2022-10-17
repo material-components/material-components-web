@@ -38,6 +38,9 @@ $_light-theme: (
   list-item-container-color: null,
   list-item-container-shape: null,
   list-item-container-height: null,
+  list-item-one-line-container-height: null,
+  list-item-two-line-container-height: null,
+  list-item-three-line-container-height: null,
   list-item-container-elevation: null,
   list-item-label-text-color: null,
   list-item-label-text-font: null,
@@ -99,6 +102,8 @@ $_light-theme: (
   list-item-hover-label-text-color: null,
   list-item-hover-leading-icon-color: null,
   list-item-hover-trailing-icon-color: null,
+  list-item-focus-state-layer-color: null,
+  list-item-focus-state-layer-opacity: null,
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
@@ -156,7 +161,10 @@ $_light-theme: (
     map.get($theme, list-item-container-shape)
   );
   @include _list-item-container-height(
-    map.get($theme, list-item-container-height)
+    map.get($theme, list-item-container-height),
+    map.get($theme, list-item-one-line-container-height),
+    map.get($theme, list-item-two-line-container-height),
+    map.get($theme, list-item-three-line-container-height)
   );
   @include _list-item-label-text-color(
     map.get($theme, list-item-label-text-color)
@@ -285,6 +293,12 @@ $_light-theme: (
   @include _list-item-hover-trailing-icon-color(
     map.get($theme, list-item-hover-trailing-icon-color)
   );
+  @include _list-item-focus-state-layer-color(
+    map.get($theme, list-item-focus-state-layer-color)
+  );
+  @include _list-item-focus-state-layer-opacity(
+    map.get($theme, list-item-focus-state-layer-opacity)
+  );
 }
 
 @mixin _list-item-container-color($color) {
@@ -299,9 +313,24 @@ $_light-theme: (
   @include list.three-line-list-radius($shape);
 }
 
-@mixin _list-item-container-height($height) {
+@mixin _list-item-container-height(
+  $height,
+  $one-line-height,
+  $two-line-height,
+  $three-line-height
+) {
   .mdc-list-item {
     @include list.list-item-height($height);
+
+    &.mdc-list-item--with-one-line {
+      @include theme.property(height, $one-line-height);
+    }
+    &.mdc-list-item--with-two-lines {
+      @include theme.property(height, $two-line-height);
+    }
+    &.mdc-list-item--with-three-lines {
+      @include theme.property(height, $three-line-height);
+    }
   }
 }
 
@@ -546,5 +575,19 @@ $_light-theme: (
 @mixin _list-item-hover-trailing-icon-color($color) {
   .mdc-list-item--with-trailing-icon:hover .mdc-list-item__end {
     @include theme.property('color', $color);
+  }
+}
+
+@mixin _list-item-focus-state-layer-color($color) {
+  .mdc-list-item:not(.mdc-list-item--disabled):focus
+    #{list.$ripple-target}::before {
+    @include theme.property('background-color', $color);
+  }
+}
+
+@mixin _list-item-focus-state-layer-opacity($opacity) {
+  .mdc-list-item:not(.mdc-list-item--disabled):focus
+    #{list.$ripple-target}::before {
+    @include theme.property('opacity', $opacity);
   }
 }
