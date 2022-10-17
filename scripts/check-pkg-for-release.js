@@ -72,6 +72,7 @@ const CSS_EXCLUDES = new Set([
   'density',
   'dom',
   'feature-targeting',
+  'focus',
   'focus-ring',
   'progress-indicator',
   'rtl',
