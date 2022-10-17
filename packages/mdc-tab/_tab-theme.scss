@@ -100,6 +100,11 @@ $secondary-light-theme: (
   pressed-label-text-color: null,
   pressed-state-layer-color: null,
   pressed-state-layer-opacity: null,
+  with-icon-active-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-hover-icon-color: null,
+  with-icon-inactive-icon-color: null,
+  with-icon-pressed-icon-color: null,
 );
 
 $_ripple-target: '.mdc-tab__ripple';
@@ -229,6 +234,20 @@ $custom-property-prefix: 'tab';
     )
   );
 
+  // TODO(b/191298796): Use independent state layer color mixins when available.
+  @include _inactive-state-layer-color(
+    map.get($theme, hover-state-layer-color) or
+      map.get($theme, focus-state-layer-color) or
+      map.get($theme, pressed-state-layer-color)
+  );
+  @include _inactive-state-layer-opacity(
+    (
+      hover: map.get($theme, hover-state-layer-opacity),
+      focus: map.get($theme, focus-state-layer-opacity),
+      pressed: map.get($theme, pressed-state-layer-opacity),
+    )
+  );
+
   @include _container-color(map.get($theme, container-color));
   @include _container-elevation(map.get($theme, container-elevation));
   @include _container-height(map.get($theme, container-height));
@@ -236,6 +255,24 @@ $custom-property-prefix: 'tab';
 
   @include _divider-color(map.get($theme, divider-color));
   @include _divider-height(map.get($theme, divider-height));
+
+  @include _active-icon-color(
+    (
+      default: map.get($theme, with-icon-active-icon-color),
+      hover: map.get($theme, with-icon-hover-icon-color),
+      focus: map.get($theme, with-icon-focus-icon-color),
+      pressed: map.get($theme, with-icon-pressed-icon-color),
+    )
+  );
+
+  @include _inactive-icon-color(
+    (
+      default: map.get($theme, with-icon-inactive-icon-color),
+      hover: map.get($theme, with-icon-hover-icon-color),
+      focus: map.get($theme, with-icon-focus-icon-color),
+      pressed: map.get($theme, with-icon-pressed-icon-color),
+    )
+  );
 
   @include _active-label-text-color(
     (
@@ -247,7 +284,12 @@ $custom-property-prefix: 'tab';
   );
 
   @include _inactive-label-text-color(
-    map.get($theme, inactive-label-text-color)
+    (
+      default: map.get($theme, inactive-label-text-color),
+      hover: map.get($theme, hover-label-text-color),
+      focus: map.get($theme, focus-label-text-color),
+      pressed: map.get($theme, pressed-label-text-color),
+    )
   );
 
   @include _label-text-font-family(map.get($theme, label-text-font));

@@ -113,6 +113,11 @@ $secondary-navigation-tab-light-theme: (
   pressed-label-text-color: null,
   pressed-state-layer-color: null,
   pressed-state-layer-opacity: null,
+  with-icon-active-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-hover-icon-color: null,
+  with-icon-inactive-icon-color: null,
+  with-icon-pressed-icon-color: null,
 );
 
 @mixin primary-navigation-tab-theme($theme) {
