@@ -936,6 +936,23 @@ describe('MDCMenuSurfaceFoundation', () => {
       });
 
   testFoundation(
+      '#open Surface is still positioned from right side in LTR when corner is flipped horizontally with anchor margin to provide enough space on the left side.',
+      ({foundation, mockAdapter}) => {
+        initAnchorLayout(mockAdapter, smallTopLeft);
+        foundation.flipCornerHorizontally();
+        // Set the displacement far enough to account for the surface width.
+        const xDisplacement = 113;
+        foundation.setAnchorMargin(
+            {left: xDisplacement, right: -xDisplacement});
+        foundation.open();
+        jasmine.clock().tick(1);  // Run to frame.
+        expect(mockAdapter.setTransformOrigin)
+            .toHaveBeenCalledWith('right top');
+        expect(mockAdapter.setPosition)
+            .toHaveBeenCalledWith({right: -xDisplacement, top: 0});
+      });
+
+  testFoundation(
       '#open Surface is positioned from left side in RTL when corner is flipped horizontally.',
       ({foundation, mockAdapter}) => {
         initAnchorLayout(mockAdapter, smallCenter, /* isRtl */ true);
@@ -968,6 +985,22 @@ describe('MDCMenuSurfaceFoundation', () => {
             .toHaveBeenCalledWith('right top');
         expect(mockAdapter.setPosition)
             .toHaveBeenCalledWith({right: 0, top: 0});
+      });
+
+  testFoundation(
+      '#open Surface is still positioned from left side in RTL when corner is flipped horizontally with anchor margin to provide enough space on the right side.',
+      ({foundation, mockAdapter}) => {
+        initAnchorLayout(mockAdapter, smallTopRight, /* isRtl */ true);
+        foundation.flipCornerHorizontally();
+        // Set the displacement far enough to account for the surface width.
+        const xDisplacement = 113;
+        foundation.setAnchorMargin(
+            {left: -xDisplacement, right: xDisplacement});
+        foundation.open();
+        jasmine.clock().tick(1);  // Run to frame.
+        expect(mockAdapter.setTransformOrigin).toHaveBeenCalledWith('left top');
+        expect(mockAdapter.setPosition)
+            .toHaveBeenCalledWith({left: -xDisplacement, top: 0});
       });
 
   testFoundation(
