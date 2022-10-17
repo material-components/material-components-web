@@ -1,0 +1,70 @@
+@use 'sass:map';
+@use '@material/theme/keys';
+@use '@material/theme/theme';
+
+$_custom-property-prefix: 'focus-ring';
+
+$light-theme: (
+  offset-horizontal: 2px,
+  offset-vertical: 2px,
+  ring-color: 'secondary',
+  ring-border-start-start-radius: 'inherit',
+  ring-border-start-end-radius: 'inherit',
+  ring-border-end-end-radius: 'inherit',
+  ring-border-end-start-radius: 'inherit',
+  track-width: 3px,
+);
+
+@mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+}
+
+@mixin theme-styles($theme) {
+  @include theme.validate-theme-styles($light-theme, $theme);
+  $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
+
+  $_border-width: map.get($theme, 'track-width');
+  $_border-color: map.get($theme, 'ring-color');
+  $_border-start-start-radius: map.get(
+    $theme,
+    'ring-border-start-start-radius'
+  );
+  $_border-start-end-radius: map.get($theme, 'ring-border-start-end-radius');
+  $_border-end-end-radius: map.get($theme, 'ring-border-end-end-radius');
+  $_border-end-start-radius: map.get($theme, 'ring-border-end-start-radius');
+  $_offset-vertical: map.get($theme, 'offset-vertical');
+  $_offset-horizontal: map.get($theme, 'offset-horizontal');
+
+  @include theme.property(
+    border,
+    'border-width solid border-color',
+    $replace: (border-width: $_border-width, border-color: $_border-color)
+  );
+  @include theme.property(
+    border-start-start-radius,
+    $_border-start-start-radius
+  );
+  @include theme.property(border-start-end-radius, $_border-start-end-radius);
+  @include theme.property(border-end-end-radius, $_border-end-end-radius);
+  @include theme.property(border-end-start-radius, $_border-end-start-radius);
+  @include theme.property(
+    inset-block,
+    'calc(-1 * (offset-vertical + border-width))',
+    $replace: (offset-vertical: $_offset-vertical, border-width: $_border-width)
+  );
+  @include theme.property(
+    inset-inline,
+    'calc(-1 * (offset-horizontal + border-width))',
+    $replace: (
+      offset-horizontal: $_offset-horizontal,
+      border-width: $_border-width
+    )
+  );
+}
+
+/// This should be applied to the focus ring element when the focus ring
+/// should be shown (e.g. based on `:focus-visible` pseudoclass).
+@mixin show-focus-ring() {
+  display: block;
+}

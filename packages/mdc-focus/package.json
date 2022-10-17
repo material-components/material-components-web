@@ -1,0 +1,24 @@
+{
+  "name": "@material/focus",
+  "description": "The Material Components Web focus ring utilities",
+  "version": "14.0.0",
+  "license": "MIT",
+  "keywords": [
+    "material components",
+    "material design",
+    "focus",
+    "focusring"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-focus"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@material/theme": "^14.0.0"
+  }
+}

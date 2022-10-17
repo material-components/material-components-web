@@ -35,6 +35,7 @@
     "@material/fab": "^14.0.0",
     "@material/feature-targeting": "^14.0.0",
     "@material/floating-label": "^14.0.0",
+    "@material/focus": "^14.0.0",
     "@material/focus-ring": "^14.0.0",
     "@material/form-field": "^14.0.0",
     "@material/icon-button": "^14.0.0",
