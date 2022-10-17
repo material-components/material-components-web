@@ -109,6 +109,10 @@
           with-tick-marks-disabled-container-color: grey,
           with-tick-marks-inactive-container-color: grey,
           with-tick-marks-inactive-container-opacity: 0.75,
+          focus-state-layer-opacity: 0.5,
+          hover-state-layer-color: blue,
+          hover-state-layer-opacity: 0.5,
+          pressed-state-layer-opacity: 0.5,
         );
 
         @include test.output {
@@ -154,6 +158,10 @@
           --mdc-slider-with-tick-marks-disabled-container-color: grey;
           --mdc-slider-with-tick-marks-inactive-container-color: grey;
           --mdc-slider-with-tick-marks-inactive-container-opacity: 0.75;
+          --mdc-slider-focus-state-layer-opacity: 0.5;
+          --mdc-slider-hover-state-layer-color: blue;
+          --mdc-slider-hover-state-layer-opacity: 0.5;
+          --mdc-slider-pressed-state-layer-opacity: 0.5;
         }
       }
     }

@@ -98,6 +98,10 @@ $light-theme: (
   with-tick-marks-disabled-container-color: $disabled-color,
   with-tick-marks-inactive-container-color: $tick-mark-inactive-color,
   with-tick-marks-inactive-container-opacity: $tick-mark-opacity,
+  focus-state-layer-opacity: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  pressed-state-layer-opacity: null,
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
@@ -214,6 +218,7 @@ $light-theme: (
   @include _slider-elevation($theme, $resolvers, $query);
   @include _thumb-activated-theme-color($theme, $query);
   @include _thumb-overlap($theme, $query);
+  @include _thumb-state-layer($theme);
 }
 
 /// Customizes active track color, using a Color or state Map.
@@ -648,4 +653,18 @@ $light-theme: (
   );
 
   @return map.set($theme, $key, $resolved-value);
+}
+
+@mixin _thumb-state-layer($theme) {
+  .mdc-slider__thumb {
+    @include ripple-theme.theme-styles(
+      (
+        focus-state-layer-opacity: map.get($theme, 'focus-state-layer-opacity'),
+        hover-state-layer-color: map.get($theme, 'hover-state-layer-color'),
+        hover-state-layer-opacity: map.get($theme, 'hover-state-layer-opacity'),
+        pressed-state-layer-opacity:
+          map.get($theme, 'pressed-state-layer-opacity'),
+      )
+    );
+  }
 }
