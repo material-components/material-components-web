@@ -13,11 +13,17 @@
 
 /// Sets core styles for data table pagination.
 @mixin core-styles($query: feature-targeting.all()) {
+  .mdc-data-table__pagination {
+    @include typography.typography(body2, $query: $query);
+  }
+
+  @include static-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__pagination {
-    @include typography.typography(body2, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       box-sizing: border-box;
       display: flex;

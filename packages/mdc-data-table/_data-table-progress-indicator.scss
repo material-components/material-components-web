@@ -28,7 +28,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
 
-@mixin core-styles($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__progress-indicator {

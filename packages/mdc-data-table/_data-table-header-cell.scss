@@ -36,12 +36,18 @@
 @use './data-table-cell';
 
 @mixin core-styles($query: feature-targeting.all()) {
+  .mdc-data-table__header-cell {
+    @include typography.typography(subtitle2, $query: $query);
+  }
+
+  @include static-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-data-table__header-cell {
-    @include typography.typography(subtitle2, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       box-sizing: border-box;
       text-overflow: ellipsis;
