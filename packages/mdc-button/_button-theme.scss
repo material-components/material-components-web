@@ -23,6 +23,6 @@
 @forward './button-base' show horizontal-padding;
 @forward './button-outlined-theme' hide theme;
 @forward './button-ripple' show $ripple-target;
-@forward './button-shared-theme' hide theme;
+@forward './button-shared-theme' hide theme-styles;
 
 // TODO(b/175614964): add theme mixin for all variants

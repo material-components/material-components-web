@@ -86,5 +86,5 @@ $light-theme: (
     $theme,
     $prefix: $_custom-property-prefix
   );
-  @include button-shared-theme.theme($theme, $resolver, $query: $query);
+  @include button-shared-theme.theme-styles($theme, $resolver, $query: $query);
 }

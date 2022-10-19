@@ -90,7 +90,7 @@ $light-theme: (
   $query: feature-targeting.all()
 ) {
   @include theme.validate-theme-styles($light-theme, $theme);
-  @include button-shared-theme.theme($theme, $resolver, $query: $query);
+  @include button-shared-theme.theme-styles($theme, $resolver, $query: $query);
 }
 
 @mixin deprecated-theme-styles($query: feature-targeting.all()) {
@@ -112,7 +112,7 @@ $light-theme: (
   );
 
   .mdc-button {
-    @include button-shared-theme.theme(
+    @include button-shared-theme.theme-styles(
       $theme,
       resolvers.$material,
       $query: $query

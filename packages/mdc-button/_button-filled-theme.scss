@@ -89,7 +89,7 @@ $light-theme: (
     $theme,
     $prefix: $_custom-property-prefix
   );
-  @include button-shared-theme.theme($theme, $resolver, $query: $query);
+  @include button-shared-theme.theme-styles($theme, $resolver, $query: $query);
 }
 
 @mixin deprecated-theme-styles($query: feature-targeting.all()) {
@@ -111,7 +111,7 @@ $light-theme: (
         label-text-weight: null,
       )
     );
-    @include button-shared-theme.theme(
+    @include button-shared-theme.theme-styles(
       $theme,
       resolvers.$material,
       $query: $query

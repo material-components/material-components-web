@@ -67,7 +67,7 @@ $disabled-container-color: rgba(
   0.12
 ) !default;
 
-@mixin theme($theme, $resolver, $query: feature-targeting.all()) {
+@mixin theme-styles($theme, $resolver, $query: feature-targeting.all()) {
   @include _label-text-typography(
     (
       family: map.get($theme, label-text-font),

@@ -100,7 +100,7 @@ $light-theme: (
 }
 
 @mixin _theme($theme, $resolver, $query) {
-  @include button-shared-theme.theme($theme, $resolver, $query: $query);
+  @include button-shared-theme.theme-styles($theme, $resolver, $query: $query);
   @include outline-color(
     (
       default: map.get($theme, outline-color),
