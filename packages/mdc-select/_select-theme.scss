@@ -165,22 +165,26 @@ $icon-inactive-fade-in-duration: 0.5 * $dropdown-transition-duration !default;
 // Error colors
 $error-color: error !default;
 
+// Implement `menu-cascading-menu-indicator-icon-color` when select supports.
+// Implement `menu-cascading-menu-indicator-icon-size` when select supports.
+// Implement `menu-container-surface-tint-layer-color` when select supports.
+// Implement `text-field-disabled-trailing-icon-color` when select supports.
+// Implement `text-field-error-focus-trailing-icon-color` when select supports.
+// Implement `text-field-error-hover-state-layer-color` when select supports.
+// Implement `text-field-error-hover-state-layer-opacity` when select supports.
+// Implement `text-field-error-hover-trailing-icon-color` when select supports.
+// Implement `text-field-error-trailing-icon-color` when select supports.
+// Implement `text-field-focus-trailing-icon-color` when select supports.
+// Implement `text-field-hover-state-layer-color` when select supports.
+// Implement `text-field-hover-state-layer-opacity` when select supports.
+// Implement `text-field-hover-trailing-icon-color` when select supports.
+// Implement `text-field-trailing-icon-color` when select supports.
+// Implement `text-field-trailing-icon-size` when select supports.
+// Token key `text-field-error-caret-color` not available on DSDB.
+// Token key `text-field-error-hover-caret-color` not available on DSDB.
+// Token key `text-field-focus-caret-color` not available on DSDB.
+// Token key `text-field-hover-caret-color` not available on DSDB.
 $_light-theme: (
-  // Implement `menu-cascading-menu-indicator-icon-color` when select supports.
-  // Implement `menu-cascading-menu-indicator-icon-size` when select supports.
-  // Implement `menu-container-surface-tint-layer-color` when select supports.
-  // Implement `text-field-disabled-trailing-icon-color` when select supports.
-  // Implement `text-field-hover-trailing-icon-color` when select supports.
-  // Implement `text-field-focus-trailing-icon-color` when select supports.
-  // Implement `text-field-error-trailing-icon-color` when select supports.
-  // Implement `text-field-error-hover-trailing-icon-color` when select supports.
-  // Implement `text-field-error-focus-trailing-icon-color` when select supports.
-  // Implement `text-field-trailing-icon-color` when select supports.
-  // Implement `text-field-trailing-icon-size` when select supports.
-  // Implement `text-field-error-hover-state-layer-color` when select supports.
-  // Implement `text-field-error-hover-state-layer-opacity` when select supports.
-  // Implement `text-field-hover-state-layer-color` when select supports.
-  // Implement `text-field-hover-state-layer-opacity` when select supports.
   menu-container-color: null,
   menu-container-elevation: null,
   menu-container-shadow-color: null,
@@ -202,10 +206,6 @@ $_light-theme: (
   text-field-active-indicator-color: null,
   text-field-active-indicator-height: null,
   text-field-caret-color: null,
-  // Token key `text-field-hover-caret-color` not available on DSDB.
-  text-field-hover-caret-color: null,
-  // Token key `text-field-focus-caret-color` not available on DSDB.
-  text-field-focus-caret-color: null,
   text-field-container-color: null,
   text-field-container-height: null,
   text-field-container-shape: null,
@@ -227,11 +227,8 @@ $_light-theme: (
   text-field-disabled-supporting-text-opacity: null,
   text-field-disabled-trailing-icon-opacity: null,
   text-field-error-active-indicator-color: null,
-  text-field-error-focus-active-indicator-color: null,
-  // Token key `text-field-error-caret-color` not available on DSDB.
   text-field-error-caret-color: null,
-  // Token key `text-field-error-hover-caret-color` not available on DSDB.
-  text-field-error-hover-caret-color: null,
+  text-field-error-focus-active-indicator-color: null,
   text-field-error-focus-caret-color: null,
   text-field-error-focus-input-text-color: null,
   text-field-error-focus-label-text-color: null,
@@ -239,6 +236,7 @@ $_light-theme: (
   text-field-error-focus-outline-color: null,
   text-field-error-focus-supporting-text-color: null,
   text-field-error-hover-active-indicator-color: null,
+  text-field-error-hover-caret-color: null,
   text-field-error-hover-input-text-color: null,
   text-field-error-hover-label-text-color: null,
   text-field-error-hover-leading-icon-color: null,
@@ -251,6 +249,7 @@ $_light-theme: (
   text-field-error-supporting-text-color: null,
   text-field-focus-active-indicator-color: null,
   text-field-focus-active-indicator-height: null,
+  text-field-focus-caret-color: null,
   text-field-focus-input-text-color: null,
   text-field-focus-label-text-color: null,
   text-field-focus-leading-icon-color: null,
@@ -259,6 +258,7 @@ $_light-theme: (
   text-field-focus-supporting-text-color: null,
   text-field-hover-active-indicator-color: null,
   text-field-hover-active-indicator-height: null,
+  text-field-hover-caret-color: null,
   text-field-hover-input-text-color: null,
   text-field-hover-label-text-color: null,
   text-field-hover-leading-icon-color: null,
@@ -288,7 +288,7 @@ $_light-theme: (
   text-field-supporting-text-line-height: null,
   text-field-supporting-text-size: null,
   text-field-supporting-text-tracking: null,
-  text-field-supporting-text-weight: null
+  text-field-supporting-text-weight: null,
 );
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
