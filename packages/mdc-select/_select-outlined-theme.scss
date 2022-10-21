@@ -26,8 +26,10 @@
 
 @use 'sass:map';
 @use '@material/theme/theme';
+@use '@material/theme/keys';
 @use '@material/tokens/resolvers';
 @use './select-theme';
+@use './select-shared-theme';
 
 $_light-theme: (
   menu-cascading-menu-indicator-icon-color: null,
@@ -136,6 +138,14 @@ $_light-theme: (
   text-field-trailing-icon-color: null,
   text-field-trailing-icon-size: null,
 );
+
+$_custom-property-prefix: 'select';
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_light-theme, $theme);
+  $theme: select-shared-theme.resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+}
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($_light-theme, $theme);
