@@ -442,6 +442,7 @@
       // Normally the buffer dots start from the left and overflow to the right.
       // We rotate by 180deg so that the buffer dots start on the right when
       // in non-reversed mode and overflow to the left.
+      // TODO(b/254896788): Remove hardcoded translateX.
       transform: rotate(180deg) translateX(-10px);
     }
   }
