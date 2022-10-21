@@ -35,6 +35,7 @@ $height: 4px;
 
 $custom-property-prefix: 'linear-progress';
 
+// TODO(b/254889918): Support all linear progress tokens.
 $light-theme: (
   active-indicator-color: theme-color.$primary,
   track-color: $baseline-buffer-color,
