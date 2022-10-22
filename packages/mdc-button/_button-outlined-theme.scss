@@ -64,6 +64,7 @@ $light-theme: (
   outline-color: $outline-color,
   outline-width: $outlined-border-width,
   pressed-label-text-color: null,
+  pressed-outline-color: null,
   pressed-state-layer-color: primary,
   pressed-state-layer-opacity: 0.12,
   with-icon-icon-color: null,
@@ -107,6 +108,7 @@ $light-theme: (
       disabled: map.get($theme, disabled-outline-color),
       focus: map.get($theme, focus-outline-color),
       hover: map.get($theme, hover-outline-color),
+      pressed: map.get($theme, pressed-outline-color),
     ),
     $query: $query
   );
