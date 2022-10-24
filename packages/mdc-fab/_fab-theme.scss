@@ -51,6 +51,7 @@ $_light-theme: (
   container-height: 56px,
   container-shadow-color: black,
   container-shape: $shape-radius,
+  container-surface-tint-layer-color: null,
   container-width: 56px,
   focus-container-elevation: null,
   focus-icon-color: null,
@@ -159,11 +160,23 @@ $custom-property-prefix: 'fab';
   @include _container-elevation(
     map.get($resolvers, elevation),
     map.get($theme, container-shadow-color),
+    map.get($theme, container-surface-tint-layer-color),
     (
       default: map.get($theme, container-elevation),
       hover: map.get($theme, hover-container-elevation),
       focus: map.get($theme, focus-container-elevation),
       pressed: map.get($theme, pressed-container-elevation),
+    )
+  );
+  @include _lowered-container-elevation(
+    map.get($resolvers, elevation),
+    map.get($theme, container-shadow-color),
+    map.get($theme, container-surface-tint-layer-color),
+    (
+      default: map.get($theme, lowered-container-elevation),
+      hover: map.get($theme, lowered-hover-container-elevation),
+      focus: map.get($theme, lowered-focus-container-elevation),
+      pressed: map.get($theme, lowered-pressed-container-elevation),
     )
   );
   @include _container-height(map.get($theme, container-height));
@@ -299,13 +312,14 @@ $custom-property-prefix: 'fab';
   }
 }
 
-@mixin _container-elevation($resolver, $shadow-color, $map) {
+@mixin _container-elevation($resolver, $shadow-color, $container-color, $map) {
   &:not(:disabled) {
     @include elevation-theme.with-resolver(
       $resolver,
       $elevation: state.get-default-state($map),
       $shadow-color: $shadow-color
     );
+    @include elevation-theme.overlay-container-color($container-color);
 
     &:hover {
       @include elevation-theme.with-resolver(
@@ -313,6 +327,7 @@ $custom-property-prefix: 'fab';
         $elevation: state.get-hover-state($map),
         $shadow-color: $shadow-color
       );
+      @include elevation-theme.overlay-container-color($container-color);
     }
 
     &:focus {
@@ -321,6 +336,7 @@ $custom-property-prefix: 'fab';
         $elevation: state.get-focus-state($map),
         $shadow-color: $shadow-color
       );
+      @include elevation-theme.overlay-container-color($container-color);
     }
 
     &:active {
@@ -329,6 +345,7 @@ $custom-property-prefix: 'fab';
         $elevation: state.get-pressed-state($map),
         $shadow-color: $shadow-color
       );
+      @include elevation-theme.overlay-container-color($container-color);
     }
   }
 
@@ -339,6 +356,49 @@ $custom-property-prefix: 'fab';
       $elevation: state.get-default-state($map),
       $shadow-color: $shadow-color
     );
+  }
+}
+
+@mixin _lowered-container-elevation(
+  $resolver,
+  $shadow-color,
+  $container-color,
+  $map
+) {
+  &.mdc-fab--lowered:not(:disabled) {
+    @include elevation-theme.with-resolver(
+      $resolver,
+      $elevation: state.get-default-state($map),
+      $shadow-color: $shadow-color
+    );
+    @include elevation-theme.overlay-container-color($container-color);
+
+    &:hover {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-hover-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
+
+    &:focus {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-focus-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
+
+    &:active {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-pressed-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
   }
 }
 
