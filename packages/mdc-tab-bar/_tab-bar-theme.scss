@@ -29,6 +29,7 @@
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
+@use '@material/tokens/resolvers';
 
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
@@ -120,26 +121,34 @@ $secondary-navigation-tab-light-theme: (
   with-icon-pressed-icon-color: null,
 );
 
-@mixin primary-navigation-tab-theme($theme) {
-  @include theme.validate-theme($primary-navigation-tabs-light-theme, $theme);
-  @include keys.declare-custom-properties(
-    $theme,
-    $prefix: $custom-property-prefix
+@mixin primary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
+  @include tab-theme.primary-navigation-tab-theme(
+    map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
+    $resolvers
+  );
+  @include tab-indicator-theme.theme(
+    map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
   );
 }
 
-@mixin secondary-navigation-tab-theme($theme) {
-  @include theme.validate-theme($secondary-navigation-tab-light-theme, $theme);
-  @include keys.declare-custom-properties(
-    $theme,
-    $prefix: $custom-property-prefix
+@mixin secondary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
+  @include tab-theme.secondary-navigation-tab-theme(
+    map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
+    $resolvers
+  );
+  @include tab-indicator-theme.theme(
+    map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
   );
 }
 
-@mixin primary-navigation-tab-theme-styles($theme) {
+@mixin primary-navigation-tab-theme-styles(
+  $theme,
+  $resolvers: resolvers.$material
+) {
   .mdc-tab {
     @include tab-theme.primary-navigation-tab-theme-styles(
-      map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...)
+      map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
+      $resolvers
     );
   }
 
@@ -150,10 +159,14 @@ $secondary-navigation-tab-light-theme: (
   }
 }
 
-@mixin secondary-navigation-tab-theme-styles($theme) {
+@mixin secondary-navigation-tab-theme-styles(
+  $theme,
+  $resolvers: resolvers.$material
+) {
   .mdc-tab {
     @include tab-theme.secondary-navigation-tab-theme-styles(
-      map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...)
+      map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
+      $resolvers
     );
   }
 

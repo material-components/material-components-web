@@ -38,9 +38,10 @@ $light-theme: (
     0,
   ),
 );
-$custom-property-prefix: 'tab';
+$custom-property-prefix: 'tab-indicator';
 
 @mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -48,6 +49,11 @@ $custom-property-prefix: 'tab';
 }
 
 @mixin theme-styles($theme) {
+  @include theme.validate-theme-styles($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
   @include _underline-color(map.get($theme, active-indicator-color));
   @include _underline-height(map.get($theme, active-indicator-height));
   @include _underline-shape(map.get($theme, active-indicator-shape));
