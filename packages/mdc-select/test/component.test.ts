@@ -119,11 +119,11 @@ function getFixture() {
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
         <ul class="mdc-deprecated-list">
-          <li class="mdc-deprecated-list-item" data-value=""></li>
-          <li class="mdc-deprecated-list-item" data-value="orange">
+          <li class="mdc-deprecated-list-item" data-value="" aria-label="Empty"></li>
+          <li class="mdc-deprecated-list-item" data-value="orange" aria-label="Orange">
             <span class="mdc-deprecated-list-item__text">Orange</span>
           </li>
-          <li class="mdc-deprecated-list-item" data-value="apple">
+          <li class="mdc-deprecated-list-item" data-value="apple" aria-label="Apple">
             <span class="mdc-deprecated-list-item__text">Apple</span>
           </li>
         </ul>
@@ -1042,6 +1042,22 @@ describe('MDCSelect', () => {
     expect(selectedText.textContent).toEqual(textToSet);
     document.body.removeChild(fixture);
   });
+
+  it('adapter#setSelectedText, by product by setting selectedIndex,' +
+         ' sets the selected text aria-label correctly',
+     () => {
+       const hasMockFoundation = false;
+       const hasMockMenu = false;
+       const hasOutline = false;
+       const hasLabel = true;
+       const {fixture, component, selectedText} =
+           setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+       document.body.appendChild(fixture);
+
+       component.selectedIndex = 2;
+       expect(selectedText.getAttribute('aria-label')).toEqual('Apple');
+       document.body.removeChild(fixture);
+     });
 
   it('adapter#isSelectAnchorFocused', () => {
     const hasMockFoundation = true;
