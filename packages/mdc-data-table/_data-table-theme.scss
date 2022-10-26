@@ -155,11 +155,9 @@ $_custom-property-prefix: 'data-table';
   // Table //
   ///////////
 
-  .mdc-data-table {
-    @include shape-radius(map.get($theme, 'container-shape'), $query: $query);
-    @include stroke-color(map.get($theme, 'outline-color'), $query: $query);
-    @include stroke-size(map.get($theme, 'outline-width'), $query: $query);
-  }
+  @include shape-radius(map.get($theme, 'container-shape'), $query: $query);
+  @include stroke-color(map.get($theme, 'outline-color'), $query: $query);
+  @include stroke-size(map.get($theme, 'outline-width'), $query: $query);
 
   ////////////
   // Header //
