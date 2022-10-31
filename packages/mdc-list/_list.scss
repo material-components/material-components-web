@@ -1568,11 +1568,9 @@ $ripple-target: variables.$ripple-target;
     map.get(typography.$styles, body1),
     line-height
   );
-  $check: math.div(
-    (#{$mdc-list-subheader-virtual-height} - #{$mdc-list-subheader-leading}),
-    2
+  $mdc-list-subheader-margin: calc(
+    (#{$mdc-list-subheader-virtual-height} - #{$mdc-list-subheader-leading}) / 2
   );
-  $mdc-list-subheader-margin: $check;
 
   @include feature-targeting.targets($feat-structure) {
     margin: $mdc-list-subheader-margin variables.$side-padding;
