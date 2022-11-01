@@ -53,8 +53,9 @@
 @use '@material/theme/variables' as theme-variables;
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/typography/typography';
-@use './select-icon-theme';
 @use './select-helper-text-theme';
+@use './select-icon-theme';
+@use './select-shared-theme';
 
 $ripple-target: '.mdc-select__ripple';
 
@@ -186,10 +187,13 @@ $error-color: error !default;
 // Token key `text-field-focus-caret-color` not available on DSDB.
 // Token key `text-field-hover-caret-color` not available on DSDB.
 $_light-theme: (
+  menu-cascading-menu-indicator-icon-color: null,
+  menu-cascading-menu-indicator-icon-size: null,
   menu-container-color: null,
   menu-container-elevation: null,
   menu-container-shadow-color: null,
   menu-container-shape: null,
+  menu-container-surface-tint-layer-color: null,
   menu-divider-color: null,
   menu-divider-height: null,
   menu-list-item-container-height: null,
@@ -198,6 +202,7 @@ $_light-theme: (
   menu-list-item-label-text-line-height: null,
   menu-list-item-label-text-size: null,
   menu-list-item-label-text-tracking: null,
+  menu-list-item-label-text-type: null,
   menu-list-item-label-text-weight: null,
   menu-list-item-selected-container-color: null,
   menu-list-item-with-leading-icon-leading-icon-color: null,
@@ -215,6 +220,7 @@ $_light-theme: (
   text-field-disabled-active-indicator-opacity: null,
   text-field-disabled-container-color: null,
   text-field-disabled-container-opacity: null,
+  text-field-disabled-indicator-color: null,
   text-field-disabled-input-text-color: null,
   text-field-disabled-input-text-opacity: null,
   text-field-disabled-label-text-color: null,
@@ -226,6 +232,7 @@ $_light-theme: (
   text-field-disabled-outline-width: null,
   text-field-disabled-supporting-text-color: null,
   text-field-disabled-supporting-text-opacity: null,
+  text-field-disabled-trailing-icon-color: null,
   text-field-disabled-trailing-icon-opacity: null,
   text-field-error-active-indicator-color: null,
   text-field-error-caret-color: null,
@@ -236,18 +243,23 @@ $_light-theme: (
   text-field-error-focus-leading-icon-color: null,
   text-field-error-focus-outline-color: null,
   text-field-error-focus-supporting-text-color: null,
+  text-field-error-focus-trailing-icon-color: null,
   text-field-error-hover-active-indicator-color: null,
   text-field-error-hover-caret-color: null,
   text-field-error-hover-input-text-color: null,
   text-field-error-hover-label-text-color: null,
   text-field-error-hover-leading-icon-color: null,
   text-field-error-hover-outline-color: null,
+  text-field-error-hover-state-layer-color: null,
+  text-field-error-hover-state-layer-opacity: null,
   text-field-error-hover-supporting-text-color: null,
+  text-field-error-hover-trailing-icon-color: null,
   text-field-error-input-text-color: null,
   text-field-error-label-text-color: null,
   text-field-error-leading-icon-color: null,
   text-field-error-outline-color: null,
   text-field-error-supporting-text-color: null,
+  text-field-error-trailing-icon-color: null,
   text-field-focus-active-indicator-color: null,
   text-field-focus-active-indicator-height: null,
   text-field-focus-caret-color: null,
@@ -257,6 +269,7 @@ $_light-theme: (
   text-field-focus-outline-color: null,
   text-field-focus-outline-width: null,
   text-field-focus-supporting-text-color: null,
+  text-field-focus-trailing-icon-color: null,
   text-field-hover-active-indicator-color: null,
   text-field-hover-active-indicator-height: null,
   text-field-hover-caret-color: null,
@@ -265,12 +278,16 @@ $_light-theme: (
   text-field-hover-leading-icon-color: null,
   text-field-hover-outline-color: null,
   text-field-hover-outline-width: null,
+  text-field-hover-state-layer-color: null,
+  text-field-hover-state-layer-opacity: null,
   text-field-hover-supporting-text-color: null,
+  text-field-hover-trailing-icon-color: null,
   text-field-input-text-color: null,
   text-field-input-text-font: null,
   text-field-input-text-line-height: null,
   text-field-input-text-size: null,
   text-field-input-text-tracking: null,
+  text-field-input-text-type: null,
   text-field-input-text-weight: null,
   text-field-label-text-color: null,
   text-field-label-text-font: null,
@@ -279,6 +296,7 @@ $_light-theme: (
   text-field-label-text-populated-size: null,
   text-field-label-text-size: null,
   text-field-label-text-tracking: null,
+  text-field-label-text-type: null,
   text-field-label-text-weight: null,
   text-field-leading-icon-color: null,
   text-field-leading-icon-size: null,
@@ -289,10 +307,19 @@ $_light-theme: (
   text-field-supporting-text-line-height: null,
   text-field-supporting-text-size: null,
   text-field-supporting-text-tracking: null,
+  text-field-supporting-text-type: null,
   text-field-supporting-text-weight: null,
+  text-field-trailing-icon-color: null,
+  text-field-trailing-icon-size: null,
 );
 
 $_custom-property-prefix: 'select';
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_light-theme, $theme);
+  $theme: select-shared-theme.resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+}
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-styles($_light-theme, $theme);
