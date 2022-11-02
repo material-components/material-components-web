@@ -124,12 +124,12 @@ export interface MDCTooltipAdapter {
   /**
    * Checks if element is contained within the anchor element.
    */
-  anchorContainsElement(element: HTMLElement): boolean;
+  anchorContainsElement(element: Element): boolean;
 
   /**
    * Checks if element is contained within the tooltip element.
    */
-  tooltipContainsElement(element: HTMLElement): boolean;
+  tooltipContainsElement(element: Element): boolean;
 
   /**
    * Sets focus on the anchor element.
@@ -215,4 +215,10 @@ export interface MDCTooltipAdapter {
    * @return the active element of the document that owns the tooltip.
    */
   getActiveElement(): Element|null;
+
+  /**
+   * @return whether the provided object is an Element or not. This is
+   * required because Elements from iframes are typed differently.
+   */
+  isInstanceOfElement(eventTarget: EventTarget|null): boolean;
 }

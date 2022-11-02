@@ -303,6 +303,7 @@ function setUpFoundationTestForRichTooltip(
       .and.returnValue(isInteractive ? 'dialog' : 'false');
   mockAdapter.getAttribute.withArgs(attributes.HAS_CARET)
       .and.returnValue(hasCaret ? 'true' : 'false');
+  mockAdapter.isInstanceOfElement.and.returnValue(true);
 
   foundation.init();
 
@@ -348,6 +349,7 @@ describe('MDCTooltipFoundation', () => {
       'setTooltipCaretStyle',
       'clearTooltipCaretStyles',
       'getActiveElement',
+      'isInstanceOfElement',
     ]);
   });
 
@@ -758,6 +760,7 @@ describe('MDCTooltipFoundation', () => {
            setUpFoundationTest(MDCTooltipFoundation);
        const activeElement = document.createElement('div');
        mockAdapter.getActiveElement.and.returnValue(activeElement);
+       mockAdapter.isInstanceOfElement.and.returnValue(true);
        mockAdapter.tooltipContainsElement.and.returnValue(true);
 
        document.body.focus();
@@ -1046,6 +1049,7 @@ describe('MDCTooltipFoundation', () => {
      () => {
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.isInstanceOfElement.and.returnValue(true);
        mockAdapter.tooltipContainsElement.and.returnValue(true);
 
        foundation.handleAnchorFocus(
