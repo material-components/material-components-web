@@ -315,6 +315,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       getActiveElement: () => {
         return document.activeElement;
       },
+      isInstanceOfElement: (eventTarget: EventTarget) => {
+        return eventTarget instanceof Element;
+      },
     };
 
     //tslint:enable:object-literal-sort-keys
