@@ -31,7 +31,6 @@
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/rtl/rtl';
 @use './variables';
-@use './menu-surface-custom-properties';
 
 //
 // Public
@@ -125,12 +124,12 @@
     box-sizing: border-box;
 
     $max-width: custom-properties.create(
-      menu-surface-custom-properties.$max-width,
+      --mdc-menu-max-width,
       calc(100vw - #{variables.$min-distance-from-edge})
     );
     @include theme.property(max-width, $max-width);
     $max-height: custom-properties.create(
-      menu-surface-custom-properties.$max-height,
+      --mdc-menu-max-height,
       calc(100vh - #{variables.$min-distance-from-edge})
     );
     @include theme.property(max-height, $max-height);
