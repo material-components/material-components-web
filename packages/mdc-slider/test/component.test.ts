@@ -89,7 +89,7 @@ describe('MDCSlider', () => {
         root.dispatchEvent(event);
         jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
         expect(thumb.style.transform).toBe('translateX(50px)');
-        expect(trackActive!.style.transform).toBe('scaleX(0.5)');
+        expect(trackActive.style.transform).toBe('scaleX(0.5)');
       });
 
       it('move event after down event sets the slider value based on x coordinate',
@@ -98,14 +98,14 @@ describe('MDCSlider', () => {
            root.dispatchEvent(downEvent);
            jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
            expect(thumb.style.transform).toBe('translateX(0px)');
-           expect(trackActive!.style.transform).toBe('scaleX(0)');
+           expect(trackActive.style.transform).toBe('scaleX(0)');
 
            const moveEvent = createEventFrom(eventType, 'move', {clientX: 50});
            const el = eventType === 'pointer' ? root : document.body;
            el.dispatchEvent(moveEvent);
            jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
            expect(thumb.style.transform).toBe('translateX(50px)');
-           expect(trackActive!.style.transform).toBe('scaleX(0.5)');
+           expect(trackActive.style.transform).toBe('scaleX(0.5)');
          });
 
       it('move event after up event doesn\'t update slider value', () => {
@@ -113,7 +113,7 @@ describe('MDCSlider', () => {
         root.dispatchEvent(downEvent);
         jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
         expect(thumb.style.transform).toBe('translateX(0px)');
-        expect(trackActive!.style.transform).toBe('scaleX(0)');
+        expect(trackActive.style.transform).toBe('scaleX(0)');
 
         const upEvent = createEventFrom(eventType, 'up', {clientX: 0});
         const upEl = eventType === 'pointer' ? root : document.body;
@@ -124,7 +124,7 @@ describe('MDCSlider', () => {
         moveEl.dispatchEvent(moveEvent);
         jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
         expect(thumb.style.transform).toBe('translateX(0px)');
-        expect(trackActive!.style.transform).toBe('scaleX(0)');
+        expect(trackActive.style.transform).toBe('scaleX(0)');
       });
 
       it('Event listeners are destroyed when component is destroyed.', () => {

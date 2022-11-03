@@ -66,7 +66,7 @@ describe('MDCNotchedOutline', () => {
         .adapter.removeNotchWidthProperty();
     const path =
         root.querySelector('.mdc-notched-outline__notch') as HTMLElement;
-    expect('').toEqual(path.style.width as string);
+    expect('').toEqual(path.style.width);
   });
 
   it('#adapter.setNotchWidthProperty sets the width property on the notched element',
@@ -76,6 +76,6 @@ describe('MDCNotchedOutline', () => {
            .adapter.setNotchWidthProperty(50);
        const path =
            root.querySelector('.mdc-notched-outline__notch') as HTMLElement;
-       expect('50px').toEqual(path.style.width as string);
+       expect('50px').toEqual(path.style.width);
      });
 });
