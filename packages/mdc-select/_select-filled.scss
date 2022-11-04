@@ -29,7 +29,24 @@
 @use './select-icon-theme';
 @use './select-theme';
 
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select--filled {
+    @include menu-surface-mixins.flatten-top-when-opened-below($query: $query);
+
+    &.mdc-select--focused.mdc-line-ripple::after {
+      @include feature-targeting.targets($feat-structure) {
+        transform: scale(1, 2);
+        opacity: 1;
+      }
+    }
+  }
+}
+
 @mixin core-styles($query: feature-targeting.all()) {
+  @include static-styles($query);
+
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select--filled {
@@ -62,15 +79,6 @@
       $dropdown-icon-size: select-icon-theme.$icon-size,
       $query: $query
     );
-
-    @include menu-surface-mixins.flatten-top-when-opened-below($query: $query);
-
-    &.mdc-select--focused.mdc-line-ripple::after {
-      @include feature-targeting.targets($feat-structure) {
-        transform: scale(1, 2);
-        opacity: 1;
-      }
-    }
 
     .mdc-floating-label {
       @include feature-targeting.targets($feat-structure) {

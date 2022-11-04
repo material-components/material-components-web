@@ -31,41 +31,11 @@
 @use './select-icon-theme';
 @use './select-theme';
 
-@mixin core-styles($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
+
   .mdc-select--outlined {
-    $feat-structure: feature-targeting.create-target($query, structure);
-    $feat-color: feature-targeting.create-target($query, color);
-
-    @include select-theme.outlined-height(select-theme.$height, $query: $query);
-    @include select-theme.outline-shape-radius(
-      select-theme.$shape-radius,
-      $query: $query
-    );
-
-    @include select-theme.container-fill-color(
-      (
-        default: transparent,
-        disabled: transparent,
-      ),
-      $query: $query
-    );
-
-    @include select-theme.outline-color(
-      (
-        default: select-theme.$outlined-idle-border,
-        hover: select-theme.$outlined-hover-border,
-        focus: primary,
-        disabled: select-theme.$disabled-outline-color,
-      ),
-      $query: $query
-    );
-
-    @include select-theme.truncate-notched-outline-max-width(
-      $leading-icon-size: 0,
-      $dropdown-icon-size: select-icon-theme.$icon-size,
-      $query: $query
-    );
-
     @include feature-targeting.targets($feat-structure) {
       border: none;
     }
@@ -111,6 +81,74 @@
       }
     }
 
+    .mdc-menu-surface {
+      @include feature-targeting.targets($feat-structure) {
+        margin-bottom: 8px;
+      }
+    }
+
+    &.mdc-select--no-label .mdc-menu-surface,
+    .mdc-menu-surface--is-open-below {
+      @include feature-targeting.targets($feat-structure) {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@mixin core-styles($query: feature-targeting.all()) {
+  @include static-styles($query);
+
+  .mdc-select--outlined {
+    $feat-structure: feature-targeting.create-target($query, structure);
+    $feat-color: feature-targeting.create-target($query, color);
+
+    @include select-theme.outlined-height(select-theme.$height, $query: $query);
+    @include select-theme.outline-shape-radius(
+      select-theme.$shape-radius,
+      $query: $query
+    );
+
+    @include select-theme.container-fill-color(
+      (
+        default: transparent,
+        disabled: transparent,
+      ),
+      $query: $query
+    );
+
+    @include select-theme.outline-color(
+      (
+        default: select-theme.$outlined-idle-border,
+        hover: select-theme.$outlined-hover-border,
+        focus: primary,
+        disabled: select-theme.$disabled-outline-color,
+      ),
+      $query: $query
+    );
+
+    @include select-theme.truncate-notched-outline-max-width(
+      $leading-icon-size: 0,
+      $dropdown-icon-size: select-icon-theme.$icon-size,
+      $query: $query
+    );
+
+    .mdc-select__anchor {
+      @include floating-label-mixins.shake-animation(
+        select-outlined,
+        $query: $query
+      );
+      @include notched-outline-mixins.floating-label-float-position-absolute(
+        select-theme.$outlined-label-position-y,
+        $query: $query
+      );
+      @include notched-outline-mixins.notch-offset(
+        notched-outline-variables.$border-width,
+        $query: $query
+      );
+      @include select-theme.center-aligned($query: $query);
+    }
+
     .mdc-floating-label {
       @include feature-targeting.targets($feat-structure) {
         line-height: 1.15rem;
@@ -151,19 +189,6 @@
         $dropdown-icon-size: select-icon-theme.$icon-size,
         $query: $query
       );
-    }
-
-    .mdc-menu-surface {
-      @include feature-targeting.targets($feat-structure) {
-        margin-bottom: 8px;
-      }
-    }
-
-    &.mdc-select--no-label .mdc-menu-surface,
-    .mdc-menu-surface--is-open-below {
-      @include feature-targeting.targets($feat-structure) {
-        margin-bottom: 0;
-      }
     }
   }
 }
