@@ -26,6 +26,7 @@
 @use 'sass:math';
 @use 'sass:list';
 @use 'sass:map';
+@use 'sass:meta';
 @use 'sass:string';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/custom-properties';
@@ -535,4 +536,50 @@ $_typography-theme: (
   @include theme.property(font-size, map.get($theme, size));
   @include theme.property(font-weight, map.get($theme, weight));
   @include theme.property(letter-spacing, map.get($theme, tracking));
+}
+
+/// Resolves a theme's typography tokens for the given prefix.
+///
+/// @example - scss
+///   // $theme has the following tokens:
+///   // - label-text-font
+///   // - label-text-line-height
+///   // - label-text-size
+///   // - label-text-tracking
+///   // - label-text-weight
+///   $theme: resolve-theme($theme, map.get($resolvers, typography), label-text);
+///
+/// @param {Map} $theme - The theme to resolve tokens for.
+/// @param {Function} $resolver - The typography resolver to use.
+/// @param {String...} $token-prefixes - The prefix(es) of a typography token
+///     set.
+/// @return {Map} The theme with resolved typography tokens.
+@function resolve-theme($theme, $resolver, $token-prefixes...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $token-prefix in $token-prefixes {
+    $typography-theme: meta.call(
+      $resolver,
+      $font: map.get($theme, '#{$token-prefix}-font'),
+      $line-height: map.get($theme, '#{$token-prefix}-line-height'),
+      $size: map.get($theme, '#{$token-prefix}-size'),
+      $tracking: map.get($theme, '#{$token-prefix}-tracking'),
+      $weight: map.get($theme, '#{$token-prefix}-weight')
+    );
+
+    $theme: map.merge(
+      $theme,
+      (
+        '#{$token-prefix}-font': map.get($typography-theme, font),
+        '#{$token-prefix}-line-height': map.get($typography-theme, line-height),
+        '#{$token-prefix}-size': map.get($typography-theme, size),
+        '#{$token-prefix}-tracking': map.get($typography-theme, tracking),
+        '#{$token-prefix}-weight': map.get($typography-theme, weight),
+      )
+    );
+  }
+
+  @return $theme;
 }
