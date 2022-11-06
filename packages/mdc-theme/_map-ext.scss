@@ -83,3 +83,44 @@
 @function pick($map, $keys...) {
   @return list.nth(split($map, $keys...), 2);
 }
+
+///
+/// trim-keys returns the given map with any matching keys removed.
+///
+/// @example
+///   trim-keys(('foo': red, 'bar': 5), ('foo')) = ('bar': 5)
+///
+/// @param {Map} $map - the map to rename.
+/// @param {List} $keys - the key names to trim off.
+/// @return {Map} the $map with any matching keys removed.
+///
+@function trim-keys($map, $keys) {
+  $out: map.merge($map, ());
+  @each $key, $value in $map {
+    @if list.index($keys, $key) {
+      $out: map.remove($out, $key);
+    }
+  }
+  @return $out;
+}
+
+///
+/// rename-keys returns the given map with any matching keys renamed to the
+/// given name.
+///
+/// @example
+///   rename-keys(('foo': red), ('foo': 'bar')) = ('bar': red)
+///
+/// @param {Map} $map - the map to rename.
+/// @param {Map} $rename - the renames to apply.
+/// @return {Map} the $map with any matching keys renamed per $rename.
+///
+@function rename-keys($map, $rename) {
+  $out: trim-keys($map, map.keys($rename));
+  @each $from, $to in $rename {
+    @if map.has-key($map, $from) {
+      $out: map.set($out, $to, map.get($map, $from));
+    }
+  }
+  @return $out;
+}
