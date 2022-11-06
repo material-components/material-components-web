@@ -256,19 +256,6 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
 ///
 /// @param {String} $box-shadow - The shadow to apply to the element.
 ///
-@mixin _box-shadow($shadow, $query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
-
-  @include feature-targeting.targets($feat-color) {
-    @include theme.property(box-shadow, $shadow);
-  }
-}
-
-///
-/// Sets the shadow of the element.
-///
-/// @param {String} $box-shadow - The shadow to apply to the element.
-///
 @mixin shadow($box-shadow, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
