@@ -87,6 +87,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       setTooltipCaretStyle: () => undefined,
       clearTooltipCaretStyles: () => undefined,
       getActiveElement: () => null,
+      isInstanceOfElement: () => false,
     };
   }
 
@@ -218,6 +219,25 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     evt.preventDefault();
   }
 
+  /**
+   * Helper methods for determining if the event target or related target
+   * is contained inside the tooltip or the anchor. These methods are used to
+   * determing when a tooltip should be closed of left open on blur and click
+   * events.
+   */
+  private tooltipContainsRelatedTargetElement(target: EventTarget|
+                                              null): boolean {
+    return this.adapter.isInstanceOfElement(target) &&
+        this.adapter.tooltipContainsElement((target as Element));
+  }
+
+  private anchorOrTooltipContainsTargetElement(target: EventTarget|
+                                               null): boolean {
+    return this.adapter.isInstanceOfElement(target) &&
+        (this.adapter.tooltipContainsElement((target as Element)) ||
+         this.adapter.anchorContainsElement((target as Element)));
+  }
+
   handleAnchorTouchend() {
     this.clearShowTimeout();
 
@@ -233,13 +253,11 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // TODO(b/157075286): Need to add some way to distinguish keyboard
     // navigation focus events from other focus events, and only show the
     // tooltip on the former of these events.
-    const {relatedTarget} = evt;
-    const tooltipContainsRelatedTarget = relatedTarget instanceof HTMLElement &&
-        this.adapter.tooltipContainsElement(relatedTarget);
+
     // Do not show tooltip if the previous focus was on a tooltip element. This
     // occurs when a rich tooltip is closed and focus is restored to the anchor
     // or when user tab-navigates back into the anchor from the rich tooltip.
-    if (tooltipContainsRelatedTarget) {
+    if (this.tooltipContainsRelatedTargetElement(evt.relatedTarget)) {
       return;
     }
     this.showTimeout = setTimeout(() => {
@@ -263,10 +281,6 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   handleDocumentClick(evt: MouseEvent) {
-    const anchorOrTooltipContainsTargetElement =
-        evt.target instanceof HTMLElement &&
-        (this.adapter.anchorContainsElement(evt.target) ||
-         this.adapter.tooltipContainsElement(evt.target));
     // For persistent rich tooltips, we will not hide if:
     // - The click target is within the anchor element. Otherwise, both
     //   the anchor element's click handler and this handler will handle the
@@ -275,7 +289,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // - The click target is within the tooltip element, since clicks
     //   on the tooltip do not close the tooltip.
     if (this.richTooltip && this.persistentTooltip &&
-        anchorOrTooltipContainsTargetElement) {
+        this.anchorOrTooltipContainsTargetElement(evt.target)) {
       return;
     }
     // Hide the tooltip immediately on click.
@@ -287,9 +301,12 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     const key = normalizeKey(evt);
     if (key === KEY.ESCAPE) {
       const activeElement = this.adapter.getActiveElement();
-      const tooltipContainsActiveElement =
-          activeElement instanceof HTMLElement &&
-          this.adapter.tooltipContainsElement(activeElement);
+      let tooltipContainsActiveElement = false;
+      if (this.adapter.isInstanceOfElement(activeElement)) {
+        tooltipContainsActiveElement =
+            this.adapter.tooltipContainsElement((activeElement as Element));
+      }
+
       if (tooltipContainsActiveElement) {
         this.adapter.focusAnchorElement();
       }
@@ -299,11 +316,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
   private handleAnchorBlur(evt: FocusEvent) {
     if (this.richTooltip) {
-      const tooltipContainsRelatedTargetElement =
-          evt.relatedTarget instanceof HTMLElement &&
-          this.adapter.tooltipContainsElement(evt.relatedTarget);
       // If focus changed to the tooltip element, don't hide the tooltip.
-      if (tooltipContainsRelatedTargetElement) {
+      if (this.tooltipContainsRelatedTargetElement(evt.relatedTarget)) {
         return;
       }
       if (evt.relatedTarget === null && this.interactiveTooltip) {
@@ -333,13 +347,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   private handleRichTooltipFocusOut(evt: FocusEvent) {
-    const anchorOrTooltipContainsRelatedTargetElement =
-        evt.relatedTarget instanceof HTMLElement &&
-        (this.adapter.anchorContainsElement(evt.relatedTarget) ||
-         this.adapter.tooltipContainsElement(evt.relatedTarget));
     // If the focus is still within the anchor or the tooltip, do not hide the
     // tooltip.
-    if (anchorOrTooltipContainsRelatedTargetElement) {
+    if (this.anchorOrTooltipContainsTargetElement(evt.relatedTarget)) {
       return;
     }
     if (evt.relatedTarget === null && this.interactiveTooltip) {
