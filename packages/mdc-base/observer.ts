@@ -299,6 +299,7 @@ function installObserver<T extends object, K extends keyof T>(
   if (descGet) {
     observedDescriptor.get = function(this: T) {
       // `this as T` needed for closure conformance
+      // tslint:disable-next-line:no-unnecessary-type-assertion
       return descGet!.call(this as T);
     };
   }
@@ -306,7 +307,9 @@ function installObserver<T extends object, K extends keyof T>(
   if (descSet) {
     observedDescriptor.set = function(this: T, newValue: T[K]) {
       // `thus as T` needed for closure conformance
+      // tslint:disable-next-line:no-unnecessary-type-assertion
       const previous = descGet ? descGet.call(this as T) : newValue;
+      // tslint:disable-next-line:no-unnecessary-type-assertion
       descSet!.call(this as T, newValue);
       if (targetObservers.isEnabled && (!descGet || newValue !== previous)) {
         for (const observer of targetObservers.getObservers(property)) {
