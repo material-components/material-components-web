@@ -227,23 +227,13 @@ $_varname-prefix: 'mdc';
 /// typically a `var()` function.
 ///
 /// If custom properties are disabled, the custom property's fallback value
-/// will be returned instead. If the fallback value is `null`, an error will
-/// be thrown.
+/// will be returned instead.
 ///
 /// @param {Map} $custom-prop - The custom property Map to retrieve a
 ///     declaration value for.
 /// @return {*} The CSS declaration value.
 @function get-declaration-value($custom-prop) {
-  $emit-custom-properties: map.get($_config, emit-custom-properties);
-  $fallback: get-fallback($custom-prop);
-  @if not $emit-custom-properties and not $fallback {
-    @error 'Custom properties are disabled and #{get-varname($custom-prop)} does not have a fallback value.';
-  }
-
-  @if not $emit-custom-properties {
-    @return $fallback;
-  }
-
+  // This will return just the fallback value if `emit-custom-properties` is false.
   @return create-var($custom-prop);
 }
 
