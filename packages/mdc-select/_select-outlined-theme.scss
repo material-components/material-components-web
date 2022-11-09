@@ -143,7 +143,7 @@ $_light-theme: (
   text-field-trailing-icon-size: null,
 );
 
-$_custom-property-prefix: 'select';
+$_custom-property-prefix: 'outlined-select';
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($_light-theme, $theme);
