@@ -323,6 +323,7 @@ $_custom-property-prefix: 'select';
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-styles($_light-theme, $theme);
+  $theme: select-shared-theme.resolve-theme($theme, $resolvers);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $_custom-property-prefix
@@ -356,11 +357,7 @@ $_custom-property-prefix: 'select';
     )
   );
   @include _menu-container-color(map.get($theme, menu-container-color));
-  @include _menu-container-elevation(
-    map.get($resolvers, elevation),
-    $shadow-color: map.get($theme, menu-container-shadow-color),
-    $elevation: map.get($theme, menu-container-elevation)
-  );
+  @include _menu-container-elevation(map.get($theme, menu-container-elevation));
   @include _menu-container-shape(map.get($theme, menu-container-shape));
   @include _menu-divider-color(map.get($theme, menu-divider-color));
   @include _menu-divider-height(map.get($theme, menu-divider-height));
@@ -684,12 +681,11 @@ $_custom-property-prefix: 'select';
   }
 }
 
-@mixin _menu-container-elevation($resolver, $shadow-color, $elevation) {
+@mixin _menu-container-elevation($elevation) {
   .mdc-select__menu {
-    @include elevation-theme.with-resolver(
-      $resolver,
-      $elevation: $elevation,
-      $shadow-color: $shadow-color
+    @include elevation-theme.shadow(map.get($elevation, shadow));
+    @include elevation-theme.overlay-opacity(
+      map.get($elevation, overlay-opacity)
     );
   }
 }
