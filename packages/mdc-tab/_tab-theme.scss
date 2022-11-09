@@ -103,7 +103,6 @@ $secondary-light-theme: (
   with-icon-active-icon-color: null,
   with-icon-focus-icon-color: null,
   with-icon-hover-icon-color: null,
-  with-icon-icon-size: null,
   with-icon-inactive-icon-color: null,
   with-icon-pressed-icon-color: null,
 );
@@ -256,8 +255,6 @@ $custom-property-prefix: 'tab';
 
   @include _divider-color(map.get($theme, divider-color));
   @include _divider-height(map.get($theme, divider-height));
-
-  @include _icon-size(map.get($theme, with-icon-icon-size));
 
   @include _active-icon-color(
     (
@@ -546,11 +543,9 @@ $custom-property-prefix: 'tab';
 }
 
 @mixin _icon-size($size) {
-  .mdc-tab__icon {
-    @include theme.property('width', $size);
-    @include theme.property('height', $size);
-    @include theme.property('font-size', $size);
-  }
+  @include theme.property('width', $size);
+  @include theme.property('height', $size);
+  @include theme.property('font-size', $size);
 }
 
 @mixin _label-text-font-family($font-family) {
