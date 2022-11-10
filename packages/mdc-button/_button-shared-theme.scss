@@ -241,7 +241,7 @@ $disabled-container-color: rgba(
 /// Sets the container fill color to the given color for an enabled button.
 /// @param {Color|map} $color-or-map - The desired container fill color,
 ///     specified either as a flat value or a map of colors with states
-///     {default, hover, focused, pressed, disabled} as keys.
+///     {default, hover, focus, pressed, disabled} as keys.
 ///
 @mixin container-fill-color($color-or-map, $query: feature-targeting.all()) {
   // :not(:disabled) is used to support link styled as button
@@ -301,7 +301,7 @@ $disabled-container-color: rgba(
 /// Sets the icon color to the given color for an enabled button.
 /// @param {Color} $color-or-map - The desired icon color, specified either
 ///     as a flat value or a map of colors with states
-///     {default, hover, focused, pressed, disabled} as keys.
+///     {default, hover, focus, pressed, disabled} as keys.
 ///
 @mixin icon-color($color-or-map, $query: feature-targeting.all()) {
   &:not(:disabled) {
@@ -360,7 +360,7 @@ $disabled-container-color: rgba(
 /// is also used.
 /// @param {Color} $color-or-map - The desired ink color, specified either
 ///     as a flat value or a map of colors with states
-///     {default, hover, focused, pressed, disabled} as keys.
+///     {default, hover, focus, pressed, disabled} as keys.
 ///
 @mixin ink-color($color-or-map, $query: feature-targeting.all()) {
   &:not(:disabled) {
