@@ -1,0 +1,128 @@
+//
+// Copyright 2021 Google LLC
+// SPDX-License-Identifier: Apache-2.0
+//
+
+@use 'sass:string';
+
+/// Checks if a string starts with a given prefix.
+///
+/// @example - scss
+///   @debug has-prefix('var(--foo)', 'var('); // true
+///
+/// @param {String} $string - The string to test.
+/// @param {String} $prefix - The prefix to check.
+/// @return {Boolean} True if the string starts with the given prefix.
+@function has-prefix($string, $prefix) {
+  @return string.slice($string, 1, string.length($prefix)) == $prefix;
+}
+
+/// Checks if a string ends with a given suffix.
+///
+/// @example - scss
+///   @debug has-suffix('var(--foo)', ')'); // true
+///
+/// @param {String} $string - The string to test.
+/// @param {String} $suffix - The suffix to check.
+/// @return {Boolean} True if the string ends with the given suffix.
+@function has-suffix($string, $suffix) {
+  @return string.slice($string, -1 * string.length($suffix)) == $suffix;
+}
+
+/// Trims a repeating prefix from the start of a string.
+///
+/// @example - scss
+///   @debug trim-repeating-prefix('  foo bar  ', ' '); // "foo bar  "
+///
+/// @param {String} $string - The string to trim.
+/// @param {String} $prefix - The repeating prefix string to trim.
+/// @return {String} The string with the prefix trimmed from the start.
+@function trim-repeating-prefix($string, $prefix) {
+  @while has-prefix($string, $prefix) {
+    $string: trim-prefix($string, $prefix);
+  }
+
+  @return $string;
+}
+
+/// Trims a prefix from the start of a string.
+///
+/// @example - scss
+///   @debug trim-prefix('var(--foo)', 'var('); // "--foo)"
+///
+/// @param {String} $string - The string to trim.
+/// @param {String} $prefix - The prefix string to trim.
+/// @return {String} The string with the prefix trimmed from the start.
+@function trim-prefix($string, $prefix) {
+  @if has-prefix($string, $prefix) {
+    $string: string.slice($string, string.length($prefix) + 1);
+  }
+
+  @return $string;
+}
+
+/// Trims a repeating suffix from the end of a string.
+///
+/// @example - scss
+///   @debug trim-repeating-suffix('  foo bar  ', ' '); // "  foo bar"
+///   @debug trim-repeating-suffix('var(--foo)', ')'); // "var(--foo"
+///
+/// @param {String} $string - The string to trim.
+/// @param {String} $suffix - The repeating suffix string to trim.
+/// @return {String} The string with the suffix trimmed from the end.
+@function trim-repeating-suffix($string, $suffix) {
+  @while has-suffix($string, $suffix) {
+    $string: trim-suffix($string, $suffix);
+  }
+
+  @return $string;
+}
+
+/// Trims a suffix from the end of a string.
+///
+/// @example - scss
+///   @debug trim-suffix('var(--foo)', ')'); // "var(--foo"
+///
+/// @param {String} $string - The string to trim.
+/// @param {String} $suffix - The suffix string to trim.
+/// @return {String} The string with the suffix trimmed from the end.
+@function trim-suffix($string, $suffix) {
+  @if has-suffix($string, $suffix) {
+    $string: string.slice($string, 1, -1 * string.length($suffix) - 1);
+  }
+
+  @return $string;
+}
+
+/// Trims a repeating prefix and suffix from the start and end of a string.
+///
+/// If a suffix is not provided, the prefix is used as the suffix to trim.
+///
+/// @example - scss
+///   @debug trim-repeating('  foo bar  ', ' '); // "foo bar"
+///
+/// @param {String} $string - The string to trim.
+/// @param {String} $prefix - The repeating prefix string to trim.
+/// @param {String} $suffix [$prefix] - The repeating suffix string to trim.
+/// @return {String} The string with the prefix and suffix trimmed.
+@function trim-repeating($string, $prefix, $suffix: $prefix) {
+  @return trim-repeating-prefix(
+    trim-repeating-suffix($string, $suffix),
+    $prefix
+  );
+}
+
+/// Trims a prefix and suffix from the start and end of a string.
+///
+/// If a suffix is not provided, the prefix is used as the suffix to trim.
+///
+/// @example - scss
+///   @debug trim('var(--foo)', 'var(', ')'); // "--foo"
+///
+/// @param {String} $string - The string to trim.
+/// @param {String} $prefix - The prefix string to trim.
+/// @param {String} $suffix [$prefix] - The suffix string to trim.
+/// @return {String} The string with the prefix and suffix trimmed.
+@function trim($string, $prefix, $suffix: $prefix) {
+  @return trim-prefix(trim-suffix($string, $suffix), $prefix);
+}
