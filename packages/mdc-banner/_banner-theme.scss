@@ -48,6 +48,7 @@ $secondary-action-text-color: primary;
 
 $mobile-breakpoint: 480px;
 $z-index: 1;
+$custom-property-prefix: 'banner';
 
 $light-theme: (
   action-focus-state-layer-color: theme-color.$primary,
@@ -85,7 +86,10 @@ $light-theme: (
   // TODO(b/251881053): Replace with `validate-theme`.
   @include theme.validate-theme-styles($light-theme, $theme);
   $theme: _resolve-theme($theme, $resolvers);
-  @include keys.declare-custom-properties($theme, banner);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
 }
 
 @function _resolve-theme($theme, $resolvers) {
@@ -125,6 +129,11 @@ $light-theme: (
   $query: feature-targeting.all()
 ) {
   @include theme.validate-theme-styles($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
   @include text-color(map.get($theme, supporting-text-color), $query: $query);
   @include _supporting-text-typography(
     (
