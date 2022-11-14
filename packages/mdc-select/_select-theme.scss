@@ -929,7 +929,9 @@ $_light-theme: (
   $rtl-reflexive: false,
   $query: feature-targeting.all()
 ) {
-  @if meta.type-of($radius) == 'list' and list.length($radius) > 2 {
+  @if (meta.type-of($radius) == 'list' and list.length($radius) > 2) and
+    (list.nth($radius, 3) != 0 or list.nth($radius, 4) != 0)
+  {
     @error "mdc-select: Invalid radius #{$radius}. Only top-left and top-right corners may be customized.";
   }
 
