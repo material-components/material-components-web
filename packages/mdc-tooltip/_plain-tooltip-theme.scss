@@ -44,16 +44,18 @@ $light-theme: (
   supporting-text-weight: null,
 );
 
-@mixin theme($theme) {
+@mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($light-theme, $theme);
+  $theme: _resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix
   );
 }
 
-@mixin theme-styles($theme, $resolver: resolvers.$material) {
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-styles($light-theme, $theme);
+  $theme: _resolve-theme($theme, $resolvers);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -76,4 +78,16 @@ $light-theme: (
       )
     );
   }
+}
+
+@function _resolve-theme($theme, $resolvers) {
+  $theme: map.merge(
+    $theme,
+    _resolve-theme-typography($theme, map.get($resolvers, typography))
+  );
+  @return $theme;
+}
+
+@function _resolve-theme-typography($theme, $resolver) {
+  @return typography.resolve-theme($theme, $resolver, supporting-text);
 }
