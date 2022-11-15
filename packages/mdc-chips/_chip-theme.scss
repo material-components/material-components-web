@@ -283,6 +283,13 @@ $_custom-property-prefix: 'chip';
   );
   @include outline-color(
     (
+      enabled: map.get($theme, outline-color),
+      focus: map.get($theme, focus-outline-color),
+      disabled: map.get($theme, disabled-outline-color),
+    )
+  );
+  @include outline-color(
+    (
       enabled: map.get($theme, flat-outline-color),
       focus: map.get($theme, flat-focus-outline-color),
       disabled: map.get($theme, flat-disabled-outline-color),
@@ -320,6 +327,7 @@ $_custom-property-prefix: 'chip';
       enabled: map.get($theme, elevated-selected-container-color),
     )
   );
+  // TODO(b/255716167) Separate theme-styles mixin for hairline and elevated chip variants.
   @include selected-container-color(
     (
       enabled: map.get($theme, flat-selected-container-color),
