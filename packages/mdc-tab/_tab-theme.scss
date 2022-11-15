@@ -496,6 +496,7 @@ $custom-property-prefix: 'tab';
   );
 }
 
+// TODO(b/191298796): support focused & pressed key colors.
 @mixin _state-layer-color($color) {
   @include ripple-theme.states-base-color(
     $color,
