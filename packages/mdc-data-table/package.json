@@ -3,11 +3,7 @@
   "version": "14.0.0",
   "description": "The Material Components Web data table component",
   "license": "MIT",
-  "keywords": [
-    "material components",
-    "material design",
-    "data table"
-  ],
+  "keywords": ["material components", "material design", "data table"],
   "main": "dist/mdc.dataTable.js",
   "module": "index.js",
   "sideEffects": false,
@@ -31,6 +27,7 @@
     "@material/select": "^14.0.0",
     "@material/shape": "^14.0.0",
     "@material/theme": "^14.0.0",
+    "@material/tokens": "^14.0.0",
     "@material/touch-target": "^14.0.0",
     "@material/typography": "^14.0.0",
     "tslib": "^2.1.0"

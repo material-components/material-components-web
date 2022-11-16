@@ -42,6 +42,7 @@
 @use '@material/theme/keys';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/tokens/v0_132' as tokens;
 @use '@material/touch-target/touch-target';
 @use '@material/typography/typography';
 
@@ -85,61 +86,41 @@ $density-config: (
 );
 $pagination-rows-per-page-select-height: 36px;
 
-$light-theme: (
-  'container-shape': null,
-  // TODO(b/254356584): We don't set pagination background-color.
-  // 'footer-container-color': null,
-  'footer-container-height': null,
-  // TODO(b/254356584): Select doesn't have Theming API support yet.
-  // 'footer-outlined-select-text-field-container-height': null,
-  'footer-supporting-text-color': null,
-  'footer-supporting-text-font': null,
-  'footer-supporting-text-line-height': null,
-  'footer-supporting-text-size': null,
-  'footer-supporting-text-tracking': null,
-  'footer-supporting-text-weight': null,
-  'header-container-color': null,
-  'header-container-height': null,
-  'header-headline-color': null,
-  'header-headline-font': null,
-  'header-headline-line-height': null,
-  'header-headline-size': null,
-  'header-headline-tracking': null,
-  'header-headline-weight': null,
-  // TODO(b/254356584): We don't add hover styles on header.
-  // 'header-hover-headline-color': null,
-  // TODO(b/254356584): We don't add hover styles on header.
-  // 'header-hover-sorting-icon-button-color': null,
-  'outline-color': null,
-  'outline-width': null,
-  'row-item-container-height': null,
-  // TODO(b/254356584): We don't support disabled rows.
-  // 'row-item-disabled-label-text-color': null,
-  // TODO(b/254356584): We don't support disabled rows.
-  // 'row-item-disabled-label-text-opacity': null,
-  'row-item-label-text-color': null,
-  'row-item-label-text-font': null,
-  'row-item-label-text-line-height': null,
-  'row-item-label-text-size': null,
-  'row-item-label-text-tracking': null,
-  'row-item-label-text-weight': null,
-  'row-item-outline-color': null,
-  'row-item-outline-width': null,
-  'row-item-selected-container-color': null,
-  // TODO(b/254356584): We don't add hover styles on selected rows.
-  // 'row-item-selected-hover-state-layer-color': null,
-  // TODO(b/254356584): We don't add hover styles on selected rows.
-  // 'row-item-selected-hover-state-layer-opacity': null,
-  // TODO(b/254356584): We set color and opacity in one.
-  // 'row-item-unselected-hover-state-layer-opacity': null,
-  'row-item-unselected-container-color': null,
-  'row-item-unselected-hover-state-layer-color': null,
-);
+$light-theme: tokens.md-comp-data-table-values();
+
+@function remove-unsupported-keys($theme) {
+  $theme: map.remove(
+    $theme,
+    (
+      // TODO(b/254356584): We don't set pagination background-color.
+      'footer-container-color',
+      // TODO(b/254356584): Select doesn't have Theming API support yet.
+      'footer-outlined-select-text-field-container-height',
+      // TODO(b/254356584): We don't add hover styles on header.
+      'header-hover-headline-color',
+      // TODO(b/254356584): We don't add hover styles on header.
+      'header-hover-sorting-icon-button-color',
+      // TODO(b/254356584): We don't support disabled rows.
+      'row-item-disabled-label-text-color',
+      // TODO(b/254356584): We don't support disabled rows.
+      'row-item-disabled-label-text-opacity',
+      // TODO(b/254356584): We don't add hover styles on selected rows.
+      'row-item-selected-hover-state-layer-color',
+      // TODO(b/254356584): We don't add hover styles on selected rows.
+      'row-item-selected-hover-state-layer-opacity',
+      // TODO(b/254356584): We set color and opacity in one.
+      'row-item-unselected-hover-state-layer-opacity'
+    )
+  );
+  @return $theme;
+}
+
+$_validation-theme: remove-unsupported-keys($light-theme);
 
 $_custom-property-prefix: 'data-table';
 
 @mixin theme($theme) {
-  @include theme.validate-theme($light-theme, $theme);
+  @include theme.validate-theme($_validation-theme, $theme);
   @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }
 
@@ -148,7 +129,7 @@ $_custom-property-prefix: 'data-table';
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
 
-  @include theme.validate-theme-styles($light-theme, $theme);
+  @include theme.validate-theme-styles($_validation-theme, $theme);
   $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
 
   ///////////
