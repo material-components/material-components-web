@@ -467,10 +467,16 @@ $_light-theme: (
     (
       default: map.get($theme, text-field-supporting-text-color),
       disabled: map.get($theme, text-field-disabled-supporting-text-color),
+      hover: map.get($theme, text-field-hover-supporting-text-color),
+      focus: map.get($theme, text-field-focus-supporting-text-color),
     )
   );
   @include select-helper-text-theme.helper-text-validation-color(
-    map.get($theme, text-field-error-supporting-text-color)
+    (
+      default: map.get($theme, text-field-error-supporting-text-color),
+      hover: map.get($theme, text-field-error-hover-supporting-text-color),
+      focus: map.get($theme, text-field-error-focus-supporting-text-color),
+    )
   );
   @include _text-field-input-text-typography(
     (
