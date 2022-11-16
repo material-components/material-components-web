@@ -33,6 +33,7 @@
 @use '@material/rtl/rtl';
 @use '@material/theme/css';
 @use '@material/theme/theme';
+@use '@material/theme/validate';
 @use '@material/theme/theme-color';
 
 $baseline-color: black !default;
@@ -396,8 +397,8 @@ $_theme-values: (
 /// Applies the given theme with validation.
 /// @param {Map} $theme - @see $_theme-values for accepted theme properties.
 ///
-@mixin theme($theme: (), $query: feature-targeting.all()) {
-  @include theme.validate-theme($_theme-values, $theme);
+@mixin theme-styles($theme: (), $query: feature-targeting.all()) {
+  $theme: validate.theme-styles($_theme-values, $theme, $require-all: false);
   @include _theme($theme, $query: $query);
 }
 

@@ -26,6 +26,7 @@
 
 @use 'sass:map';
 @use 'sass:meta';
+@use '@material/elevation/elevation-theme';
 @use '@material/list/list-theme';
 @use '@material/shape/shape';
 @use '@material/theme/keys';
@@ -125,6 +126,10 @@ $_validation-theme: _remove-unsupported-keys($light-theme);
 
   @include theme.property(background-color, map.get($theme, 'container-color'));
   @include shape.radius(map.get($theme, 'container-shape'));
+  @include elevation-theme.overlay-container-color(
+    map.get($theme, 'container-surface-tint-layer-color')
+  );
+  @include elevation-theme.theme-styles(map.get($theme, 'container-elevation'));
 
   .mdc-menu-item--selected {
     @include theme.property(
@@ -158,6 +163,14 @@ $_validation-theme: _remove-unsupported-keys($light-theme);
       $list-theme,
       map.keys(list-theme.$light-theme)...
     );
+    // Make the list item container color transparent to allow the elevation
+    // overlay and menu container color to be visible.
+    $list-theme: map.merge(
+      $list-theme,
+      (
+        'list-item-container-color': transparent,
+      )
+    );
     @include list-theme.theme($list-theme);
   }
 }
@@ -166,7 +179,6 @@ $_validation-theme: _remove-unsupported-keys($light-theme);
   $theme: map-ext.rename-keys(
     $theme,
     (
-      'container-color': 'list-item-container-color',
       'list-item-with-leading-icon-disabled-leading-icon-color':
         'list-item-disabled-leading-icon-color',
       'list-item-with-leading-icon-disabled-leading-icon-opacity':
