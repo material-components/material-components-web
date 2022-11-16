@@ -25,6 +25,7 @@
 // Internal styling for Chip MDC component.
 
 @use 'sass:map';
+@use 'sass:meta';
 @use 'sass:math';
 @use 'sass:color';
 @use '@material/dom/dom';
@@ -215,10 +216,6 @@ $_custom-property-prefix: 'chip';
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-styles($_light-theme, $theme);
-  $theme: keys.create-theme-properties(
-    $theme,
-    $prefix: $_custom-property-prefix
-  );
 
   @include _container-shape(map.get($theme, container-shape));
   @include _avatar-shape(map.get($theme, with-avatar-avatar-shape));
@@ -228,57 +225,49 @@ $_custom-property-prefix: 'chip';
     map.get($theme, container-surface-tint-layer-color)
   );
   @include _container-elevation(
-    map.get($resolvers, elevation),
-    $shadow-color: map.get($theme, container-shadow-color),
-    $map: (default: map.get($theme, container-elevation))
+    $map: (
+      default: map.get($theme, container-elevation),
+    )
   );
   @include _container-elevation(
-    map.get($resolvers, elevation),
-    $shadow-color: map.get($theme, flat-container-shadow-color),
-    $map: (enabled: map.get($theme, flat-container-elevation))
+    $map: (
+      enabled: map.get($theme, flat-container-elevation),
+    )
   );
   @include _container-elevation(
-    map.get($resolvers, elevation),
-    $shadow-color: map.get($theme, elevated-container-shadow-color),
     $map: (
       enabled: map.get($theme, elevated-container-elevation),
       disabled: map.get($theme, elevated-disabled-container-elevation),
       hover: map.get($theme, elevated-hover-container-elevation),
       focus: map.get($theme, elevated-focus-container-elevation),
-      pressed: map.get($theme, elevated-pressed-container-elevation)
+      pressed: map.get($theme, elevated-pressed-container-elevation),
     )
   );
   @include _selected-container-elevation(
-    map.get($resolvers, elevation),
-    $shadow-color: map.get($theme, elevated-container-shadow-color),
     $map: (
       enabled: map.get($theme, elevated-selected-container-elevation),
       disabled: map.get($theme, elevated-selected-disabled-container-elevation),
       hover: map.get($theme, elevated-selected-hover-container-elevation),
       focus: map.get($theme, elevated-selected-focus-container-elevation),
-      pressed: map.get($theme, elevated-selected-pressed-container-elevation)
+      pressed: map.get($theme, elevated-selected-pressed-container-elevation),
     )
   );
   @include _selected-container-elevation(
-    map.get($resolvers, elevation),
-    $shadow-color: map.get($theme, elevated-container-shadow-color),
     $map: (
       enabled: map.get($theme, flat-selected-container-elevation),
       disabled: map.get($theme, flat-selected-disabled-container-elevation),
       hover: map.get($theme, flat-selected-hover-container-elevation),
       focus: map.get($theme, flat-selected-focus-container-elevation),
-      pressed: map.get($theme, flat-selected-pressed-container-elevation)
+      pressed: map.get($theme, flat-selected-pressed-container-elevation),
     )
   );
   @include _unselected-container-elevation(
-    map.get($resolvers, elevation),
-    $shadow-color: map.get($theme, elevated-container-shadow-color),
     $map: (
       enabled: map.get($theme, flat-unselected-container-elevation),
       disabled: map.get($theme, flat-unselected-disabled-container-elevation),
       hover: map.get($theme, flat-unselected-hover-container-elevation),
       focus: map.get($theme, flat-unselected-focus-container-elevation),
-      pressed: map.get($theme, flat-unselected-pressed-container-elevation)
+      pressed: map.get($theme, flat-unselected-pressed-container-elevation),
     )
   );
   @include outline-color(
@@ -463,40 +452,54 @@ $_custom-property-prefix: 'chip';
   );
 }
 
-@function _resolve-theme($theme, $resolvers) {
+@function resolve-theme($theme, $resolvers) {
   $elevation-resolver: map.get($resolvers, elevation);
-  $shadow-color: map.get($theme, elevated-container-shadow-color);
-  @if $elevation-resolver == null or $shadow-color == null {
+  @if $elevation-resolver == null {
     @return $theme;
   }
 
-  $elevation-keys: (
-    container-elevation,
-    elevated-container-elevation,
-    elevated-disabled-container-elevation,
-    elevated-focus-container-elevation,
-    elevated-hover-container-elevation,
-    elevated-pressed-container-elevation,
-    elevated-selected-container-elevation,
-    flat-container-elevation,
-    flat-selected-focus-container-elevation,
-    flat-selected-hover-container-elevation,
-    flat-selected-pressed-container-elevation,
-    flat-unselected-focus-container-elevation,
-    flat-unselected-hover-container-elevation,
-    flat-unselected-pressed-container-elevation
+  $elevation-pairs: (
+    container-shadow-color: (
+      container-elevation,
+    ),
+    flat-container-shadow-color: (
+      flat-container-elevation,
+    ),
+    elevated-container-shadow-color: (
+      elevated-container-elevation,
+      elevated-disabled-container-elevation,
+      elevated-focus-container-elevation,
+      elevated-hover-container-elevation,
+      elevated-pressed-container-elevation,
+      elevated-selected-container-elevation,
+      elevated-selected-disabled-container-elevation,
+      elevated-selected-focus-container-elevation,
+      elevated-selected-hover-container-elevation,
+      elevated-selected-pressed-container-elevation,
+      flat-selected-focus-container-elevation,
+      flat-selected-hover-container-elevation,
+      flat-selected-pressed-container-elevation,
+      flat-unselected-focus-container-elevation,
+      flat-unselected-hover-container-elevation,
+      flat-unselected-pressed-container-elevation,
+    ),
   );
 
-  @each $key in $elevation-keys {
-    $elevation: map.get($theme, $key);
-    @if $elevation != null {
-      $resolved-value: meta.call(
-        $resolvers,
-        $elevation: $elevation,
-        $shadow-color: $shadow-color
-      );
-      // Update the key with the resolved value.
-      $theme: map.set($theme, $key, $resolved-value);
+  @each $shadow-color-key, $elevation-keys in $elevation-pairs {
+    $shadow-color: map.get($theme, $shadow-color-key);
+    @if $shadow-color != null {
+      @each $key in $elevation-keys {
+        $elevation: map.get($theme, $key);
+        @if $elevation != null {
+          $resolved-value: meta.call(
+            $elevation-resolver,
+            $elevation: $elevation,
+            $shadow-color: $shadow-color
+          );
+          // Update the key with the resolved value.
+          $theme: map.set($theme, $key, $resolved-value);
+        }
+      }
     }
   }
   @return $theme;
@@ -1472,67 +1475,71 @@ $_custom-property-prefix: 'chip';
   }
 }
 
-@mixin _container-elevation($resolver, $shadow-color, $map) {
+@mixin _container-elevation-theme($theme) {
+  @if map.get($theme, shadow) {
+    @include elevation-theme.shadow(map.get($theme, shadow));
+  }
+  @if map.get($theme, overlay-opacity) {
+    @include elevation-theme.overlay-opacity(map.get($theme, overlay-opacity));
+  }
+  @if map.get($theme, overlay-color) {
+    @include elevation-theme.overlay-container-color(
+      map.get($theme, overlay-color)
+    );
+  }
+}
+
+@mixin _container-elevation($map) {
+  $default-state: state.get-default-state($map);
+  @if $default-state {
+    @include _container-elevation-theme($default-state);
+  }
+
   @include _is-enabled() {
-    @if (state.get-enabled-state($map)) {
-      @include elevation-theme.with-resolver(
-        $resolver,
-        $elevation: state.get-enabled-state($map),
-        $shadow-color: $shadow-color
-      );
+    $enabled-state: state.get-enabled-state($map);
+    @if $enabled-state {
+      @include _container-elevation-theme($enabled-state);
     }
   }
 
   @include ripple-theme.hover() {
-    @if state.get-hover-state($map) {
-      @include elevation-theme.with-resolver(
-        $resolver,
-        $elevation: state.get-hover-state($map),
-        $shadow-color: $shadow-color
-      );
+    $hover-state: state.get-hover-state($map);
+    @if $hover-state {
+      @include _container-elevation-theme($hover-state);
     }
   }
 
   @include ripple-theme.focus() {
-    @if (state.get-focus-state($map)) {
-      @include elevation-theme.with-resolver(
-        $resolver,
-        $elevation: state.get-focus-state($map),
-        $shadow-color: $shadow-color
-      );
+    $focus-state: state.get-focus-state($map);
+    @if $focus-state {
+      @include _container-elevation-theme($focus-state);
     }
   }
 
   @include ripple-theme.pressed() {
-    @if (state.get-pressed-state($map)) {
-      @include elevation-theme.with-resolver(
-        $resolver,
-        $elevation: state.get-pressed-state($map),
-        $shadow-color: $shadow-color
-      );
+    $pressed-state: state.get-pressed-state($map);
+    @if $pressed-state {
+      @include _container-elevation-theme($pressed-state);
     }
   }
 
   @include _is-disabled() {
-    @if (state.get-disabled-state($map)) {
-      @include elevation-theme.with-resolver(
-        $resolver,
-        $elevation: state.get-disabled-state($map),
-        $shadow-color: $shadow-color
-      );
+    $disabled-state: state.get-disabled-state($map);
+    @if $disabled-state {
+      @include _container-elevation-theme($disabled-state);
     }
   }
 }
 
-@mixin _selected-container-elevation($resolver, $shadow-color, $map) {
+@mixin _selected-container-elevation($map) {
   @include _is-selected() {
-    @include _container-elevation($resolver, $shadow-color, $map);
+    @include _container-elevation($map);
   }
 }
 
-@mixin _unselected-container-elevation($resolver, $shadow-color, $map) {
+@mixin _unselected-container-elevation($map) {
   @include _is-unselected() {
-    @include _container-elevation($resolver, $shadow-color, $map);
+    @include _container-elevation($map);
   }
 }
 

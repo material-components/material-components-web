@@ -68,32 +68,7 @@ $_custom-property-prefix: 'suggestion-chip';
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($_light-theme, $theme);
-
-  // Resolve elevation.
-  @each $key
-    in (
-      flat-container-elevation,
-      elevated-container-elevation,
-      elevated-disabled-container-elevation,
-      elevated-hover-container-elevation,
-      elevated-focus-container-elevation,
-      elevated-pressed-container-elevation
-    )
-  {
-    $value: map.get($theme, $key);
-    @if $value {
-      $theme: map.set(
-        $theme,
-        $key,
-        meta.call(
-          $elevation-resolver: map.get($resolvers, elevation),
-          $elevation: $value,
-          $shadow-color: map.get($theme, elevated-container-shadow-color),
-        )
-      );
-    }
-  }
-
+  $theme: chip-theme.resolve-theme($theme, $resolvers: $resolvers);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $_custom-property-prefix
@@ -101,7 +76,8 @@ $_custom-property-prefix: 'suggestion-chip';
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_light-theme, $theme);
+  @include theme.validate-theme-styles($_light-theme, $theme);
+  $theme: chip-theme.resolve-theme($theme, $resolvers: $resolvers);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $_custom-property-prefix
