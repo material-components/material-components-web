@@ -32,6 +32,7 @@
 @use '@material/typography/typography';
 @use './tooltip-theme';
 @use 'sass:map';
+@use 'sass:meta';
 
 $custom-property-prefix: 'rich-tooltip';
 $light-theme: (
@@ -72,16 +73,20 @@ $light-theme: (
   supporting-text-weight: null,
 );
 
-@mixin theme($theme) {
+@mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme-validate-theme($light-theme, $theme);
+  $theme: _resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix
   );
 }
 
-@mixin theme-styles($theme, $resolver: resolvers.$material) {
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-styles($light-theme, $theme);
+  // Only resolve typography tokens because the elevation theme mixin handles
+  // resolving elevation tokens internally.
+  $theme: _resolve-theme-typography($theme, map.get($resolvers, 'typography'));
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -89,7 +94,9 @@ $light-theme: (
 
   @include tooltip-theme.rich-fill-color(map.get($theme, container-color));
   &.mdc-tooltip--rich {
-    @include tooltip-theme.shape-radius(map.get($theme, container-shape));
+    @include tooltip-theme.surface-shape-radius(
+      map.get($theme, 'container-shape')
+    );
   }
   @include tooltip-theme.rich-text-ink-color(
     $title-color: map.get($theme, subhead-color),
@@ -121,7 +128,8 @@ $light-theme: (
       )
     );
   }
-  @include _container-elevation($resolver, $theme);
+
+  @include _container-elevation(map.get($resolvers, 'elevation'), $theme);
 
   .mdc-tooltip__surface .mdc-tooltip__title {
     @include typography.theme-styles(
@@ -136,14 +144,97 @@ $light-theme: (
   }
 }
 
-@mixin _container-elevation($resolver, $theme) {
-  $elevation-resolver: map.get($resolver, elevation);
-  @include elevation-theme.overlay-container-color(
-    map.get($theme, container-surface-tint-layer-color)
+@mixin _container-elevation($elevation-resolver, $theme) {
+  .mdc-tooltip__surface {
+    @include elevation-theme.with-resolver(
+      $elevation-resolver,
+      $elevation: map.get($theme, 'container-elevation'),
+      $shadow-color: map.get($theme, 'container-shadow-color')
+    );
+
+    @include elevation-theme.overlay-container-color(
+      map.get($theme, 'container-surface-tint-layer-color')
+    );
+  }
+
+  .mdc-tooltip__caret-surface-bottom {
+    @include elevation-theme.with-resolver(
+      $elevation-resolver,
+      $elevation: map.get($theme, 'container-elevation'),
+      $shadow-color: map.get($theme, 'container-shadow-color')
+    );
+  }
+
+  // The top caret surface needs to matching surface elevation styles as the
+  // rich tooltip *without* the shadow beneath it (the caret is a diamond
+  // overlaid on top of the tooltip surface, a shadow on this element would
+  // therefore be visible on top of the tooltip). To accomplish this we must
+  // resolve the elevation values first and then call each mixin individually
+  // (since the theme mixin does not support custom properties).
+  .mdc-tooltip__caret-surface-top {
+    $overlay-opacity: _generate-elevation-overlay-opacity(
+      $theme,
+      $elevation-resolver
+    );
+    @include elevation-theme.overlay-opacity($overlay-opacity);
+    @include elevation-theme.overlay-container-color(
+      map.get($theme, 'container-surface-tint-layer-color')
+    );
+  }
+}
+
+@function _generate-elevation-overlay-opacity($theme, $elevation-resolver) {
+  @if map.get($theme, 'container-elevation') and
+    map.get($theme, 'container-shadow-color')
+  {
+    $resolved-value: meta.call(
+      $elevation-resolver,
+      $elevation: map.get($theme, 'container-elevation'),
+      $shadow-color: map.get($theme, 'container-shadow-color')
+    );
+    @return map.get($resolved-value, overlay-opacity);
+  }
+
+  @return null;
+}
+
+@function _resolve-elevation($theme, $elevation-resolver) {
+  @if map.get($theme, 'container-elevation') and
+    map.get($theme, 'container-shadow-color')
+  {
+    $resolved-value: meta.call(
+      $elevation-resolver,
+      $elevation: map.get($theme, 'container-elevation'),
+      $shadow-color: map.get($theme, 'container-shadow-color')
+    );
+    $theme: map.set($theme, 'container-elevation', $resolved-value);
+  }
+
+  @return $theme;
+}
+
+@function _resolve-theme-typography($theme, $resolver) {
+  @return typography.resolve-theme(
+    $theme,
+    $resolver,
+    action-label-text,
+    supporting-text
   );
-  @include elevation-theme.with-resolver(
-    $elevation-resolver,
-    $elevation: map.get($theme, conatiner-elevation),
-    $shadow-color: map.get($theme, container-shadow-color)
+}
+
+@function _resolve-theme($theme, $resolvers) {
+  $theme: map.merge(
+    $theme,
+    _resolve-theme-elevation(
+      $theme,
+      map.get($resolvers, 'elevation'),
+      container-elevation
+    )
   );
+
+  $theme: map.merge(
+    $theme,
+    _resolve-theme-typography($theme, map.get($resolvers, 'typography'))
+  );
+  @return $theme;
 }

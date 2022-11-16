@@ -55,7 +55,7 @@ $word-break-default: custom-properties.create-var($word-break-custom-prop);
 $word-break-ie11-fallback: break-all;
 $z-index: 9;
 
-// Sets the border-radius for the tooltip element.
+// Sets the border-radius for the tooltip surface and tooltip caret element.
 // @param {Number | String} $radius Desired border radius value, accepts either
 //   a shape category or number value. $radius can be a singel value, or a
 //   list of up to 4 values.
@@ -72,6 +72,22 @@ $z-index: 9;
 
   .mdc-tooltip__caret-surface-top,
   .mdc-tooltip__caret-surface-bottom {
+    @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+  }
+}
+
+// Sets the border-radius for the tooltip surface element only.
+// @param {Number | String} $radius Desired border radius value, accepts either
+//   a shape category or number value. $radius can be a singel value, or a
+//   list of up to 4 values.
+// @param {Boolean} $rtl-reflexive [false] If a rule should be created for a
+//    flipped $radius for a RTL layout.
+@mixin surface-shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  .mdc-tooltip__surface {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
   }
 }
