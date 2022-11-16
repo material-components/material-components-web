@@ -21,13 +21,18 @@
 ///   }
 ///
 /// @throw If any tokens are invalid or missing.
-/// @param {Map} $reference-theme - A complete reference theme Map to validate
-///   the theme.
+/// @param {Map|List} $reference-theme - A reference theme Map whose token keys
+///     will be used to validate the user-provided theme (or list of tokens).
 /// @param {Map} $theme - The theme Map to validate.
 /// @return {Map} The validated theme Map.
 @function theme-styles($reference-theme, $theme, $require-all: true) {
+  $valid-tokens: $reference-theme;
+  @if meta.type-of($reference-theme) == 'map' {
+    $valid-tokens: map.keys($reference-theme);
+  }
+
   $theme: _validate-theme-tokens(
-    map.keys($reference-theme),
+    $valid-tokens,
     $theme,
     $require-all: $require-all
   );
@@ -48,16 +53,17 @@
 ///   }
 ///
 /// @throw If any tokens or values are invalid.
-/// @param {Map} $reference-theme - A reference theme Map whose token keys will
-///     be used to validate the user-provided theme.
+/// @param {Map|List} $reference-theme - A reference theme Map whose token keys
+///     will be used to validate the user-provided theme (or list of tokens).
 /// @param {Map} $theme - User-provided theme Map to validate.
 /// @return {Map} The validated user-provided theme Map.
 @function theme($reference-theme, $theme) {
-  $theme: _validate-theme-tokens(
-    map.keys($reference-theme),
-    $theme,
-    $require-all: false
-  );
+  $valid-tokens: $reference-theme;
+  @if meta.type-of($reference-theme) == 'map' {
+    $valid-tokens: map.keys($reference-theme);
+  }
+
+  $theme: _validate-theme-tokens($valid-tokens, $theme, $require-all: false);
 
   @return $theme;
 }
