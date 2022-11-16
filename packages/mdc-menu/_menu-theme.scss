@@ -39,6 +39,8 @@ $_light-theme: (
   container-shadow-color: null,
   container-shape: null,
   container-surface-tint-layer-color: null,
+  divider-color: null,
+  divider-height: null,
   list-item-container-height: null,
   list-item-disabled-label-text-color: null,
   list-item-disabled-label-text-opacity: null,
@@ -99,18 +101,18 @@ $_light-theme: (
 
 @function _resolve-theme-elevation($theme, $resolvers) {
   $elevation-resolver: map.get($resolvers, elevation);
-  $shadow-color: map.get($theme, container-shadow-color);
+  $shadow-color: map.get($theme, 'container-shadow-color');
   @if $elevation-resolver == null or $shadow-color == null {
     @return $theme;
   }
 
-  $elevation-keys: (container-elevation);
+  $elevation-keys: ('container-elevation');
 
   @each $key in $elevation-keys {
     $elevation: map.get($theme, $key);
     @if $elevation != null {
       $resolved-value: meta.call(
-        $resolvers,
+        $elevation-resolver,
         $elevation: $elevation,
         $shadow-color: $shadow-color
       );
