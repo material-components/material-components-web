@@ -102,6 +102,7 @@ $_light-theme: (
   list-item-hover-label-text-color: null,
   list-item-hover-leading-icon-color: null,
   list-item-hover-trailing-icon-color: null,
+  list-item-focus-label-text-color: null,
   list-item-focus-state-layer-color: null,
   list-item-focus-state-layer-opacity: null,
 );
@@ -316,6 +317,9 @@ $_light-theme: (
   );
   @include _list-item-focus-state-layer-opacity(
     map.get($theme, list-item-focus-state-layer-opacity)
+  );
+  @include _list-item-focus-label-text-color(
+    map.get($theme, list-item-focus-label-text-color)
   );
 }
 
@@ -580,6 +584,12 @@ $_light-theme: (
 
 @mixin _list-item-hover-label-text-color($color) {
   .mdc-list-item:hover {
+    @include list.list-primary-text-ink-color($color);
+  }
+}
+
+@mixin _list-item-focus-label-text-color($color) {
+  .mdc-list-item:focus {
     @include list.list-primary-text-ink-color($color);
   }
 }
