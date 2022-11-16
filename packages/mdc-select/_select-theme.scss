@@ -579,7 +579,7 @@ $_light-theme: (
 
 @mixin _error-label-text-color($color) {
   &.mdc-select--invalid {
-    @include label-floating-color($color);
+    @include label-color($color);
   }
 }
 
