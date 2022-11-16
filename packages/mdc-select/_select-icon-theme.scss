@@ -48,9 +48,9 @@ $disabled-icon-color: rgba(
 
   @include feature-targeting.targets($feat-structure) {
     .mdc-select__icon {
-      width: $size;
-      height: $size;
-      font-size: $size;
+      @include theme.property(width, $size);
+      @include theme.property(height, $size);
+      @include theme.property(font-size, $size);
     }
   }
 }

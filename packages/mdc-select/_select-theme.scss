@@ -386,6 +386,10 @@ $_light-theme: (
       disabled: map.get($theme, text-field-disabled-indicator-color),
     )
   );
+  @include dropdown-icon-size(map.get($theme, text-field-trailing-icon-size));
+  @include select-icon-theme.size(
+    map.get($theme, text-field-leading-icon-size)
+  );
   @include _text-field-error-active-indicator-color(
     (
       default: map.get($theme, text-field-error-active-indicator-color),
@@ -923,8 +927,8 @@ $_light-theme: (
 
   .mdc-select__dropdown-icon {
     @include feature-targeting.targets($feat-structure) {
-      width: $size;
-      height: $size;
+      @include theme.property(width, $size);
+      @include theme.property(height, $size);
     }
   }
 }
