@@ -399,6 +399,11 @@ $light-theme: (
     .mdc-list-item__start > i {
       @include theme.property('font-size', $size);
     }
+    .mdc-list-item__start .mdc-list-item__icon {
+      @include theme.property('font-size', $size);
+      @include theme.property('width', $size);
+      @include theme.property('height', $size);
+    }
   }
 }
 
@@ -488,6 +493,11 @@ $light-theme: (
 
     .mdc-list-item__end > i {
       @include theme.property('font-size', $size);
+    }
+    .mdc-list-item__end .mdc-list-item__icon {
+      @include theme.property('font-size', $size);
+      @include theme.property('width', $size);
+      @include theme.property('height', $size);
     }
   }
 }

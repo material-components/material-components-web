@@ -126,6 +126,32 @@ $_validation-theme: _remove-unsupported-keys($light-theme);
   @include theme.property(background-color, map.get($theme, 'container-color'));
   @include shape.radius(map.get($theme, 'container-shape'));
 
+  .mdc-menu-item--selected {
+    @include theme.property(
+      background-color,
+      map.get($theme, 'list-item-selected-container-color')
+    );
+  }
+
+  .mdc-menu-item__submenu-indicator {
+    @include theme.property(
+      color,
+      map.get($theme, 'cascading-menu-indicator-icon-color')
+    );
+    @include theme.property(
+      font-size,
+      map.get($theme, 'cascading-menu-indicator-icon-size')
+    );
+    @include theme.property(
+      width,
+      map.get($theme, 'cascading-menu-indicator-icon-size')
+    );
+    @include theme.property(
+      height,
+      map.get($theme, 'cascading-menu-indicator-icon-size')
+    );
+  }
+
   .mdc-list {
     $list-theme: _rename-list-theme($theme);
     $list-theme: map-ext.pick(
@@ -151,6 +177,7 @@ $_validation-theme: _remove-unsupported-keys($light-theme);
         'list-item-leading-icon-color',
       'list-item-with-leading-icon-leading-icon-size':
         'list-item-leading-icon-size',
+      'cascading-menu-indicator-icon-size': 'list-item-trailing-icon-size',
     )
   );
   @return $theme;
