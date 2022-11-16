@@ -29,12 +29,13 @@
 @use '@material/tokens/resolvers';
 @use '@material/theme/theme';
 @use '@material/theme/keys';
+@use '@material/theme/validate';
 @use '@material/typography/typography';
 @use './evolution-mixins' as list;
 @use 'sass:meta';
 
 $custom-property-prefix: 'list';
-$_light-theme: (
+$light-theme: (
   list-item-container-color: null,
   list-item-container-shape: null,
   list-item-container-height: null,
@@ -108,8 +109,7 @@ $_light-theme: (
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  // TODO(b/251881053): Replace with `validate-theme`.
-  @include theme.validate-theme-styles($_light-theme, $theme);
+  $theme: validate.theme($light-theme, $theme);
   $theme: _resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
     $theme,
@@ -166,7 +166,7 @@ $_light-theme: (
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme-styles($_light-theme, $theme);
+  $theme: validate.theme-styles($light-theme, $theme, $require-all: false);
   $theme: _resolve-theme($theme, $resolvers);
   $theme: keys.create-theme-properties(
     $theme,

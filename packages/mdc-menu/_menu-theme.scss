@@ -26,12 +26,17 @@
 
 @use 'sass:map';
 @use 'sass:meta';
-@use '@material/tokens/resolvers';
-@use '@material/theme/theme';
+@use '@material/list/list-theme';
+@use '@material/shape/shape';
 @use '@material/theme/keys';
+@use '@material/theme/map-ext';
+@use '@material/theme/theme';
+@use '@material/theme/validate';
+@use '@material/tokens/resolvers';
 
 $_custom-property-prefix: 'menu';
-$_light-theme: (
+
+$light-theme: (
   cascading-menu-indicator-icon-color: null,
   cascading-menu-indicator-icon-size: null,
   container-color: null,
@@ -77,8 +82,31 @@ $_light-theme: (
   list-item-with-trailing-icon-trailing-icon-size: null,
 );
 
+// TODO(b/258841751): Support trailing icon tokens.
+// TODO(b/258842171): Support list-blocked tokens.
+// TODO(b/258798258): Support list item height customization.
+@function _remove-unsupported-keys($theme) {
+  $theme: map-ext.trim-keys(
+    $theme,
+    (
+      'list-item-container-height',
+      'list-item-with-leading-icon-pressed-icon-color',
+      'list-item-with-trailing-icon-disabled-trailing-icon-color',
+      'list-item-with-trailing-icon-disabled-trailing-icon-opacity',
+      'list-item-with-trailing-icon-focus-icon-color',
+      'list-item-with-trailing-icon-hover-icon-color',
+      'list-item-with-trailing-icon-pressed-icon-color',
+      'list-item-with-trailing-icon-trailing-icon-color',
+      'list-item-with-trailing-icon-trailing-icon-size'
+    )
+  );
+  @return $theme;
+}
+
+$_validation-theme: _remove-unsupported-keys($light-theme);
+
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_light-theme, $theme);
+  $theme: validate.theme($_validation-theme, $theme);
   $theme: _resolve-theme-elevation($theme, $resolvers: $resolvers);
   @include keys.declare-custom-properties(
     $theme,
@@ -87,16 +115,45 @@ $_light-theme: (
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme-styles($_light-theme, $theme);
+  $theme: _remove-unsupported-keys($theme);
+  $theme: validate.theme-styles($_validation-theme, $theme);
   $theme: _resolve-theme-elevation($theme, $resolvers: $resolvers);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $_custom-property-prefix
   );
 
-  .mdc-menu {
-    // TODO(b/200035636): Implement theming api.
+  @include theme.property(background-color, map.get($theme, 'container-color'));
+  @include shape.radius(map.get($theme, 'container-shape'));
+
+  .mdc-list {
+    $list-theme: _rename-list-theme($theme);
+    $list-theme: map-ext.pick(
+      $list-theme,
+      map.keys(list-theme.$light-theme)...
+    );
+    @include list-theme.theme($list-theme);
   }
+}
+
+@function _rename-list-theme($theme) {
+  $theme: map-ext.rename-keys(
+    $theme,
+    (
+      'container-color': 'list-item-container-color',
+      'list-item-with-leading-icon-disabled-leading-icon-color':
+        'list-item-disabled-leading-icon-color',
+      'list-item-with-leading-icon-disabled-leading-icon-opacity':
+        'list-item-disabled-leading-icon-opacity',
+      'list-item-with-leading-icon-hover-icon-color':
+        'list-item-hover-leading-icon-color',
+      'list-item-with-leading-icon-leading-icon-color':
+        'list-item-leading-icon-color',
+      'list-item-with-leading-icon-leading-icon-size':
+        'list-item-leading-icon-size',
+    )
+  );
+  @return $theme;
 }
 
 @function _resolve-theme-elevation($theme, $resolvers) {
