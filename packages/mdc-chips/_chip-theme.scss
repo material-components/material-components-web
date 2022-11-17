@@ -112,6 +112,8 @@ $_light-theme: (
   flat-container-elevation: null,
   flat-disabled-outline-color: null,
   flat-disabled-outline-opacity: null,
+  flat-disabled-selected-container-color: null,
+  flat-disabled-selected-container-opacity: null,
   flat-disabled-selected-outline-color: null,
   flat-disabled-selected-outline-opacity: null,
   flat-disabled-unselected-outline-color: null,
@@ -331,6 +333,7 @@ $_custom-property-prefix: 'chip';
   @include selected-container-color(
     (
       enabled: map.get($theme, flat-selected-container-color),
+      disabled: map.get($theme, flat-disabled-selected-container-color),
     )
   );
   @include _unselected-container-color(
@@ -362,7 +365,7 @@ $_custom-property-prefix: 'chip';
       hover: map.get($theme, selected-hover-label-text-color),
       focus: map.get($theme, selected-focus-label-text-color),
       pressed: map.get($theme, selected-pressed-label-text-color),
-      disabled: map.get($theme, selected-disabled-label-text-color),
+      disabled: map.get($theme, disabled-label-text-color),
     )
   );
   @include _unselected-text-label-color(
@@ -388,7 +391,7 @@ $_custom-property-prefix: 'chip';
   @include _selected-icon-color(
     (
       enabled: map.get($theme, with-icon-selected-icon-color),
-      disabled: map.get($theme, with-icon-selected-disabled-icon-color),
+      disabled: map.get($theme, with-icon-disabled-icon-color),
       hover: map.get($theme, with-icon-selected-hover-icon-color),
       focus: map.get($theme, with-icon-selected-focus-icon-color),
       pressed: map.get($theme, with-icon-selected-pressed-icon-color),
