@@ -61,20 +61,20 @@ $light-theme: (
     $prefix: $custom-property-prefix
   );
 
-  @include tooltip-theme.fill-color(map.get($theme, container-color));
-  @include tooltip-theme.shape-radius(map.get($theme, container-shape));
+  @include tooltip-theme.fill-color(map.get($theme, 'container-color'));
+  @include tooltip-theme.shape-radius(map.get($theme, 'container-shape'));
   @include tooltip-theme.label-ink-color(
-    map.get($theme, supporting-text-color)
+    map.get($theme, 'supporting-text-color')
   );
 
   .mdc-tooltip__surface {
     @include typography.theme-styles(
       (
-        font: map.get($theme, supporting-text-font),
-        line-height: map.get($theme, supporting-text-line-height),
-        size: map.get($theme, supporting-text-size),
-        weight: map.get($theme, supporting-text-weight),
-        tracking: map.get($theme, supporting-text-tracking),
+        font: map.get($theme, 'supporting-text-font'),
+        line-height: map.get($theme, 'supporting-text-line-height'),
+        size: map.get($theme, 'supporting-text-size'),
+        weight: map.get($theme, 'supporting-text-weight'),
+        tracking: map.get($theme, 'supporting-text-tracking'),
       )
     );
   }
@@ -83,11 +83,11 @@ $light-theme: (
 @function _resolve-theme($theme, $resolvers) {
   $theme: map.merge(
     $theme,
-    _resolve-theme-typography($theme, map.get($resolvers, typography))
+    _resolve-theme-typography($theme, map.get($resolvers, 'typography'))
   );
   @return $theme;
 }
 
 @function _resolve-theme-typography($theme, $resolver) {
-  @return typography.resolve-theme($theme, $resolver, supporting-text);
+  @return typography.resolve-theme($theme, $resolver, 'supporting-text');
 }
