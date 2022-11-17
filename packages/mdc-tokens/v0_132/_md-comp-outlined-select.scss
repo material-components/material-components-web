@@ -56,9 +56,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.outlined-select.menu.list-item.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'label-large-weight')
-          map.get($deps, 'md-sys-typescale', 'label-large-size') /
-          map.get($deps, 'md-sys-typescale', 'label-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'label-large-font')
+          map.get($deps, 'md-sys-typescale', 'label-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'label-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'label-large-font')
       ),
     'menu-list-item-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'label-large-weight'),
@@ -187,9 +189,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.outlined-select.text-field.input-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-large-weight')
-          map.get($deps, 'md-sys-typescale', 'body-large-size') /
-          map.get($deps, 'md-sys-typescale', 'body-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-large-font')
+          map.get($deps, 'md-sys-typescale', 'body-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-large-font')
       ),
     'text-field-input-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-large-weight'),
@@ -213,9 +217,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.outlined-select.text-field.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-large-weight')
-          map.get($deps, 'md-sys-typescale', 'body-large-size') /
-          map.get($deps, 'md-sys-typescale', 'body-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-large-font')
+          map.get($deps, 'md-sys-typescale', 'body-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-large-font')
       ),
     'text-field-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-large-weight'),
@@ -240,9 +246,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.outlined-select.text-field.supporting-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-small-weight')
-          map.get($deps, 'md-sys-typescale', 'body-small-size') /
-          map.get($deps, 'md-sys-typescale', 'body-small-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-small-font')
+          map.get($deps, 'md-sys-typescale', 'body-small-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-small-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-small-font')
       ),
     'text-field-supporting-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-small-weight'),

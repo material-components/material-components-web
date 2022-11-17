@@ -22,9 +22,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.body-large.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 1rem) /
-          if($exclude-hardcoded-values, null, 1.5rem)
-          map.get($deps, 'md-ref-typeface', 'plain')
+          if($exclude-hardcoded-values, null, 1rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1.5rem
+          ) map.get($deps, 'md-ref-typeface', 'plain')
       ),
     'body-large-font': map.get($deps, 'md-ref-typeface', 'plain'),
     'body-large-line-height': if($exclude-hardcoded-values, null, 1.5rem),
@@ -37,9 +39,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.body-medium.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 0.875rem) /
-          if($exclude-hardcoded-values, null, 1.25rem)
-          map.get($deps, 'md-ref-typeface', 'plain')
+          if($exclude-hardcoded-values, null, 0.875rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1.25rem
+          ) map.get($deps, 'md-ref-typeface', 'plain')
       ),
     'body-medium-font': map.get($deps, 'md-ref-typeface', 'plain'),
     'body-medium-line-height': if($exclude-hardcoded-values, null, 1.25rem),
@@ -52,9 +56,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.body-small.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 0.75rem) /
-          if($exclude-hardcoded-values, null, 1rem)
-          map.get($deps, 'md-ref-typeface', 'plain')
+          if($exclude-hardcoded-values, null, 0.75rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1rem
+          ) map.get($deps, 'md-ref-typeface', 'plain')
       ),
     'body-small-font': map.get($deps, 'md-ref-typeface', 'plain'),
     'body-small-line-height': if($exclude-hardcoded-values, null, 1rem),
@@ -67,9 +73,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.display-large.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 3.562rem) /
-          if($exclude-hardcoded-values, null, 4rem)
-          map.get($deps, 'md-ref-typeface', 'brand')
+          if($exclude-hardcoded-values, null, 3.562rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            4rem
+          ) map.get($deps, 'md-ref-typeface', 'brand')
       ),
     'display-large-font': map.get($deps, 'md-ref-typeface', 'brand'),
     'display-large-line-height': if($exclude-hardcoded-values, null, 4rem),
@@ -82,9 +90,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.display-medium.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 2.812rem) /
-          if($exclude-hardcoded-values, null, 3.25rem)
-          map.get($deps, 'md-ref-typeface', 'brand')
+          if($exclude-hardcoded-values, null, 2.812rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            3.25rem
+          ) map.get($deps, 'md-ref-typeface', 'brand')
       ),
     'display-medium-font': map.get($deps, 'md-ref-typeface', 'brand'),
     'display-medium-line-height': if($exclude-hardcoded-values, null, 3.25rem),
@@ -97,9 +107,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.display-small.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 2.25rem) /
-          if($exclude-hardcoded-values, null, 2.75rem)
-          map.get($deps, 'md-ref-typeface', 'brand')
+          if($exclude-hardcoded-values, null, 2.25rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            2.75rem
+          ) map.get($deps, 'md-ref-typeface', 'brand')
       ),
     'display-small-font': map.get($deps, 'md-ref-typeface', 'brand'),
     'display-small-line-height': if($exclude-hardcoded-values, null, 2.75rem),
@@ -112,9 +124,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.headline-large.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 2rem) /
-          if($exclude-hardcoded-values, null, 2.5rem)
-          map.get($deps, 'md-ref-typeface', 'brand')
+          if($exclude-hardcoded-values, null, 2rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            2.5rem
+          ) map.get($deps, 'md-ref-typeface', 'brand')
       ),
     'headline-large-font': map.get($deps, 'md-ref-typeface', 'brand'),
     'headline-large-line-height': if($exclude-hardcoded-values, null, 2.5rem),
@@ -127,9 +141,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.headline-medium.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 1.75rem) /
-          if($exclude-hardcoded-values, null, 2.25rem)
-          map.get($deps, 'md-ref-typeface', 'brand')
+          if($exclude-hardcoded-values, null, 1.75rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            2.25rem
+          ) map.get($deps, 'md-ref-typeface', 'brand')
       ),
     'headline-medium-font': map.get($deps, 'md-ref-typeface', 'brand'),
     'headline-medium-line-height': if($exclude-hardcoded-values, null, 2.25rem),
@@ -143,9 +159,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.headline-small.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 1.5rem) /
-          if($exclude-hardcoded-values, null, 2rem)
-          map.get($deps, 'md-ref-typeface', 'brand')
+          if($exclude-hardcoded-values, null, 1.5rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            2rem
+          ) map.get($deps, 'md-ref-typeface', 'brand')
       ),
     'headline-small-font': map.get($deps, 'md-ref-typeface', 'brand'),
     'headline-small-line-height': if($exclude-hardcoded-values, null, 2rem),
@@ -158,9 +176,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.label-large.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-medium')
-          if($exclude-hardcoded-values, null, 0.875rem) /
-          if($exclude-hardcoded-values, null, 1.25rem)
-          map.get($deps, 'md-ref-typeface', 'plain')
+          if($exclude-hardcoded-values, null, 0.875rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1.25rem
+          ) map.get($deps, 'md-ref-typeface', 'plain')
       ),
     'label-large-font': map.get($deps, 'md-ref-typeface', 'plain'),
     'label-large-line-height': if($exclude-hardcoded-values, null, 1.25rem),
@@ -173,9 +193,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.label-medium.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-medium')
-          if($exclude-hardcoded-values, null, 0.75rem) /
-          if($exclude-hardcoded-values, null, 1rem)
-          map.get($deps, 'md-ref-typeface', 'plain')
+          if($exclude-hardcoded-values, null, 0.75rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1rem
+          ) map.get($deps, 'md-ref-typeface', 'plain')
       ),
     'label-medium-font': map.get($deps, 'md-ref-typeface', 'plain'),
     'label-medium-line-height': if($exclude-hardcoded-values, null, 1rem),
@@ -188,9 +210,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.label-small.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-medium')
-          if($exclude-hardcoded-values, null, 0.688rem) /
-          if($exclude-hardcoded-values, null, 1rem)
-          map.get($deps, 'md-ref-typeface', 'plain')
+          if($exclude-hardcoded-values, null, 0.688rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1rem
+          ) map.get($deps, 'md-ref-typeface', 'plain')
       ),
     'label-small-font': map.get($deps, 'md-ref-typeface', 'plain'),
     'label-small-line-height': if($exclude-hardcoded-values, null, 1rem),
@@ -203,9 +227,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.title-large.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-regular')
-          if($exclude-hardcoded-values, null, 1.375rem) /
-          if($exclude-hardcoded-values, null, 1.75rem)
-          map.get($deps, 'md-ref-typeface', 'brand')
+          if($exclude-hardcoded-values, null, 1.375rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1.75rem
+          ) map.get($deps, 'md-ref-typeface', 'brand')
       ),
     'title-large-font': map.get($deps, 'md-ref-typeface', 'brand'),
     'title-large-line-height': if($exclude-hardcoded-values, null, 1.75rem),
@@ -218,9 +244,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.title-medium.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-medium')
-          if($exclude-hardcoded-values, null, 1rem) /
-          if($exclude-hardcoded-values, null, 1.5rem)
-          map.get($deps, 'md-ref-typeface', 'plain')
+          if($exclude-hardcoded-values, null, 1rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1.5rem
+          ) map.get($deps, 'md-ref-typeface', 'plain')
       ),
     'title-medium-font': map.get($deps, 'md-ref-typeface', 'plain'),
     'title-medium-line-height': if($exclude-hardcoded-values, null, 1.5rem),
@@ -233,9 +261,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.sys.typescale.title-small.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-ref-typeface', 'weight-medium')
-          if($exclude-hardcoded-values, null, 0.875rem) /
-          if($exclude-hardcoded-values, null, 1.25rem)
-          map.get($deps, 'md-ref-typeface', 'plain')
+          if($exclude-hardcoded-values, null, 0.875rem) #{'/'} if(
+            $exclude-hardcoded-values,
+            null,
+            1.25rem
+          ) map.get($deps, 'md-ref-typeface', 'plain')
       ),
     'title-small-font': map.get($deps, 'md-ref-typeface', 'plain'),
     'title-small-line-height': if($exclude-hardcoded-values, null, 1.25rem),

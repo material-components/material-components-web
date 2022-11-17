@@ -76,9 +76,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.navigation-drawer.headline.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'title-small-weight')
-          map.get($deps, 'md-sys-typescale', 'title-small-size') /
-          map.get($deps, 'md-sys-typescale', 'title-small-line-height')
-          map.get($deps, 'md-sys-typescale', 'title-small-font')
+          map.get($deps, 'md-sys-typescale', 'title-small-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'title-small-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'title-small-font')
       ),
     'headline-weight': map.get($deps, 'md-sys-typescale', 'title-small-weight'),
     'hover-state-layer-opacity':
@@ -114,9 +116,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.navigation-drawer.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'label-large-weight')
-          map.get($deps, 'md-sys-typescale', 'label-large-size') /
-          map.get($deps, 'md-sys-typescale', 'label-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'label-large-font')
+          map.get($deps, 'md-sys-typescale', 'label-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'label-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'label-large-font')
       ),
     'label-text-weight':
       map.get($deps, 'md-sys-typescale', 'label-large-weight'),
@@ -136,9 +140,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.navigation-drawer.large-badge-label.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'label-large-weight')
-          map.get($deps, 'md-sys-typescale', 'label-large-size') /
-          map.get($deps, 'md-sys-typescale', 'label-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'label-large-font')
+          map.get($deps, 'md-sys-typescale', 'label-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'label-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'label-large-font')
       ),
     'large-badge-label-weight':
       map.get($deps, 'md-sys-typescale', 'label-large-weight'),

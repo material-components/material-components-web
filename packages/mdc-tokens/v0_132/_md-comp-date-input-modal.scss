@@ -49,9 +49,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.date-input.modal.header.headline.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'headline-large-weight')
-          map.get($deps, 'md-sys-typescale', 'headline-large-size') /
-          map.get($deps, 'md-sys-typescale', 'headline-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'headline-large-font')
+          map.get($deps, 'md-sys-typescale', 'headline-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'headline-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'headline-large-font')
       ),
     'header-headline-weight':
       map.get($deps, 'md-sys-typescale', 'headline-large-weight'),
@@ -71,9 +73,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.date-input.modal.header.supporting-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'label-medium-weight')
-          map.get($deps, 'md-sys-typescale', 'label-medium-size') /
-          map.get($deps, 'md-sys-typescale', 'label-medium-line-height')
-          map.get($deps, 'md-sys-typescale', 'label-medium-font')
+          map.get($deps, 'md-sys-typescale', 'label-medium-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'label-medium-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'label-medium-font')
       ),
     'header-supporting-text-weight':
       map.get($deps, 'md-sys-typescale', 'label-medium-weight')

@@ -61,9 +61,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.extended-fab.surface.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'label-large-weight')
-          map.get($deps, 'md-sys-typescale', 'label-large-size') /
-          map.get($deps, 'md-sys-typescale', 'label-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'label-large-font')
+          map.get($deps, 'md-sys-typescale', 'label-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'label-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'label-large-font')
       ),
     'label-text-weight':
       map.get($deps, 'md-sys-typescale', 'label-large-weight'),

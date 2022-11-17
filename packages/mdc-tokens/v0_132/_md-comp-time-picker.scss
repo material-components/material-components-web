@@ -44,9 +44,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.time-picker.clock-dial.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-large-weight')
-          map.get($deps, 'md-sys-typescale', 'body-large-size') /
-          map.get($deps, 'md-sys-typescale', 'body-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-large-font')
+          map.get($deps, 'md-sys-typescale', 'body-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-large-font')
       ),
     'clock-dial-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-large-weight'),
@@ -87,9 +89,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.time-picker.headline.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'label-medium-weight')
-          map.get($deps, 'md-sys-typescale', 'label-medium-size') /
-          map.get($deps, 'md-sys-typescale', 'label-medium-line-height')
-          map.get($deps, 'md-sys-typescale', 'label-medium-font')
+          map.get($deps, 'md-sys-typescale', 'label-medium-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'label-medium-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'label-medium-font')
       ),
     'headline-weight': map.get($deps, 'md-sys-typescale', 'label-medium-weight'),
     'period-selector-container-shape':
@@ -116,9 +120,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.time-picker.period-selector.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'title-medium-weight')
-          map.get($deps, 'md-sys-typescale', 'title-medium-size') /
-          map.get($deps, 'md-sys-typescale', 'title-medium-line-height')
-          map.get($deps, 'md-sys-typescale', 'title-medium-font')
+          map.get($deps, 'md-sys-typescale', 'title-medium-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'title-medium-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'title-medium-font')
       ),
     'period-selector-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'title-medium-weight'),
@@ -185,9 +191,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.time-picker.time-selector.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'display-large-weight')
-          map.get($deps, 'md-sys-typescale', 'display-large-size') /
-          map.get($deps, 'md-sys-typescale', 'display-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'display-large-font')
+          map.get($deps, 'md-sys-typescale', 'display-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'display-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'display-large-font')
       ),
     'time-selector-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'display-large-weight'),
@@ -225,9 +233,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.time-picker.time-selector.separator.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'display-large-weight')
-          map.get($deps, 'md-sys-typescale', 'display-large-size') /
-          map.get($deps, 'md-sys-typescale', 'display-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'display-large-font')
+          map.get($deps, 'md-sys-typescale', 'display-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'display-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'display-large-font')
       ),
     'time-selector-separator-weight':
       map.get($deps, 'md-sys-typescale', 'display-large-weight'),

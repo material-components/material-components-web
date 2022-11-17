@@ -107,9 +107,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.primary-navigation-tab.with-label-text.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'title-small-weight')
-          map.get($deps, 'md-sys-typescale', 'title-small-size') /
-          map.get($deps, 'md-sys-typescale', 'title-small-line-height')
-          map.get($deps, 'md-sys-typescale', 'title-small-font')
+          map.get($deps, 'md-sys-typescale', 'title-small-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'title-small-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'title-small-font')
       ),
     'with-label-text-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'title-small-weight')

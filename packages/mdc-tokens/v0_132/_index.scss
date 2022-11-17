@@ -9,7 +9,8 @@
 @forward './md-comp-bottom-app-bar' as md-comp-bottom-app-bar-*;
 @forward './md-comp-carousel-item' as md-comp-carousel-item-*;
 @forward './md-comp-checkbox' as md-comp-checkbox-*;
-@forward './md-comp-circular-progress-indicator' as md-comp-circular-progress-indicator-*;
+@forward './md-comp-circular-progress-indicator' as
+  md-comp-circular-progress-indicator-*;
 @forward './md-comp-data-table' as md-comp-data-table-*;
 @forward './md-comp-date-input-modal' as md-comp-date-input-modal-*;
 @forward './md-comp-date-picker-docked' as md-comp-date-picker-docked-*;
@@ -45,12 +46,14 @@
 @forward './md-comp-filled-select' as md-comp-filled-select-*;
 @forward './md-comp-filled-text-field' as md-comp-filled-text-field-*;
 @forward './md-comp-filled-tonal-button' as md-comp-filled-tonal-button-*;
-@forward './md-comp-filled-tonal-icon-button' as md-comp-filled-tonal-icon-button-*;
+@forward './md-comp-filled-tonal-icon-button' as
+  md-comp-filled-tonal-icon-button-*;
 @forward './md-comp-filter-chip' as md-comp-filter-chip-*;
 @forward './md-comp-full-screen-dialog' as md-comp-full-screen-dialog-*;
 @forward './md-comp-icon-button' as md-comp-icon-button-*;
 @forward './md-comp-input-chip' as md-comp-input-chip-*;
-@forward './md-comp-linear-progress-indicator' as md-comp-linear-progress-indicator-*;
+@forward './md-comp-linear-progress-indicator' as
+  md-comp-linear-progress-indicator-*;
 @forward './md-comp-list' as md-comp-list-*;
 @forward './md-comp-menu' as md-comp-menu-*;
 @forward './md-comp-navigation-bar' as md-comp-navigation-bar-*;
@@ -61,7 +64,8 @@
 @forward './md-comp-outlined-card' as md-comp-outlined-card-*;
 @forward './md-comp-outlined-icon-button' as md-comp-outlined-icon-button-*;
 @forward './md-comp-outlined-menu-button' as md-comp-outlined-menu-button-*;
-@forward './md-comp-outlined-segmented-button' as md-comp-outlined-segmented-button-*;
+@forward './md-comp-outlined-segmented-button' as
+  md-comp-outlined-segmented-button-*;
 @forward './md-comp-outlined-select' as md-comp-outlined-select-*;
 @forward './md-comp-outlined-text-field' as md-comp-outlined-text-field-*;
 @forward './md-comp-plain-tooltip' as md-comp-plain-tooltip-*;
@@ -71,7 +75,8 @@
 @forward './md-comp-scrim' as md-comp-scrim-*;
 @forward './md-comp-search-bar' as md-comp-search-bar-*;
 @forward './md-comp-search-view' as md-comp-search-view-*;
-@forward './md-comp-secondary-navigation-tab' as md-comp-secondary-navigation-tab-*;
+@forward './md-comp-secondary-navigation-tab' as
+  md-comp-secondary-navigation-tab-*;
 @forward './md-comp-sheet-bottom' as md-comp-sheet-bottom-*;
 @forward './md-comp-sheet-floating' as md-comp-sheet-floating-*;
 @forward './md-comp-sheet-side' as md-comp-sheet-side-*;
@@ -86,7 +91,8 @@
 @forward './md-comp-top-app-bar-large' as md-comp-top-app-bar-large-*;
 @forward './md-comp-top-app-bar-medium' as md-comp-top-app-bar-medium-*;
 @forward './md-comp-top-app-bar-small' as md-comp-top-app-bar-small-*;
-@forward './md-comp-top-app-bar-small-centered' as md-comp-top-app-bar-small-centered-*;
+@forward './md-comp-top-app-bar-small-centered' as
+  md-comp-top-app-bar-small-centered-*;
 @forward './md-ref-palette' as md-ref-palette-*;
 @forward './md-ref-typeface' as md-ref-typeface-*;
 @forward './md-sys-color' as md-sys-color-*;

@@ -43,9 +43,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.top-app-bar.medium.headline.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'headline-small-weight')
-          map.get($deps, 'md-sys-typescale', 'headline-small-size') /
-          map.get($deps, 'md-sys-typescale', 'headline-small-line-height')
-          map.get($deps, 'md-sys-typescale', 'headline-small-font')
+          map.get($deps, 'md-sys-typescale', 'headline-small-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'headline-small-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'headline-small-font')
       ),
     'headline-weight':
       map.get($deps, 'md-sys-typescale', 'headline-small-weight'),

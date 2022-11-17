@@ -50,9 +50,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.search-view.header.input-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-large-weight')
-          map.get($deps, 'md-sys-typescale', 'body-large-size') /
-          map.get($deps, 'md-sys-typescale', 'body-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-large-font')
+          map.get($deps, 'md-sys-typescale', 'body-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-large-font')
       ),
     'header-input-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-large-weight'),
@@ -73,9 +75,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.search-view.header.supporting-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-large-weight')
-          map.get($deps, 'md-sys-typescale', 'body-large-size') /
-          map.get($deps, 'md-sys-typescale', 'body-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-large-font')
+          map.get($deps, 'md-sys-typescale', 'body-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-large-font')
       ),
     'header-supporting-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-large-weight'),

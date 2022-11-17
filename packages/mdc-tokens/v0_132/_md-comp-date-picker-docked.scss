@@ -55,9 +55,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.date-picker.docked.date.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-small-weight')
-          map.get($deps, 'md-sys-typescale', 'body-small-size') /
-          map.get($deps, 'md-sys-typescale', 'body-small-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-small-font')
+          map.get($deps, 'md-sys-typescale', 'body-small-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-small-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-small-font')
       ),
     'date-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-small-weight'),
@@ -142,9 +144,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.date-picker.docked.menu-button.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'label-large-weight')
-          map.get($deps, 'md-sys-typescale', 'label-large-size') /
-          map.get($deps, 'md-sys-typescale', 'label-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'label-large-font')
+          map.get($deps, 'md-sys-typescale', 'label-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'label-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'label-large-font')
       ),
     'menu-button-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'label-large-weight'),
@@ -185,9 +189,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.date-picker.docked.menu.list-item.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-large-weight')
-          map.get($deps, 'md-sys-typescale', 'body-large-size') /
-          map.get($deps, 'md-sys-typescale', 'body-large-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-large-font')
+          map.get($deps, 'md-sys-typescale', 'body-large-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-large-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-large-font')
       ),
     'menu-list-item-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-large-weight'),
@@ -224,9 +230,11 @@ $_default: (
         null,
         /** Warning: risk of reduced fidelity from using this composite typography token. Tokens md.comp.date-picker.docked.weekdays.label-text.tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
           map.get($deps, 'md-sys-typescale', 'body-small-weight')
-          map.get($deps, 'md-sys-typescale', 'body-small-size') /
-          map.get($deps, 'md-sys-typescale', 'body-small-line-height')
-          map.get($deps, 'md-sys-typescale', 'body-small-font')
+          map.get($deps, 'md-sys-typescale', 'body-small-size') #{'/'} map.get(
+            $deps,
+            'md-sys-typescale',
+            'body-small-line-height'
+          ) map.get($deps, 'md-sys-typescale', 'body-small-font')
       ),
     'weekdays-label-text-weight':
       map.get($deps, 'md-sys-typescale', 'body-small-weight')
