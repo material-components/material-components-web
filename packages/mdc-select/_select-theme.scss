@@ -42,6 +42,7 @@
 @use '@material/menu-surface/mixins' as menu-surface-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
@@ -345,6 +346,9 @@ $_light-theme: (
   @include _menu-container-color(map.get($theme, menu-container-color));
   @include _menu-container-elevation(map.get($theme, menu-container-elevation));
   @include _menu-container-shape(map.get($theme, menu-container-shape));
+  @include _menu-container-surface-tint-layer-color(
+    map.get($theme, menu-container-surface-tint-layer-color)
+  );
   @include _menu-divider-color(map.get($theme, menu-divider-color));
   @include _menu-divider-height(map.get($theme, menu-divider-height));
   @include _menu-list-item-container-height(
@@ -360,6 +364,22 @@ $_light-theme: (
       size: map.get($theme, menu-list-item-label-text-size),
       tracking: map.get($theme, menu-list-item-label-text-tracking),
       weight: map.get($theme, menu-list-item-label-text-weight),
+    )
+  );
+  @include _menu-list-item-state-layer(
+    (
+      focus-state-layer-color:
+        map.get($theme, menu-list-item-focus-state-layer-color),
+      focus-state-layer-opacity:
+        map.get($theme, menu-list-item-focus-state-layer-opacity),
+      hover-state-layer-color:
+        map.get($theme, menu-list-item-hover-state-layer-color),
+      hover-state-layer-opacity:
+        map.get($theme, menu-list-item-hover-state-layer-opacity),
+      pressed-state-layer-color:
+        map.get($theme, menu-list-item-pressed-state-layer-color),
+      pressed-state-layer-opacity:
+        map.get($theme, menu-list-item-pressed-state-layer-opacity),
     )
   );
   @include _menu-list-item-selected-container-color(
@@ -659,6 +679,15 @@ $_light-theme: (
   }
 }
 
+@mixin _menu-list-item-state-layer($ripple-theme) {
+  .mdc-list-item:not(.mdc-list-item--disabled) {
+    @include ripple-theme.theme-styles(
+      $ripple-theme,
+      $ripple-target: list-evolution-mixins.$ripple-target
+    );
+  }
+}
+
 @mixin _menu-divider-color($color) {
   .mdc-select__list {
     @include list-evolution-mixins.divider-color($color);
@@ -689,6 +718,12 @@ $_light-theme: (
 @mixin _menu-container-shape($shape) {
   .mdc-select__menu {
     @include menu-surface-mixins.shape-radius($shape);
+  }
+}
+
+@mixin _menu-container-surface-tint-layer-color($color) {
+  .mdc-select__menu {
+    @include elevation-theme.overlay-container-color($color);
   }
 }
 
