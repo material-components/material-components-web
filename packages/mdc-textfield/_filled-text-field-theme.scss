@@ -179,6 +179,9 @@ $_light-theme: (
     )
   );
   @include _active-indicator-height(map.get($theme, active-indicator-height));
+  @include _focus-active-indicator-height(
+    map.get($theme, focus-active-indicator-height)
+  );
   @include _hover-state-layer(
     (
       error-hover-state-layer-color:
@@ -242,6 +245,12 @@ $_light-theme: (
 @mixin _active-indicator-height($height) {
   .mdc-line-ripple {
     @include line-ripple-mixins.height($height);
+  }
+}
+
+@mixin _focus-active-indicator-height($height) {
+  .mdc-line-ripple {
+    @include line-ripple-mixins.active-height($height);
   }
 }
 
