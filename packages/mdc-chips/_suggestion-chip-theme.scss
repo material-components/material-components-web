@@ -40,6 +40,7 @@ $_light-theme: (
   label-text-size: null,
   label-text-weight: null,
   label-text-tracking: null,
+  label-text-type: null,
   label-text-color: null,
   flat-disabled-outline-color: null,
   flat-disabled-outline-opacity: null,
@@ -62,46 +63,28 @@ $_light-theme: (
   pressed-label-text-color: null,
   elevated-pressed-container-elevation: null,
   container-surface-tint-layer-color: null,
+  with-leading-icon-disabled-leading-icon-color: null,
+  with-leading-icon-disabled-leading-icon-opacity: null,
+  with-leading-icon-focus-leading-icon-color: null,
+  with-leading-icon-hover-leading-icon-color: null,
+  with-leading-icon-leading-icon-color: null,
+  with-leading-icon-leading-icon-size: null,
+  with-leading-icon-pressed-leading-icon-color: null,
 );
 
 $_custom-property-prefix: 'suggestion-chip';
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($_light-theme, $theme);
-
-  // Resolve elevation.
-  @each $key
-    in (
-      flat-container-elevation,
-      elevated-container-elevation,
-      elevated-disabled-container-elevation,
-      elevated-hover-container-elevation,
-      elevated-focus-container-elevation,
-      elevated-pressed-container-elevation
-    )
-  {
-    $value: map.get($theme, $key);
-    @if $value {
-      $theme: map.set(
-        $theme,
-        $key,
-        meta.call(
-          $elevation-resolver: map.get($resolvers, elevation),
-          $elevation: $value,
-          $shadow-color: map.get($theme, elevated-container-shadow-color),
-        )
-      );
-    }
-  }
-
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $_custom-property-prefix
   );
+  @include chip-theme.theme($theme, $resolvers: $resolvers);
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_light-theme, $theme);
+  @include theme.validate-theme-styles($_light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $_custom-property-prefix
