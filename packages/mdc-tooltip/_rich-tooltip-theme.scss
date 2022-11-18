@@ -99,8 +99,9 @@ $light-theme: (
     );
   }
   @include tooltip-theme.rich-text-ink-color(
-    $title-color: map.get($theme, subhead-color),
-    $content-color: map.get($theme, supporting-text-color)
+    $title-color: map.get($theme, 'subhead-color'),
+    $content-color: map.get($theme, 'supporting-text-color'),
+    $content-link-color: map.get($theme, 'action-label-text-color')
   );
 
   .mdc-tooltip--rich-action {
