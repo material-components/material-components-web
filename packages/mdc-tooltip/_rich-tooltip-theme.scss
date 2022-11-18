@@ -74,7 +74,7 @@ $light-theme: (
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  @include theme-validate-theme($light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   $theme: _resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
     $theme,
@@ -99,8 +99,8 @@ $light-theme: (
     );
   }
   @include tooltip-theme.rich-text-ink-color(
-    $title-color: map.get($theme, 'subhead-color'),
-    $content-color: map.get($theme, 'supporting-text-color')
+    $title-color: map.get($theme, subhead-color),
+    $content-color: map.get($theme, supporting-text-color)
   );
 
   .mdc-tooltip--rich-action {
@@ -200,7 +200,7 @@ $light-theme: (
   @return null;
 }
 
-@function _resolve-elevation($theme, $elevation-resolver) {
+@function _resolve-theme-elevation($theme, $elevation-resolver) {
   @if map.get($theme, 'container-elevation') and
     map.get($theme, 'container-shadow-color')
   {
@@ -227,11 +227,7 @@ $light-theme: (
 @function _resolve-theme($theme, $resolvers) {
   $theme: map.merge(
     $theme,
-    _resolve-theme-elevation(
-      $theme,
-      map.get($resolvers, 'elevation'),
-      container-elevation
-    )
+    _resolve-theme-elevation($theme, map.get($resolvers, 'elevation'))
   );
 
   $theme: map.merge(
