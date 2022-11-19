@@ -77,7 +77,7 @@ $light-theme: (
     color.mix(
       $value-indicator-color,
       theme-color.prop-value(on-primary),
-      $value-indicator-opacity * 100
+      $value-indicator-opacity * 100%
     ),
   label-container-elevation: null,
   label-container-height: null,
