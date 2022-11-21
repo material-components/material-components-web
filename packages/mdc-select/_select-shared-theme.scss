@@ -34,11 +34,13 @@
 @function _resolve-theme-elevation($theme, $resolver) {
   $elevation: map.get($theme, menu-container-elevation);
   $shadow-color: map.get($theme, menu-container-shadow-color);
-  $resolved-value: meta.call(
-    $resolver,
-    $elevation: $elevation,
-    $shadow-color: $shadow-color
-  );
-  $theme: map.set($theme, menu-container-elevation, $resolved-value);
+  @if $elevation and $shadow-color {
+    $resolved-value: meta.call(
+      $resolver,
+      $elevation: $elevation,
+      $shadow-color: $shadow-color
+    );
+    $theme: map.set($theme, menu-container-elevation, $resolved-value);
+  }
   @return $theme;
 }

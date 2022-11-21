@@ -707,11 +707,13 @@ $_light-theme: (
 }
 
 @mixin _menu-container-elevation($elevation) {
-  .mdc-select__menu {
-    @include elevation-theme.shadow(map.get($elevation, shadow));
-    @include elevation-theme.overlay-opacity(
-      map.get($elevation, overlay-opacity)
-    );
+  @if $elevation {
+    .mdc-select__menu {
+      @include elevation-theme.shadow(map.get($elevation, shadow));
+      @include elevation-theme.overlay-opacity(
+        map.get($elevation, overlay-opacity)
+      );
+    }
   }
 }
 
@@ -975,7 +977,10 @@ $_light-theme: (
   $query: feature-targeting.all()
 ) {
   @if (meta.type-of($radius) == 'list' and list.length($radius) > 2) and
-    (list.nth($radius, 3) != 0 or list.nth($radius, 4) != 0)
+    (
+      (list.nth($radius, 3) != 0 and list.nth($radius, 3) != 0px) or
+        (list.nth($radius, 4) != 0 and list.nth($radius, 4) != 0px)
+    )
   {
     @error "mdc-select: Invalid radius #{$radius}. Only top-left and top-right corners may be customized.";
   }
