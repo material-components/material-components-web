@@ -28,6 +28,7 @@ const HEADLESS_LAUNCHERS = {
   },
   'FirefoxHeadless': {
     base: 'Firefox',
+    browserVersion: '105',
     flags: ['-headless'],
   },
 };
