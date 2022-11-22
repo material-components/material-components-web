@@ -2,7 +2,7 @@
 @use 'third_party/javascript/material_components_web/focus/focus-ring-theme';
 
 @include test.describe('Calling focus-ring-theme') {
-  @include test.describe('.theme()') {
+  @include test.describe('.theme') {
     @include test.it('returns nothing when no theme is provided.') {
       @include test.assert {
         @include test.output {
@@ -11,6 +11,86 @@
 
         @include test.expect {
           // No content. This is testing that an error isn't thrown.
+        }
+      }
+    }
+
+    @include test.it('returns the expected custom property declarations.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-theme.theme(
+            (
+              'offset-horizontal': 2px,
+              'offset-vertical': 3px,
+              'track-width': 5px,
+              'ring-color': blue,
+              'ring-border-start-start-radius': 7px,
+              'ring-border-start-end-radius': 11px,
+              'ring-border-end-end-radius': 13px,
+              'ring-border-end-start-radius': 17px,
+            )
+          );
+        }
+
+        @include test.expect {
+          --mdc-focus-ring-offset-horizontal: 2px;
+          --mdc-focus-ring-offset-vertical: 3px;
+          --mdc-focus-ring-track-width: 5px;
+          --mdc-focus-ring-ring-color: blue;
+          --mdc-focus-ring-ring-border-start-start-radius: 7px;
+          --mdc-focus-ring-ring-border-start-end-radius: 11px;
+          --mdc-focus-ring-ring-border-end-end-radius: 13px;
+          --mdc-focus-ring-ring-border-end-start-radius: 17px;
+        }
+      }
+    }
+  }
+
+  @include test.describe('.theme-styles') {
+    @include test.it('returns the expected CSS.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-theme.theme-styles(
+            (
+              'offset-horizontal': 2px,
+              'offset-vertical': 3px,
+              'track-width': 5px,
+              'ring-color': blue,
+              'ring-border-start-start-radius': 7px,
+              'ring-border-start-end-radius': 11px,
+              'ring-border-end-end-radius': 13px,
+              'ring-border-end-start-radius': 17px,
+            )
+          );
+        }
+
+        @include test.expect {
+          border: var(--mdc-focus-ring-track-width, 5px) solid
+            var(--mdc-focus-ring-ring-color, blue);
+          border-start-start-radius: var(
+            --mdc-focus-ring-ring-border-start-start-radius,
+            7px
+          );
+          border-start-end-radius: var(
+            --mdc-focus-ring-ring-border-start-end-radius,
+            11px
+          );
+          border-end-start-radius: var(
+            --mdc-focus-ring-ring-border-end-start-radius,
+            17px
+          );
+          border-end-end-radius: var(
+            --mdc-focus-ring-ring-border-end-end-radius,
+            13px
+          );
+          inset-block: calc(
+            -1 * (var(--mdc-focus-ring-offset-vertical, 3px) +
+                  var(--mdc-focus-ring-track-width, 5px))
+          );
+          inset-inline: calc(
+            -1 * (var(--mdc-focus-ring-offset-horizontal, 2px) +
+                  var(--mdc-focus-ring-track-width, 5px))
+          );
         }
       }
     }
