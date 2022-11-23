@@ -257,7 +257,7 @@ $error-color: error !default;
       default: map.get($theme, text-field-active-indicator-color),
       hover: map.get($theme, text-field-hover-active-indicator-color),
       focus: map.get($theme, text-field-focus-active-indicator-color),
-      disabled: map.get($theme, text-field-disabled-indicator-color),
+      disabled: map.get($theme, text-field-disabled-active-indicator-color),
     )
   );
   @include dropdown-icon-size(map.get($theme, text-field-trailing-icon-size));
