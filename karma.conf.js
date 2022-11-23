@@ -26,10 +26,6 @@ const HEADLESS_LAUNCHERS = {
     base: 'ChromeHeadless',
     flags: ['--no-sandbox'],
   },
-  'FirefoxHeadless': {
-    base: 'Firefox',
-    flags: ['-headless'],
-  },
 };
 const USE_SAUCE = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 const PROGRESS = USE_SAUCE ? 'dots' : 'progress';
