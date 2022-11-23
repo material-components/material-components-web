@@ -94,6 +94,7 @@ export class MDCMenuSurfaceFoundation extends
   private isHoistedElement = false;
   private isFixedPosition = false;
   private isHorizontallyCenteredOnViewport = false;
+  private viewportElement: Element|null = null;
 
   private maxHeight = 0;
   private openBottomBias = 0;
@@ -225,6 +226,14 @@ export class MDCMenuSurfaceFoundation extends
    */
   setOpenBottomBias(bias: number) {
     this.openBottomBias = bias;
+  }
+
+  /**
+   * Set a viewport element that will be used to limit the available screen
+   * real estate of the menu. If null, the window's viewport will be used.
+   */
+  setViewportElement(element: Element|null) {
+    this.viewportElement = element;
   }
 
   isOpen() {
@@ -378,7 +387,7 @@ export class MDCMenuSurfaceFoundation extends
   private getAutoLayoutmeasurements(): AutoLayoutMeasurements {
     let anchorRect = this.adapter.getAnchorDimensions();
     const bodySize = this.adapter.getBodyDimensions();
-    const viewportSize = this.adapter.getWindowDimensions();
+    const viewportSize = this.getViewportSize();
     const windowScroll = this.adapter.getWindowScroll();
 
     if (!anchorRect) {
@@ -409,6 +418,21 @@ export class MDCMenuSurfaceFoundation extends
       viewportSize,
       windowScroll,
     };
+  }
+
+  /**
+   * Get the available viewport. This can either come from a parent element
+   * (e.g. for hidden overflow) or the full window if none is specified.
+   */
+  private getViewportSize(): MDCMenuDimensions {
+    if (this.viewportElement) {
+      const boundingClientRect = this.viewportElement.getBoundingClientRect();
+      return {
+        height: boundingClientRect.height,
+        width: boundingClientRect.width,
+      } as MDCMenuDimensions;
+    }
+    return this.adapter.getWindowDimensions();
   }
 
   /**
