@@ -107,7 +107,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private wrapFocus = false;
   private isVertical = true;
   private isSingleSelectionList = false;
-  private areDisabledItemsFocusable = true;
+  private areDisabledItemsFocusable = false;
   private selectedIndex: MDCListIndex = numbers.UNSET_INDEX;
   private focusedItemIndex = numbers.UNSET_INDEX;
   private useActivatedClass = false;
