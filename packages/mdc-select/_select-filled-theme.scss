@@ -170,6 +170,8 @@ $_custom-property-prefix: 'filled-select';
 
 @mixin _container-height-and-shape($theme) {
   @if map.get($theme, text-field-container-height) {
+    // Note: This is not dynamic because this token is planned to be removed.
+    // see b/242856144 and b/244747640
     @include select-theme.filled-height(
       map.get($theme, text-field-container-height)
     );
