@@ -321,3 +321,49 @@ $category-keywords: (
     }
   }
 }
+
+/// Resolves one or more shape tokens and expands them into 4 separate logical
+/// tokens for each corner.
+///
+/// @example - scss
+///   $theme: (container-shape: (4px 4px 0 0));
+///   $theme: resolve-theme(
+///     $theme,
+///     map.get($resolvers, shape),
+///     container-shape,
+///   );
+///   // (
+///   //   container-shape-start-start: 4px,
+///   //   container-shape-start-end: 4px,
+///   //   container-shape-end-end: 0,
+///   //   container-shape-end-start: 0,
+///   // )
+///
+/// @param {Map} $theme - The theme to resolve tokens for.
+/// @param {Function} $resolver - The shape resolver to use.
+/// @param {String...} $shape-tokens - The shape tokens to resolve.
+/// @return {Map} The theme with resolved shape tokens.
+@function resolve-theme($theme, $resolver, $shape-tokens...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $token in $shape-tokens {
+    $shape-theme: meta.call($resolver, $shape: map.get($theme, $token));
+
+    // Add resolved values, but allow $theme to override the results if needed.
+    $theme: map.merge(
+      (
+        '#{$token}-start-start': map.get($shape-theme, start-start),
+        '#{$token}-start-end': map.get($shape-theme, start-end),
+        '#{$token}-end-end': map.get($shape-theme, end-end),
+        '#{$token}-end-start': map.get($shape-theme, end-start),
+      ),
+      $theme
+    );
+
+    $theme: map.remove($theme, $token);
+  }
+
+  @return $theme;
+}
