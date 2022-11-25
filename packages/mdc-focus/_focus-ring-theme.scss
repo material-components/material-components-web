@@ -3,7 +3,6 @@
 @use 'sass:meta';
 
 @use '@material/theme/keys';
-@use '@material/theme/theme';
 @use '@material/theme/validate';
 
 $_custom-property-prefix: 'focus-ring';
@@ -32,9 +31,8 @@ $default-theme: (
 }
 
 @mixin theme-styles($theme: $default-theme) {
-  @include theme.validate-theme-styles($default-theme, $theme);
+  $theme: validate.theme-styles($default-theme, $theme);
   $theme: keys.create-theme-vars($theme, $_custom-property-prefix);
-
   $ring-color: map.get($theme, $_ring-color-key);
   $ring-offset: map.get($theme, $_ring-offset-key);
   $track-width: map.get($theme, $_track-width-key);
