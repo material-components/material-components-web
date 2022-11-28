@@ -413,7 +413,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       this.toggleCheckboxRange(
           currentIndex, this.adapter.getListItemCount() - 1, currentIndex);
     } else if (
-        isLetterA && eventHasModifiers(['Control']) && this.isCheckboxList) {
+        isLetterA && (eventHasModifiers(['Control']) || eventHasModifiers(['Meta'])) && this.isCheckboxList) {
       event.preventDefault();
       this.checkboxListToggleAll(
           this.selectedIndex === numbers.UNSET_INDEX ?
