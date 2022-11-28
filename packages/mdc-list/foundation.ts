@@ -875,29 +875,53 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private getFirstSelectedOrFocusedItemIndex(): number {
+    const firstFocusableListItem = this.getFirstEnabledItem();
+
     if (this.adapter.getListItemCount() === 0) {
       return numbers.UNSET_INDEX;
     }
 
     // Action lists retain focus on the most recently focused item.
     if (!this.isSelectableList()) {
-      return Math.max(this.focusedItemIndex, 0);
+      return Math.max(this.focusedItemIndex, firstFocusableListItem);
     }
 
     // Single-selection lists focus the selected item.
     if (typeof this.selectedIndex === 'number' &&
         this.selectedIndex !== numbers.UNSET_INDEX) {
-      return this.selectedIndex;
+      return this.areDisabledItemsFocusable &&
+              this.isIndexDisabled(this.selectedIndex) ?
+          firstFocusableListItem :
+          this.selectedIndex;
     }
 
-    // Multiple-selection lists focus the first selected item.
+    // Multiple-selection lists focus the first enabled selected item.
     if (isNumberArray(this.selectedIndex) && this.selectedIndex.length > 0) {
-      return this.selectedIndex.reduce(
-          (minIndex, currentIndex) => Math.min(minIndex, currentIndex));
+      const sorted = [...this.selectedIndex].sort((a, b) => a - b);
+      for (const index of sorted) {
+        if (this.isIndexDisabled(index) && !this.areDisabledItemsFocusable) {
+          continue;
+        } else {
+          return index;
+        }
+      }
     }
 
     // Selection lists without a selection focus the first item.
-    return 0;
+    return firstFocusableListItem;
+  }
+
+
+  private getFirstEnabledItem(): number {
+    const listSize = this.adapter.getListItemCount();
+    let i = 0;
+    while (i < listSize) {
+      if (!this.isIndexDisabled(i)) {
+        break;
+      }
+      i++;
+    }
+    return i === listSize ? numbers.UNSET_INDEX : i;
   }
 
   private isIndexValid(index: MDCListIndex, validateListType: boolean = true) {
