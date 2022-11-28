@@ -1306,6 +1306,35 @@ describe('MDCListFoundation', () => {
            .toHaveBeenCalledWith(2, false);
      });
 
+  it('#handleKeydown should deselect all enabled items on ctrl + A, if all items are selected and list contains disabled items',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const event = createMockKeyboardEvent('A', ['Control']);
+
+       mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+       mockAdapter.getListItemCount.and.returnValue(3);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+
+       foundation.layout();
+       foundation.setSelectedIndex([0, 2]);
+
+       // Reset the calls since `setSelectedIndex` will throw it off.
+       mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+       foundation.handleKeydown(event, false, -1);
+
+       expect(event.preventDefault).toHaveBeenCalledTimes(1);
+       expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+           .toHaveBeenCalledTimes(2);
+       expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+           .toHaveBeenCalledWith(0, false);
+       expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+           .not.toHaveBeenCalledWith(1, jasmine.any(Boolean));
+       expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+           .toHaveBeenCalledWith(2, false);
+     });
+
   it('#handleKeydown should not select disabled items on ctrl + A', () => {
     const {foundation, mockAdapter} = setupTest();
     const event = createMockKeyboardEvent('A', ['Control']);
@@ -1320,11 +1349,11 @@ describe('MDCListFoundation', () => {
 
     expect(event.preventDefault).toHaveBeenCalledTimes(1);
     expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
-        .toHaveBeenCalledTimes(3);
+        .toHaveBeenCalledTimes(2);
     expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
         .toHaveBeenCalledWith(0, true);
     expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
-        .toHaveBeenCalledWith(1, false);
+        .not.toHaveBeenCalledWith(1, jasmine.any(Boolean));
     expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
         .toHaveBeenCalledWith(2, true);
   });
@@ -1348,12 +1377,19 @@ describe('MDCListFoundation', () => {
        const event = createMockKeyboardEvent('A', ['Control']);
 
        mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+       mockAdapter.getListItemCount.and.returnValue(5);
        mockAdapter.listItemAtIndexHasClass
            .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
            .and.returnValue(true);
-       mockAdapter.getListItemCount.and.returnValue(3);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(3, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(4, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+
        foundation.layout();
-       foundation.setSelectedIndex([1]);
+       foundation.setSelectedIndex([1, 3, 4]);
 
        // Reset the calls since `setSelectedIndex` will throw it off.
        mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
@@ -1361,13 +1397,110 @@ describe('MDCListFoundation', () => {
 
        expect(event.preventDefault).toHaveBeenCalledTimes(1);
        expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
-           .toHaveBeenCalledTimes(3);
+           .toHaveBeenCalledTimes(2);
        expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
            .toHaveBeenCalledWith(0, true);
        expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
-           .toHaveBeenCalledWith(1, true);
+           .not.toHaveBeenCalledWith(1, jasmine.any(Boolean));
        expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
            .toHaveBeenCalledWith(2, true);
+       expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+           .not.toHaveBeenCalledWith(3, jasmine.any(Boolean));
+       expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+           .not.toHaveBeenCalledWith(4, jasmine.any(Boolean));
+     });
+
+  it('selectedIndex retains selected disabled items when ctrl-A selects all',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const event = createMockKeyboardEvent('A', ['Control']);
+
+       mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+       mockAdapter.getListItemCount.and.returnValue(5);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(3, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(4, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+
+       foundation.layout();
+       foundation.setSelectedIndex([1, 3]);
+
+       // Reset the calls since `setSelectedIndex` will throw it off.
+       mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+       foundation.handleKeydown(event, false, -1);
+
+       expect(foundation.getSelectedIndex()).toEqual([0, 1, 2, 3]);
+     });
+
+  it('selectedIndex retains selected disabled items when ctrl-A de-selects all',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const event = createMockKeyboardEvent('A', ['Control']);
+
+       mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+       mockAdapter.getListItemCount.and.returnValue(5);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(3, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+
+       foundation.layout();
+       foundation.setSelectedIndex([0, 1, 2, 3, 4]);
+
+       // Reset the calls since `setSelectedIndex` will throw it off.
+       mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+       foundation.handleKeydown(event, false, -1);
+
+       expect(foundation.getSelectedIndex()).toEqual([1, 3]);
+     });
+
+  it('selectedIndex does not contain unselected disabled items when ctrl-A selects all',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const event = createMockKeyboardEvent('A', ['Control']);
+
+       mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+       mockAdapter.getListItemCount.and.returnValue(3);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+
+       foundation.layout();
+       foundation.setSelectedIndex([]);
+
+       // Reset the calls since `setSelectedIndex` will throw it off.
+       mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+       foundation.handleKeydown(event, false, -1);
+
+       expect(foundation.getSelectedIndex()).toEqual([0, 2]);
+     });
+
+  it('selectedIndex does not contain unselected disabled items when ctrl-A de-selects all',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const event = createMockKeyboardEvent('A', ['Control']);
+
+       mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+       mockAdapter.getListItemCount.and.returnValue(3);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+
+       foundation.layout();
+       foundation.setSelectedIndex([0, 2]);
+
+       // Reset the calls since `setSelectedIndex` will throw it off.
+       mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+       foundation.handleKeydown(event, false, -1);
+
+       expect(foundation.getSelectedIndex()).toEqual([]);
      });
 
   it('#focusNextElement retains the focus on last item when wrapFocus=false and returns that index',
