@@ -117,7 +117,7 @@ $_validation-theme: _remove-unsupported-keys($light-theme);
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   $theme: _remove-unsupported-keys($theme);
-  $theme: validate.theme-styles($_validation-theme, $theme);
+  $theme: validate.theme-styles($_validation-theme, $theme, false);
   $theme: _resolve-theme-elevation($theme, $resolvers: $resolvers);
   $theme: keys.create-theme-properties(
     $theme,
@@ -126,10 +126,10 @@ $_validation-theme: _remove-unsupported-keys($light-theme);
 
   @include theme.property(background-color, map.get($theme, 'container-color'));
   @include shape.radius(map.get($theme, 'container-shape'));
+  @include elevation-theme.theme-styles(map.get($theme, 'container-elevation'));
   @include elevation-theme.overlay-container-color(
     map.get($theme, 'container-surface-tint-layer-color')
   );
-  @include elevation-theme.theme-styles(map.get($theme, 'container-elevation'));
 
   .mdc-menu-item--selected {
     @include theme.property(
