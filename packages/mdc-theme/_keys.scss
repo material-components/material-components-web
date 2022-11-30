@@ -522,3 +522,56 @@ $_options: ();
   @return meta.type-of($map) == 'map' and not
     custom-properties.is-custom-prop($map);
 }
+
+/// Transform a user-provided `$theme` map's values into `var()` custom property
+/// values.
+///
+/// Note: this function does NOT create fallback values so it should not be used
+/// in contexts where IE11 support is needed. For those cases use
+/// `keys.create-theme-properties` instead.
+///
+/// Use this function in `theme-styles()` mixins to transform values into
+/// custom property `var()` "slots" that can subsequently be styled via
+/// `keys.declare-custom-properties` in the `theme()` mixin by the user.
+///
+/// @example - scss
+///   $light-theme: (
+///     label-color: purple
+///   );
+///
+///   @mixin theme-styles($theme) {
+///     $theme: keys.create-theme-vars($theme, button);
+///
+///     .foo {
+///       color: map.get($theme, label-color);
+///     }
+///   }
+///
+/// @example - css
+///     .foo {
+///       color: var(--mdc-button-label-color, purple);
+///     }
+///
+/// @param {Map} $theme - The theme Map to transform values into custom property
+///     `var()`s.
+/// @param {String} $prefix - Component and variant prefix to prepend for each
+///     token's custom property name.
+/// @return {Map} The provided `$theme` Map whose values are replaced with the
+///     `var()` custom properties.
+@function create-theme-vars($theme, $prefix) {
+  @each $key, $value in $theme {
+    @if $value != null {
+      $token: combine($prefix, $key);
+
+      @if meta.type-of($value) == 'map' {
+        $value: create-theme-vars($value, $token);
+      } @else {
+        $value: custom-properties.create-var(
+          custom-properties.create($token, $value)
+        );
+      }
+      $theme: map.set($theme, $key, $value);
+    }
+  }
+  @return $theme;
+}
