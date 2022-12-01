@@ -124,6 +124,11 @@ $light-theme: (
 @mixin theme-styles($theme, $resolver: resolvers.$material) {
   @include theme.validate-theme-styles($light-theme, $theme);
 
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
   .mdc-snackbar__action {
     @include button-text-theme.theme-styles(
       (
@@ -171,11 +176,6 @@ $light-theme: (
       )
     );
   }
-
-  $theme: keys.create-theme-properties(
-    $theme,
-    $prefix: $custom-property-prefix
-  );
 
   @include fill-color(map.get($theme, container-color));
   @include shape-radius(map.get($theme, container-shape));
