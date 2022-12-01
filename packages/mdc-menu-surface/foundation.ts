@@ -71,7 +71,7 @@ export class MDCMenuSurfaceFoundation extends
 
       getInnerDimensions: () => ({height: 0, width: 0}),
       getAnchorDimensions: () => null,
-      getWindowDimensions: () => ({height: 0, width: 0}),
+      getViewportDimensions: () => ({height: 0, width: 0}),
       getBodyDimensions: () => ({height: 0, width: 0}),
       getWindowScroll: () => ({x: 0, y: 0}),
       setPosition: () => undefined,
@@ -378,7 +378,7 @@ export class MDCMenuSurfaceFoundation extends
   private getAutoLayoutmeasurements(): AutoLayoutMeasurements {
     let anchorRect = this.adapter.getAnchorDimensions();
     const bodySize = this.adapter.getBodyDimensions();
-    const viewportSize = this.adapter.getWindowDimensions();
+    const viewportSize = this.adapter.getViewportDimensions();
     const windowScroll = this.adapter.getWindowScroll();
 
     if (!anchorRect) {

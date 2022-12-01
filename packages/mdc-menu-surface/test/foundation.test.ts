@@ -32,7 +32,7 @@ function setupTest() {
   const size = {width: 500, height: 200};
   mockAdapter.hasClass.withArgs(cssClasses.ROOT).and.returnValue(true);
   mockAdapter.hasClass.withArgs(cssClasses.OPEN).and.returnValue(false);
-  mockAdapter.getWindowDimensions.and.returnValue(
+  mockAdapter.getViewportDimensions.and.returnValue(
       {width: window.innerWidth, height: window.innerHeight});
   mockAdapter.getInnerDimensions.and.returnValue(size);
 
@@ -149,7 +149,8 @@ function initAnchorLayout(
       y: 0
     }) {
   mockAdapter.hasAnchor.and.returnValue(true);
-  mockAdapter.getWindowDimensions.and.returnValue({height: 1000, width: 1000});
+  mockAdapter.getViewportDimensions.and.returnValue(
+      {height: 1000, width: 1000});
   mockAdapter.getAnchorDimensions.and.returnValue(anchorDimensions);
   mockAdapter.isRtl.and.returnValue(isRtl);
   mockAdapter.getInnerDimensions.and.returnValue(
@@ -205,7 +206,7 @@ describe('MDCMenuSurfaceFoundation', () => {
       'restoreFocus',
       'getInnerDimensions',
       'getAnchorDimensions',
-      'getWindowDimensions',
+      'getViewportDimensions',
       'getBodyDimensions',
       'getWindowScroll',
       'setPosition',
@@ -529,7 +530,7 @@ describe('MDCMenuSurfaceFoundation', () => {
         jasmine.clock().tick(1);  // Run to frame.
         expect(mockAdapter.setTransformOrigin).toHaveBeenCalledWith('left top');
         expect(mockAdapter.setPosition).toHaveBeenCalledWith({
-          left: (mockAdapter.getWindowDimensions().width - 100) / 2,
+          left: (mockAdapter.getViewportDimensions().width - 100) / 2,
           top: 30
         });
       });

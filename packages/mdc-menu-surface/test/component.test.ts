@@ -421,19 +421,20 @@ describe('MDCMenuSurface', () => {
        document.body.removeChild(root);
      });
 
-  it('adapter#getWindowDimensions returns the dimensions of the window', () => {
-    const {root, component} = setupTest({open: true});
-    document.body.appendChild(root);
-    expect((component.getDefaultFoundation() as any)
-               .adapter.getWindowDimensions()
-               .height)
-        .toEqual(window.innerHeight);
-    expect((component.getDefaultFoundation() as any)
-               .adapter.getWindowDimensions()
-               .width)
-        .toEqual(window.innerWidth);
-    document.body.removeChild(root);
-  });
+  it('adapter#getViewportDimensions returns the dimensions of the window',
+     () => {
+       const {root, component} = setupTest({open: true});
+       document.body.appendChild(root);
+       expect((component.getDefaultFoundation() as any)
+                  .adapter.getViewportDimensions()
+                  .height)
+           .toEqual(window.innerHeight);
+       expect((component.getDefaultFoundation() as any)
+                  .adapter.getViewportDimensions()
+                  .width)
+           .toEqual(window.innerWidth);
+       document.body.removeChild(root);
+     });
 
   it('adapter#getBodyDimensions returns the body dimensions', () => {
     const {root, component} = setupTest({open: true});

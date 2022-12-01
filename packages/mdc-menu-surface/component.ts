@@ -21,13 +21,14 @@
  * THE SOFTWARE.
  */
 
+import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
+
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
 import {MDCMenuDistance} from './types';
-import {getCorrectPropertyName} from '@material/animation/util';
 
 type RegisterFunction = () => void;
 
@@ -192,7 +193,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       getAnchorDimensions: () => this.anchorElement ?
           this.anchorElement.getBoundingClientRect() :
           null,
-      getWindowDimensions: () => {
+      getViewportDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
       },
       getBodyDimensions: () => {
