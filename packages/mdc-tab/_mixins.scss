@@ -63,7 +63,6 @@
       white-space: nowrap;
       cursor: pointer;
       -webkit-appearance: none;
-      z-index: 1;
 
       // Firefox still draws a dotted border around focused buttons unless specifically overridden.
       &::-moz-focus-inner {
