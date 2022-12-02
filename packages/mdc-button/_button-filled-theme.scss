@@ -30,7 +30,7 @@
 @use '@material/theme/theme';
 @use './button-shared-theme';
 
-$_custom-property-prefix: 'filled-button';
+$custom-property-prefix: 'filled-button';
 
 $light-theme: (
   container-color: primary,
@@ -76,7 +76,7 @@ $light-theme: (
     $theme,
     $resolver: $resolver
   );
-  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+  @include keys.declare-custom-properties($theme, $custom-property-prefix);
 }
 
 @mixin theme-styles(
@@ -87,7 +87,7 @@ $light-theme: (
   @include theme.validate-theme($light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
   @include button-shared-theme.theme-styles($theme, $resolver, $query: $query);
 }

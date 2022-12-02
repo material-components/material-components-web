@@ -40,7 +40,7 @@
 $outlined-border-width: 1px !default;
 $outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
-$_custom-property-prefix: 'outlined-button';
+$custom-property-prefix: 'outlined-button';
 
 $light-theme: (
   container-height: button-shared-theme.$height,
@@ -84,7 +84,7 @@ $light-theme: (
     $theme,
     $resolver: $resolver
   );
-  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+  @include keys.declare-custom-properties($theme, $custom-property-prefix);
 }
 
 @mixin theme-styles(
@@ -95,7 +95,7 @@ $light-theme: (
   @include theme.validate-theme-styles($light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
   @include _theme($theme, $resolver, $query: $query);
 }

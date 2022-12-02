@@ -27,6 +27,9 @@
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
+@use '@material/theme/theme';
+@use '@material/theme/keys';
+@use '@material/theme/custom-properties';
 
 $height: 48px !default;
 $width: $height !default;
@@ -96,22 +99,73 @@ $width: $height !default;
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  $vertical-margin-value: math.div($touch-target-height - $component-height, 2);
-
   @include feature-targeting.targets($feat-structure) {
-    margin-top: $vertical-margin-value;
-    margin-bottom: $vertical-margin-value;
+    @if keys.is-key($touch-target-height) or
+      keys.is-key($component-height) or
+      custom-properties.is-custom-prop($touch-target-height) or
+      custom-properties.is-custom-prop($component-height)
+    {
+      // Custom properties
+      @include theme.property(
+        margin-top,
+        'max((touch-target-height - component-height) / 2, 0px)',
+        $replace: (
+          component-height: $component-height,
+          touch-target-height: $touch-target-height
+        )
+      );
+      @include theme.property(
+        margin-bottom,
+        'max((touch-target-height - component-height) / 2, 0px)',
+        $replace: (
+          component-height: $component-height,
+          touch-target-height: $touch-target-height
+        )
+      );
+    } @else {
+      // Static values
+      $vertical-margin-value: math.div(
+        $touch-target-height - $component-height,
+        2
+      );
+      margin-top: $vertical-margin-value;
+      margin-bottom: $vertical-margin-value;
+    }
   }
 
   @if $component-width {
-    $horizontal-margin-value: math.div(
-      $touch-target-width - $component-width,
-      2
-    );
-
     @include feature-targeting.targets($feat-structure) {
-      margin-right: $horizontal-margin-value;
-      margin-left: $horizontal-margin-value;
+      @if keys.is-key($touch-target-width) or
+        keys.is-key($component-width) or
+        custom-properties.is-custom-prop($touch-target-width) or
+        custom-properties.is-custom-prop($component-width)
+      {
+        // Custom properties
+        @include theme.property(
+          margin-right,
+          'max((touch-target-width - component-width) / 2, 0px)',
+          $replace: (
+            component-width: $component-width,
+            touch-target-width: $touch-target-width
+          )
+        );
+        @include theme.property(
+          margin-left,
+          'max((touch-target-width - component-width) / 2), 0px',
+          $replace: (
+            component-width: $component-width,
+            touch-target-width: $touch-target-width
+          )
+        );
+      } @else {
+        // Static values
+        $horizontal-margin-value: math.div(
+          $touch-target-width - $component-width,
+          2
+        );
+        margin-right: $horizontal-margin-value;
+        margin-left: $horizontal-margin-value;
+      }
     }
   }
 }
