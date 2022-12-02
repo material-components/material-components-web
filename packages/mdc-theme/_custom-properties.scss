@@ -33,6 +33,7 @@ $_config: (
   emit-custom-properties: true,
   emit-fallback-values: true,
   emit-fallback-vars: true,
+  varname-prefix: 'mdc',
 );
 
 /// Configure options for custom properties. The configuration will be applied
@@ -55,6 +56,7 @@ $_config: (
 ///     fallback values.
 /// @param {Bool} $emit-fallback-vars [true] - Enable or disable emission of
 ///     fallback `var()` values.
+/// @param {String} $varname-prefix ['mdc'] - Global prefix for all custom properties.
 @mixin configure($config...) {
   @if not meta.content-exists() {
     @error 'content is required for configure()';
@@ -124,9 +126,6 @@ $_config: (
   @return (varname: $varname, fallback: $fallback);
 }
 
-/// Global prefix for all custom properties.
-$_varname-prefix: 'mdc';
-
 /// Create a custom property variable name with the global prefix.
 ///
 /// @example - scss
@@ -135,7 +134,8 @@ $_varname-prefix: 'mdc';
 /// @param {String} $name - The name of the custom property.
 /// @return {String} The full CSS custom property variable name.
 @function create-varname($name) {
-  @return --#{$_varname-prefix}-#{$name};
+  $varname-prefix: map.get($_config, 'varname-prefix');
+  @return --#{$varname-prefix}-#{$name};
 }
 
 /// Returns the custom property variable name of a custom property Map.
