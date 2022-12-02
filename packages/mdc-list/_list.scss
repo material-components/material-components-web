@@ -562,31 +562,6 @@ $ripple-target: variables.$ripple-target;
   :not(.mdc-list-item--disabled).mdc-list-item {
     @include _item-interactive-ripple($query);
   }
-
-  .mdc-list-item--disabled {
-    @include ripple.surface(
-      $ripple-target: variables.$ripple-target,
-      $query: $query
-    );
-    @include ripple.radius-bounded(
-      $ripple-target: variables.$ripple-target,
-      $query: $query
-    );
-    @include ripple-theme.states-base-color(
-      theme-color.prop-value(on-surface),
-      $ripple-target: variables.$ripple-target,
-      $query: $query
-    );
-    @include ripple-theme.states-focus-opacity(
-      ripple-theme.states-opacity(primary, focus),
-      $ripple-target: variables.$ripple-target,
-      $query: $query
-    );
-
-    #{variables.$ripple-target} {
-      @include ripple.target-common($query: $query);
-    }
-  }
 }
 
 ///
