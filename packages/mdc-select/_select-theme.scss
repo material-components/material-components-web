@@ -274,20 +274,40 @@ $error-color: error !default;
   @include _text-field-active-indicator-height(
     map.get($theme, text-field-active-indicator-height)
   );
-  @include _text-field-caret-color(
-    (
-      default: map.get($theme, text-field-caret-color),
-      hover: map.get($theme, text-field-hover-caret-color),
-      focus: map.get($theme, text-field-focus-caret-color),
-    )
-  );
-  @include _text-field-error-caret-color(
-    (
-      default: map.get($theme, text-field-error-caret-color),
-      hover: map.get($theme, text-field-error-hover-caret-color),
-      focus: map.get($theme, text-field-error-focus-caret-color),
-    )
-  );
+  // TODO(b/259951357): Cleanup branch after fix and tokens upgrade.
+  @if map.has-key($theme, text-field-caret-color) or
+    map.has-key($theme, text-field-error-caret-color)
+  {
+    @include _text-field-trailing-icon-color(
+      (
+        default: map.get($theme, text-field-caret-color),
+        hover: map.get($theme, text-field-hover-caret-color),
+        focus: map.get($theme, text-field-focus-caret-color),
+      )
+    );
+    @include _text-field-error-trailing-icon-color(
+      (
+        default: map.get($theme, text-field-error-caret-color),
+        hover: map.get($theme, text-field-error-hover-caret-color),
+        focus: map.get($theme, text-field-error-focus-caret-color),
+      )
+    );
+  } @else {
+    @include _text-field-trailing-icon-color(
+      (
+        default: map.get($theme, text-field-trailing-icon-color),
+        hover: map.get($theme, text-field-hover-trailing-icon-color),
+        focus: map.get($theme, text-field-focus-trailing-icon-color),
+      )
+    );
+    @include _text-field-error-trailing-icon-color(
+      (
+        default: map.get($theme, text-field-error-trailing-icon-color),
+        hover: map.get($theme, text-field-error-hover-trailing-icon-color),
+        focus: map.get($theme, text-field-error-focus-trailing-icon-color),
+      )
+    );
+  }
   @include ink-color(
     (
       default: map.get($theme, text-field-input-text-color),
@@ -473,11 +493,11 @@ $error-color: error !default;
   }
 }
 
-@mixin _text-field-caret-color($color) {
+@mixin _text-field-trailing-icon-color($color) {
   @include dropdown-icon-color($color);
 }
 
-@mixin _text-field-error-caret-color($color) {
+@mixin _text-field-error-trailing-icon-color($color) {
   &.mdc-select--invalid {
     @include dropdown-icon-color($color);
   }
