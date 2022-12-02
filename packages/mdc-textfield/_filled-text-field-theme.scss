@@ -29,6 +29,7 @@
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/keys';
 @use '@material/theme/theme';
+@use '@material/theme/validate';
 @use '@material/tokens/resolvers';
 @use './text-field-theme';
 @use './mixins';
@@ -130,7 +131,7 @@ $_light-theme: (
 );
 
 @mixin theme($theme) {
-  @include theme.validate-theme($_light-theme, $theme);
+  $theme: validate.theme($_light-theme, $theme);
 
   @include keys.declare-custom-properties(
     $theme,
@@ -139,7 +140,7 @@ $_light-theme: (
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_light-theme, $theme);
+  $theme: validate.theme-styles($_light-theme, $theme, false);
 
   $theme: keys.create-theme-properties(
     $theme,
