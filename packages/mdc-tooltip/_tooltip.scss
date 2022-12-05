@@ -82,6 +82,16 @@ $_caret-size: 24px;
       display: none;
       z-index: tooltip-theme.$z-index;
     }
+
+    .mdc-tooltip__screenreader-label {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      user-select: none;
+    }
   }
 
   .mdc-tooltip-wrapper--rich {
