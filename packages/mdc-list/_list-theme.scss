@@ -523,8 +523,12 @@ $light-theme: (
     @include list.list-disabled-opacity(1);
   }
 
-  .mdc-list-item--disabled .mdc-list-item__primary-text {
-    @include theme.property('opacity', $opacity);
+  .mdc-list-item--disabled {
+    .mdc-list-item__primary-text,
+    .mdc-list-item__secondary-text,
+    .mdc-list-item__overline-text {
+      @include theme.property('opacity', $opacity);
+    }
   }
 }
 
