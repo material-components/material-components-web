@@ -325,6 +325,7 @@ $_custom-property-prefix: 'chip';
   @include selected-container-color(
     (
       enabled: map.get($theme, elevated-selected-container-color),
+      disabled: map.get($theme, elevated-disabled-container-color),
     )
   );
   // TODO(b/255716167) Separate theme-styles mixin for hairline and elevated chip variants.
