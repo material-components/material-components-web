@@ -443,7 +443,8 @@ $_light-theme: (
 }
 
 @mixin _set-supporting-text-color($color) {
-  & + .mdc-text-field-helper-line .mdc-text-field-helper-text {
+  & + .mdc-text-field-helper-line .mdc-text-field-helper-text,
+  & + .mdc-text-field-helper-line .mdc-text-field-character-counter {
     @include theme.property(color, $color);
   }
 }
@@ -467,7 +468,8 @@ $_light-theme: (
 }
 
 @mixin _supporting-text-typography($typography-theme) {
-  & + .mdc-text-field-helper-line .mdc-text-field-helper-text {
+  & + .mdc-text-field-helper-line .mdc-text-field-helper-text,
+  & + .mdc-text-field-helper-line .mdc-text-field-character-counter {
     @include typography.theme-styles($typography-theme);
   }
 }
