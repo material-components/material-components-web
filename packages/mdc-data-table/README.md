@@ -282,7 +282,7 @@ user change the rows per page (page size) and navigate between data table pages.
           Rows per page
         </div>
 
-        <div class="mdc-select mdc-select--outlined mdc-select--no-label mdc-data-table__pagination-rows-per-page-select">
+        <div class="mdc-select mdc-select--outlined mdc-select--no-label mdc-data-table__pagination-rows-per-page-select mdc-data-table__pagination-rows-per-page-select--outlined">
           <div class="mdc-select__anchor" role="button" aria-haspopup="listbox"
                 aria-labelledby="demo-pagination-select" tabindex="0">
             <span class="mdc-select__selected-text-container">
@@ -582,6 +582,7 @@ CSS Class | Description
 `mdc-data-table__pagination-trailing` | Immediate child of pagination. Used to wrap pagination content.
 `mdc-data-table__pagination-rows-per-page` | Container of rows per page label and rows per page select.
 `mdc-data-table__pagination-rows-per-page-select` | Class name added to select component used for changing rows per page (page size).
+`mdc-data-table__pagination-rows-per-page-select--outlined` | Class name added to outlined select component used for changing rows per page (page size). Used to override outlined select styles.
 `mdc-data-table__pagination-navigation` | Block element containing all icon buttons used to navigate between data table pages.
 `mdc-data-table__pagination-button` | Class name added to icon button component used to navigate between data table pages.
 `mdc-data-table__progress-indicator` | Block element rendered as immediate child to data table root element. Contains linear progress and scrim blocking the data table content.

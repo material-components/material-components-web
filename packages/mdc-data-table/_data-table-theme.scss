@@ -365,7 +365,7 @@ $_custom-property-prefix: 'data-table';
 @mixin divider-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-data-table__pagination-rows-per-page-select {
+  .mdc-data-table__pagination-rows-per-page-select--outlined {
     @include select-theme.outline-color($color, $query: $query);
   }
 
