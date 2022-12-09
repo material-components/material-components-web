@@ -124,6 +124,8 @@ $secondary-navigation-tab-light-theme: (
   with-icon-hover-icon-color: null,
   with-icon-inactive-icon-color: null,
   with-icon-pressed-icon-color: null,
+  with-icon-and-label-text-container-height: null,
+  with-icon-icon-size: null,
 );
 
 @mixin primary-navigation-tab-theme($theme) {

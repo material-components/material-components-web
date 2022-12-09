@@ -105,6 +105,8 @@ $secondary-light-theme: (
   with-icon-hover-icon-color: null,
   with-icon-inactive-icon-color: null,
   with-icon-pressed-icon-color: null,
+  with-icon-and-label-text-container-height: null,
+  with-icon-icon-size: null,
 );
 
 $_ripple-target: '.mdc-tab__ripple';
@@ -255,6 +257,11 @@ $custom-property-prefix: 'tab';
 
   @include _divider-color(map.get($theme, divider-color));
   @include _divider-height(map.get($theme, divider-height));
+
+  @include _with-icon-and-label-text-container-height(
+    map.get($theme, with-icon-and-label-text-container-height)
+  );
+  @include _icon-size(map.get($theme, with-icon-icon-size));
 
   @include _active-icon-color(
     (
