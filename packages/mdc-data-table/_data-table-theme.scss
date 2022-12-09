@@ -108,7 +108,9 @@ $light-theme: tokens.md-comp-data-table-values();
       'row-item-selected-hover-state-layer-color',
       // TODO(b/254356584): We don't add hover styles on selected rows.
       'row-item-selected-hover-state-layer-opacity',
-      // TODO(b/254356584): We set color and opacity in one.
+      // TODO(b/254356584): We don't have state layers on rows.
+      'row-item-unselected-hover-state-layer-color'
+        // TODO(b/254356584): We don't have state layers on rows.
       'row-item-unselected-hover-state-layer-opacity'
     )
   );
@@ -237,10 +239,6 @@ $_custom-property-prefix: 'data-table';
   );
   @include selected-row-fill-color(
     map.get($theme, 'row-item-selected-container-color'),
-    $query: $query
-  );
-  @include row-hover-fill-color(
-    map.get($theme, 'row-item-unselected-hover-state-layer-color'),
     $query: $query
   );
 
