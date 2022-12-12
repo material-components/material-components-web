@@ -48,12 +48,12 @@ $custom-property-prefix: 'tab';
 }
 
 @mixin theme-styles($theme) {
-  @include _underline-color(map.get($theme, active-indicator-color));
+  @include underline-color(map.get($theme, active-indicator-color));
   @include _underline-height(map.get($theme, active-indicator-height));
   @include _underline-shape(map.get($theme, active-indicator-shape));
 }
 
-@mixin _underline-color($color) {
+@mixin underline-color($color) {
   .mdc-tab-indicator__content--underline {
     @include theme.property(border-color, $color);
   }
