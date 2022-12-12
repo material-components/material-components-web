@@ -316,18 +316,18 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
   private handleAnchorBlur(evt: FocusEvent) {
     if (this.richTooltip) {
-      // If focus changed to the tooltip element, don't hide the tooltip.
-      if (this.tooltipContainsRelatedTargetElement(evt.relatedTarget)) {
-        return;
-      }
-      if (evt.relatedTarget === null && this.interactiveTooltip) {
-        // If evt.relatedTarget is null, it is because focus is moving to an
-        // element that is not focusable. This should only occur in instances
-        // of a screen reader in browse mode/linear navigation mode. If the
-        // tooltip is interactive (and so the entire content is not read by
-        // the screen reader upon the tooltip being opened), we want to allow
-        // users to read the content of the tooltip (and not just the focusable
-        // elements).
+      if (evt.relatedTarget === null ||
+          this.tooltipContainsRelatedTargetElement(evt.relatedTarget)) {
+        // There are two scenarios where a blur event on a rich tooltip anchor
+        // should leave the tooltip open.
+        // 1. When the `evt.relatedTarget` contains the tooltip element. This
+        // indicates that focus has moved off the anchor and onto the tooltip.
+        // 2. When the `evt.relatedTarget` is null. This occurs because focus is
+        // moving to an element that is not focusable. This should only occur in
+        // instances of a screen reader in browse mode/linear navigation mode.
+        // We allow linear navigation over the contents of all rich tooltips to
+        // enable clients to hear a line-by-line reading of the tooltip's
+        // content.
         return;
       }
     }
