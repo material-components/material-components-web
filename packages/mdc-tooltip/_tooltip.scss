@@ -35,9 +35,9 @@
 
 $_padding-y: 4px;
 $_padding-x: 8px;
-$_min-width: 40px;
 $_max-height: 40vh;
 //LINT.IfChange(tooltip-dimensions)
+$_min-width: 40px;
 $_max-width: 200px;
 $_min-height: 24px;
 // LINT.ThenChange(constants.ts:tooltip-dimensions)

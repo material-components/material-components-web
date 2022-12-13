@@ -597,11 +597,22 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // getTooltipSize returns the offSetWidth, which includes the border and
     // padding. What we need is the width of the tooltip without border and
     // padding.
-    const width = this.adapter.getComputedStyleProperty('width');
+    const computedWidth =
+        Number(this.adapter.getComputedStyleProperty('width').slice(0, -2));
+    const widthNum =
+        isFinite(computedWidth) ? computedWidth : numbers.RICH_MAX_WIDTH;
+    const viewportWidth = Math.max(
+        this.adapter.getViewportWidth() -
+            (2 * numbers.MIN_VIEWPORT_TOOLTIP_THRESHOLD),
+        numbers.MIN_WIDTH);
+    // Tooltip width is the minimum of the tooltip's computed width (which is
+    // dictated by the content inside the tooltip) and the viewport width.
+    // See b/261878540 for more info.
+    const tooltipWidth = Math.min(viewportWidth, widthNum);
     // When rich tooltips are positioned within their parent containers, the
     // tooltip width might be shrunk if it collides with the edge of the parent
     // container. We set the width of the tooltip to prevent this.
-    this.adapter.setStyleProperty('width', width);
+    this.adapter.setStyleProperty('width', `${tooltipWidth}px`);
 
     const {top, yTransformOrigin, left, xTransformOrigin} = this.hasCaret ?
         this.calculateTooltipWithCaretStyles(this.anchorRect) :

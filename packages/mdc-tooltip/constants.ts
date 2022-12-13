@@ -42,6 +42,7 @@ const numbers = {
   HIDE_DELAY_MS: 600,
   SHOW_DELAY_MS: 500,
   // LINT.IfChange(tooltip-dimensions)
+  MIN_WIDTH: 40,
   MIN_HEIGHT: 24,
   MAX_WIDTH: 200,
   // LINT.ThenChange(_tooltip.scss:tooltip-dimensions)

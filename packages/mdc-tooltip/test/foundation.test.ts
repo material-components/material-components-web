@@ -1524,11 +1524,37 @@ describe('MDCTooltipFoundation', () => {
         setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
     const testWidth = '50px';
     mockAdapter.getComputedStyleProperty.and.returnValue(testWidth);
+    mockAdapter.getViewportWidth.and.returnValue(300);
 
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
         .toHaveBeenCalledWith('width', testWidth);
+  });
+
+  it('sets width of rich tooltip so it fits in small viewports', () => {
+    const {foundation, mockAdapter} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
+    const testWidth = '230px';
+    mockAdapter.getComputedStyleProperty.and.returnValue(testWidth);
+    mockAdapter.getViewportWidth.and.returnValue(150);
+
+    foundation.show();
+
+    // expected width is 150 - (2 * MIN_VIEWPORT_THRESHOLD) => 150 - 16
+    expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('width', '134px');
+  });
+
+  it('maintains a min width for rich tooltips when in a small viewport', () => {
+    const {foundation, mockAdapter} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
+    const testWidth = '50px';
+    mockAdapter.getComputedStyleProperty.and.returnValue(testWidth);
+    mockAdapter.getViewportWidth.and.returnValue(20);
+
+    foundation.show();
+
+    expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('width', '40px');
   });
 
   it('properly calculates rich tooltip position (START alignment)', () => {
