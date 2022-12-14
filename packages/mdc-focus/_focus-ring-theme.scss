@@ -6,8 +6,7 @@
 @use '@material/theme/theme';
 @use '@material/theme/css';
 
-$_prefix: 'focus-ring';
-
+$_custom-property-prefix: 'focus-ring';
 $_offset-horizontal-key: 'offset-horizontal';
 $_offset-vertical-key: 'offset-vertical';
 $_track-width-key: 'track-width';
@@ -35,55 +34,32 @@ $default-theme: (
 /// @param {Map} $theme - A map with one or more of the keys of $default-theme.
 @mixin theme($theme) {
   @include theme.validate-theme($default-theme, $theme);
-  @include keys.declare-custom-properties($theme, $_prefix);
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }
 
 @mixin theme-styles($theme: $default-theme) {
   @include theme.validate-theme-styles($default-theme, $theme);
 
+  $theme: keys.create-theme-vars($theme, $_custom-property-prefix);
   $ring-color: map.get($theme, $_ring-color-key);
   $track-width: map.get($theme, $_track-width-key);
   $offset-vertical: map.get($theme, $_offset-vertical-key);
   $offset-horizontal: map.get($theme, $_offset-horizontal-key);
+  $border-start-end-radius: map.get($theme, $_ring-border-start-end-radius-key);
+  $border-end-start-radius: map.get($theme, $_ring-border-end-start-radius-key);
+  $border-end-end-radius: map.get($theme, $_ring-border-end-end-radius-key);
   $border-start-start-radius: map.get(
     $theme,
     $_ring-border-start-start-radius-key
   );
-  $border-start-end-radius: map.get($theme, $_ring-border-start-end-radius-key);
-  $border-end-start-radius: map.get($theme, $_ring-border-end-start-radius-key);
-  $border-end-end-radius: map.get($theme, $_ring-border-end-end-radius-key);
 
-  @include theme.property(
-    border,
-    'border-width solid border-color',
-    $replace: ('border-width': $track-width, 'border-color': $ring-color)
-  );
-
-  @include theme.property(
-    border-start-start-radius,
-    $border-start-start-radius
-  );
-  @include theme.property(border-start-end-radius, $border-start-end-radius);
-  @include theme.property(border-end-start-radius, $border-end-start-radius);
-  @include theme.property(border-end-end-radius, $border-end-end-radius);
-
-  @include theme.property(
-    inset-block,
-    'calc(-1 * (offset-vertical + border-width))',
-    $replace: (
-      'offset-vertical': $offset-vertical,
-      'border-width': $track-width
-    )
-  );
-
-  @include theme.property(
-    inset-inline,
-    'calc(-1 * (offset-horizontal + border-width))',
-    $replace: (
-      'offset-horizontal': $offset-horizontal,
-      'border-width': $track-width
-    )
-  );
+  border: $track-width solid $ring-color;
+  border-start-start-radius: $border-start-start-radius;
+  border-start-end-radius: $border-start-end-radius;
+  border-end-start-radius: $border-end-start-radius;
+  border-end-end-radius: $border-end-end-radius;
+  inset-block: calc(-1 * ($offset-vertical + $track-width));
+  inset-inline: calc(-1 * ($offset-horizontal + $track-width));
 }
 
 /// In the case of many components, the focus ring is expected to simply mold
@@ -97,7 +73,7 @@ $default-theme: (
 /// with the center of the circle of its corresponding container corner.
 /// To achieve this, we can calculate the focus ring's corner radii by adding up
 /// the focus ring's track width and offset to the container's border radii.
-/// Diagram: https://screenshot.googleplex.com/BkMF8drenrSoSyv.png
+/// Diagram: https://screenshot.googleplex.com/3cYw8Pi8WQNa3h8.png
 ///
 /// @param {Number | List} $container-shape - A number or a list of
 /// 1 to 4 values, describing the shape  of the element that the focus ring
