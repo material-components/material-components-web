@@ -55,19 +55,22 @@ $ripple-target: '.mdc-card__ripple';
     )
   );
 
-  // States styles
-  // TODO(b/191298796): Unique state layer colors for each interactive state is not supported. Ripple mixin currently only uses the hover state layer color and ignores focus and pressed colors.
-  @include ripple-theme.theme-styles(
-    (
-      focus-state-layer-color: map.get($theme, focus-state-layer-color),
-      focus-state-layer-opacity: map.get($theme, focus-state-layer-opacity),
-      hover-state-layer-color: map.get($theme, hover-state-layer-color),
-      hover-state-layer-opacity: map.get($theme, hover-state-layer-opacity),
-      pressed-state-layer-color: map.get($theme, pressed-state-layer-color),
-      pressed-state-layer-opacity: map.get($theme, pressed-state-layer-opacity),
-    ),
-    $ripple-target: $ripple-target
-  );
+  .mdc-card__primary-action {
+    // States styles
+    // TODO(b/191298796): Unique state layer colors for each interactive state is not supported. Ripple mixin currently only uses the hover state layer color and ignores focus and pressed colors.
+    @include ripple-theme.theme-styles(
+      (
+        focus-state-layer-color: map.get($theme, focus-state-layer-color),
+        focus-state-layer-opacity: map.get($theme, focus-state-layer-opacity),
+        hover-state-layer-color: map.get($theme, hover-state-layer-color),
+        hover-state-layer-opacity: map.get($theme, hover-state-layer-opacity),
+        pressed-state-layer-color: map.get($theme, pressed-state-layer-color),
+        pressed-state-layer-opacity:
+          map.get($theme, pressed-state-layer-opacity),
+      ),
+      $ripple-target: $ripple-target
+    );
+  }
 }
 
 @mixin _container-elevation($resolver, $shadow-color, $map) {
