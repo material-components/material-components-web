@@ -134,6 +134,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     // TODO(b/172274142): consider all items when determining the list's type.
     if (this.adapter.hasCheckboxAtIndex(0)) {
       this.isCheckboxList = true;
+      this.selectedIndex = [];
     } else if (this.adapter.hasRadioAtIndex(0)) {
       this.isRadioList = true;
     } else {

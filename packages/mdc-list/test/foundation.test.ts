@@ -2225,6 +2225,17 @@ describe(
         expect(foundation.getSelectedIndex()).toEqual(2);
       });
 
+      it('#getSelectedIndex should return empty array for multi-select checkbox based list',
+         () => {
+           const {foundation, mockAdapter} = setupTest();
+
+           mockAdapter.getListItemCount.and.returnValue(4);
+           mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+           foundation.layout();
+
+           expect(foundation.getSelectedIndex()).toEqual([]);
+         });
+
       it('#getSelectedIndex should be in-sync with setter method for multi-select checkbox based list',
          () => {
            const {foundation, mockAdapter} = setupTest();
