@@ -2,7 +2,7 @@
 @use 'third_party/javascript/material_components_web/focus/focus-ring-theme';
 
 @include test.describe('Calling focus-ring-theme') {
-  @include test.describe('.theme()') {
+  @include test.describe('.theme') {
     @include test.it('returns nothing when no theme is provided.') {
       @include test.assert {
         @include test.output {
@@ -11,6 +11,63 @@
 
         @include test.expect {
           // No content. This is testing that an error isn't thrown.
+        }
+      }
+    }
+
+    @include test.it('returns the expected custom property declarations.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-theme.theme(
+            (
+              'color': blue,
+              'offset': 2px,
+              'track-width': 3px,
+              'target-shape': 5px,
+            )
+          );
+        }
+
+        @include test.expect {
+          --mdc-focus-ring-color: blue;
+          --mdc-focus-ring-offset: 2px;
+          --mdc-focus-ring-track-width: 3px;
+          --mdc-focus-ring-target-shape: 5px;
+        }
+      }
+    }
+  }
+
+  @include test.describe('.theme-styles') {
+    @include test.it('returns the expected CSS.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-theme.theme-styles(
+            (
+              'color': blue,
+              'offset': 2px,
+              'track-width': 3px,
+              'target-shape': 5px,
+            )
+          );
+        }
+
+        @include test.expect {
+          border: var(--mdc-focus-ring-track-width, 3px) solid
+            var(--mdc-focus-ring-color, blue);
+          border-radius: calc(
+            var(--mdc-focus-ring-target-shape, 5px) +
+              var(--mdc-focus-ring-track-width, 3px) +
+              var(--mdc-focus-ring-offset, 2px)
+          );
+          inset-block: calc(
+            -1 * (var(--mdc-focus-ring-offset, 2px) +
+                  var(--mdc-focus-ring-track-width, 3px))
+          );
+          inset-inline: calc(
+            -1 * (var(--mdc-focus-ring-offset, 2px) +
+                  var(--mdc-focus-ring-track-width, 3px))
+          );
         }
       }
     }
