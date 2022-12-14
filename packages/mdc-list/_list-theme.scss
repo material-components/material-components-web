@@ -106,6 +106,7 @@ $light-theme: (
   list-item-focus-label-text-color: null,
   list-item-focus-state-layer-color: null,
   list-item-focus-state-layer-opacity: null,
+  list-item-selected-container-color: null,
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
@@ -175,6 +176,9 @@ $light-theme: (
 
   @include _list-item-container-color(
     map.get($theme, list-item-container-color)
+  );
+  @include _list-item-selected-container-color(
+    map.get($theme, list-item-selected-container-color)
   );
   @include _list-item-container-shape(
     map.get($theme, list-item-container-shape)
@@ -271,6 +275,9 @@ $light-theme: (
   @include _list-item-trailing-icon-size(
     map.get($theme, list-item-trailing-icon-size)
   );
+  @include _list-item-selected-trailing-icon-color(
+    map.get($theme, list-item-selected-trailing-icon-color)
+  );
   @include _divider-color(map.get($theme, divider-color));
   @include _divider-height(map.get($theme, divider-height));
   @include _list-item-disabled-label-text-color(
@@ -325,6 +332,12 @@ $light-theme: (
 
 @mixin _list-item-container-color($color) {
   .mdc-list-item {
+    @include theme.property(background-color, $color);
+  }
+}
+
+@mixin _list-item-selected-container-color($color) {
+  .mdc-list-item.mdc-list-item--selected {
     @include theme.property(background-color, $color);
   }
 }
@@ -483,6 +496,13 @@ $light-theme: (
 
 @mixin _list-item-trailing-icon-color($color) {
   .mdc-list-item--with-trailing-icon .mdc-list-item__end {
+    @include theme.property('color', $color);
+  }
+}
+
+@mixin _list-item-selected-trailing-icon-color($color) {
+  .mdc-list-item--selected.mdc-list-item--with-trailing-icon
+    .mdc-list-item__end {
     @include theme.property('color', $color);
   }
 }
