@@ -147,12 +147,12 @@ $secondary-navigation-tab-light-theme: (
     @include tab-theme.primary-navigation-tab-theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...)
     );
-  }
 
-  .mdc-tab-indicator {
-    @include tab-indicator-theme.theme-styles(
-      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
-    );
+    .mdc-tab-indicator {
+      @include tab-indicator-theme.theme-styles(
+        map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+      );
+    }
   }
 }
 
@@ -161,11 +161,11 @@ $secondary-navigation-tab-light-theme: (
     @include tab-theme.secondary-navigation-tab-theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...)
     );
-  }
 
-  .mdc-tab-indicator {
-    @include tab-indicator-theme.theme-styles(
-      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
-    );
+    .mdc-tab-indicator {
+      @include tab-indicator-theme.theme-styles(
+        map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+      );
+    }
   }
 }
