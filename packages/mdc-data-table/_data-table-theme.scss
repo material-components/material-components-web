@@ -119,11 +119,11 @@ $light-theme: tokens.md-comp-data-table-values();
 
 $_validation-theme: remove-unsupported-keys($light-theme);
 
-$_custom-property-prefix: 'data-table';
+$custom-property-prefix: 'data-table';
 
 @mixin theme($theme) {
   @include theme.validate-theme($_validation-theme, $theme);
-  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+  @include keys.declare-custom-properties($theme, $custom-property-prefix);
 }
 
 @mixin theme-styles($theme, $query: feature-targeting.all()) {
@@ -132,7 +132,7 @@ $_custom-property-prefix: 'data-table';
   $feat-typography: feature-targeting.create-target($query, typography);
 
   @include theme.validate-theme-styles($_validation-theme, $theme);
-  $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
+  $theme: keys.create-theme-properties($theme, $custom-property-prefix);
 
   ///////////
   // Table //
