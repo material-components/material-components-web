@@ -35,7 +35,7 @@
 @use '@material/theme/validate';
 @use '@material/tokens/resolvers';
 
-$_custom-property-prefix: 'menu';
+$custom-property-prefix: 'menu';
 
 $light-theme: (
   cascading-menu-indicator-icon-color: null,
@@ -73,55 +73,23 @@ $light-theme: (
   list-item-with-leading-icon-hover-icon-color: null,
   list-item-with-leading-icon-leading-icon-color: null,
   list-item-with-leading-icon-leading-icon-size: null,
-  list-item-with-leading-icon-pressed-icon-color: null,
-  list-item-with-trailing-icon-disabled-trailing-icon-color: null,
-  list-item-with-trailing-icon-disabled-trailing-icon-opacity: null,
-  list-item-with-trailing-icon-focus-icon-color: null,
-  list-item-with-trailing-icon-hover-icon-color: null,
-  list-item-with-trailing-icon-pressed-icon-color: null,
-  list-item-with-trailing-icon-trailing-icon-color: null,
-  list-item-with-trailing-icon-trailing-icon-size: null,
 );
 
-// TODO(b/258841751): Support trailing icon tokens.
-// TODO(b/258842171): Support list-blocked tokens.
-// TODO(b/258798258): Support list item height customization.
-@function _remove-unsupported-keys($theme) {
-  $theme: map-ext.trim-keys(
-    $theme,
-    (
-      'list-item-container-height',
-      'list-item-with-leading-icon-pressed-icon-color',
-      'list-item-with-trailing-icon-disabled-trailing-icon-color',
-      'list-item-with-trailing-icon-disabled-trailing-icon-opacity',
-      'list-item-with-trailing-icon-focus-icon-color',
-      'list-item-with-trailing-icon-hover-icon-color',
-      'list-item-with-trailing-icon-pressed-icon-color',
-      'list-item-with-trailing-icon-trailing-icon-color',
-      'list-item-with-trailing-icon-trailing-icon-size'
-    )
-  );
-  @return $theme;
-}
-
-$_validation-theme: _remove-unsupported-keys($light-theme);
-
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  $theme: validate.theme($_validation-theme, $theme);
+  $theme: validate.theme($light-theme, $theme);
   $theme: _resolve-theme-elevation($theme, $resolvers: $resolvers);
   @include keys.declare-custom-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  $theme: _remove-unsupported-keys($theme);
-  $theme: validate.theme-styles($_validation-theme, $theme);
+  $theme: validate.theme-styles($light-theme, $theme);
   $theme: _resolve-theme-elevation($theme, $resolvers: $resolvers);
   $theme: keys.create-theme-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
 
   @include theme.property(background-color, map.get($theme, 'container-color'));
