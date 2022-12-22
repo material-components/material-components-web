@@ -24,13 +24,16 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use 'sass:map';
+@use 'sass:meta';
 @use '@material/elevation/elevation-theme';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
+@use '@material/theme/validate';
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
+@use '@material/tokens/resolvers';
 
 $primary-light-theme: (
   active-focus-state-layer-color: theme-color.$primary,
@@ -105,25 +108,57 @@ $secondary-light-theme: (
   with-icon-hover-icon-color: null,
   with-icon-inactive-icon-color: null,
   with-icon-pressed-icon-color: null,
+  with-icon-icon-size: null,
 );
 
 $_ripple-target: '.mdc-tab__ripple';
 $custom-property-prefix: 'tab';
-@mixin primary-navigation-tab-theme($theme) {
+$custom-property-prefix-primary: 'primary-navigation-tab';
+$custom-property-prefix-secondary: 'secondary-navigation-tab';
+
+@mixin primary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
+  $theme: validate.theme($primary-light-theme, $theme);
+  $theme: typography.resolve-theme(
+    $theme,
+    map.get($resolvers, typography),
+    with-label-text-label-text
+  );
   @include keys.declare-custom-properties(
     $theme,
-    $prefix: $custom-property-prefix
+    $prefix: $custom-property-prefix-primary
   );
 }
 
-@mixin secondary-navigation-tab-theme($theme) {
+@mixin secondary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
+  $theme: validate.theme($secondary-light-theme, $theme);
+  $theme: typography.resolve-theme(
+    $theme,
+    map.get($resolvers, typography),
+    label-text
+  );
   @include keys.declare-custom-properties(
     $theme,
-    $prefix: $custom-property-prefix
+    $prefix: $custom-property-prefix-secondary
   );
 }
 
-@mixin primary-navigation-tab-theme-styles($theme) {
+@mixin primary-navigation-tab-theme-styles(
+  $theme,
+  $resolvers: resolvers.$material
+) {
+  // TODO(b/251881053): Use theme-styles mixin from validate module
+  // when all customers are migrated
+  @include theme.validate-theme-styles($primary-light-theme, $theme);
+  $theme: typography.resolve-theme(
+    $theme,
+    map.get($resolvers, typography),
+    with-label-text-label-text
+  );
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix-primary
+  );
+
   // TODO(b/191298796): Use independent state layer color mixins when available.
   @include _active-state-layer-color(
     map.get($theme, active-hover-state-layer-color) or
@@ -219,7 +254,23 @@ $custom-property-prefix: 'tab';
   );
 }
 
-@mixin secondary-navigation-tab-theme-styles($theme) {
+@mixin secondary-navigation-tab-theme-styles(
+  $theme,
+  $resolvers: resolvers.$material
+) {
+  // TODO(b/251881053): Use theme-styles mixin from validate module
+  // when all customers are migrated
+  @include theme.validate-theme-styles($secondary-light-theme, $theme);
+  $theme: typography.resolve-theme(
+    $theme,
+    map.get($resolvers, typography),
+    label-text
+  );
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix-secondary
+  );
+
   // TODO(b/191298796): Use independent state layer color mixins when available.
   @include _active-state-layer-color(
     map.get($theme, hover-state-layer-color) or
@@ -255,6 +306,8 @@ $custom-property-prefix: 'tab';
 
   @include _divider-color(map.get($theme, divider-color));
   @include _divider-height(map.get($theme, divider-height));
+
+  @include _icon-size(map.get($theme, with-icon-icon-size));
 
   @include _active-icon-color(
     (
