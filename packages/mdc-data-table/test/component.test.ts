@@ -24,7 +24,7 @@
 import {html} from '../../../testing/dom';
 import {createMouseEvent} from '../../../testing/dom/events';
 import {MDCDataTable} from '../component';
-import {cssClasses, dataAttributes, events, selectors, SortValue, strings} from '../constants';
+import {cssClasses, dataAttributes, events, selectors, SortValue} from '../constants';
 
 interface ClassMap {
   [className: string]: boolean;
@@ -312,13 +312,13 @@ describe('MDCDataTable', () => {
        const {root} = setupTest();
 
        const rowCheckbox =
-           root.querySelector(strings.ROW_CHECKBOX_SELECTOR)!.querySelector(
-               'input') as HTMLInputElement;
+           root.querySelector(selectors.ROW_CHECKBOX)!.querySelector('input') as
+           HTMLInputElement;
        rowCheckbox.click();
 
        const headerRowCheckbox =
-           root.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)!
-               .querySelector('input') as HTMLInputElement;
+           root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
+               'input') as HTMLInputElement;
        expect(headerRowCheckbox.indeterminate).toBe(true);
      });
 
@@ -343,8 +343,8 @@ describe('MDCDataTable', () => {
        const {component, root, adapter} = setupTest();
 
        const nativeCheckbox =
-           root.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)!
-               .querySelector('input') as HTMLInputElement;
+           root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
+               'input') as HTMLInputElement;
 
        nativeCheckbox.checked = false;
        expect(adapter.isHeaderRowCheckboxChecked()).toBe(false);
@@ -406,8 +406,8 @@ describe('MDCDataTable', () => {
   it('adapter#getRowIndexByChildElement', () => {
     const {component, root, adapter} = setupTest();
 
-    const rows = [].slice.call(root.querySelectorAll(strings.ROW_SELECTOR)) as
-        HTMLElement[];
+    const rows =
+        [].slice.call(root.querySelectorAll(selectors.ROW)) as HTMLElement[];
     const inputEl = rows[2].querySelector('input') as HTMLInputElement;
     expect(adapter.getRowIndexByChildElement(inputEl)).toEqual(2);
 
@@ -448,8 +448,8 @@ describe('MDCDataTable', () => {
     const {component, root, adapter} = setupTest();
 
     const nativeCheckbox =
-        root.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)!.querySelector(
-            'input') as HTMLInputElement;
+        root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
+            'input')!;
 
     nativeCheckbox.indeterminate = false;
     adapter.setHeaderRowCheckboxIndeterminate(true);
@@ -462,8 +462,8 @@ describe('MDCDataTable', () => {
     const {component, root, adapter} = setupTest();
 
     const nativeCheckbox =
-        root.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)!.querySelector(
-            'input') as HTMLInputElement;
+        root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
+            'input')!;
     expect(nativeCheckbox.checked).toBe(false);
     adapter.setHeaderRowCheckboxChecked(true);
     expect(nativeCheckbox.checked).toBe(true);
@@ -481,8 +481,8 @@ describe('MDCDataTable', () => {
   it('adapter#setRowCheckboxCheckedAtIndex', () => {
     const {component, root, adapter} = setupTest();
     const nativeCheckbox =
-        ([].slice.call(root.querySelectorAll(
-             strings.ROW_CHECKBOX_SELECTOR))[0] as HTMLInputElement)
+        ([].slice.call(root.querySelectorAll(selectors.ROW_CHECKBOX))[0] as
+         HTMLInputElement)
             .querySelector('input');
 
     expect(nativeCheckbox!.checked).toBe(false);

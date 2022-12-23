@@ -24,7 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 
 import {MDCDataTableAdapter} from './adapter';
-import {cssClasses, SortValue, strings} from './constants';
+import {cssClasses, SortValue, attributes} from './constants';
 import {RowClickEventData, SortActionEventData} from './types';
 
 /**
@@ -217,7 +217,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       this.adapter.removeClassNameByHeaderCellIndex(
           index, cssClasses.HEADER_CELL_SORTED_DESCENDING);
       this.adapter.setAttributeByHeaderCellIndex(
-          index, strings.ARIA_SORT, SortValue.NONE);
+          index, attributes.ARIA_SORT, SortValue.NONE);
       this.adapter.setSortStatusLabelByHeaderCellIndex(index, SortValue.NONE);
     }
 
@@ -226,7 +226,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
         columnIndex, cssClasses.HEADER_CELL_SORTED);
 
     const currentSortValue = this.adapter.getAttributeByHeaderCellIndex(
-        columnIndex, strings.ARIA_SORT);
+        columnIndex, attributes.ARIA_SORT);
     let sortValue = SortValue.NONE;
 
     // Set to descending if sorted on ascending order.
@@ -234,19 +234,19 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       this.adapter.setClassNameByHeaderCellIndex(
           columnIndex, cssClasses.HEADER_CELL_SORTED_DESCENDING);
       this.adapter.setAttributeByHeaderCellIndex(
-          columnIndex, strings.ARIA_SORT, SortValue.DESCENDING);
+          columnIndex, attributes.ARIA_SORT, SortValue.DESCENDING);
       sortValue = SortValue.DESCENDING;
       // Set to ascending if sorted on descending order.
     } else if (currentSortValue === SortValue.DESCENDING) {
       this.adapter.removeClassNameByHeaderCellIndex(
           columnIndex, cssClasses.HEADER_CELL_SORTED_DESCENDING);
       this.adapter.setAttributeByHeaderCellIndex(
-          columnIndex, strings.ARIA_SORT, SortValue.ASCENDING);
+          columnIndex, attributes.ARIA_SORT, SortValue.ASCENDING);
       sortValue = SortValue.ASCENDING;
     } else {
       // Set to ascending by default when not sorted.
       this.adapter.setAttributeByHeaderCellIndex(
-          columnIndex, strings.ARIA_SORT, SortValue.ASCENDING);
+          columnIndex, attributes.ARIA_SORT, SortValue.ASCENDING);
       sortValue = SortValue.ASCENDING;
     }
 
@@ -324,11 +324,11 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
     if (selected) {
       this.adapter.addClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
       this.adapter.setAttributeAtRowIndex(
-          rowIndex, strings.ARIA_SELECTED, 'true');
+          rowIndex, attributes.ARIA_SELECTED, 'true');
     } else {
       this.adapter.removeClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
       this.adapter.setAttributeAtRowIndex(
-          rowIndex, strings.ARIA_SELECTED, 'false');
+          rowIndex, attributes.ARIA_SELECTED, 'false');
     }
   }
 }
