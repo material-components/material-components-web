@@ -106,6 +106,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   private activationTimer = 0;
   private fgDeactivationRemovalTimer = 0;
   private fgScale = '0';
+  private fgEdgeScale = '0';
   private frame = {width: 0, height: 0};
   private initialSize = 0;
   private layoutFrame = 0;
@@ -517,6 +518,11 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   private layoutInternal() {
     this.frame = this.adapter.computeBoundingRect();
     const maxDim = Math.max(this.frame.height, this.frame.width);
+    const isUnbounded = this.adapter.isUnbounded();
+
+    const softEdgeSize = Math.max(
+        numbers.SOFT_EDGE_CONTAINER_RATIO * maxDim,
+        numbers.SOFT_EDGE_MINIMUM_SIZE);
 
     // Surface diameter is treated differently for unbounded vs. bounded ripples.
     // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
@@ -527,31 +533,39 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     const getBoundedRadius = () => {
       const hypotenuse = Math.sqrt(
           Math.pow(this.frame.width, 2) + Math.pow(this.frame.height, 2));
-      return hypotenuse + MDCRippleFoundation.numbers.PADDING;
+      return hypotenuse + MDCRippleFoundation.numbers.PADDING + softEdgeSize;
     };
 
-    this.maxRadius = this.adapter.isUnbounded() ? maxDim : getBoundedRadius();
+    this.maxRadius = isUnbounded ? maxDim : getBoundedRadius();
 
     // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
     const initialSize = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
     // Unbounded ripple size should always be even number to equally center align.
-    if (this.adapter.isUnbounded() && initialSize % 2 !== 0) {
+    if (isUnbounded && initialSize % 2 !== 0) {
       this.initialSize = initialSize - 1;
     } else {
       this.initialSize = initialSize;
     }
     this.fgScale = `${this.maxRadius / this.initialSize}`;
+    this.fgEdgeScale = isUnbounded ?
+        this.fgScale :
+        `${(this.maxRadius + softEdgeSize) / this.initialSize}`;
 
     this.updateLayoutCssVars();
   }
 
   private updateLayoutCssVars() {
     const {
-      VAR_FG_SIZE, VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
+      VAR_FG_SIZE,
+      VAR_LEFT,
+      VAR_TOP,
+      VAR_FG_SCALE,
+      VAR_FG_EDGE_SCALE,
     } = MDCRippleFoundation.strings;
 
     this.adapter.updateCssVariable(VAR_FG_SIZE, `${this.initialSize}px`);
     this.adapter.updateCssVariable(VAR_FG_SCALE, this.fgScale);
+    this.adapter.updateCssVariable(VAR_FG_EDGE_SCALE, this.fgEdgeScale);
 
     if (this.adapter.isUnbounded()) {
       this.unboundedCoords = {
