@@ -150,19 +150,26 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCMenuSurfaceAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       hasClass: (className) => this.root.classList.contains(className),
       hasAnchor: () => !!this.anchorElement,
-      notifyClose: () =>
-          this.emit(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, {}),
+      notifyClose: () => {
+        this.emit(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, {});
+      },
       notifyClosing: () => {
         this.emit(MDCMenuSurfaceFoundation.strings.CLOSING_EVENT, {});
       },
-      notifyOpen: () =>
-          this.emit(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, {}),
-      notifyOpening: () =>
-          this.emit(MDCMenuSurfaceFoundation.strings.OPENING_EVENT, {}),
+      notifyOpen: () => {
+        this.emit(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, {});
+      },
+      notifyOpening: () => {
+        this.emit(MDCMenuSurfaceFoundation.strings.OPENING_EVENT, {});
+      },
       isElementInContainer: (el) => this.root.contains(el),
       isRtl: () =>
           getComputedStyle(this.root).getPropertyValue('direction') === 'rtl',

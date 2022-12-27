@@ -352,14 +352,12 @@ describe('MDCSnackbarFoundation', () => {
   it('#setTimeoutMs throws an error for values outside the min/max range',
      () => {
        const {foundation} = setupTest();
-       expect(
-           () =>
-               foundation.setTimeoutMs(numbers.MIN_AUTO_DISMISS_TIMEOUT_MS - 1))
-           .toThrow();
-       expect(
-           () =>
-               foundation.setTimeoutMs(numbers.MAX_AUTO_DISMISS_TIMEOUT_MS + 1))
-           .toThrow();
+       expect(() => {
+         foundation.setTimeoutMs(numbers.MIN_AUTO_DISMISS_TIMEOUT_MS - 1);
+       }).toThrow();
+       expect(() => {
+         foundation.setTimeoutMs(numbers.MAX_AUTO_DISMISS_TIMEOUT_MS + 1);
+       }).toThrow();
      });
 
   it('#getTimeoutMs returns the default value', () => {

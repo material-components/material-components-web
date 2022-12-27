@@ -96,9 +96,10 @@ export class MDCChipTrailingAction extends
         (this.root as HTMLElement).focus();
       },
       getAttribute: (attr) => this.root.getAttribute(attr),
-      notifyInteraction: (trigger) =>
-          this.emit<MDCChipTrailingActionInteractionEventDetail>(
-              strings.INTERACTION_EVENT, {trigger}, true /* shouldBubble */),
+      notifyInteraction: (trigger) => {
+        this.emit<MDCChipTrailingActionInteractionEventDetail>(
+            strings.INTERACTION_EVENT, {trigger}, true /* shouldBubble */);
+      },
       notifyNavigation: (key) => {
         this.emit<MDCChipTrailingActionNavigationEventDetail>(
             strings.NAVIGATION_EVENT, {key}, true /* shouldBubble */);

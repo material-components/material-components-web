@@ -155,8 +155,10 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
         return -1;
       },
       getTabListLength: () => this.tabList.length,
-      notifyTabActivated: (index) => this.emit<MDCTabBarActivatedEventDetail>(
-          strings.TAB_ACTIVATED_EVENT, {index}, true),
+      notifyTabActivated: (index) => {
+        this.emit<MDCTabBarActivatedEventDetail>(
+            strings.TAB_ACTIVATED_EVENT, {index}, true);
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCTabBarFoundation(adapter);

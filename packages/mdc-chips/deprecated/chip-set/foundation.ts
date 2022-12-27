@@ -172,20 +172,24 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   private focusChipAction(index: number, key: string, source: EventSource) {
     const shouldJumpChips = jumpChipKeys.has(key);
     if (shouldJumpChips && source === EventSource.PRIMARY) {
-      return this.adapter.focusChipPrimaryActionAtIndex(index);
+      this.adapter.focusChipPrimaryActionAtIndex(index);
+      return;
     }
 
     if (shouldJumpChips && source === EventSource.TRAILING) {
-      return this.adapter.focusChipTrailingActionAtIndex(index);
+      this.adapter.focusChipTrailingActionAtIndex(index);
+      return;
     }
 
     const dir = this.getDirection(key);
     if (dir === Direction.LEFT) {
-      return this.adapter.focusChipTrailingActionAtIndex(index);
+      this.adapter.focusChipTrailingActionAtIndex(index);
+      return;
     }
 
     if (dir === Direction.RIGHT) {
-      return this.adapter.focusChipPrimaryActionAtIndex(index);
+      this.adapter.focusChipPrimaryActionAtIndex(index);
+      return;
     }
   }
 

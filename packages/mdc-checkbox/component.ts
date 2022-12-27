@@ -123,7 +123,9 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCCheckboxAdapter = {
-      addClass: (className) => this.root.classList.add(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
       forceLayout: () => (this.root as HTMLElement).offsetWidth,
       hasNativeControl: () => !!this.getNativeControl(),
       isAttachedToDOM: () => Boolean(this.root.parentNode),

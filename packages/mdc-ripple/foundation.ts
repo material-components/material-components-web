@@ -223,14 +223,15 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   }
 
   handleFocus(): void {
-    requestAnimationFrame(
-        () => this.adapter.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+    requestAnimationFrame(() => {
+      this.adapter.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
+    });
   }
 
   handleBlur(): void {
-    requestAnimationFrame(
-        () => this.adapter.removeClass(
-            MDCRippleFoundation.cssClasses.BG_FOCUSED));
+    requestAnimationFrame(() => {
+      this.adapter.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
+    });
   }
 
   /**

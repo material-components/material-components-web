@@ -106,13 +106,23 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
       announce: () => {
         this.announce(this.labelEl);
       },
-      notifyClosed: (reason) => this.emit<MDCSnackbarCloseEventDetail>(
-          CLOSED_EVENT, reason ? {reason} : {}),
-      notifyClosing: (reason) => this.emit<MDCSnackbarCloseEventDetail>(
-          CLOSING_EVENT, reason ? {reason} : {}),
-      notifyOpened: () => this.emit(OPENED_EVENT, {}),
-      notifyOpening: () => this.emit(OPENING_EVENT, {}),
-      removeClass: (className) => this.root.classList.remove(className),
+      notifyClosed: (reason) => {
+        this.emit<MDCSnackbarCloseEventDetail>(
+            CLOSED_EVENT, reason ? {reason} : {});
+      },
+      notifyClosing: (reason) => {
+        this.emit<MDCSnackbarCloseEventDetail>(
+            CLOSING_EVENT, reason ? {reason} : {});
+      },
+      notifyOpened: () => {
+        this.emit(OPENED_EVENT, {});
+      },
+      notifyOpening: () => {
+        this.emit(OPENING_EVENT, {});
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
     };
     return new MDCSnackbarFoundation(adapter);
   }

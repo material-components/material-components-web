@@ -45,34 +45,45 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
 
   static createAdapter(instance: MDCRippleCapableSurface): MDCRippleAdapter {
     return {
-      addClass: (className) => instance.root.classList.add(className),
+      addClass: (className) => {
+        instance.root.classList.add(className);
+      },
       browserSupportsCssVars: () => util.supportsCssVariables(window),
       computeBoundingRect: () => instance.root.getBoundingClientRect(),
       containsEventTarget: (target) => instance.root.contains(target as Node),
-      deregisterDocumentInteractionHandler: (evtType, handler) =>
-          document.documentElement.removeEventListener(
-              evtType, handler, applyPassive()),
-      deregisterInteractionHandler: (evtType, handler) =>
-          (instance.root as HTMLElement)
-              .removeEventListener(evtType, handler, applyPassive()),
-      deregisterResizeHandler: (handler) =>
-          window.removeEventListener('resize', handler),
+      deregisterDocumentInteractionHandler: (evtType, handler) => {
+        document.documentElement.removeEventListener(
+            evtType, handler, applyPassive());
+      },
+      deregisterInteractionHandler: (evtType, handler) => {
+        (instance.root as HTMLElement)
+            .removeEventListener(evtType, handler, applyPassive());
+      },
+      deregisterResizeHandler: (handler) => {
+        window.removeEventListener('resize', handler);
+      },
       getWindowPageOffset: () =>
           ({x: window.pageXOffset, y: window.pageYOffset}),
       isSurfaceActive: () => matches(instance.root, ':active'),
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
-      registerDocumentInteractionHandler: (evtType, handler) =>
-          document.documentElement.addEventListener(
-              evtType, handler, applyPassive()),
-      registerInteractionHandler: (evtType, handler) =>
-          (instance.root as HTMLElement)
-              .addEventListener(evtType, handler, applyPassive()),
-      registerResizeHandler: (handler) =>
-          window.addEventListener('resize', handler),
-      removeClass: (className) => instance.root.classList.remove(className),
-      updateCssVariable: (varName, value) =>
-          (instance.root as HTMLElement).style.setProperty(varName, value),
+      registerDocumentInteractionHandler: (evtType, handler) => {
+        document.documentElement.addEventListener(
+            evtType, handler, applyPassive());
+      },
+      registerInteractionHandler: (evtType, handler) => {
+        (instance.root as HTMLElement)
+            .addEventListener(evtType, handler, applyPassive());
+      },
+      registerResizeHandler: (handler) => {
+        window.addEventListener('resize', handler);
+      },
+      removeClass: (className) => {
+        instance.root.classList.remove(className);
+      },
+      updateCssVariable: (varName, value) => {
+        (instance.root as HTMLElement).style.setProperty(varName, value);
+      },
     };
   }
 

@@ -87,16 +87,15 @@ export class MDCSwitch extends
 
   protected createAdapter(): MDCSwitchRenderAdapter {
     return {
-      addClass: className => {
-        this.root.classList.add(className)
-      },
+      addClass: className => {this.root.classList.add(className)},
       hasClass: className => this.root.classList.contains(className),
       isDisabled: () => this.root.disabled,
       removeClass: className => {
         this.root.classList.remove(className);
       },
-      setAriaChecked: ariaChecked =>
-          this.root.setAttribute('aria-checked', ariaChecked),
+      setAriaChecked: ariaChecked => {
+        this.root.setAttribute('aria-checked', ariaChecked);
+      },
       setDisabled: disabled => {
         this.root.disabled = disabled;
       },

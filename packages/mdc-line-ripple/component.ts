@@ -59,12 +59,22 @@ export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCLineRippleAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       hasClass: (className) => this.root.classList.contains(className),
-      setStyle: (propertyName, value) => (this.root as HTMLElement).style.setProperty(propertyName, value),
-      registerEventHandler: (evtType, handler) => this.listen(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.unlisten(evtType, handler),
+      setStyle: (propertyName, value) => {
+        (this.root as HTMLElement).style.setProperty(propertyName, value);
+      },
+      registerEventHandler: (evtType, handler) => {
+        this.listen(evtType, handler);
+      },
+      deregisterEventHandler: (evtType, handler) => {
+        this.unlisten(evtType, handler);
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCLineRippleFoundation(adapter);

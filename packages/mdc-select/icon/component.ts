@@ -43,18 +43,26 @@ export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCSelectIconAdapter = {
       getAttr: (attr) => this.root.getAttribute(attr),
-      setAttr: (attr, value) => this.root.setAttribute(attr, value),
-      removeAttr: (attr) => this.root.removeAttribute(attr),
+      setAttr: (attr, value) => {
+        this.root.setAttribute(attr, value);
+      },
+      removeAttr: (attr) => {
+        this.root.removeAttribute(attr);
+      },
       setContent: (content) => {
         this.root.textContent = content;
       },
-      registerInteractionHandler: (evtType, handler) =>
-          this.listen(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) =>
-          this.unlisten(evtType, handler),
-      notifyIconAction: () => this.emit(
-          MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */,
-          true /* shouldBubble */),
+      registerInteractionHandler: (evtType, handler) => {
+        this.listen(evtType, handler);
+      },
+      deregisterInteractionHandler: (evtType, handler) => {
+        this.unlisten(evtType, handler);
+      },
+      notifyIconAction: () => {
+        this.emit(
+            MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */,
+            true /* shouldBubble */);
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCSelectIconFoundation(adapter);

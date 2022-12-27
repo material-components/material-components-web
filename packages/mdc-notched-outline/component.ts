@@ -73,8 +73,12 @@ export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation>
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCNotchedOutlineAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       setNotchWidthProperty: (width) => {
         this.notchElement.style.setProperty('width', width + 'px');
       },

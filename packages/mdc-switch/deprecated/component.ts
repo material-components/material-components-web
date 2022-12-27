@@ -67,8 +67,12 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSwitchAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       setNativeControlChecked: (checked) => this.nativeControl.checked =
           checked,
       setNativeControlDisabled: (disabled) => this.nativeControl.disabled =
@@ -110,7 +114,9 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      addClass: (className: string) => rippleSurface.classList.add(className),
+      addClass: (className: string) => {
+        rippleSurface.classList.add(className);
+      },
       computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
       deregisterInteractionHandler: <K extends EventType>(
           evtType: K, handler: SpecificEventListener<K>) => {

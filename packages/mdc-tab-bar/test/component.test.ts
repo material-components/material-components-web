@@ -129,14 +129,14 @@ describe('MDCTabBar', () => {
     const {component} = setupTest();
 
     component.focusOnActivate = false;
-    (component as any)
-        .tabList.forEach(
-            (tab: MDCTab) => expect(tab.focusOnActivate).toBe(false));
+    (component as any).tabList.forEach((tab: MDCTab) => {
+      expect(tab.focusOnActivate).toBe(false);
+    });
 
     component.focusOnActivate = true;
-    (component as any)
-        .tabList.forEach(
-            (tab: MDCTab) => expect(tab.focusOnActivate).toBe(true));
+    (component as any).tabList.forEach((tab: MDCTab) => {
+      expect(tab.focusOnActivate).toBe(true);
+    });
   });
 
   it('useAutomaticActivation setter calls foundation#setUseAutomaticActivation',

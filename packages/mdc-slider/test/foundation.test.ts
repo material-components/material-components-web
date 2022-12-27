@@ -127,7 +127,9 @@ describe('MDCSliderFoundation', () => {
       mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
           .and.returnValue('50.5');
 
-      expect(() => foundation.init()).toThrowError(/must be non-null/);
+      expect(() => {
+        foundation.init();
+      }).toThrowError(/must be non-null/);
     });
 
     it('throws error if attribute value is NaN', () => {
@@ -139,7 +141,9 @@ describe('MDCSliderFoundation', () => {
       mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
           .and.returnValue('50.5');
 
-      expect(() => foundation.init()).toThrowError(/must be a number/);
+      expect(() => {
+        foundation.init();
+      }).toThrowError(/must be a number/);
     });
 
     it('throws error if min > max', () => {

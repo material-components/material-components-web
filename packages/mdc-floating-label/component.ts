@@ -66,13 +66,19 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCFloatingLabelAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       getWidth: () => estimateScrollWidth(this.root),
-      registerInteractionHandler: (evtType, handler) =>
-          this.listen(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) =>
-          this.unlisten(evtType, handler),
+      registerInteractionHandler: (evtType, handler) => {
+        this.listen(evtType, handler);
+      },
+      deregisterInteractionHandler: (evtType, handler) => {
+        this.unlisten(evtType, handler);
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCFloatingLabelFoundation(adapter);

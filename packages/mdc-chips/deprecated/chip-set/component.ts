@@ -77,14 +77,18 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       }
     }
 
-    this.handleChipInteraction = (evt) =>
-        this.foundation.handleChipInteraction(evt.detail);
-    this.handleChipSelection = (evt) =>
-        this.foundation.handleChipSelection(evt.detail);
-    this.handleChipRemoval = (evt) =>
-        this.foundation.handleChipRemoval(evt.detail);
-    this.handleChipNavigation = (evt) =>
-        this.foundation.handleChipNavigation(evt.detail);
+    this.handleChipInteraction = (evt) => {
+      this.foundation.handleChipInteraction(evt.detail);
+    };
+    this.handleChipSelection = (evt) => {
+      this.foundation.handleChipSelection(evt.detail);
+    };
+    this.handleChipRemoval = (evt) => {
+      this.foundation.handleChipRemoval(evt.detail);
+    };
+    this.handleChipNavigation = (evt) => {
+      this.foundation.handleChipNavigation(evt.detail);
+    };
     this.listen(INTERACTION_EVENT, this.handleChipInteraction);
     this.listen(SELECTION_EVENT, this.handleChipSelection);
     this.listen(REMOVAL_EVENT, this.handleChipRemoval);

@@ -215,7 +215,9 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipAdapter = {
-      addClass: (className) => this.root.classList.add(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
       addClassToLeadingIcon: (className) => {
         if (this.leadingIcon) {
           this.leadingIcon.classList.add(className);
@@ -249,30 +251,36 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
         }
         return false;
       },
-      notifyInteraction: () => this.emit<MDCChipInteractionEventDetail>(
-          strings.INTERACTION_EVENT, {chipId: this.id},
-          true /* shouldBubble */),
-      notifyNavigation: (key, source) =>
-          this.emit<MDCChipNavigationEventDetail>(
-              strings.NAVIGATION_EVENT, {chipId: this.id, key, source},
-              true /* shouldBubble */),
+      notifyInteraction: () => {
+        this.emit<MDCChipInteractionEventDetail>(
+            strings.INTERACTION_EVENT, {chipId: this.id},
+            true /* shouldBubble */);
+      },
+      notifyNavigation: (key, source) => {
+        this.emit<MDCChipNavigationEventDetail>(
+            strings.NAVIGATION_EVENT, {chipId: this.id, key, source},
+            true /* shouldBubble */);
+      },
       notifyRemoval: (removedAnnouncement) => {
         this.emit<MDCChipRemovalEventDetail>(
             strings.REMOVAL_EVENT, {chipId: this.id, removedAnnouncement},
             true /* shouldBubble */);
       },
-      notifySelection: (selected, shouldIgnore) =>
-          this.emit<MDCChipSelectionEventDetail>(
-              strings.SELECTION_EVENT,
-              {chipId: this.id, selected, shouldIgnore},
-              true /* shouldBubble */),
-      notifyTrailingIconInteraction: () =>
-          this.emit<MDCChipInteractionEventDetail>(
-              strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id},
-              true /* shouldBubble */),
-      notifyEditStart: () => { /* Not Implemented. */ },
-      notifyEditFinish: () => { /* Not Implemented. */ },
-      removeClass: (className) => this.root.classList.remove(className),
+      notifySelection: (selected, shouldIgnore) => {
+        this.emit<MDCChipSelectionEventDetail>(
+            strings.SELECTION_EVENT, {chipId: this.id, selected, shouldIgnore},
+            true /* shouldBubble */);
+      },
+      notifyTrailingIconInteraction: () => {
+        this.emit<MDCChipInteractionEventDetail>(
+            strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id},
+            true /* shouldBubble */);
+      },
+      notifyEditStart: () => {/* Not Implemented. */},
+      notifyEditFinish: () => {/* Not Implemented. */},
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       removeClassFromLeadingIcon: (className) => {
         if (this.leadingIcon) {
           this.leadingIcon.classList.remove(className);
@@ -288,8 +296,9 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
           this.primaryAction.setAttribute(attr, value);
         }
       },
-      setStyleProperty: (propertyName, value) =>
-          (this.root as HTMLElement).style.setProperty(propertyName, value),
+      setStyleProperty: (propertyName, value) => {
+        (this.root as HTMLElement).style.setProperty(propertyName, value);
+      },
     };
     return new MDCChipFoundation(adapter);
   }

@@ -74,8 +74,12 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRadioAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       setNativeControlDisabled: (disabled) => this.nativeControl.disabled =
           disabled,
     };

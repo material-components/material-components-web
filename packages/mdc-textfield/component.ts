@@ -384,8 +384,12 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   private getRootAdapterMethods(): MDCTextFieldRootAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       hasClass: (className) => this.root.classList.contains(className),
       registerTextFieldInteractionHandler: (evtType, handler) => {
         this.listen(evtType, handler);
@@ -399,7 +403,9 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
               .map((mutation) => mutation.attributeName)
               .filter((attributeName) => attributeName) as string[];
         };
-        const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
+        const observer = new MutationObserver((mutationsList) => {
+          handler(getAttributesList(mutationsList));
+        });
         const config = {attributes: true};
         observer.observe(this.input, config);
         return observer;

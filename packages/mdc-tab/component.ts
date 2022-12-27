@@ -82,9 +82,15 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabAdapter = {
-      setAttr: (attr, value) => this.root.setAttribute(attr, value),
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      setAttr: (attr, value) => {
+        this.root.setAttribute(attr, value);
+      },
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       hasClass: (className) => this.root.classList.contains(className),
       activateIndicator: (previousIndicatorClientRect) => {
         this.tabIndicator.activate(previousIndicatorClientRect);
@@ -92,14 +98,18 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
       deactivateIndicator: () => {
         this.tabIndicator.deactivate();
       },
-      notifyInteracted: () => this.emit<MDCTabInteractionEventDetail>(
-          MDCTabFoundation.strings.INTERACTED_EVENT, {tabId: this.id},
-          true /* bubble */),
+      notifyInteracted: () => {
+        this.emit<MDCTabInteractionEventDetail>(
+            MDCTabFoundation.strings.INTERACTED_EVENT, {tabId: this.id},
+            true /* bubble */);
+      },
       getOffsetLeft: () => (this.root as HTMLElement).offsetLeft,
       getOffsetWidth: () => (this.root as HTMLElement).offsetWidth,
       getContentOffsetLeft: () => this.content.offsetLeft,
       getContentOffsetWidth: () => this.content.offsetWidth,
-      focus: () => (this.root as HTMLElement).focus(),
+      focus: () => {
+        (this.root as HTMLElement).focus();
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCTabFoundation(adapter);

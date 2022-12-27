@@ -56,16 +56,21 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCIconButtonToggleAdapter = {
-      addClass: (className) => this.root.classList.add(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
       hasClass: (className) => this.root.classList.contains(className),
       notifyChange: (evtData) => {
         this.emit<MDCIconButtonToggleEventDetail>(
             strings.CHANGE_EVENT, evtData);
       },
-      removeClass: (className) => this.root.classList.remove(className),
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       getAttr: (attrName) => this.root.getAttribute(attrName),
-      setAttr: (attrName, attrValue) =>
-          this.root.setAttribute(attrName, attrValue),
+      setAttr: (attrName, attrValue) => {
+        this.root.setAttribute(attrName, attrValue);
+      },
     };
     return new MDCIconButtonToggleFoundation(adapter);
   }

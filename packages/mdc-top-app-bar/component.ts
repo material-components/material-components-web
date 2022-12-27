@@ -129,13 +129,19 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTopAppBarAdapter = {
       hasClass: (className) => this.root.classList.contains(className),
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
-      setStyle: (property, value) =>
-          (this.root as HTMLElement).style.setProperty(property, value),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
+      setStyle: (property, value) => {
+        (this.root as HTMLElement).style.setProperty(property, value);
+      },
       getTopAppBarHeight: () => this.root.clientHeight,
-      notifyNavigationIconClicked: () =>
-          this.emit(strings.NAVIGATION_EVENT, {}),
+      notifyNavigationIconClicked: () => {
+        this.emit(strings.NAVIGATION_EVENT, {});
+      },
       getViewportScrollY: () => {
         const win = this.scrollTarget as Window;
         const el = this.scrollTarget as Element;

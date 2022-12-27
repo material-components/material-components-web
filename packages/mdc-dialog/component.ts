@@ -163,8 +163,12 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCDialogAdapter = {
-      addBodyClass: (className) => document.body.classList.add(className),
-      addClass: (className) => this.root.classList.add(className),
+      addBodyClass: (className) => {
+        document.body.classList.add(className);
+      },
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons),
       clickDefaultButton: () => {
         if (this.defaultButton && !this.defaultButton.disabled) {
@@ -183,17 +187,29 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       getInitialFocusEl: () => this.getInitialFocusEl(),
       hasClass: (className) => this.root.classList.contains(className),
       isContentScrollable: () => util.isScrollable(this.content),
-      notifyClosed: (action) => this.emit<MDCDialogCloseEventDetail>(
-          strings.CLOSED_EVENT, action ? {action} : {}),
-      notifyClosing: (action) => this.emit<MDCDialogCloseEventDetail>(
-          strings.CLOSING_EVENT, action ? {action} : {}),
-      notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
-      notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
+      notifyClosed: (action) => {
+        this.emit<MDCDialogCloseEventDetail>(
+            strings.CLOSED_EVENT, action ? {action} : {});
+      },
+      notifyClosing: (action) => {
+        this.emit<MDCDialogCloseEventDetail>(
+            strings.CLOSING_EVENT, action ? {action} : {});
+      },
+      notifyOpened: () => {
+        this.emit(strings.OPENED_EVENT, {});
+      },
+      notifyOpening: () => {
+        this.emit(strings.OPENING_EVENT, {});
+      },
       releaseFocus: () => {
         this.focusTrap.releaseFocus();
       },
-      removeBodyClass: (className) => document.body.classList.remove(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      removeBodyClass: (className) => {
+        document.body.classList.remove(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       reverseButtons: () => {
         this.buttons.reverse();
         this.buttons.forEach((button) => {
