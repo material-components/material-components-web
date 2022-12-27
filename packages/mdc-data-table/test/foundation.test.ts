@@ -23,7 +23,7 @@
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
-import {attributes, cssClasses, SortValue, strings} from '../constants';
+import {attributes, cssClasses, SortValue} from '../constants';
 import {MDCDataTableFoundation} from '../foundation';
 
 describe('MDCDataTableFoundation', () => {
@@ -351,7 +351,7 @@ describe('MDCDataTableFoundation', () => {
        expect(mockAdapter.addClassAtRowIndex)
            .toHaveBeenCalledWith(2, cssClasses.ROW_SELECTED);
        expect(mockAdapter.setAttributeAtRowIndex)
-           .toHaveBeenCalledWith(2, strings.ARIA_SELECTED, 'true');
+           .toHaveBeenCalledWith(2, attributes.ARIA_SELECTED, 'true');
 
        expect(mockAdapter.notifyRowSelectionChanged).toHaveBeenCalledWith({
          rowId: 'testRowId-u2',
@@ -376,7 +376,7 @@ describe('MDCDataTableFoundation', () => {
        expect(mockAdapter.removeClassAtRowIndex)
            .toHaveBeenCalledWith(2, cssClasses.ROW_SELECTED);
        expect(mockAdapter.setAttributeAtRowIndex)
-           .toHaveBeenCalledWith(2, strings.ARIA_SELECTED, 'false');
+           .toHaveBeenCalledWith(2, attributes.ARIA_SELECTED, 'false');
 
        expect(mockAdapter.notifyRowSelectionChanged).toHaveBeenCalledWith({
          rowId: 'testRowId-u2',
