@@ -80,7 +80,7 @@ function setUp() {
 
 describe('FocusTrap', () => {
   afterEach(() => {
-    [].slice.call(document.querySelectorAll('#root')).forEach((el) => {
+    Array.from(document.querySelectorAll('#root')).forEach((el) => {
       document.body.removeChild(el);
     });
   });

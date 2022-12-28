@@ -64,7 +64,9 @@ export class FocusTrap {
    * element.
    */
   releaseFocus() {
-    [].slice.call(this.root.querySelectorAll(`.${FOCUS_SENTINEL_CLASS}`))
+    Array
+        .from(
+            this.root.querySelectorAll<HTMLElement>(`.${FOCUS_SENTINEL_CLASS}`))
         .forEach((sentinelEl: HTMLElement) => {
           sentinelEl.parentElement!.removeChild(sentinelEl);
         });
@@ -116,10 +118,8 @@ export class FocusTrap {
   }
 
   private getFocusableElements(root: HTMLElement): HTMLElement[] {
-    const focusableEls =
-        [].slice.call(root.querySelectorAll(
-            '[autofocus], [tabindex], a, input, textarea, select, button')) as
-        HTMLElement[];
+    const focusableEls = Array.from(root.querySelectorAll<HTMLElement>(
+        '[autofocus], [tabindex], a, input, textarea, select, button'));
     return focusableEls.filter((el) => {
       const isDisabledOrHidden = el.getAttribute('aria-disabled') === 'true' ||
           el.getAttribute('disabled') != null ||

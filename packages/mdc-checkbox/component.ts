@@ -34,11 +34,6 @@ import {MDCCheckboxAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCCheckboxFoundation} from './foundation';
 
-/**
- * This type is needed for compatibility with Closure Compiler.
- */
-type PropertyDescriptorGetter = (() => unknown)|undefined;
-
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 /** MDC Checkbox Factory */
@@ -185,8 +180,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements
         return;
       }
 
-      // Type cast is needed for compatibility with Closure Compiler.
-      const nativeGetter = (desc as {get: PropertyDescriptorGetter}).get;
+      const nativeGetter = desc.get;
 
       const nativeCbDesc = {
         configurable: desc.configurable,

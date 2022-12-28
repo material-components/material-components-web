@@ -183,7 +183,7 @@ describe('MDCDialog - util', () => {
            <button>1</button>
          </div>`);
        const buttons =
-           [].slice.call(parent.querySelectorAll('button')) as HTMLElement[];
+           Array.from(parent.querySelectorAll('button')) as HTMLElement[];
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.
@@ -208,7 +208,7 @@ describe('MDCDialog - util', () => {
            <button>2</button>
          </div>`);
        const buttons =
-           [].slice.call(parent.querySelectorAll('button')) as HTMLElement[];
+           Array.from(parent.querySelectorAll('button')) as HTMLElement[];
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.
@@ -233,7 +233,7 @@ describe('MDCDialog - util', () => {
            <button>2</button>
          </div>`);
        const buttons =
-           [].slice.call(parent.querySelectorAll('button')) as HTMLElement[];
+           Array.from(parent.querySelectorAll('button')) as HTMLElement[];
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.

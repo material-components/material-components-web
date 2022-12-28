@@ -1186,7 +1186,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   /**
-   * Returns the corresponding PositionWithCaret enum for the proivded
+   * Returns the corresponding PositionWithCaret enum for the provided
    * XPositionWithCaret and YPositionWithCaret enums. This mapping exists so our
    * public API accepts only PositionWithCaret enums (as all combinations of
    * XPositionWithCaret and YPositionWithCaret are not valid), but internally we
@@ -1587,11 +1587,11 @@ interface CaretPosOnTooltip {
   // ensures that, during the opening animation of the tooltip, it expands from
   // the caret.
   yTransformOrigin: string;
-  // List of border-radius properites (e.g. border-radius-top-left, etc) that
+  // List of border-radius properties (e.g. border-radius-top-left, etc) that
   // indicate which corners of the caret element should have a border-radius of
   // 0. Certain corners use a 0 border radius to ensure a clean junction between
   // the tooltip and the caret.
-  caretCorners: Array<string>;
+  caretCorners: string[];
 }
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.

@@ -406,8 +406,7 @@ describe('MDCDataTable', () => {
   it('adapter#getRowIndexByChildElement', () => {
     const {component, root, adapter} = setupTest();
 
-    const rows =
-        [].slice.call(root.querySelectorAll(selectors.ROW)) as HTMLElement[];
+    const rows = Array.from(root.querySelectorAll<HTMLElement>(selectors.ROW));
     const inputEl = rows[2].querySelector('input') as HTMLInputElement;
     expect(adapter.getRowIndexByChildElement(inputEl)).toEqual(2);
 
@@ -481,9 +480,7 @@ describe('MDCDataTable', () => {
   it('adapter#setRowCheckboxCheckedAtIndex', () => {
     const {component, root, adapter} = setupTest();
     const nativeCheckbox =
-        ([].slice.call(root.querySelectorAll(selectors.ROW_CHECKBOX))[0] as
-         HTMLInputElement)
-            .querySelector('input');
+        root.querySelector(selectors.ROW_CHECKBOX)!.querySelector('input')!;
 
     expect(nativeCheckbox!.checked).toBe(false);
     adapter.setRowCheckboxCheckedAtIndex(0, true);

@@ -124,7 +124,7 @@ class FakeList {
 
   constructor(root: HTMLElement) {
     this.listElements =
-        [].slice.call(root.querySelectorAll('.mdc-deprecated-list-item'))
+        Array.from(root.querySelectorAll('.mdc-deprecated-list-item'));
   }
 }
 
@@ -319,28 +319,32 @@ describe('MDCMenu', () => {
 
   it('items returns all menu items', () => {
     const {root, component, list} = setupTestWithFakes();
-    const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
+    const items =
+        Array.from(root.querySelectorAll<HTMLElement>('[role="menuitem"]'));
     list.listElements = items;
     expect(component.items).toEqual(items);
   });
 
   it('items returns nothing if list is not defined', () => {
     const {root, component, list} = setupTestWithFakes();
-    const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
+    const items =
+        Array.from(root.querySelectorAll<HTMLElement>('[role="menuitem"]'));
     list.listElements = items;
     expect(component.items).toEqual(items);
   });
 
   it('getOptionByIndex', () => {
     const {root, component, list} = setupTestWithFakes();
-    const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
+    const items =
+        Array.from(root.querySelectorAll<HTMLElement>('[role="menuitem"]'));
     list.listElements = items;
     expect(component.getOptionByIndex(0)).toEqual(items[0]);
   });
 
   it('getOptionByIndex returns null if index is > list length', () => {
     const {root, component, list} = setupTestWithFakes();
-    const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
+    const items =
+        Array.from(root.querySelectorAll<HTMLElement>('[role="menuitem"]'));
     list.listElements = items;
     expect(component.getOptionByIndex(items.length)).toBe(null);
   });

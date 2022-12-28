@@ -109,7 +109,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
    * @return Returns array of header row cell elements.
    */
   getHeaderCells(): Element[] {
-    return [].slice.call(this.root.querySelectorAll(selectors.HEADER_CELL));
+    return Array.from(this.root.querySelectorAll(selectors.HEADER_CELL));
   }
 
   /**
@@ -240,8 +240,8 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
         this.getRows()[rowIndex].classList.add(className);
       },
       getRowCount: () => this.getRows().length,
-      getRowElements:
-          () => [].slice.call(this.root.querySelectorAll(selectors.ROW)),
+      getRowElements: () =>
+          Array.from(this.root.querySelectorAll(selectors.ROW)),
       getRowIdAtIndex: (rowIndex: number) =>
           this.getRows()[rowIndex].getAttribute(dataAttributes.ROW_ID),
       getRowIndexByChildElement: (el: Element) => {

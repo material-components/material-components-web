@@ -175,7 +175,7 @@ describe('MDCDialog', () => {
        expect(mockFoundation.handleDocumentKeydown).toHaveBeenCalledTimes(1);
      });
 
-  it('#initialize attaches ripple elements to all footer buttons', function() {
+  it('#initialize attaches ripple elements to all footer buttons', () => {
     if (!supportsCssVariables(window, true)) {
       return;
     }
@@ -188,7 +188,7 @@ describe('MDCDialog', () => {
     expect(cancelButton.classList.contains('mdc-ripple-upgraded')).toBe(true);
   });
 
-  it('#destroy cleans up all ripples on footer buttons', function() {
+  it('#destroy cleans up all ripples on footer buttons', () => {
     if (!supportsCssVariables(window, true)) {
       return;
     }
@@ -553,9 +553,9 @@ describe('MDCDialog', () => {
        const {component, actions, yesButton, noButton, cancelButton} =
            setupTest();
        (component.getDefaultFoundation() as any).adapter.reverseButtons();
-       expect([
-         yesButton, noButton, cancelButton
-       ]).toEqual([].slice.call(actions.children));
+       expect(actions.children[0]).toEqual(yesButton);
+       expect(actions.children[1]).toEqual(noButton);
+       expect(actions.children[2]).toEqual(cancelButton);
      });
 
   it('#layout proxies to foundation', () => {
@@ -581,23 +581,23 @@ describe('MDCDialog', () => {
            .toBe(true);
 
        try {
-         document.body.appendChild(root1)
-         document.body.appendChild(root2)
+         document.body.appendChild(root1);
+         document.body.appendChild(root2);
 
-         component1.open()
+         component1.open();
          jasmine.clock().tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS + 10);
          expect(document.activeElement).toEqual(yesButton1);
-         component1.close()
+         component1.close();
          jasmine.clock().tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
 
-         component2.open()
+         component2.open();
          jasmine.clock().tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS + 10);
          expect(document.activeElement).toEqual(yesButton2);
-         component2.close()
+         component2.close();
          jasmine.clock().tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
        } finally {
-         document.body.removeChild(root1)
-         document.body.removeChild(root2)
+         document.body.removeChild(root1);
+         document.body.removeChild(root2);
        }
      });
 });

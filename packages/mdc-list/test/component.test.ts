@@ -168,10 +168,8 @@ describe('MDCList', () => {
   it('#initializeListType populates selectedIndex based on preselected checkbox items',
      () => {
        const {root, component, mockFoundation} = setupTest();
-       const listElements =
-           [].slice.call(root.querySelectorAll(
-               `.${deprecatedClassNameMap[cssClasses.LIST_ITEM_CLASS]}`)) as
-           Element[];
+       const listElements = Array.from(root.querySelectorAll(
+           `.${deprecatedClassNameMap[cssClasses.LIST_ITEM_CLASS]}`));
        listElements.forEach((itemEl: Element) => {
          itemEl.setAttribute('role', 'checkbox');
        });
@@ -557,7 +555,7 @@ describe('MDCList', () => {
        expect(4).toEqual(component.listElements.length);
      });
 
-  it('adapter#hasRadioAtIndex return true or false based on presense of radio button on list item',
+  it('adapter#hasRadioAtIndex return true or false based on presence of radio button on list item',
      () => {
        const {component} = setupTest();
 
@@ -569,7 +567,7 @@ describe('MDCList', () => {
            .toBe(false);
      });
 
-  it('adapter#hasCheckboxAtIndex return true or false based on presense of checkbox button on list item',
+  it('adapter#hasCheckboxAtIndex return true or false based on presence of checkbox button on list item',
      () => {
        const {component} = setupTest();
 

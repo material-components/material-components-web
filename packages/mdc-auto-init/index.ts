@@ -67,7 +67,7 @@ function emit<T extends object>(
 function mdcAutoInit(root = document) {
   const components = [];
   let nodes: Element[] =
-      [].slice.call(root.querySelectorAll(`[${AUTO_INIT_ATTR}]`));
+      Array.from(root.querySelectorAll(`[${AUTO_INIT_ATTR}]`));
   nodes = nodes.filter(
       (node) => node.getAttribute(AUTO_INIT_STATE_ATTR) !== INITIALIZED_STATE);
 

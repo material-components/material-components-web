@@ -187,7 +187,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
    * Returns all the tab elements in a nice clean array
    */
   private getTabElements(): Element[] {
-    return [].slice.call(this.root.querySelectorAll(strings.TAB_SELECTOR));
+    return Array.from(this.root.querySelectorAll(strings.TAB_SELECTOR));
   }
 
   /**

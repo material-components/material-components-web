@@ -35,7 +35,7 @@ export const html =
     };
 
 /**
- * @returns HTMLElement for given HTML content in string format.
+ * @return HTMLElement for given HTML content in string format.
  */
 export function getFixture(content: string): HTMLElement {
   const wrapper = document.createElement('div');

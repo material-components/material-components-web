@@ -22,7 +22,7 @@
  */
 
 import {createMockFoundation} from '../../../testing/helpers/foundation';
-import {MDCFadingTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCTabIndicator, MDCTabIndicatorFoundation,} from '../index';
+import {MDCFadingTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCTabIndicator, MDCTabIndicatorFoundation} from '../index';
 
 const getFixture = () => {
   const wrapper = document.createElement('div');

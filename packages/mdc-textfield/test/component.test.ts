@@ -29,7 +29,7 @@ import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {cssClasses as characterCounterCssClasses} from '../../mdc-textfield/character-counter/constants';
 import {cssClasses as helperTextCssClasses} from '../../mdc-textfield/helper-text/constants';
-import {MDCTextField, MDCTextFieldCharacterCounter, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldIcon,} from '../../mdc-textfield/index';
+import {MDCTextField, MDCTextFieldCharacterCounter, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldIcon} from '../../mdc-textfield/index';
 
 const {cssClasses, strings} = MDCTextFieldFoundation;
 

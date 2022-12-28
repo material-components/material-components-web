@@ -101,7 +101,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.container = container;
     this.content =
         this.root.querySelector<HTMLElement>(strings.CONTENT_SELECTOR);
-    this.buttons = [].slice.call(
+    this.buttons = Array.from(
         this.root.querySelectorAll<HTMLButtonElement>(strings.BUTTON_SELECTOR));
     this.defaultButton = this.root.querySelector<HTMLButtonElement>(
         `[${strings.BUTTON_DEFAULT_ATTRIBUTE}]`);

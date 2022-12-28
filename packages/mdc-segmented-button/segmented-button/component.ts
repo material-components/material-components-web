@@ -38,7 +38,7 @@ export class MDCSegmentedButton extends
     return new MDCSegmentedButton(root);
   }
 
-  get segments(): ReadonlyArray<MDCSegmentedButtonSegment> {
+  get segments(): readonly MDCSegmentedButtonSegment[] {
     return this.segmentsList.slice();
   }
 
@@ -63,7 +63,7 @@ export class MDCSegmentedButton extends
   private instantiateSegments(segmentFactory: MDCSegmentedButtonSegmentFactory):
       MDCSegmentedButtonSegment[] {
     const segmentElements: Element[] =
-        [].slice.call(this.root.querySelectorAll(selectors.SEGMENT));
+        Array.from(this.root.querySelectorAll(selectors.SEGMENT));
     return segmentElements.map((el: Element) => segmentFactory(el));
   }
 

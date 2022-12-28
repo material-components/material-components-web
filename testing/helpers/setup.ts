@@ -27,28 +27,30 @@ import {MDCFoundation, MDCFoundationAdapter as FoundationAdapter, MDCFoundationC
 import {createMockAdapter} from './foundation';
 import {spyOnAllFunctions} from './jasmine';
 
+/** FoundationTest */
 export interface FoundationTest<F extends MDCFoundation> {
   foundation: F;
   mockAdapter: jasmine.SpyObj<FoundationAdapter<F>>;
 }
 
-// Alias type imports for shorter names due to clang-format's formatting
+/** Alias type imports for shorter names due to clang-format's formatting */
 export function setUpFoundationTest<C extends FoundationCtor>(
-    FoundationClass: C, defaultAdapter: FoundationAdapter<InstanceType<C>>):
+    foundationClass: C, defaultAdapter: FoundationAdapter<InstanceType<C>>):
     FoundationTest<InstanceType<C>>;
 export function setUpFoundationTest<C extends FoundationDeprecatedCtor>(
-    FoundationClass: C): FoundationTest<InstanceType<C>>;
+    foundationClass: C,
+    ): FoundationTest<InstanceType<C>>;
 export function setUpFoundationTest(
-    FoundationClass: FoundationCtor|FoundationDeprecatedCtor,
-    defaultAdapter?: FoundationAdapter<InstanceType<typeof FoundationClass>>) {
+    foundationClass: FoundationCtor|FoundationDeprecatedCtor,
+    defaultAdapter?: FoundationAdapter<InstanceType<typeof foundationClass>>) {
   let mockAdapter: jasmine.SpyObj<typeof defaultAdapter>;
   if (defaultAdapter) {
     mockAdapter = spyOnAllFunctions(defaultAdapter).and.callThrough();
   } else {
     mockAdapter =
-        createMockAdapter(FoundationClass as FoundationDeprecatedCtor);
+        createMockAdapter(foundationClass as FoundationDeprecatedCtor);
   }
-  const foundation = new FoundationClass(mockAdapter);
+  const foundation = new foundationClass(mockAdapter);
   return {foundation, mockAdapter};
 }
 

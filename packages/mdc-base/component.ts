@@ -51,7 +51,8 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
 
   /* istanbul ignore next: method param only exists for typing purposes; it does
    * not need to be unit tested */
-  initialize(..._args: Array<unknown>) {
+  // tslint:disable-next-line:enforce-name-casing
+  initialize(..._args: unknown[]) {
     // Subclasses can override this to do any additional setup work that would
     // be considered part of a "constructor". Essentially, it is a hook into the
     // parent constructor before the foundation is initialized. Any additional

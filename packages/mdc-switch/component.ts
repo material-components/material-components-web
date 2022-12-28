@@ -87,7 +87,9 @@ export class MDCSwitch extends
 
   protected createAdapter(): MDCSwitchRenderAdapter {
     return {
-      addClass: className => {this.root.classList.add(className)},
+      addClass: className => {
+        this.root.classList.add(className);
+      },
       hasClass: className => this.root.classList.contains(className),
       isDisabled: () => this.root.disabled,
       removeClass: className => {

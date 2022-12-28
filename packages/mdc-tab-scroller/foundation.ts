@@ -73,7 +73,7 @@ export class MDCTabScrollerFoundation extends
 
   /**
    * The MDCTabScrollerRTL instance varies per browser and allows us to
-   * encapsulate the peculiar browser behavior of RTL scrolling in it's own
+   * encapsulate the peculiar browser behavior of RTL scrolling in its own
    * class.
    */
   private rtlScrollerInstance?: MDCTabScrollerRTL;

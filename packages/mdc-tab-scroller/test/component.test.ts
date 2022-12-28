@@ -23,7 +23,7 @@
 
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
-import {MDCTabScroller, MDCTabScrollerFoundation, util,} from '../index';
+import {MDCTabScroller, MDCTabScrollerFoundation, util} from '../index';
 import {MDCTabScrollerRTL} from '../rtl-scroller';
 
 function getFixture() {

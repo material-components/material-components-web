@@ -760,7 +760,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   /**
-   * Helper method for ensuring that the list of selected indicies remains
+   * Helper method for ensuring that the list of selected indices remains
    * accurate when calling setCheckboxAtIndex with omitDisabledItems set to
    * true.
    */

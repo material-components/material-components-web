@@ -154,12 +154,14 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       emitInputEvent: (value, thumb: Thumb) => {
         this.emit<MDCSliderChangeEventDetail>(events.INPUT, {value, thumb});
       },
+      // tslint:disable-next-line:enforce-name-casing
       emitDragStartEvent: (_, thumb: Thumb) => {
         // Emitting event is not yet implemented. See issue:
         // https://github.com/material-components/material-components-web/issues/6448
 
         this.getRipple(thumb).activate();
       },
+      // tslint:disable-next-line:enforce-name-casing
       emitDragEndEvent: (_, thumb: Thumb) => {
         // Emitting event is not yet implemented. See issue:
         // https://github.com/material-components/material-components-web/issues/6448
@@ -209,12 +211,10 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
    */
   override initialize({skipInitialUIUpdate}: {skipInitialUIUpdate?:
                                                   boolean} = {}) {
-    this.inputs =
-        [].slice.call(this.root.querySelectorAll(`.${cssClasses.INPUT}`)) as
-        HTMLInputElement[];
-    this.thumbs =
-        [].slice.call(this.root.querySelectorAll(`.${cssClasses.THUMB}`)) as
-        HTMLElement[];
+    this.inputs = Array.from(
+        this.root.querySelectorAll<HTMLInputElement>(`.${cssClasses.INPUT}`));
+    this.thumbs = Array.from(
+        this.root.querySelectorAll<HTMLElement>(`.${cssClasses.THUMB}`));
     this.trackActive =
         this.root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
     this.ripples = this.createRipples();
@@ -314,10 +314,10 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   /** Initializes thumb ripples. */
   private createRipples(): MDCRipple[] {
     const ripples = [];
-    const rippleSurfaces = [].slice.call(
+    const rippleSurfaces = Array.from(
         this.root.querySelectorAll<HTMLElement>(`.${cssClasses.THUMB}`));
     for (let i = 0; i < rippleSurfaces.length; i++) {
-      const rippleSurface = rippleSurfaces[i] as HTMLElement;
+      const rippleSurface = rippleSurfaces[i];
       // Use the corresponding input as the focus source for the ripple (i.e.
       // when the input is focused, the ripple is in the focused state).
       const input = this.inputs[i];

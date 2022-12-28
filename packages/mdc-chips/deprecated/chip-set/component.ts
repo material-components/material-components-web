@@ -43,14 +43,14 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     return new MDCChipSet(root);
   }
 
-  get chips(): ReadonlyArray<MDCChip> {
+  get chips(): readonly MDCChip[] {
     return this.chipsList.slice();
   }
 
   /**
    * @return An array of the IDs of all selected chips.
    */
-  get selectedChipIds(): ReadonlyArray<string> {
+  get selectedChipIds(): readonly string[] {
     return this.foundation.getSelectedChipIds();
   }
 
@@ -165,7 +165,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
    */
   private instantiateChips(chipFactory: MDCChipFactory): MDCChip[] {
     const chipElements: Element[] =
-        [].slice.call(this.root.querySelectorAll(CHIP_SELECTOR));
+        Array.from(this.root.querySelectorAll(CHIP_SELECTOR));
     return chipElements.map((el) => {
       el.id = el.id || `mdc-chip-${++idCounter}`;
       return chipFactory(el);

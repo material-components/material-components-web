@@ -24,7 +24,7 @@
 import {MDCFoundationAdapter, MDCFoundationConstructor, MDCFoundationDeprecatedConstructor} from '@material/base/foundation';
 
 /**
- * @returns Method names of the given foundation class, including all MDC
+ * @return Method names of the given foundation class, including all MDC
  *     superclasses.
  */
 function getFoundationMethods<C extends MDCFoundationConstructor>(
