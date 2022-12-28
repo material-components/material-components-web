@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCRadio, MDCRadioFoundation} from '../index';
 
 const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;

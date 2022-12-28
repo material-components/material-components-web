@@ -23,14 +23,17 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
+
 import {MDCTextFieldIconAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-type InteractionEventType = 'click' | 'keydown';
+type InteractionEventType = 'click'|'keydown';
 
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
-export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> {
+/** MDC Text Field Icon Foundation */
+export class MDCTextFieldIconFoundation extends
+    MDCFoundation<MDCTextFieldIconAdapter> {
   static override get strings() {
     return strings;
   }
@@ -40,7 +43,8 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
   }
 
   /**
-   * See {@link MDCTextFieldIconAdapter} for typing information on parameters and return types.
+   * See {@link MDCTextFieldIconAdapter} for typing information on parameters
+   * and return types.
    */
   static override get defaultAdapter(): MDCTextFieldIconAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
@@ -105,8 +109,9 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     this.adapter.setContent(content);
   }
 
-  handleInteraction(evt: MouseEvent | KeyboardEvent) {
-    const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+  handleInteraction(evt: MouseEvent|KeyboardEvent) {
+    const isEnterKey = (evt as KeyboardEvent).key === 'Enter' ||
+        (evt as KeyboardEvent).keyCode === 13;
     const isSpaceKey = (evt as KeyboardEvent).key === ' ';
     if (evt.type === 'click' || isEnterKey || isSpaceKey) {
       evt.preventDefault();  // stop click from causing host label to focus

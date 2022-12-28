@@ -191,7 +191,8 @@ describe('MDCChipAction', () => {
       id: 'c0',
     });
 
-    component.setActionFocus(MDCChipActionType.PRIMARY, MDCChipActionFocusBehavior.FOCUSABLE);
+    component.setActionFocus(
+        MDCChipActionType.PRIMARY, MDCChipActionFocusBehavior.FOCUSABLE);
     expect(root.querySelector('.mdc-evolution-chip__action')!.getAttribute(
                'tabindex'))
         .toBe('0');

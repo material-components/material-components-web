@@ -23,13 +23,16 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCRipple} from '@material/ripple/component';
+
 import {MDCFormFieldAdapter} from './adapter';
 import {MDCFormFieldFoundation} from './foundation';
 
+/** MDC Form Field Input */
 export interface MDCFormFieldInput {
-  readonly ripple: MDCRipple | undefined;
+  readonly ripple: MDCRipple|undefined;
 }
 
+/** MDC Form Field */
 export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
   static override attachTo(root: HTMLElement) {
     return new MDCFormField(root);
@@ -43,8 +46,9 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCFormFieldAdapter = {
       activateInputRipple: () => {
         if (this.input && this.input.ripple) {

@@ -23,6 +23,7 @@
 
 // TODO(b/185410690): remove deprecated export
 import * as deprecated from './deprecated';
+
 export {deprecated};
 
 export * from './adapter';

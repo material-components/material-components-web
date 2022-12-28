@@ -162,7 +162,8 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   /** Sets the selection state of the chip. */
-  setChipSelected(index: number, action: MDCChipActionType, isSelected: boolean) {
+  setChipSelected(
+      index: number, action: MDCChipActionType, isSelected: boolean) {
     this.foundation.setChipSelected(index, action, isSelected);
   }
 

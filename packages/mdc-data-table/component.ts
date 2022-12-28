@@ -32,9 +32,7 @@ import {cssClasses, dataAttributes, events, messages, selectors, SortValue} from
 import {MDCDataTableFoundation} from './foundation';
 import {MDCDataTableRowSelectionChangedEventDetail, RowClickEventData} from './types';
 
-/**
- * Implementation of `MDCDataTableFoundation`
- */
+/** MDC Data Table */
 export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   static override attachTo(root: Element): MDCDataTable {
     return new MDCDataTable(root);

@@ -78,9 +78,7 @@ class FakeRipple {
   unbounded: boolean|null = null;
 }
 
-function setupTest(
-    removeIcon = false,
-    rippleFactory = () => new FakeRipple()) {
+function setupTest(removeIcon = false, rippleFactory = () => new FakeRipple()) {
   const fixture = getFixture(removeIcon);
   const root = fixture.querySelector(strings.ROOT_SELECTOR) as HTMLElement;
   const mockFoundation = createMockFoundation(MDCTopAppBarFoundation);
@@ -185,17 +183,15 @@ describe('MDCTopAppBar', () => {
      () => {
        const fixture = getFixture();
        const root = fixture.querySelector(strings.ROOT_SELECTOR) as HTMLElement;
-       const component = new MDCTopAppBar(
-           root, undefined, () => new FakeRipple());
+       const component =
+           new MDCTopAppBar(root, undefined, () => new FakeRipple());
        expect((component as any).foundation instanceof MDCTopAppBarFoundation)
            .toBe(true);
        expect(
-           (component as any).foundation instanceof
-           MDCShortTopAppBarFoundation)
+           (component as any).foundation instanceof MDCShortTopAppBarFoundation)
            .toBe(false);
        expect(
-           (component as any).foundation instanceof
-           MDCFixedTopAppBarFoundation)
+           (component as any).foundation instanceof MDCFixedTopAppBarFoundation)
            .toBe(false);
      });
 
@@ -204,15 +200,13 @@ describe('MDCTopAppBar', () => {
        const fixture = getFixture();
        const root = fixture.querySelector(strings.ROOT_SELECTOR) as HTMLElement;
        root.classList.add(MDCTopAppBarFoundation.cssClasses.FIXED_CLASS);
-       const component = new MDCTopAppBar(
-           root, undefined, () => new FakeRipple());
+       const component =
+           new MDCTopAppBar(root, undefined, () => new FakeRipple());
        expect(
-           (component as any).foundation instanceof
-           MDCShortTopAppBarFoundation)
+           (component as any).foundation instanceof MDCShortTopAppBarFoundation)
            .toBe(false);
        expect(
-           (component as any).foundation instanceof
-           MDCFixedTopAppBarFoundation)
+           (component as any).foundation instanceof MDCFixedTopAppBarFoundation)
            .toBe(true);
      });
 
@@ -221,15 +215,13 @@ describe('MDCTopAppBar', () => {
        const fixture = getFixture();
        const root = fixture.querySelector(strings.ROOT_SELECTOR) as HTMLElement;
        root.classList.add(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS);
-       const component = new MDCTopAppBar(
-           root, undefined, () => new FakeRipple());
+       const component =
+           new MDCTopAppBar(root, undefined, () => new FakeRipple());
        expect(
-           (component as any).foundation instanceof
-           MDCShortTopAppBarFoundation)
+           (component as any).foundation instanceof MDCShortTopAppBarFoundation)
            .toBe(true);
        expect(
-           (component as any).foundation instanceof
-           MDCFixedTopAppBarFoundation)
+           (component as any).foundation instanceof MDCFixedTopAppBarFoundation)
            .toBe(false);
      });
 
@@ -237,16 +229,14 @@ describe('MDCTopAppBar', () => {
      () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
+       expect((component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
   it('adapter#hasClass returns false if the root element does not have specified class',
      () => {
        const {component} = setupTest();
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
+       expect((component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(false);
      });
 

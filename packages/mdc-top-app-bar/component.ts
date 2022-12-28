@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
+
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCFixedTopAppBarFoundation} from './fixed/foundation';
@@ -31,6 +32,7 @@ import {MDCTopAppBarBaseFoundation} from './foundation';
 import {MDCShortTopAppBarFoundation} from './short/foundation';
 import {MDCTopAppBarFoundation} from './standard/foundation';
 
+/** MDC Top App Bar */
 export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   static override attachTo(root: Element): MDCTopAppBar {
     return new MDCTopAppBar(root);
@@ -124,8 +126,9 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTopAppBarAdapter = {
       hasClass: (className) => this.root.classList.contains(className),

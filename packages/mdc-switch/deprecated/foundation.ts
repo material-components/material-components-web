@@ -22,9 +22,11 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCSwitchAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
+/** MDC Switch Foundation */
 export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** The string constants used by the switch. */
   static override get strings() {

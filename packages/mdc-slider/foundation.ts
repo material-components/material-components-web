@@ -60,7 +60,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private valueStart!: number;  // Assigned in init()
   // If `isRange`, this it the value of Thumb.END. Otherwise, it is the
   // value of the single thumb.
-  private value!: number;     // Assigned in init()
+  private value!: number;  // Assigned in init()
   private rect!: DOMRect;  // Assigned in layout() via init()
 
   private isDisabled = false;
@@ -347,7 +347,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       throw new Error('`minRange` is only applicable for range sliders.');
     }
     if (value < 0) {
-      throw new Error('`minRange` must be non-negative. ' +
+      throw new Error(
+          '`minRange` must be non-negative. ' +
           `Current value: ${value}`);
     }
     if (this.value - this.valueStart < value) {

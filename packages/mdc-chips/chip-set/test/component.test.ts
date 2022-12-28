@@ -488,37 +488,37 @@ describe('MDCChipSet', () => {
   });
 
   it('announces chip addition when enter animation is complete' +
-          ' and addition announcement is present',
-      () => {
-        const {root} = setupTest({
-          chips: [
-            multiActionInputChip('c0'),
-            multiActionInputChip('c1'),
-          ],
-          isMultiselectable: false,
-        });
+         ' and addition announcement is present',
+     () => {
+       const {root} = setupTest({
+         chips: [
+           multiActionInputChip('c0'),
+           multiActionInputChip('c1'),
+         ],
+         isMultiselectable: false,
+       });
 
-        const detail: MDCChipAnimationEventDetail = {
-          isComplete: true,
-          addedAnnouncement: 'Added a chip',
-          animation: MDCChipAnimation.ENTER,
-          chipID: 'c0',
-        };
+       const detail: MDCChipAnimationEventDetail = {
+         isComplete: true,
+         addedAnnouncement: 'Added a chip',
+         animation: MDCChipAnimation.ENTER,
+         chipID: 'c0',
+       };
 
-        emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
-          bubbles: true,
-          cancelable: false,
-          detail,
-        });
+       emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
+         bubbles: true,
+         cancelable: false,
+         detail,
+       });
 
-        // Tick clock forward to account for setTimeout inside "announce".
-        jasmine.clock().tick(1);
-        const liveRegion =
-            document.querySelector(`[${DATA_MDC_DOM_ANNOUNCE}="true"]`)!;
-        expect(liveRegion.textContent).toEqual('Added a chip');
-        // Clean up the live region.
-        liveRegion.parentNode!.removeChild(liveRegion);
-      });
+       // Tick clock forward to account for setTimeout inside "announce".
+       jasmine.clock().tick(1);
+       const liveRegion =
+           document.querySelector(`[${DATA_MDC_DOM_ANNOUNCE}="true"]`)!;
+       expect(liveRegion.textContent).toEqual('Added a chip');
+       // Clean up the live region.
+       liveRegion.parentNode!.removeChild(liveRegion);
+     });
 
   it('removes the chip from the DOM when removal animation is complete', () => {
     const {component, root} = setupTest({

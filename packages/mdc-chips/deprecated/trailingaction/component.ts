@@ -27,6 +27,7 @@ import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
+
 import {MDCChipTrailingActionAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipTrailingActionFoundation} from './foundation';
@@ -39,6 +40,7 @@ export type MDCChipTrailingActionFactory =
     (el: Element, foundation?: MDCChipTrailingActionFoundation) =>
         MDCChipTrailingAction;
 
+/** MDC Chip Trailing Action */
 export class MDCChipTrailingAction extends
     MDCComponent<MDCChipTrailingActionFoundation> implements
         MDCRippleCapableSurface {

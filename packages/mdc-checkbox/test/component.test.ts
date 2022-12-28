@@ -161,8 +161,7 @@ describe('MDCCheckbox', () => {
     const {root, component} = setupTest();
     (component as any).foundation.handleAnimationEnd = jasmine.createSpy();
     emitEvent(root, 'animationend');
-    expect((component as any).foundation.handleAnimationEnd)
-        .toHaveBeenCalled();
+    expect((component as any).foundation.handleAnimationEnd).toHaveBeenCalled();
   });
 
   it('"checked" property change hook calls foundation#handleChange', () => {
@@ -306,8 +305,7 @@ describe('MDCCheckbox', () => {
 
   it('#adapter.hasNativeControl returns true when checkbox exists', () => {
     const {component} = setupTest();
-    expect(
-        (component.getDefaultFoundation() as any).adapter.hasNativeControl())
+    expect((component.getDefaultFoundation() as any).adapter.hasNativeControl())
         .toBe(true);
   });
 

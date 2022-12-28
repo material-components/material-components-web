@@ -245,21 +245,20 @@ describe('MDCTextField', () => {
        expect(component['trailingIcon']).toEqual(null);
      });
 
-  it('#constructor instantiates an icon for both icon elements if present',
-     () => {
-       const root = getFixture();
-       root.classList.add('mdc-text-field--with-trailing-icon');
+  it('#constructor instantiates an icon for both icon elements if present', () => {
+    const root = getFixture();
+    root.classList.add('mdc-text-field--with-trailing-icon');
 
-       const wrapper = document.createElement('div');
-       wrapper.innerHTML =
-           `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`;
-       const el = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(el);
-       root.appendChild(el);
-       const component = new MDCTextField(root);
-       expect(component['leadingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
-       expect(component['trailingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
-     });
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML =
+        `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`;
+    const el = wrapper.firstElementChild as HTMLElement;
+    wrapper.removeChild(el);
+    root.appendChild(el);
+    const component = new MDCTextField(root);
+    expect(component['leadingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
+    expect(component['trailingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
+  });
 
   it('#constructor instantiates a trailing icon if the icon is present', () => {
     const root = getFixture();
@@ -712,8 +711,7 @@ describe('MDCTextField', () => {
   it('#adapter.deactivateLineRipple calls the deactivate method on the line ripple',
      () => {
        const {component, lineRipple} = setupTest();
-       (component.getDefaultFoundation() as any)
-           .adapter.deactivateLineRipple();
+       (component.getDefaultFoundation() as any).adapter.deactivateLineRipple();
        expect(lineRipple.deactivate).toHaveBeenCalled();
      });
 

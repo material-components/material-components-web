@@ -25,7 +25,7 @@ import {supportsCssVariables} from '../../mdc-ripple/util';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {strings, numbers} from '../constants';
+import {numbers, strings} from '../constants';
 import {MDCDialog, MDCDialogFoundation, util} from '../index';
 
 function getFixture() {
@@ -53,7 +53,8 @@ function getFixture() {
               <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no" type="button">
                 <span class="mdc-button__label">No</span>
               </button>
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button" ${strings.INITIAL_FOCUS_ATTRIBUTE}>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button" ${
+      strings.INITIAL_FOCUS_ATTRIBUTE}>
                 <span class="mdc-button__label">Yes</span>
               </button>
             </div>
@@ -319,8 +320,7 @@ describe('MDCDialog', () => {
      () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
+       expect((component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
        expect((component.getDefaultFoundation() as any)
                   .adapter.hasClass('does-not-exist'))
@@ -471,8 +471,8 @@ describe('MDCDialog', () => {
 
   it('adapter#isContentScrollable returns result of util.isScrollable', () => {
     const {component, content} = setupTest();
-    expect((component.getDefaultFoundation() as any)
-               .adapter.isContentScrollable())
+    expect(
+        (component.getDefaultFoundation() as any).adapter.isContentScrollable())
         .toBe(util.isScrollable(content));
   });
 
@@ -566,31 +566,38 @@ describe('MDCDialog', () => {
     expect((component as any).foundation.layout).toHaveBeenCalled();
   });
 
-  it(`Button with ${strings.INITIAL_FOCUS_ATTRIBUTE} will be focused when the dialog is opened, with multiple initial focus buttons in DOM`, () => {
-    const {root: root1, component: component1, yesButton: yesButton1} = setupTest();
-    const {root: root2, component: component2, yesButton: yesButton2} = setupTest();
+  it(`Button with ${
+         strings
+             .INITIAL_FOCUS_ATTRIBUTE} will be focused when the dialog is opened, with multiple initial focus buttons in DOM`,
+     () => {
+       const {root: root1, component: component1, yesButton: yesButton1} =
+           setupTest();
+       const {root: root2, component: component2, yesButton: yesButton2} =
+           setupTest();
 
-    expect(yesButton1.hasAttribute(strings.INITIAL_FOCUS_ATTRIBUTE)).toBe(true);
-    expect(yesButton2.hasAttribute(strings.INITIAL_FOCUS_ATTRIBUTE)).toBe(true);
+       expect(yesButton1.hasAttribute(strings.INITIAL_FOCUS_ATTRIBUTE))
+           .toBe(true);
+       expect(yesButton2.hasAttribute(strings.INITIAL_FOCUS_ATTRIBUTE))
+           .toBe(true);
 
-    try {
-      document.body.appendChild(root1)
-      document.body.appendChild(root2)
+       try {
+         document.body.appendChild(root1)
+         document.body.appendChild(root2)
 
-      component1.open()
-      jasmine.clock().tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS + 10);
-      expect(document.activeElement).toEqual(yesButton1);
-      component1.close()
-      jasmine.clock().tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
+         component1.open()
+         jasmine.clock().tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS + 10);
+         expect(document.activeElement).toEqual(yesButton1);
+         component1.close()
+         jasmine.clock().tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
 
-      component2.open()
-      jasmine.clock().tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS + 10);
-      expect(document.activeElement).toEqual(yesButton2);
-      component2.close()
-      jasmine.clock().tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
-    } finally {
-      document.body.removeChild(root1)
-      document.body.removeChild(root2)
-    }
-  });
+         component2.open()
+         jasmine.clock().tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS + 10);
+         expect(document.activeElement).toEqual(yesButton2);
+         component2.close()
+         jasmine.clock().tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
+       } finally {
+         document.body.removeChild(root1)
+         document.body.removeChild(root2)
+       }
+     });
 });

@@ -646,12 +646,12 @@ describe('MDCSelectFoundation', () => {
      });
 
   it('#layout sets label as required if select is required', () => {
-     const {foundation, mockAdapter} = setupTest();
-     mockAdapter.hasLabel.and.returnValue(true);
-     mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(true);
-     foundation.layout();
-     expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
-   });
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasLabel.and.returnValue(true);
+    mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(true);
+    foundation.layout();
+    expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
+  });
 
   it('#layoutOptions refetches menu item values to cache', () => {
     const {foundation, mockAdapter} = setupTest();

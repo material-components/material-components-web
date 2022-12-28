@@ -23,9 +23,11 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCProgressIndicator} from '@material/progress-indicator/component';
+
 import {MDCCircularProgressAdapter} from './adapter';
 import {MDCCircularProgressFoundation} from './foundation';
 
+/** MDC Circular Progress */
 export class MDCCircularProgress extends
     MDCComponent<MDCCircularProgressFoundation> implements
         MDCProgressIndicator {

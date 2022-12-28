@@ -24,6 +24,7 @@
 import 'jasmine';
 
 import {mdcObserver, observeProperty, setObserversEnabled} from '../observer-proxy';
+
 import {createObserverTests} from './observer-tests';
 
 if (typeof Proxy === 'function') {

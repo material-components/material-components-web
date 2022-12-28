@@ -30,7 +30,7 @@ import {MDCBannerAdapter} from './adapter';
 import {CloseReason, events, MDCBannerActionEventDetail, MDCBannerCloseEventDetail, MDCBannerFocusTrapFactory, selectors} from './constants';
 import {MDCBannerFoundation} from './foundation';
 
-/** Vanilla JS implementation of banner component. */
+/** Vanilla implementation of banner component. */
 export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
   static override attachTo(root: Element) {
     return new MDCBanner(root);

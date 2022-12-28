@@ -150,7 +150,7 @@ describe('MDCAutoInit', () => {
        try {
          mdcAutoInit(document);
        } finally {
-        (window as unknown as WindowWithCustomEvent).CustomEvent = customEvent;
+         (window as unknown as WindowWithCustomEvent).CustomEvent = customEvent;
        }
 
        expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({type}));

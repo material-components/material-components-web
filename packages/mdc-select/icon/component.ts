@@ -22,11 +22,15 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+
 import {MDCSelectIconAdapter} from './adapter';
 import {MDCSelectIconFoundation} from './foundation';
 
-export type MDCSelectIconFactory = (el: Element, foundation?: MDCSelectIconFoundation) => MDCSelectIcon;
+/** MDC Select Icon Factory */
+export type MDCSelectIconFactory =
+    (el: Element, foundation?: MDCSelectIconFoundation) => MDCSelectIcon;
 
+/** MDC Select Icon */
 export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
   static override attachTo(root: Element): MDCSelectIcon {
     return new MDCSelectIcon(root);
@@ -38,8 +42,9 @@ export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCSelectIconAdapter = {
       getAttr: (attr) => this.root.getAttribute(attr),

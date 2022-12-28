@@ -22,8 +22,10 @@
  */
 
 export const cssClasses = {
-  // Ripple is a special case where the "root" component is really a "mixin" of sorts,
-  // given that it's an 'upgrade' to an existing component. That being said it is the root
+  // Ripple is a special case where the "root" component is really a "mixin" of
+  // sorts,
+  // given that it's an 'upgrade' to an existing component. That being said it
+  // is the root
   // CSS class that all other CSS classes derive from.
   BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
   FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
@@ -42,9 +44,13 @@ export const strings = {
 };
 
 export const numbers = {
-  DEACTIVATION_TIMEOUT_MS: 225, // Corresponds to $mdc-ripple-translate-duration (i.e. activation animation duration)
-  FG_DEACTIVATION_MS: 150, // Corresponds to $mdc-ripple-fade-out-duration (i.e. deactivation animation duration)
+  DEACTIVATION_TIMEOUT_MS:
+      225,  // Corresponds to $mdc-ripple-translate-duration (i.e. activation
+            // animation duration)
+  FG_DEACTIVATION_MS: 150,  // Corresponds to $mdc-ripple-fade-out-duration
+                            // (i.e. deactivation animation duration)
   INITIAL_ORIGIN_SCALE: 0.6,
   PADDING: 10,
-  TAP_DELAY_MS: 300, // Delay between touch and simulated mouse events on touch devices
+  TAP_DELAY_MS:
+      300,  // Delay between touch and simulated mouse events on touch devices
 };

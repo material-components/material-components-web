@@ -47,6 +47,7 @@ enum AnimationKeys {
 // Accessing `window` without a `typeof` check will throw on Node environments.
 const HAS_WINDOW = typeof window !== 'undefined';
 
+/** MDC Tooltip Foundation */
 export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   static override get defaultAdapter(): MDCTooltipAdapter {
     return {

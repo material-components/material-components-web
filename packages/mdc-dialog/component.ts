@@ -26,6 +26,7 @@ import {SpecificEventListener} from '@material/base/types';
 import {FocusTrap} from '@material/dom/focus-trap';
 import {closest, matches} from '@material/dom/ponyfill';
 import {MDCRipple} from '@material/ripple/component';
+
 import {MDCDialogAdapter} from './adapter';
 import {MDCDialogFoundation} from './foundation';
 import {MDCDialogCloseEventDetail} from './types';
@@ -34,6 +35,7 @@ import {MDCDialogFocusTrapFactory} from './util';
 
 const {strings} = MDCDialogFoundation;
 
+/** MDC Dialog */
 export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   get isOpen() {
     return this.foundation.isOpen();
@@ -67,10 +69,10 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     return new MDCDialog(root);
   }
 
-  private buttonRipples!: MDCRipple[];       // assigned in initialize()
-  private buttons!: HTMLButtonElement[];     // assigned in initialize()
-  private container!: HTMLElement;           // assigned in initialize()
-  private content!: HTMLElement|null;        // assigned in initialize()
+  private buttonRipples!: MDCRipple[];             // assigned in initialize()
+  private buttons!: HTMLButtonElement[];           // assigned in initialize()
+  private container!: HTMLElement;                 // assigned in initialize()
+  private content!: HTMLElement|null;              // assigned in initialize()
   private defaultButton!: HTMLButtonElement|null;  // assigned in initialize()
 
   private focusTrap!: FocusTrap;  // assigned in initialSyncWithDOM()
@@ -93,7 +95,8 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     const container =
         this.root.querySelector<HTMLElement>(strings.CONTAINER_SELECTOR);
     if (!container) {
-      throw new Error(`Dialog component requires a ${strings.CONTAINER_SELECTOR} container element`);
+      throw new Error(`Dialog component requires a ${
+          strings.CONTAINER_SELECTOR} container element`);
     }
     this.container = container;
     this.content =
@@ -160,8 +163,9 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCDialogAdapter = {
       addBodyClass: (className) => {
         document.body.classList.add(className);
@@ -181,7 +185,8 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
         if (!evt.target) {
           return '';
         }
-        const element = closest(evt.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
+        const element =
+            closest(evt.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
       },
       getInitialFocusEl: () => this.getInitialFocusEl(),

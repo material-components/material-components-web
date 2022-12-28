@@ -26,8 +26,7 @@ import {MDCListFoundation} from '../../mdc-list/foundation';
 import {numbers} from '../../mdc-menu-surface/constants';
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {cssClasses, DefaultFocusState, strings} from '../constants';
-import {numbers as menuNumbers} from '../constants';
+import {cssClasses, DefaultFocusState, numbers as menuNumbers, strings} from '../constants';
 import {MDCMenuFoundation} from '../foundation';
 
 function setupTest() {

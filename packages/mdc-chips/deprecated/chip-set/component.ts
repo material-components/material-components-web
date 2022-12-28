@@ -23,18 +23,21 @@
 
 import {MDCComponent} from '@material/base/component';
 import {announce} from '@material/dom/announce';
+
 import {MDCChip, MDCChipFactory} from '../chip/component';
 import {MDCChipFoundation} from '../chip/foundation';
-import {MDCChipInteractionEvent, MDCChipNavigationEvent, MDCChipRemovalEvent,
-    MDCChipSelectionEvent} from '../chip/types';
+import {MDCChipInteractionEvent, MDCChipNavigationEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/types';
+
 import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 
-const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT, NAVIGATION_EVENT} = MDCChipFoundation.strings;
+const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT, NAVIGATION_EVENT} =
+    MDCChipFoundation.strings;
 const {CHIP_SELECTOR} = MDCChipSetFoundation.strings;
 
 let idCounter = 0;
 
+/** MDC Chip Set */
 export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   static override attachTo(root: Element) {
     return new MDCChipSet(root);
@@ -117,8 +120,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
       announceMessage: (message) => {
         announce(message);
@@ -169,7 +173,8 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   /**
-   * Returns the index of the chip with the given id, or -1 if the chip does not exist.
+   * Returns the index of the chip with the given id, or -1 if the chip does not
+   * exist.
    */
   private findChipIndex(chipId: string): number {
     for (let i = 0; i < this.chips.length; i++) {

@@ -43,7 +43,8 @@ export interface MDCChipSetAdapter {
   /**
    * Sets the selected state of the chip at the given index.
    */
-  selectChipAtIndex(index: number, isSelected: boolean, shouldNotifyClients: boolean): void;
+  selectChipAtIndex(
+      index: number, isSelected: boolean, shouldNotifyClients: boolean): void;
 
   /**
    * Returns the index of the chip at the given ID.

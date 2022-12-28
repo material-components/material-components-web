@@ -27,9 +27,11 @@ import {MDCTopAppBarBaseFoundation} from '../foundation';
 
 const INITIAL_VALUE = 0;
 
+/** MDC Top App Bar Foundation */
 export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
-   * Indicates if the top app bar was docked in the previous scroll handler iteration.
+   * Indicates if the top app bar was docked in the previous scroll handler
+   * iteration.
    */
   private wasDocked = true;
 
@@ -44,7 +46,8 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   private currentAppBarOffsetTop = 0;
 
   /**
-   * Used to prevent the top app bar from being scrolled out of view during resize events
+   * Used to prevent the top app bar from being scrolled out of view during
+   * resize events
    */
   private isCurrentlyBeingResized = false;
 
@@ -59,7 +62,8 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   private lastScrollPosition: number;
 
   /**
-   * Used to verify when the top app bar is completely showing or completely hidden
+   * Used to verify when the top app bar is completely showing or completely
+   * hidden
    */
   private topAppBarHeight: number;
 
@@ -86,7 +90,8 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * Scroll handler for the default scroll behavior of the top app bar.
    */
   override handleTargetScroll() {
-    const currentScrollPosition = Math.max(this.adapter.getViewportScrollY(), 0);
+    const currentScrollPosition =
+        Math.max(this.adapter.getViewportScrollY(), 0);
     const diff = currentScrollPosition - this.lastScrollPosition;
     this.lastScrollPosition = currentScrollPosition;
 
@@ -107,7 +112,8 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   }
 
   /**
-   * Top app bar resize handler that throttle/debounce functions that execute updates.
+   * Top app bar resize handler that throttle/debounce functions that execute
+   * updates.
    */
   override handleWindowResize() {
     // Throttle resize events 10 p/s
@@ -163,8 +169,9 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    */
   private moveTopAppBar() {
     if (this.checkForUpdate()) {
-      // Once the top app bar is fully hidden we use the max potential top app bar height as our offset
-      // so the top app bar doesn't show if the window resizes and the new height > the old height.
+      // Once the top app bar is fully hidden we use the max potential top app
+      // bar height as our offset so the top app bar doesn't show if the window
+      // resizes and the new height > the old height.
       let offset = this.currentAppBarOffsetTop;
       if (Math.abs(offset) >= this.topAppBarHeight) {
         offset = -numbers.MAX_TOP_APP_BAR_HEIGHT;
@@ -183,9 +190,10 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     if (this.topAppBarHeight !== currentHeight) {
       this.wasDocked = false;
 
-      // Since the top app bar has a different height depending on the screen width, this
-      // will ensure that the top app bar remains in the correct location if
-      // completely hidden and a resize makes the top app bar a different height.
+      // Since the top app bar has a different height depending on the screen
+      // width, this will ensure that the top app bar remains in the correct
+      // location if completely hidden and a resize makes the top app bar a
+      // different height.
       this.currentAppBarOffsetTop -= this.topAppBarHeight - currentHeight;
       this.topAppBarHeight = currentHeight;
     }

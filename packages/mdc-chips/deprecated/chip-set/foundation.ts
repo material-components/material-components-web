@@ -29,6 +29,7 @@ import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemo
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
+/** MDC Chip Set Foundation */
 export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   static override get strings() {
     return strings;
@@ -54,7 +55,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   /**
-   * The ids of the selected chips in the set. Only used for choice chip set or filter chip set.
+   * The ids of the selected chips in the set. Only used for choice chip set or
+   * filter chip set.
    */
   private selectedChipIds: string[] = [];
 
@@ -70,8 +72,9 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   /**
-   * Selects the chip with the given id. Deselects all other chips if the chip set is of the choice variant.
-   * Does not notify clients of the updated selection state.
+   * Selects the chip with the given id. Deselects all other chips if the chip
+   * set is of the choice variant. Does not notify clients of the updated
+   * selection state.
    */
   select(chipId: string) {
     this.selectImpl(chipId, false);
@@ -90,7 +93,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   /**
-   * Handles a chip selection event, used to handle discrepancy when selection state is set directly on the Chip.
+   * Handles a chip selection event, used to handle discrepancy when selection
+   * state is set directly on the Chip.
    */
   handleChipSelection({chipId, selected, shouldIgnore}:
                           MDCChipSelectionEventDetail) {
@@ -124,7 +128,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     }
     const nextIndex = Math.min(index, maxIndex);
     this.removeFocusFromChipsExcept(nextIndex);
-    // After removing a chip, we should focus the trailing action for the next chip.
+    // After removing a chip, we should focus the trailing action for the next
+    // chip.
     this.adapter.focusChipTrailingActionAtIndex(nextIndex);
   }
 

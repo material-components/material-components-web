@@ -32,6 +32,7 @@ import {MDCTooltipFoundation} from './foundation';
 
 const ARIA_ATTR_PREFIX = [safeAttrPrefix`aria-`];
 
+/** MDC Tooltip */
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   static override attachTo(root: Element) {
     return new MDCTooltip(root);

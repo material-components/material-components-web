@@ -71,8 +71,7 @@ describe('MDCLineRipple', () => {
 
   it('#adapter.setStyle adds a given style property to the element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any)
-        .adapter.setStyle('color', 'blue');
+    (component.getDefaultFoundation() as any).adapter.setStyle('color', 'blue');
     expect(root.getAttribute('style')).toEqual('color: blue;');
   });
 

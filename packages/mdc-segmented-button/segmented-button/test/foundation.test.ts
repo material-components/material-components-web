@@ -52,26 +52,25 @@ describe('MDCSegmentedButtonFoundation', () => {
     return {foundation, mockAdapter};
   };
 
-  const setupSegmentTest =
-      (singleSelect: boolean = false) => {
-        const {foundation, mockAdapter} =
-            singleSelect ? setupSingleSelectTest() : setupMultiSelectTest();
-        mockAdapter.getSegments.and.callFake(() => {
-          const l = [];
-          l[testIndices.UNSELECTED] = {
-            'index': testIndices.UNSELECTED,
-            'selected': false,
-            'segmentId': testSegmentIds.UNSELECTED_SEGMENT_ID
-          };
-          l[testIndices.SELECTED] = {
-            'index': testIndices.SELECTED,
-            'selected': true,
-            'segmentId': testSegmentIds.SELECTED_SEGMENT_ID
-          };
-          return l;
-        });
-        return {foundation, mockAdapter};
+  const setupSegmentTest = (singleSelect: boolean = false) => {
+    const {foundation, mockAdapter} =
+        singleSelect ? setupSingleSelectTest() : setupMultiSelectTest();
+    mockAdapter.getSegments.and.callFake(() => {
+      const l = [];
+      l[testIndices.UNSELECTED] = {
+        'index': testIndices.UNSELECTED,
+        'selected': false,
+        'segmentId': testSegmentIds.UNSELECTED_SEGMENT_ID
       };
+      l[testIndices.SELECTED] = {
+        'index': testIndices.SELECTED,
+        'selected': true,
+        'segmentId': testSegmentIds.SELECTED_SEGMENT_ID
+      };
+      return l;
+    });
+    return {foundation, mockAdapter};
+  };
 
   it('#unselectSegment does not emit an event', () => {
     const {foundation, mockAdapter} = setupSegmentTest();
@@ -164,7 +163,8 @@ describe('MDCSegmentedButtonFoundation', () => {
     it('#isSegmentSelected returns true if segment at index is selected',
        () => {
          const {foundation, mockAdapter} = setupSegmentTest();
-         const selectedSegment = mockAdapter.getSegments()[testIndices.SELECTED];
+         const selectedSegment =
+             mockAdapter.getSegments()[testIndices.SELECTED];
          expect(foundation.isSegmentSelected(selectedSegment.index))
              .toBeTruthy();
        });
@@ -185,7 +185,8 @@ describe('MDCSegmentedButtonFoundation', () => {
 
     it('#selectSegment selects segment at index if it is unselected', () => {
       const {foundation, mockAdapter} = setupSegmentTest();
-      const unselectedSegment = mockAdapter.getSegments()[testIndices.UNSELECTED];
+      const unselectedSegment =
+          mockAdapter.getSegments()[testIndices.UNSELECTED];
 
       foundation.selectSegment(unselectedSegment.index);
       expect(mockAdapter.selectSegment)
@@ -206,7 +207,8 @@ describe('MDCSegmentedButtonFoundation', () => {
     it('#isSegmentSelected returns true if segment with segmentId is selected',
        () => {
          const {foundation, mockAdapter} = setupSegmentTest();
-         const selectedSegment = mockAdapter.getSegments()[testIndices.SELECTED];
+         const selectedSegment =
+             mockAdapter.getSegments()[testIndices.SELECTED];
          expect(foundation.isSegmentSelected(selectedSegment.segmentId))
              .toBeTruthy();
        });
@@ -241,7 +243,8 @@ describe('MDCSegmentedButtonFoundation', () => {
     it('#unselectSegment unselects segment with segmentId if it is selected',
        () => {
          const {foundation, mockAdapter} = setupSegmentTest();
-         const selectedSegment = mockAdapter.getSegments()[testIndices.SELECTED];
+         const selectedSegment =
+             mockAdapter.getSegments()[testIndices.SELECTED];
 
          foundation.unselectSegment(selectedSegment.segmentId!);
          expect(mockAdapter.unselectSegment)

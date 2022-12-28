@@ -31,6 +31,7 @@ import {MDCSegmentedButtonAdapter} from './adapter';
 import {events, selectors} from './constants';
 import {MDCSegmentedButtonFoundation} from './foundation';
 
+/** MDC Segmented Button */
 export class MDCSegmentedButton extends
     MDCComponent<MDCSegmentedButtonFoundation> {
   static override attachTo(root: Element): MDCSegmentedButton {

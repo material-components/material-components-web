@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {closest} from '@material/dom/ponyfill';
+
 import {MDCSnackbarAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
@@ -31,10 +32,17 @@ import {MDCSnackbarAnnouncer, MDCSnackbarAnnouncerFactory, MDCSnackbarCloseEvent
 import * as util from './util';
 
 const {
-  SURFACE_SELECTOR, LABEL_SELECTOR, ACTION_SELECTOR, DISMISS_SELECTOR,
-  OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
+  SURFACE_SELECTOR,
+  LABEL_SELECTOR,
+  ACTION_SELECTOR,
+  DISMISS_SELECTOR,
+  OPENING_EVENT,
+  OPENED_EVENT,
+  CLOSING_EVENT,
+  CLOSED_EVENT,
 } = strings;
 
+/** MDC Snackbar */
 export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   static override attachTo(root: Element) {
     return new MDCSnackbar(root);
@@ -88,8 +96,9 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   /**
-   * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
-   *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
+   * @param reason Why the snackbar was closed. Value will be passed to
+   *     CLOSING_EVENT and CLOSED_EVENT via the `event.detail.reason` property.
+   *     Standard values are REASON_ACTION and REASON_DISMISS, but custom
    *     client-specific values may also be used if desired.
    */
   close(reason = '') {
@@ -97,8 +106,9 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSnackbarAdapter = {
       addClass: (className) => {
         this.root.classList.add(className);

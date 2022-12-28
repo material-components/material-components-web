@@ -21,17 +21,16 @@
  * THE SOFTWARE.
  */
 
-export type StandardCssPropertyName =
-    'animation' | 'transform' | 'transition';
+export type StandardCssPropertyName = 'animation'|'transform'|'transition';
 
 export type PrefixedCssPropertyName =
-    '-webkit-animation' | '-webkit-transform' | '-webkit-transition';
+    '-webkit-animation'|'-webkit-transform'|'-webkit-transition';
 
 export type StandardJsEventType =
-    'animationend' | 'animationiteration' | 'animationstart' | 'transitionend';
+    'animationend'|'animationiteration'|'animationstart'|'transitionend';
 
-export type PrefixedJsEventType =
-    'webkitAnimationEnd' | 'webkitAnimationIteration' | 'webkitAnimationStart' | 'webkitTransitionEnd';
+export type PrefixedJsEventType = 'webkitAnimationEnd'|
+    'webkitAnimationIteration'|'webkitAnimationStart'|'webkitTransitionEnd';
 
 export interface CssVendorProperty {
   prefixed: PrefixedCssPropertyName;
@@ -44,5 +43,9 @@ export interface JsVendorProperty {
   standard: StandardJsEventType;
 }
 
-export type CssVendorPropertyMap = { [K in StandardCssPropertyName]: CssVendorProperty };
-export type JsVendorPropertyMap = { [K in StandardJsEventType]: JsVendorProperty };
+export type CssVendorPropertyMap = {
+  [K in StandardCssPropertyName]: CssVendorProperty
+};
+export type JsVendorPropertyMap = {
+  [K in StandardJsEventType]: JsVendorProperty
+};

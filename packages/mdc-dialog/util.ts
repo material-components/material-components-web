@@ -26,17 +26,17 @@ import {FocusOptions, FocusTrap} from '@material/dom/focus-trap';
 export type MDCDialogFocusTrapFactory = (
     element: HTMLElement,
     options: FocusOptions,
-) => FocusTrap;
+    ) => FocusTrap;
 
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
     focusTrapFactory: MDCDialogFocusTrapFactory,
     initialFocusEl?: HTMLElement,
-): FocusTrap {
+    ): FocusTrap {
   return focusTrapFactory(surfaceEl, {initialFocusEl});
 }
 
-export function isScrollable(el: HTMLElement | null): boolean {
+export function isScrollable(el: HTMLElement|null): boolean {
   return el ? el.scrollHeight > el.offsetHeight : false;
 }
 

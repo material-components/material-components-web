@@ -22,13 +22,18 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+
 import {MDCTextFieldCharacterCounterAdapter} from './adapter';
 import {MDCTextFieldCharacterCounterFoundation} from './foundation';
 
+/** MDC Text Field Character Counter Factory */
 export type MDCTextFieldCharacterCounterFactory =
-    (el: Element, foundation?: MDCTextFieldCharacterCounterFoundation) => MDCTextFieldCharacterCounter;
+    (el: Element, foundation?: MDCTextFieldCharacterCounterFoundation) =>
+        MDCTextFieldCharacterCounter;
 
-export class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldCharacterCounterFoundation> {
+/** MDC Text Field Character Counter */
+export class MDCTextFieldCharacterCounter extends
+    MDCComponent<MDCTextFieldCharacterCounterFoundation> {
   static override attachTo(root: Element): MDCTextFieldCharacterCounter {
     return new MDCTextFieldCharacterCounter(root);
   }
@@ -39,8 +44,9 @@ export class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldChara
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCTextFieldCharacterCounterAdapter = {
       setContent: (content) => {
         this.root.textContent = content;

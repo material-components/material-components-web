@@ -1381,25 +1381,24 @@ describe('MDCChipSetFoundation', () => {
                MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
-  it(`#setChipSelected emits a selection event`,
-     () => {
-       const {foundation, mockAdapter} = setupChipSetTest({
-         chips: [
-           fakeSelectableChip('c0'),
-           fakeSelectableChip('c1'),
-           fakeSelectableChip('c2'),
-         ],
-         supportsMultiSelection: false,
-       });
-       foundation.setChipSelected(0, MDCChipActionType.PRIMARY, true);
+  it(`#setChipSelected emits a selection event`, () => {
+    const {foundation, mockAdapter} = setupChipSetTest({
+      chips: [
+        fakeSelectableChip('c0'),
+        fakeSelectableChip('c1'),
+        fakeSelectableChip('c2'),
+      ],
+      supportsMultiSelection: false,
+    });
+    foundation.setChipSelected(0, MDCChipActionType.PRIMARY, true);
 
-       expect(mockAdapter.emitEvent)
-           .toHaveBeenCalledWith(MDCChipSetEvents.SELECTION, {
-             chipID: 'c0',
-             chipIndex: 0,
-             isSelected: true,
-           });
-     });
+    expect(mockAdapter.emitEvent)
+        .toHaveBeenCalledWith(MDCChipSetEvents.SELECTION, {
+          chipID: 'c0',
+          chipIndex: 0,
+          isSelected: true,
+        });
+  });
 
   it(`#setChipSelected selects the target chip when not multiselectable`,
      () => {

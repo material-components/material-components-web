@@ -26,6 +26,7 @@ import {cssClasses, numbers, strings} from '../../mdc-ripple/constants';
 import {MDCRippleFoundation} from '../../mdc-ripple/foundation';
 import {captureHandlers, checkNumTimesSpyCalledWithArgs} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+
 import {setupTest, testFoundation} from './helpers';
 
 describe('MDCRippleFoundation - Activation Logic', () => {

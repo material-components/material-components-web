@@ -217,9 +217,11 @@ describe('MDCSliderFoundation', () => {
       expect(() => setUpAndInit({value: 12, step: 0.2})).not.toThrow();
     });
 
-    it('does not throw error due to floating point rounding - related to issue #7404', () => {
-      expect(() => setUpAndInit({value: 33.3, min: 0, max: 100, step: 0.1})).not.toThrow();
-    });
+    it('does not throw error due to floating point rounding - related to issue #7404',
+       () => {
+         expect(() => setUpAndInit({value: 33.3, min: 0, max: 100, step: 0.1}))
+             .not.toThrow();
+       });
   });
 
   describe('#layout', () => {
@@ -396,12 +398,12 @@ describe('MDCSliderFoundation', () => {
        });
 
     it('Resize listener is deregistered when foundation is destroyed', () => {
-       const {foundation, mockAdapter} = setUpAndInit();
+      const {foundation, mockAdapter} = setUpAndInit();
 
-       foundation.destroy();
+      foundation.destroy();
 
-       expect(mockAdapter.deregisterWindowEventHandler)
-           .toHaveBeenCalledWith('resize', jasmine.any(Function));
+      expect(mockAdapter.deregisterWindowEventHandler)
+          .toHaveBeenCalledWith('resize', jasmine.any(Function));
     });
   });
 
@@ -610,7 +612,7 @@ describe('MDCSliderFoundation', () => {
        });
 
     it('move event after down event (on end thumb) updates end thumb value ' +
-       'inside the range',
+           'inside the range',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
            valueStart: 10,
@@ -1502,24 +1504,22 @@ describe('MDCSliderFoundation', () => {
   });
 
   describe('disabled state', () => {
-    it('updates class and input attributes according to disabled state',
-       () => {
-         const {foundation, mockAdapter} = setUpAndInit();
-         expect(foundation.getDisabled()).toBe(false);
+    it('updates class and input attributes according to disabled state', () => {
+      const {foundation, mockAdapter} = setUpAndInit();
+      expect(foundation.getDisabled()).toBe(false);
 
-         foundation.setDisabled(true);
-         expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.DISABLED);
-         expect(mockAdapter.setInputAttribute)
-             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
-         expect(foundation.getDisabled()).toBe(true);
+      foundation.setDisabled(true);
+      expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.DISABLED);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
+      expect(foundation.getDisabled()).toBe(true);
 
-         foundation.setDisabled(false);
-         expect(mockAdapter.removeClass)
-             .toHaveBeenCalledWith(cssClasses.DISABLED);
-         expect(mockAdapter.removeInputAttribute)
-             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
-         expect(foundation.getDisabled()).toBe(false);
-       });
+      foundation.setDisabled(false);
+      expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.DISABLED);
+      expect(mockAdapter.removeInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
+      expect(foundation.getDisabled()).toBe(false);
+    });
 
     it('range slider: updates inputs\' attrs according to disabled state',
        () => {

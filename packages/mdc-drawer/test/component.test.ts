@@ -37,7 +37,11 @@ interface DrawerSetupOptions {
   hasList: boolean;
 }
 
-const defaultSetupOptions = {variantClass: cssClasses.DISMISSIBLE, shadowRoot: false, hasList: true};
+const defaultSetupOptions = {
+  variantClass: cssClasses.DISMISSIBLE,
+  shadowRoot: false,
+  hasList: true
+};
 
 function getDrawerFixture(options: Partial<DrawerSetupOptions>): HTMLElement|
     DocumentFragment {
@@ -95,8 +99,16 @@ function setupTestWithMocks(
   const mockFocusTrapInstance =
       jasmine.createSpyObj('FocusTrapInstance', ['trapFocus', 'releaseFocus']);
   const mockList = jasmine.createSpyObj('MDCList', ['wrapFocus', 'destroy']);
-  const component = new MDCDrawer(drawer, mockFoundation, () => mockFocusTrapInstance, () => mockList);
-  return {root, drawer, component, mockFoundation, mockFocusTrapInstance, mockList};
+  const component = new MDCDrawer(
+      drawer, mockFoundation, () => mockFocusTrapInstance, () => mockList);
+  return {
+    root,
+    drawer,
+    component,
+    mockFoundation,
+    mockFocusTrapInstance,
+    mockList
+  };
 }
 
 describe('MDCDrawer', () => {
@@ -213,8 +225,7 @@ describe('MDCDrawer', () => {
     const {component, drawer} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('test-class');
 
-    (component.getDefaultFoundation() as any)
-        .adapter.removeClass('test-class');
+    (component.getDefaultFoundation() as any).adapter.removeClass('test-class');
     expect(drawer.classList.contains('test-class')).toBe(false);
   });
 

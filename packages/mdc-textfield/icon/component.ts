@@ -22,11 +22,15 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+
 import {MDCTextFieldIconAdapter} from './adapter';
 import {MDCTextFieldIconFoundation} from './foundation';
 
-export type MDCTextFieldIconFactory = (el: Element, foundation?: MDCTextFieldIconFoundation) => MDCTextFieldIcon;
+/** MDC Text Field Icon Factory */
+export type MDCTextFieldIconFactory =
+    (el: Element, foundation?: MDCTextFieldIconFoundation) => MDCTextFieldIcon;
 
+/** MDC Text Field Icon */
 export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
   static override attachTo(root: Element): MDCTextFieldIcon {
     return new MDCTextFieldIcon(root);
@@ -38,8 +42,9 @@ export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTextFieldIconAdapter = {
       getAttr: (attr) => this.root.getAttribute(attr),

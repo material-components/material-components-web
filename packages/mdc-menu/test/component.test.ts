@@ -550,8 +550,7 @@ describe('MDCMenu', () => {
 
   it('adapter#getMenuItemCount returns the menu item count', () => {
     const {component} = setupTest();
-    expect(
-        (component.getDefaultFoundation() as any).adapter.getMenuItemCount())
+    expect((component.getDefaultFoundation() as any).adapter.getMenuItemCount())
         .toEqual(component.items.length);
   });
 

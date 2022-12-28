@@ -114,11 +114,8 @@ export class MDCSegmentedButtonSegment extends
       },
       notifySelectedChange: (selected) => {
         this.emit<SegmentDetail>(
-            events.SELECTED, {
-              index: this.index,
-              selected,
-              segmentId: this.getSegmentId()
-            },
+            events.SELECTED,
+            {index: this.index, selected, segmentId: this.getSegmentId()},
             true /* shouldBubble */
         );
       },

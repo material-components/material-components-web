@@ -32,14 +32,17 @@ import {MDCMenuDistance} from './types';
 
 type RegisterFunction = () => void;
 
-export type MDCMenuSurfaceFactory = (el: Element, foundation?: MDCMenuSurfaceFoundation) => MDCMenuSurface;
+/** MDC Menu Surface Factory */
+export type MDCMenuSurfaceFactory =
+    (el: Element, foundation?: MDCMenuSurfaceFoundation) => MDCMenuSurface;
 
+/** MDC Menu Surface */
 export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   static override attachTo(root: Element): MDCMenuSurface {
     return new MDCMenuSurface(root);
   }
 
-  anchorElement!: Element | null; // assigned in initialSyncWithDOM()
+  anchorElement!: Element|null;  // assigned in initialSyncWithDOM()
 
   private previousFocus?: HTMLElement|SVGElement|null;
 
@@ -55,7 +58,9 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   override initialSyncWithDOM() {
     const parentEl = this.root.parentElement;
-    this.anchorElement = parentEl && parentEl.classList.contains(cssClasses.ANCHOR) ? parentEl : null;
+    this.anchorElement =
+        parentEl && parentEl.classList.contains(cssClasses.ANCHOR) ? parentEl :
+                                                                     null;
 
     if (this.root.classList.contains(cssClasses.FIXED)) {
       this.setFixedPosition(true);
@@ -107,7 +112,10 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.foundation.setQuickOpen(quickOpen);
   }
 
-  /** Sets the foundation to use page offsets for an positioning when the menu is hoisted to the body. */
+  /**
+   * Sets the foundation to use page offsets for an positioning when the menu
+   * is hoisted to the body.
+   */
   setIsHoisted(isHoisted: boolean) {
     this.foundation.setIsHoisted(isHoisted);
   }
@@ -128,7 +136,10 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.foundation.setFixedPosition(isFixed);
   }
 
-  /** Sets the absolute x/y position to position based on. Requires the menu to be hoisted. */
+  /**
+   * Sets the absolute x/y position to position based on. Requires the menu to
+   * be hoisted.
+   */
   setAbsolutePosition(x: number, y: number) {
     this.foundation.setAbsolutePosition(x, y);
     this.setIsHoisted(true);
@@ -146,8 +157,9 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCMenuSurfaceAdapter = {
       addClass: (className) => {
@@ -204,7 +216,10 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         return {width: window.innerWidth, height: window.innerHeight};
       },
       getBodyDimensions: () => {
-        return {width: document.body.clientWidth, height: document.body.clientHeight};
+        return {
+          width: document.body.clientWidth,
+          height: document.body.clientHeight
+        };
       },
       getWindowScroll: () => {
         return {x: window.pageXOffset, y: window.pageYOffset};

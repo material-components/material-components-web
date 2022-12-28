@@ -42,7 +42,7 @@ export interface MDCListSelectionChangeEvent extends Event {
   detail: MDCListSelectionChangeDetail;
 }
 
-export type MDCListIndex = number | number[];
+export type MDCListIndex = number|number[];
 
 /**
  * Type used by the typeahead mechanism to keep track of the index associated

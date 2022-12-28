@@ -82,7 +82,8 @@ export const cssClasses = {
 };
 
 export const navigationKeys = new Set<string>();
-// IE11 has no support for new Set with iterable so we need to initialize this by hand
+// IE11 has no support for new Set with iterable so we need to initialize this
+// by hand
 navigationKeys.add(strings.ARROW_LEFT_KEY);
 navigationKeys.add(strings.ARROW_RIGHT_KEY);
 navigationKeys.add(strings.ARROW_DOWN_KEY);
@@ -95,7 +96,8 @@ navigationKeys.add(strings.IE_ARROW_DOWN_KEY);
 navigationKeys.add(strings.IE_ARROW_UP_KEY);
 
 export const jumpChipKeys = new Set<string>();
-// IE11 has no support for new Set with iterable so we need to initialize this by hand
+// IE11 has no support for new Set with iterable so we need to initialize this
+// by hand
 jumpChipKeys.add(strings.ARROW_UP_KEY);
 jumpChipKeys.add(strings.ARROW_DOWN_KEY);
 jumpChipKeys.add(strings.HOME_KEY);

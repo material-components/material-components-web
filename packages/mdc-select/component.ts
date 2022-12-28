@@ -33,6 +33,7 @@ import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-out
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
+
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
@@ -40,6 +41,7 @@ import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/com
 import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
+/** MDC Select */
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   static override attachTo(root: Element): MDCSelect {
     return new MDCSelect(root);
@@ -49,8 +51,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
   private menu!: MDCMenu;  // assigned in menuSetup()
 
-  private selectAnchor!: HTMLElement;       // assigned in initialize()
-  private selectedText!: HTMLElement;       // assigned in initialize()
+  private selectAnchor!: HTMLElement;           // assigned in initialize()
+  private selectedText!: HTMLElement;           // assigned in initialize()
   private hiddenInput!: HTMLInputElement|null;  // assigned in initialize()
 
   private menuElement!: Element;                  // assigned in menuSetup()
@@ -91,7 +93,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     if (!this.selectedText) {
       throw new Error(
           'MDCSelect: Missing required element: The following selector must be present: ' +
-          `'${strings.SELECTED_TEXT_SELECTOR}'`,
+              `'${strings.SELECTED_TEXT_SELECTOR}'`,
       );
     }
 
@@ -336,8 +338,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSelectAdapter = {
       ...this.getSelectAdapterMethods(),
       ...this.getCommonAdapterMethods(),
@@ -360,8 +363,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   private createRipple(): MDCRipple {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter({root: this.selectAnchor}),
@@ -457,8 +461,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       },
       hasClass: (className: string) => this.root.classList.contains(className),
       setRippleCenter: (normalizedX: number) => {
-        this.lineRipple && this.lineRipple.setRippleCenter(normalizedX)
-      },
+          this.lineRipple && this.lineRipple.setRippleCenter(normalizedX)},
       activateBottomLine: () => {
         this.lineRipple && this.lineRipple.activate();
       },
@@ -508,7 +511,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   /**
-   * Calculates where the line ripple should start based on the x coordinate within the component.
+   * Calculates where the line ripple should start based on the x coordinate
+   * within the component.
    */
   private getNormalizedXCoordinate(evt: MouseEvent|TouchEvent): number {
     const targetClientRect = (evt.target as Element).getBoundingClientRect();

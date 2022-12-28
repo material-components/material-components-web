@@ -22,10 +22,13 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCDrawerAdapter} from '../adapter';
 import {cssClasses, strings} from '../constants';
 
-export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
+/** MDC Dismissible Drawer Foundation */
+export class MDCDismissibleDrawerFoundation extends
+    MDCFoundation<MDCDrawerAdapter> {
   static override get strings() {
     return strings;
   }
@@ -79,7 +82,8 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     this.adapter.addClass(cssClasses.OPEN);
     this.adapter.addClass(cssClasses.ANIMATE);
 
-    // Wait a frame once display is no longer "none", to establish basis for animation
+    // Wait a frame once display is no longer "none", to establish basis for
+    // animation
     this.runNextAnimationFrame(() => {
       this.adapter.addClass(cssClasses.OPENING);
     });
@@ -140,7 +144,8 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   handleTransitionEnd(evt: TransitionEvent) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
 
-    // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
+    // In Edge, transitionend on ripple pseudo-elements yields a target without
+    // classList, so check for Element first.
     const isRootElement = this.isElement(evt.target) &&
         this.adapter.elementHasClass(evt.target, ROOT);
     if (!isRootElement) {
@@ -174,7 +179,8 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   protected closed() {}  // tslint:disable-line:no-empty
 
   /**
-   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+   * Runs the given logic on the next animation frame, using setTimeout to
+   * factor in Firefox reflow behavior.
    */
   private runNextAnimationFrame(callback: () => void) {
     cancelAnimationFrame(this.animationFrame);
@@ -186,7 +192,8 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   }
 
   private isElement(element: unknown): element is Element {
-    // In Edge, transitionend on ripple pseudo-elements yields a target without classList.
+    // In Edge, transitionend on ripple pseudo-elements yields a target without
+    // classList.
     return Boolean((element as Element).classList);
   }
 }

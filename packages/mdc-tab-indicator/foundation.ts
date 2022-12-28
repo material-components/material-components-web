@@ -22,10 +22,13 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCTabIndicatorAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAdapter> {
+/** MDC Tab Indicator Foundation */
+export abstract class MDCTabIndicatorFoundation extends
+    MDCFoundation<MDCTabIndicatorAdapter> {
   static override get cssClasses() {
     return cssClasses;
   }

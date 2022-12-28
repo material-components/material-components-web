@@ -32,13 +32,14 @@ export interface MDCListAdapter {
   /**
    * Returns the attribute value of list item at given `index`.
    */
-  getAttributeForElementIndex(index: number, attr: string): string | null;
+  getAttributeForElementIndex(index: number, attr: string): string|null;
 
   getListItemCount(): number;
 
   getFocusedElementIndex(): number;
 
-  setAttributeForElementIndex(index: number, attribute: string, value: string): void;
+  setAttributeForElementIndex(index: number, attribute: string, value: string):
+      void;
 
   addClassForElementIndex(index: number, className: string): void;
 
@@ -50,10 +51,11 @@ export interface MDCListAdapter {
   focusItemAtIndex(index: number): void;
 
   /**
-   * Sets the tabindex to the value specified for all button/a element children of
-   * the list item at the index specified.
+   * Sets the tabindex to the value specified for all button/a element children
+   * of the list item at the index specified.
    */
-  setTabIndexForListItemChildren(listItemIndex: number, tabIndexValue: string): void;
+  setTabIndexForListItemChildren(listItemIndex: number, tabIndexValue: string):
+      void;
 
   /**
    * @return true if radio button is present at given list item index.

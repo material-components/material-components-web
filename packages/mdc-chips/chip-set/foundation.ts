@@ -86,7 +86,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       return;
     }
 
-    if (animation === MDCChipAnimation.ENTER && isComplete && addedAnnouncement) {
+    if (animation === MDCChipAnimation.ENTER && isComplete &&
+        addedAnnouncement) {
       this.adapter.announceMessage(addedAnnouncement);
       return;
     }

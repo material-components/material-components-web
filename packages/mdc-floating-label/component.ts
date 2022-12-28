@@ -23,11 +23,15 @@
 
 import {MDCComponent} from '@material/base/component';
 import {estimateScrollWidth} from '@material/dom/ponyfill';
+
 import {MDCFloatingLabelAdapter} from './adapter';
 import {MDCFloatingLabelFoundation} from './foundation';
 
-export type MDCFloatingLabelFactory = (el: Element, foundation?: MDCFloatingLabelFoundation) => MDCFloatingLabel;
+/** MDC Floating Label Factory */
+export type MDCFloatingLabelFactory =
+    (el: Element, foundation?: MDCFloatingLabelFoundation) => MDCFloatingLabel;
 
+/** MDC Floating Label */
 export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
   static override attachTo(root: Element): MDCFloatingLabel {
     return new MDCFloatingLabel(root);
@@ -35,7 +39,8 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
 
   /**
    * Styles the label to produce the label shake for errors.
-   * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
+   * @param shouldShake If true, shakes the label by adding a CSS class;
+   *     otherwise, stops shaking by removing the class.
    */
   shake(shouldShake: boolean) {
     this.foundation.shake(shouldShake);
@@ -43,7 +48,8 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
 
   /**
    * Styles the label to float/dock.
-   * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
+   * @param shouldFloat If true, floats the label by adding a CSS class;
+   *     otherwise, docks it by removing the class.
    */
   float(shouldFloat: boolean) {
     this.foundation.float(shouldFloat);
@@ -51,7 +57,8 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
 
   /**
    * Styles the label as required.
-   * @param isRequired If true, adds an asterisk to the label, indicating that it is required.
+   * @param isRequired If true, adds an asterisk to the label, indicating that
+   *     it is required.
    */
   setRequired(isRequired: boolean) {
     this.foundation.setRequired(isRequired);
@@ -62,8 +69,9 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCFloatingLabelAdapter = {
       addClass: (className) => {

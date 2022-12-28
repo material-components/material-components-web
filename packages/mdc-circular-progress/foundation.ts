@@ -23,9 +23,11 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCProgressIndicatorFoundation} from '@material/progress-indicator/foundation';
+
 import {MDCCircularProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
+/** MDC Circular Progress Foundation */
 export class MDCCircularProgressFoundation extends
     MDCFoundation<MDCCircularProgressAdapter> implements
         MDCProgressIndicatorFoundation {

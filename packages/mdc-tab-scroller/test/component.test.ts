@@ -90,8 +90,7 @@ describe('MDCTabScroller', () => {
 
   it('#adapter.addScrollAreaClass adds a class to the area element', () => {
     const {component, area} = setupTest();
-    (component.getDefaultFoundation() as any)
-        .adapter.addScrollAreaClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addScrollAreaClass('foo');
     expect(area.classList.contains('foo')).toBe(true);
   });
 

@@ -24,6 +24,7 @@
 import {MDCTabScrollerRTL} from './rtl-scroller';
 import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './types';
 
+/** MDC Tab Scroller RTL Reverse */
 export class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   getScrollPositionRTL(translateX: number): number {
     const currentScrollLeft = this.adapter.getScrollAreaScrollLeft();

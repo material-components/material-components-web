@@ -36,6 +36,7 @@ interface AutoLayoutMeasurements {
   windowScroll: MDCMenuPoint;
 }
 
+/** MDC Menu Surface Foundation */
 export class MDCMenuSurfaceFoundation extends
     MDCFoundation<MDCMenuSurfaceAdapter> {
   static override get cssClasses() {

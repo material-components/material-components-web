@@ -23,16 +23,20 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
+
 import {MDCFloatingLabelAdapter} from './adapter';
 import {cssClasses} from './constants';
 
-export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> {
+/** MDC Floating Label Foundation */
+export class MDCFloatingLabelFoundation extends
+    MDCFoundation<MDCFloatingLabelAdapter> {
   static override get cssClasses() {
     return cssClasses;
   }
 
   /**
-   * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
+   * See {@link MDCFloatingLabelAdapter} for typing information on parameters
+   * and return types.
    */
   static override get defaultAdapter(): MDCFloatingLabelAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
@@ -76,7 +80,8 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
 
   /**
    * Styles the label to produce a shake animation to indicate an error.
-   * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
+   * @param shouldShake If true, adds the shake CSS class; otherwise, removes
+   *     shake class.
    */
   shake(shouldShake: boolean) {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
@@ -89,10 +94,12 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
 
   /**
    * Styles the label to float or dock.
-   * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
+   * @param shouldFloat If true, adds the float CSS class; otherwise, removes
+   *     float and shake classes to dock the label.
    */
   float(shouldFloat: boolean) {
-    const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
+    const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} =
+        MDCFloatingLabelFoundation.cssClasses;
     if (shouldFloat) {
       this.adapter.addClass(LABEL_FLOAT_ABOVE);
     } else {
@@ -103,7 +110,8 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
 
   /**
    * Styles the label as required.
-   * @param isRequired If true, adds an asterisk to the label, indicating that it is required.
+   * @param isRequired If true, adds an asterisk to the label, indicating that
+   *     it is required.
    */
   setRequired(isRequired: boolean) {
     const {LABEL_REQUIRED} = MDCFloatingLabelFoundation.cssClasses;

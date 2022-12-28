@@ -40,8 +40,9 @@ describe('MDCSwitchFoundation', () => {
 
   it('defaultAdapter returns a complete adapter implementation', () => {
     const {defaultAdapter} = MDCSwitchFoundation;
-    const methods = Object.keys(defaultAdapter)
-                        .filter((k) => typeof (defaultAdapter as any)[k] === 'function');
+    const methods =
+        Object.keys(defaultAdapter)
+            .filter((k) => typeof (defaultAdapter as any)[k] === 'function');
 
     expect(methods.length).toEqual(Object.keys(defaultAdapter).length);
     expect(methods).toEqual([

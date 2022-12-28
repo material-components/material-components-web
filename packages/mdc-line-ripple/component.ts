@@ -22,11 +22,15 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+
 import {MDCLineRippleAdapter} from './adapter';
 import {MDCLineRippleFoundation} from './foundation';
 
-export type MDCLineRippleFactory = (el: Element, foundation?: MDCLineRippleFoundation) => MDCLineRipple;
+/** MDC Line Ripple Factory */
+export type MDCLineRippleFactory =
+    (el: Element, foundation?: MDCLineRippleFoundation) => MDCLineRipple;
 
+/** MDC Line Ripple */
 export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
   static override attachTo(root: Element): MDCLineRipple {
     return new MDCLineRipple(root);
@@ -55,8 +59,9 @@ export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCLineRippleAdapter = {
       addClass: (className) => {

@@ -137,7 +137,7 @@ describe('MDCCheckboxFoundation', () => {
    * Used to test the behavior of overridding WebIDL properties in different
    * browser environments. For example, in Safari WebIDL attributes don't
    * return get/set in descriptors.
-  */
+   */
   function withMockCheckboxDescriptorReturning(
       descriptor: undefined|typeof DESC_UNDEFINED, runTests: () => void) {
     const mockGetOwnPropertyDescriptor =
@@ -150,11 +150,10 @@ describe('MDCCheckboxFoundation', () => {
 
     const originalDesc =
         Object.getOwnPropertyDescriptor(Object, 'getOwnPropertyDescriptor');
-    Object.defineProperty(
-        Object, 'getOwnPropertyDescriptor', {
-          ...originalDesc,
-          value: mockGetOwnPropertyDescriptor,
-        });
+    Object.defineProperty(Object, 'getOwnPropertyDescriptor', {
+      ...originalDesc,
+      value: mockGetOwnPropertyDescriptor,
+    });
     runTests();
 
     // After running tests, restore original property.

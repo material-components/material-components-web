@@ -25,8 +25,8 @@
  * Determine whether the current browser supports passive event listeners, and
  * if so, use them.
  */
-export function applyPassive(globalObj: Window = window):
-    boolean | EventListenerOptions {
+export function applyPassive(globalObj: Window = window): boolean|
+    EventListenerOptions {
   return supportsPassiveOption(globalObj) ?
       {passive: true} as AddEventListenerOptions :
       false;

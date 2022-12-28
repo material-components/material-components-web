@@ -24,6 +24,7 @@
 import 'jasmine';
 
 import {mdcObserver, observeProperty, setObserversEnabled} from '../observer';
+
 import {createObserverTests} from './observer-tests';
 
 createObserverTests(mdcObserver, observeProperty, setObserversEnabled);

@@ -69,8 +69,9 @@ export interface MDCTabScrollerAdapter {
   setScrollContentStyleProperty(propName: string, value: string): void;
 
   /**
-   * Returns the scroll content element's computed style value of the given css property `propertyName`.
-   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+   * Returns the scroll content element's computed style value of the given css
+   * property `propertyName`. We achieve this via
+   * `getComputedStyle(...).getPropertyValue(propertyName)`.
    */
   getScrollContentStyleValue(propertyName: string): string;
 

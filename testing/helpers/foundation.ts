@@ -87,7 +87,8 @@ export function createMockAdapter<C extends MDCFoundationDeprecatedConstructor>(
  * - Invoking any of the default methods does not throw an error.
  * Every foundation test suite includes this verification.
  */
-export function verifyDefaultAdapter<C extends MDCFoundationDeprecatedConstructor>(
+export function
+verifyDefaultAdapter<C extends MDCFoundationDeprecatedConstructor>(
     // tslint:disable-next-line:enforce-name-casing
     FoundationCtor: C, expectedMethodNames: string[]) {
   const defaultAdapter = FoundationCtor.defaultAdapter as {

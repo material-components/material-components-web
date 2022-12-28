@@ -31,7 +31,8 @@ export interface MDCMenuItemEventDetail {
 /**
  * Event properties specific to the default component implementation.
  */
-export interface MDCMenuItemComponentEventDetail extends MDCMenuItemEventDetail {
+export interface MDCMenuItemComponentEventDetail extends
+    MDCMenuItemEventDetail {
   item: Element;
 }
 

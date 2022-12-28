@@ -35,7 +35,9 @@ import {safeElement} from 'safevalues/dom';
 import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
 
-export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCRippleCapableSurface {
+/** MDC Switch */
+export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements
+    MDCRippleCapableSurface {
   static override attachTo(root: HTMLElement) {
     return new MDCSwitch(root);
   }
@@ -64,8 +66,9 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSwitchAdapter = {
       addClass: (className) => {
         this.root.classList.add(className);
@@ -110,8 +113,9 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
     const rippleSurface =
         this.root.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
 
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       addClass: (className: string) => {

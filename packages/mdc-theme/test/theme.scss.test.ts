@@ -36,12 +36,11 @@ describe('theme.test.scss', () => {
 }`);
      });
 
-  it('host-aware test produces expected output',
-     () => {
-       const filePath = path.join(__dirname, 'shadow-dom.test.css');
-       const css = fs.readFileSync(filePath, 'utf8').trim();
-       expect(css).toEqual(
-           `:host([lowered]), :host(:not(.hidden)[outlined][lowered]), :host .my-class[lowered], gm-fab[lowered] {
+  it('host-aware test produces expected output', () => {
+    const filePath = path.join(__dirname, 'shadow-dom.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toEqual(
+        `:host([lowered]), :host(:not(.hidden)[outlined][lowered]), :host .my-class[lowered], gm-fab[lowered] {
   color: blue;
 }
 :host([lowered]:hover), :host(:not(.hidden)[outlined][lowered]:hover), :host .my-class[lowered]:hover, gm-fab[lowered]:hover {
@@ -66,10 +65,10 @@ describe('theme.test.scss', () => {
 gm-fab {
   border-color: green;
 }`);
-       // Sass' organization of selectors with newlines can be iffy when using
-       // the `selector` module and expanded mode, but all selectors are
-       // correct.
-     });
+    // Sass' organization of selectors with newlines can be iffy when using
+    // the `selector` module and expanded mode, but all selectors are
+    // correct.
+  });
 
   it('should replace values provided to $replace for theme.property()', () => {
     const filePath = path.join(__dirname, 'replace.test.css');
@@ -110,10 +109,11 @@ gm-fab {
        expect(css).toContain('Unsupported keys found: foobar.');
      });
 
-  it('validate-keys Should throw error when custom properties are provided', () => {
-    const filePath = path.join(__dirname, 'theme-validate-keys.test.css');
-    const css = fs.readFileSync(filePath, 'utf8').trim();
-    expect(css).toContain(
-        'Custom properties are not supported for theme map keys: three');
-  });
+  it('validate-keys Should throw error when custom properties are provided',
+     () => {
+       const filePath = path.join(__dirname, 'theme-validate-keys.test.css');
+       const css = fs.readFileSync(filePath, 'utf8').trim();
+       expect(css).toContain(
+           'Custom properties are not supported for theme map keys: three');
+     });
 });

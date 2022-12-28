@@ -23,7 +23,7 @@
 
 import * as util from './util';
 
-export {util}; // New namespace
+export {util};  // New namespace
 export * from './animationframe';
 export * from './types';
-export * from './util'; // Old namespace for backward compatibility
+export * from './util';  // Old namespace for backward compatibility

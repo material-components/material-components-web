@@ -260,8 +260,8 @@ describe('MDCTabBar', () => {
   it('#adapter.getTabListLength returns the length of the tab list', () => {
     const {component} = setupTest();
     expect(
-        (component.getDefaultFoundation() as any)
-            .adapter.getTabListLength() === 3)
+        (component.getDefaultFoundation() as any).adapter.getTabListLength() ===
+        3)
         .toBe(true);
   });
 
@@ -272,8 +272,7 @@ describe('MDCTabBar', () => {
        const handler = jasmine.createSpy('');
        root.addEventListener(
            MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT, handler);
-       (component.getDefaultFoundation() as any)
-           .adapter.notifyTabActivated(66);
+       (component.getDefaultFoundation() as any).adapter.notifyTabActivated(66);
        expect(handler).toHaveBeenCalledWith(
            jasmine.objectContaining({detail: {index: 66}}));
      });

@@ -68,6 +68,7 @@ function createModifierChecker(event?: KeyboardEvent|MouseEvent) {
       modifiers.length === eventModifiers.size;
 }
 
+/** MDC List Foundation */
 export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   static override get strings() {
     return strings;

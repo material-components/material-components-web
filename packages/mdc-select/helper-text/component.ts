@@ -22,13 +22,18 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+
 import {MDCSelectHelperTextAdapter} from './adapter';
 import {MDCSelectHelperTextFoundation} from './foundation';
 
+/** MDC Select Helper Text Factory */
 export type MDCSelectHelperTextFactory =
-    (el: Element, foundation?: MDCSelectHelperTextFoundation) => MDCSelectHelperText;
+    (el: Element, foundation?: MDCSelectHelperTextFoundation) =>
+        MDCSelectHelperText;
 
-export class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundation> {
+/** MDC Select Helper Text */
+export class MDCSelectHelperText extends
+    MDCComponent<MDCSelectHelperTextFoundation> {
   static override attachTo(root: Element): MDCSelectHelperText {
     return new MDCSelectHelperText(root);
   }
@@ -39,8 +44,9 @@ export class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundat
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCSelectHelperTextAdapter = {
       addClass: (className) => {

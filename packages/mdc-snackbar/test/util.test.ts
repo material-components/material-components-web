@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {numbers, strings} from '../constants';
 import * as util from '../util';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 
 const {ARIA_LIVE_DELAY_MS} = numbers;
 const {ARIA_LIVE_LABEL_TEXT_ATTR} = strings;

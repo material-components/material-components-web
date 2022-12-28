@@ -23,20 +23,24 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
+
 import {MDCSelectIconAdapter} from './adapter';
 import {strings} from './constants';
 
-type InteractionEventType = 'click' | 'keydown';
+type InteractionEventType = 'click'|'keydown';
 
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
-export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
+/** MDC Select Icon Foundation */
+export class MDCSelectIconFoundation extends
+    MDCFoundation<MDCSelectIconAdapter> {
   static override get strings() {
     return strings;
   }
 
   /**
-   * See {@link MDCSelectIconAdapter} for typing information on parameters and return types.
+   * See {@link MDCSelectIconAdapter} for typing information on parameters and
+   * return types.
    */
   static override get defaultAdapter(): MDCSelectIconAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
@@ -103,8 +107,9 @@ export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter>
     this.adapter.setContent(content);
   }
 
-  handleInteraction(evt: MouseEvent | KeyboardEvent) {
-    const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+  handleInteraction(evt: MouseEvent|KeyboardEvent) {
+    const isEnterKey = (evt as KeyboardEvent).key === 'Enter' ||
+        (evt as KeyboardEvent).keyCode === 13;
     if (evt.type === 'click' || isEnterKey) {
       this.adapter.notifyIconAction();
     }

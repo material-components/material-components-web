@@ -27,18 +27,23 @@ import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCTabIndicator, MDCTabIndicatorFactory} from '@material/tab-indicator/component';
+
 import {MDCTabAdapter} from './adapter';
 import {MDCTabFoundation} from './foundation';
 import {MDCTabDimensions, MDCTabInteractionEventDetail} from './types';
 
-export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
+/** MDC Tab Factory */
+export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) =>
+    MDCTab;
 
-export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleCapableSurface {
+/** MDC Tab */
+export class MDCTab extends MDCComponent<MDCTabFoundation> implements
+    MDCRippleCapableSurface {
   static override attachTo(root: Element): MDCTab {
     return new MDCTab(root);
   }
 
-  id!: string; // assigned in initialize();
+  id!: string;  // assigned in initialize();
 
   private ripple!: MDCRipple;              // assigned in initialize();
   private tabIndicator!: MDCTabIndicator;  // assigned in initialize();
@@ -78,8 +83,9 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabAdapter = {
       setAttr: (attr, value) => {

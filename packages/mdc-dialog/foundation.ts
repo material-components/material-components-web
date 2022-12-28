@@ -34,6 +34,7 @@ enum AnimationKeys {
   POLL_LAYOUT_CHANGE = 'poll_layout_change'
 }
 
+/** MDC Dialog Foundation */
 export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   static override get cssClasses() {
     return cssClasses;

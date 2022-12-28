@@ -28,6 +28,7 @@ import {SegmentDetail} from '../types';
 import {MDCSegmentedButtonAdapter} from './adapter';
 import {cssClasses} from './constants';
 
+/** MDC Segmented Button Foundation */
 export class MDCSegmentedButtonFoundation extends
     MDCFoundation<MDCSegmentedButtonAdapter> {
   static override get defaultAdapter(): MDCSegmentedButtonAdapter {

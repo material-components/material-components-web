@@ -23,12 +23,12 @@
 
 import {MDCRipple} from '../../../mdc-ripple/component';
 import {supportsCssVariables} from '../../../mdc-ripple/util';
-import {MDCSwitch} from '../component';
-import {strings} from '../constants';
-import {MDCSwitchFoundation} from '../foundation';
 import {emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
+import {MDCSwitch} from '../component';
+import {strings} from '../constants';
+import {MDCSwitchFoundation} from '../foundation';
 
 const {NATIVE_CONTROL_SELECTOR, RIPPLE_SURFACE_SELECTOR} = strings;
 

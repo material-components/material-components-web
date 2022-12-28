@@ -107,8 +107,7 @@ describe('MDCTab', () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
        (component.getDefaultFoundation() as any).adapter.hasClass('foo');
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
+       expect((component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
@@ -148,8 +147,8 @@ describe('MDCTab', () => {
      () => {
        const {root, component} = setupTest();
        expect(
-           (component.getDefaultFoundation() as any)
-               .adapter.getOffsetLeft() === root.offsetLeft)
+           (component.getDefaultFoundation() as any).adapter.getOffsetLeft() ===
+           root.offsetLeft)
            .toBe(true);
      });
 

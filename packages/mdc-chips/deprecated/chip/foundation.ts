@@ -42,6 +42,7 @@ enum FocusBehavior {
   SHOULD_NOT_FOCUS,
 }
 
+/** MDC Chip Foundation */
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static override get strings() {
     return strings;
@@ -81,7 +82,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     };
   }
 
-  /** Whether a trailing icon click should immediately trigger exit/removal of the chip. */
+  /**
+   * Whether a trailing icon click should immediately trigger exit/removal of
+   * the chip.
+   */
   private shouldRemoveOnTrailingIconClick = true;
 
   /**
@@ -136,16 +140,17 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     const getCheckmarkRect = () =>
         this.adapter.getCheckmarkBoundingClientRect();
 
-    // When a chip has a checkmark and not a leading icon, the bounding rect changes in size depending on the current
-    // size of the checkmark.
+    // When a chip has a checkmark and not a leading icon, the bounding rect
+    // changes in size depending on the current size of the checkmark.
     if (!this.adapter.hasLeadingIcon()) {
       const checkmarkRect = getCheckmarkRect();
       if (checkmarkRect) {
         const rootRect = getRootRect();
-        // Checkmark is a square, meaning the client rect's width and height are identical once the animation completes.
-        // However, the checkbox is initially hidden by setting the width to 0.
-        // To account for an initial width of 0, we use the checkbox's height instead (which equals the end-state width)
-        // when adding it to the root client rect's width.
+        // Checkmark is a square, meaning the client rect's width and height are
+        // identical once the animation completes. However, the checkbox is
+        // initially hidden by setting the width to 0. To account for an initial
+        // width of 0, we use the checkbox's height instead (which equals the
+        // end-state width) when adding it to the root client rect's width.
         return {
           bottom: rootRect.bottom,
           height: rootRect.height,
@@ -189,19 +194,23 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     const opacityIsAnimating = evt.propertyName === 'opacity';
 
     if (shouldHandle && opacityIsAnimating) {
-      // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
+      // See:
+      // https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
       const chipWidth = this.adapter.getComputedStyleValue('width');
 
-      // On the next frame (once we get the computed width), explicitly set the chip's width
-      // to its current pixel width, so we aren't transitioning out of 'auto'.
+      // On the next frame (once we get the computed width), explicitly set the
+      // chip's width to its current pixel width, so we aren't transitioning out
+      // of 'auto'.
       requestAnimationFrame(() => {
         this.adapter.setStyleProperty('width', chipWidth);
 
-        // To mitigate jitter, start transitioning padding and margin before width.
+        // To mitigate jitter, start transitioning padding and margin before
+        // width.
         this.adapter.setStyleProperty('padding', '0');
         this.adapter.setStyleProperty('margin', '0');
 
-        // On the next frame (once width is explicitly set), transition width to 0.
+        // On the next frame (once width is explicitly set), transition width to
+        // 0.
         requestAnimationFrame(() => {
           this.adapter.setStyleProperty('width', '0');
         });
@@ -217,7 +226,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       this.adapter.notifyRemoval(removedAnnouncement);
     }
 
-    // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
+    // Handle a transition end event on the leading icon or checkmark, since the
+    // transition end event bubbles.
     if (!opacityIsAnimating) {
       return;
     }

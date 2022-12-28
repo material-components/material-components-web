@@ -22,10 +22,12 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCTabAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCTabDimensions} from './types';
 
+/** MDC Tab Foundation */
 export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   static override get cssClasses() {
     return cssClasses;

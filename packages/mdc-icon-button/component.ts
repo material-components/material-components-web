@@ -24,13 +24,16 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple} from '@material/ripple/component';
+
 import {MDCIconButtonToggleAdapter} from './adapter';
 import {MDCIconButtonToggleFoundation} from './foundation';
 import {MDCIconButtonToggleEventDetail} from './types';
 
 const {strings} = MDCIconButtonToggleFoundation;
 
-export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
+/** MDC Icon Button Toggle */
+export class MDCIconButtonToggle extends
+    MDCComponent<MDCIconButtonToggleFoundation> {
   static override attachTo(root: HTMLElement) {
     return new MDCIconButtonToggle(root);
   }
@@ -53,8 +56,9 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCIconButtonToggleAdapter = {
       addClass: (className) => {
         this.root.classList.add(className);

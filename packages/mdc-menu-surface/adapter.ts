@@ -41,7 +41,7 @@ export interface MDCMenuSurfaceAdapter {
   isRtl(): boolean;
 
   getInnerDimensions(): MDCMenuDimensions;
-  getAnchorDimensions(): DOMRect | null;
+  getAnchorDimensions(): DOMRect|null;
   getViewportDimensions(): MDCMenuDimensions;
   getBodyDimensions(): MDCMenuDimensions;
   getWindowScroll(): MDCMenuPoint;
@@ -53,7 +53,10 @@ export interface MDCMenuSurfaceAdapter {
   /** Saves the element that was focused before the menu surface was opened. */
   saveFocus(): void;
 
-  /** Restores focus to the element that was focused before the menu surface was opened. */
+  /**
+   * Restores focus to the element that was focused before the menu surface was
+   * opened.
+   */
   restoreFocus(): void;
 
   /** Emits an event when the menu surface is closed. */

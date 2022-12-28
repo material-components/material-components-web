@@ -32,13 +32,17 @@ import {MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/comp
 import {Corner} from '@material/menu-surface/constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuDistance} from '@material/menu-surface/types';
+
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, DefaultFocusState, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
 import {MDCMenuItemComponentEventDetail} from './types';
 
-export type MDCMenuFactory = (el: Element, foundation?: MDCMenuFoundation) => MDCMenu;
+/** MDC Menu Factory */
+export type MDCMenuFactory = (el: Element, foundation?: MDCMenuFoundation) =>
+    MDCMenu;
 
+/** MDC Menu */
 export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   static override attachTo(root: Element) {
     return new MDCMenu(root);
@@ -180,9 +184,9 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   /**
-   * Return the items within the menu. Note that this only contains the set of elements within
-   * the items container that are proper list items, and not supplemental / presentational DOM
-   * elements.
+   * Return the items within the menu. Note that this only contains the set of
+   * elements within the items container that are proper list items, and not
+   * supplemental / presentational DOM elements.
    */
   get items(): Element[] {
     return this.list ? this.list.listElements : [];
@@ -265,7 +269,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   /**
    * @return The item within the menu at the index specified.
    */
-  getOptionByIndex(index: number): Element | null {
+  getOptionByIndex(index: number): Element|null {
     const items = this.items;
 
     if (index < items.length) {
@@ -307,8 +311,9 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCMenuAdapter = {
       addClassToElementAtIndex: (index, className) => {
@@ -353,8 +358,11 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       isSelectableItemAtIndex: (index) =>
           !!closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`),
       getSelectedSiblingOfItemAtIndex: (index) => {
-        const selectionGroupEl = closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`) as HTMLElement;
-        const selectedItemEl = selectionGroupEl.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
+        const selectionGroupEl =
+            closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`) as
+            HTMLElement;
+        const selectedItemEl = selectionGroupEl.querySelector(
+            `.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedItemEl ? this.items.indexOf(selectedItemEl) : -1;
       },
     };

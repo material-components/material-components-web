@@ -22,13 +22,18 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+
 import {MDCTextFieldHelperTextAdapter} from './adapter';
 import {MDCTextFieldHelperTextFoundation} from './foundation';
 
+/** MDC Text Field Helper Text Factory */
 export type MDCTextFieldHelperTextFactory =
-    (el: Element, foundation?: MDCTextFieldHelperTextFoundation) => MDCTextFieldHelperText;
+    (el: Element, foundation?: MDCTextFieldHelperTextFoundation) =>
+        MDCTextFieldHelperText;
 
-export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextFoundation> {
+/** MDC Text Field Helper Text */
+export class MDCTextFieldHelperText extends
+    MDCComponent<MDCTextFieldHelperTextFoundation> {
   static override attachTo(root: Element): MDCTextFieldHelperText {
     return new MDCTextFieldHelperText(root);
   }
@@ -39,8 +44,9 @@ export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextF
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTextFieldHelperTextAdapter = {
       addClass: (className) => {

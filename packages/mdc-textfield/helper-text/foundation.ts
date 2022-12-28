@@ -22,10 +22,13 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCTextFieldHelperTextAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextFieldHelperTextAdapter> {
+/** MDC Text Field Helper Text Foundation */
+export class MDCTextFieldHelperTextFoundation extends
+    MDCFoundation<MDCTextFieldHelperTextAdapter> {
   static override get cssClasses() {
     return cssClasses;
   }
@@ -35,7 +38,8 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
   }
 
   /**
-   * See {@link MDCTextFieldHelperTextAdapter} for typing information on parameters and return types.
+   * See {@link MDCTextFieldHelperTextAdapter} for typing information on
+   * parameters and return types.
    */
   static override get defaultAdapter(): MDCTextFieldHelperTextAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
@@ -94,7 +98,8 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
   }
 
   /**
-   * @param isValidation True to make the helper text act as an error validation message.
+   * @param isValidation True to make the helper text act as an error validation
+   *     message.
    */
   setValidation(isValidation: boolean) {
     if (isValidation) {
@@ -115,9 +120,12 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
    * Sets the validity of the helper text based on the input validity.
    */
   setValidity(inputIsValid: boolean) {
-    const helperTextIsPersistent = this.adapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
-    const helperTextIsValidationMsg = this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
+    const helperTextIsPersistent =
+        this.adapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
+    const helperTextIsValidationMsg =
+        this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+    const validationMsgNeedsDisplay =
+        helperTextIsValidationMsg && !inputIsValid;
 
     if (validationMsgNeedsDisplay) {
       this.showToScreenReader();

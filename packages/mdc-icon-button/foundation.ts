@@ -22,10 +22,13 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCIconButtonToggleAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAdapter> {
+/** MDC Icon Button Toggle Foundation */
+export class MDCIconButtonToggleFoundation extends
+    MDCFoundation<MDCIconButtonToggleAdapter> {
   /**
    * Whether the icon button has an aria label that changes depending on
    * toggled state.

@@ -27,6 +27,7 @@ import {isNavigationEvent, KEY, normalizeKey} from '@material/dom/keyboard';
 import {MDCChipTrailingActionAdapter} from './adapter';
 import {InteractionTrigger, strings} from './constants';
 
+/** MDC Chip Trailing Action Foundation */
 export class MDCChipTrailingActionFoundation extends
     MDCFoundation<MDCChipTrailingActionAdapter> {
   static override get strings() {

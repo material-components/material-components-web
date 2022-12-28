@@ -27,6 +27,7 @@ import {MDCTabScroller, MDCTabScrollerFactory} from '@material/tab-scroller/comp
 import {MDCTab, MDCTabFactory} from '@material/tab/component';
 import {MDCTabFoundation} from '@material/tab/foundation';
 import {MDCTabInteractionEvent} from '@material/tab/types';
+
 import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
 import {MDCTabBarActivatedEventDetail} from './types';
@@ -35,6 +36,7 @@ const {strings} = MDCTabBarFoundation;
 
 let tabIdCounter = 0;
 
+/** MDC Tab Bar */
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   static override attachTo(root: Element): MDCTabBar {
     return new MDCTabBar(root);
@@ -102,8 +104,9 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabBarAdapter = {
       scrollTo: (scrollX) => {

@@ -188,8 +188,7 @@ export interface MDCSliderAdapter {
    * `aria-valuetext` attribute on the thumb element. If null, the
    * `aria-valuetext` attribute is unchanged when the value changes.
    */
-  getValueToAriaValueTextFn():
-      ((value: number, thumb: Thumb) => string)|null;
+  getValueToAriaValueTextFn(): ((value: number, thumb: Thumb) => string)|null;
 
   /**
    * Updates tick marks container element with tick mark elements and their

@@ -23,16 +23,20 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
+
 import {MDCLineRippleAdapter} from './adapter';
 import {cssClasses} from './constants';
 
-export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter> {
+/** MDC Line Ripple Foundation */
+export class MDCLineRippleFoundation extends
+    MDCFoundation<MDCLineRippleAdapter> {
   static override get cssClasses() {
     return cssClasses;
   }
 
   /**
-   * See {@link MDCLineRippleAdapter} for typing information on parameters and return types.
+   * See {@link MDCLineRippleAdapter} for typing information on parameters and
+   * return types.
    */
   static override get defaultAdapter(): MDCLineRippleAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

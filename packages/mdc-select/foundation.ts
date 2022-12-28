@@ -31,6 +31,7 @@ import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
 import {MDCSelectIconFoundation} from './icon/foundation';
 import {MDCSelectFoundationMap} from './types';
 
+/** MDC Select Foundation */
 export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   static override get cssClasses() {
     return cssClasses;
@@ -45,7 +46,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   /**
-   * See {@link MDCSelectAdapter} for typing information on parameters and return types.
+   * See {@link MDCSelectAdapter} for typing information on parameters and
+   * return types.
    */
   static override get defaultAdapter(): MDCSelectAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
@@ -112,7 +114,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter?: Partial<MDCSelectAdapter>, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
+  constructor(
+      adapter?: Partial<MDCSelectAdapter>,
+      foundationMap: Partial<MDCSelectFoundationMap> = {}) {
     super({...MDCSelectFoundation.defaultAdapter, ...adapter});
 
     this.leadingIcon = foundationMap.leadingIcon;
@@ -237,7 +241,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
-    // Menu should open to the last selected element, should open to first menu item otherwise.
+    // Menu should open to the last selected element, should open to first menu
+    // item otherwise.
     const selectedIndex = this.getSelectedIndex();
     const focusItemIndex = selectedIndex >= 0 ? selectedIndex : 0;
     this.adapter.focusMenuItemAtIndex(focusItemIndex);
@@ -412,8 +417,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     if (this.useDefaultValidation &&
         this.adapter.hasClass(cssClasses.REQUIRED) &&
         !this.adapter.hasClass(cssClasses.DISABLED)) {
-      // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
-      // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
+      // See notes for required attribute under
+      // https://www.w3.org/TR/html52/sec-forms.html#the-select-element TL;DR:
+      // Invalid if no index is selected, or if the first index is selected and
+      // has an empty value.
       return this.getSelectedIndex() !== numbers.UNSET_INDEX &&
           (this.getSelectedIndex() !== 0 || Boolean(this.getValue()));
     }

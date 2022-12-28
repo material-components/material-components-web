@@ -37,9 +37,13 @@ import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
 import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail} from './types';
 
-export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) => MDCChip;
+/** MDC Chip Factory */
+export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) =>
+    MDCChip;
 
-export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippleCapableSurface {
+/** MDC Chip */
+export class MDCChip extends MDCComponent<MDCChipFoundation> implements
+    MDCRippleCapableSurface {
   /**
    * @return Whether the chip is selected.
    */
@@ -55,7 +59,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   }
 
   /**
-   * @return Whether a trailing icon click should trigger exit/removal of the chip.
+   * @return Whether a trailing icon click should trigger exit/removal of the
+   *     chip.
    */
   get shouldRemoveOnTrailingIconClick(): boolean {
     return this.foundation.getShouldRemoveOnTrailingIconClick();
@@ -130,8 +135,9 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       this.trailingAction = trailingActionFactory(trailingActionEl);
     }
 
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const rippleAdapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       computeBoundingRect: () => this.foundation.getDimensions(),
@@ -212,8 +218,9 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipAdapter = {
       addClass: (className) => {
         this.root.classList.add(className);

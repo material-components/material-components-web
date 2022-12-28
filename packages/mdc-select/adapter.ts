@@ -150,7 +150,7 @@ export interface MDCSelectAdapter {
   /**
    * Returns the select anchor element.
    */
-  getAnchorElement(): Element | null;
+  getAnchorElement(): Element|null;
 
   /**
    * Sets the menu anchor element.

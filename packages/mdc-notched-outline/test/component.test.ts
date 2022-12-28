@@ -60,8 +60,7 @@ describe('MDCNotchedOutline', () => {
   it('adapter#removeClass removes a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    (component.getDefaultFoundation() as any)
-        .adapter.setNotchWidthProperty(50);
+    (component.getDefaultFoundation() as any).adapter.setNotchWidthProperty(50);
     (component.getDefaultFoundation() as any)
         .adapter.removeNotchWidthProperty();
     const path =

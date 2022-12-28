@@ -24,9 +24,11 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {cssClasses as listCssClasses} from '@material/list/constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
+
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, DefaultFocusState, numbers, strings} from './constants';
 
+/** MDC Menu Foundation */
 export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   static override get cssClasses() {
     return cssClasses;
@@ -100,7 +102,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
                                  index, strings.SKIP_RESTORE_FOCUS) === 'true';
     this.adapter.closeSurface(skipRestoreFocus);
 
-    // Wait for the menu to close before adding/removing classes that affect styles.
+    // Wait for the menu to close before adding/removing classes that affect
+    // styles.
     this.closeAnimationEndTimerId = setTimeout(() => {
       // Recompute the index in case the menu contents have changed.
       const recomputedIndex = this.adapter.getElementIndex(listItem);
@@ -150,7 +153,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.validatedIndex(index);
 
     if (!this.adapter.isSelectableItemAtIndex(index)) {
-      throw new Error('MDCMenuFoundation: No selection group at specified index.');
+      throw new Error(
+          'MDCMenuFoundation: No selection group at specified index.');
     }
 
     const prevSelectedIndex =

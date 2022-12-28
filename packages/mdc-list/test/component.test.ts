@@ -446,7 +446,8 @@ describe('MDCList', () => {
     const listElementItem =
         root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
-    expect(mockFoundation.handleClick).toHaveBeenCalledWith(0, true, jasmine.any(Event));
+    expect(mockFoundation.handleClick)
+        .toHaveBeenCalledWith(0, true, jasmine.any(Event));
     expect(mockFoundation.handleClick).toHaveBeenCalledTimes(1);
     document.body.removeChild(root);
   });
@@ -651,7 +652,9 @@ describe('MDCList', () => {
     const handler = (evt: any) => detail = evt.detail;
 
     component.listen(strings.SELECTION_CHANGE_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter.notifySelectionChange([1, 2]);
+    (component.getDefaultFoundation() as any).adapter.notifySelectionChange([
+      1, 2
+    ]);
     component.unlisten(strings.SELECTION_CHANGE_EVENT, handler);
 
     expect(detail).toEqual({changedIndices: [1, 2]} as any);

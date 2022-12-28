@@ -24,14 +24,17 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {closest, matches} from '@material/dom/ponyfill';
+
 import {MDCListAdapter} from './adapter';
 import {cssClasses, deprecatedClassNameMap, evolutionAttribute, evolutionClassNameMap, numbers, strings} from './constants';
 import {MDCListFoundation} from './foundation';
 import {MDCListActionEventDetail, MDCListIndex, MDCListSelectionChangeDetail} from './types';
 
+/** MDC List Factory */
 export type MDCListFactory = (el: Element, foundation?: MDCListFoundation) =>
     MDCList;
 
+/** MDC List */
 export class MDCList extends MDCComponent<MDCListFoundation> {
   set vertical(value: boolean) {
     this.foundation.setVerticalOrientation(value);
@@ -290,8 +293,9 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
             strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
       notifySelectionChange: (changedIndices: number[]) => {
-        this.emit<MDCListSelectionChangeDetail>(strings.SELECTION_CHANGE_EVENT,
-            {changedIndices}, /** shouldBubble */ true);
+        this.emit<MDCListSelectionChangeDetail>(
+            strings.SELECTION_CHANGE_EVENT, {changedIndices},
+            /** shouldBubble */ true);
       },
       removeClassForElementIndex: (index, className) => {
         const element = this.listElements[index];

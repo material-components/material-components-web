@@ -22,12 +22,14 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCSnackbarAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
 const {OPENING, OPEN, CLOSING} = cssClasses;
 const {REASON_ACTION, REASON_DISMISS} = strings;
 
+/** MDC Snackbar Foundation */
 export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   static override get cssClasses() {
     return cssClasses;
@@ -83,7 +85,8 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     this.adapter.addClass(OPENING);
     this.adapter.announce();
 
-    // Wait a frame once display is no longer "none", to establish basis for animation
+    // Wait a frame once display is no longer "none", to establish basis for
+    // animation
     this.runNextAnimationFrame(() => {
       this.adapter.addClass(OPEN);
 
@@ -101,13 +104,15 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   }
 
   /**
-   * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
-   *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
+   * @param reason Why the snackbar was closed. Value will be passed to
+   *     CLOSING_EVENT and CLOSED_EVENT via the `event.detail.reason` property.
+   *     Standard values are REASON_ACTION and REASON_DISMISS, but custom
    *     client-specific values may also be used if desired.
    */
   close(reason = '') {
     if (!this.opened) {
-      // Avoid redundant close calls (and events), e.g. repeated interactions as the snackbar is animating closed
+      // Avoid redundant close calls (and events), e.g. repeated interactions as
+      // the snackbar is animating closed
       return;
     }
 
@@ -142,7 +147,8 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     const maxValue = numbers.MAX_AUTO_DISMISS_TIMEOUT_MS;
     const indeterminateValue = numbers.INDETERMINATE;
 
-    if (timeoutMs === numbers.INDETERMINATE || (timeoutMs <= maxValue && timeoutMs >= minValue)) {
+    if (timeoutMs === numbers.INDETERMINATE ||
+        (timeoutMs <= maxValue && timeoutMs >= minValue)) {
       this.autoDismissTimeoutMs = timeoutMs;
     } else {
       throw new Error(`
@@ -186,7 +192,8 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   }
 
   /**
-   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+   * Runs the given logic on the next animation frame, using setTimeout to
+   * factor in Firefox reflow behavior.
    */
   private runNextAnimationFrame(callback: () => void) {
     cancelAnimationFrame(this.animationFrame);

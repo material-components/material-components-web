@@ -236,8 +236,7 @@ describe('MDCChipSet', () => {
      () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
+       expect((component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
@@ -269,8 +268,7 @@ describe('MDCChipSet', () => {
 
   it('#adapter.getChipListCount returns the number of chips', () => {
     const {component} = setupTest();
-    expect(
-        (component.getDefaultFoundation() as any).adapter.getChipListCount())
+    expect((component.getDefaultFoundation() as any).adapter.getChipListCount())
         .toEqual(3);
   });
 

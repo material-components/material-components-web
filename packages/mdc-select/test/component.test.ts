@@ -818,8 +818,7 @@ describe('MDCSelect', () => {
      () => {
        const {component, fixture} = setupTest();
        fixture.classList.add('foo');
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
+       expect((component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
@@ -867,8 +866,8 @@ describe('MDCSelect', () => {
   `);
     const component = new MDCSelect(fixture);
     expect(
-        () => (component.getDefaultFoundation() as any)
-                  .adapter.floatLabel('foo'))
+        () =>
+            (component.getDefaultFoundation() as any).adapter.floatLabel('foo'))
         .not.toThrow();
   });
 
@@ -945,8 +944,7 @@ describe('MDCSelect', () => {
      () => {
        const {component, bottomLine} = setupTest();
 
-       (component.getDefaultFoundation() as any)
-           .adapter.deactivateBottomLine();
+       (component.getDefaultFoundation() as any).adapter.deactivateBottomLine();
        expect(bottomLine.deactivate).toHaveBeenCalled();
      });
 
@@ -954,8 +952,7 @@ describe('MDCSelect', () => {
     const hasOutline = true;
     const {component, outline} = setupTest(hasOutline);
 
-    (component.getDefaultFoundation() as any)
-        .adapter.notchOutline(LABEL_WIDTH);
+    (component.getDefaultFoundation() as any).adapter.notchOutline(LABEL_WIDTH);
     expect(outline.notch).toHaveBeenCalledWith(LABEL_WIDTH);
     expect(outline.notch).toHaveBeenCalledTimes(1);
   });

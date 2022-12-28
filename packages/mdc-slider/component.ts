@@ -34,7 +34,7 @@ import {cssClasses, events} from './constants';
 import {MDCSliderFoundation} from './foundation';
 import {MDCSliderChangeEventDetail, Thumb, TickMark} from './types';
 
-/** Vanilla JS implementation of slider component. */
+/** Vanilla implementation of slider component. */
 export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   static override attachTo(root: Element, options: {
     skipInitialUIUpdate?: boolean
@@ -44,9 +44,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
 
   override root!: HTMLElement;          // Assigned in MDCComponent constructor.
   private inputs!: HTMLInputElement[];  // Assigned in #initialize.
-  private thumbs!: HTMLElement[];     // Assigned in #initialize.
-  private trackActive!: HTMLElement;  // Assigned in #initialize.
-  private ripples!: MDCRipple[];      // Assigned in #initialize.
+  private thumbs!: HTMLElement[];       // Assigned in #initialize.
+  private trackActive!: HTMLElement;    // Assigned in #initialize.
+  private ripples!: MDCRipple[];        // Assigned in #initialize.
 
   private skipInitialUIUpdate = false;
   // Function that maps a slider value to the value of the `aria-valuetext`

@@ -23,6 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
+
 import {MDCTextFieldAdapter} from './adapter';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
 import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
@@ -36,6 +37,7 @@ type InteractionEventType = 'click'|'keydown';
 const POINTERDOWN_EVENTS: PointerDownEventType[] = ['mousedown', 'touchstart'];
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
+/** MDC Text Field Foundation */
 export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   static override get cssClasses() {
     return cssClasses;

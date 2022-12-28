@@ -42,12 +42,14 @@ import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
 import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/component';
 import {MDCTextFieldFoundationMap} from './types';
 
-export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements MDCRippleCapableSurface {
+/** MDC Text Field */
+export class MDCTextField extends
+    MDCComponent<MDCTextFieldFoundation> implements MDCRippleCapableSurface {
   static override attachTo(root: Element): MDCTextField {
     return new MDCTextField(root);
   }
 
-  ripple!: MDCRipple | null; // assigned in initialize()
+  ripple!: MDCRipple|null;  // assigned in initialize()
 
   // The only required sub-element.
   private input!: HTMLInputElement;  // assigned in initialize()
@@ -83,7 +85,8 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     const labelElement = this.root.querySelector(strings.LABEL_SELECTOR);
     this.label = labelElement ? labelFactory(labelElement) : null;
 
-    const lineRippleElement = this.root.querySelector(strings.LINE_RIPPLE_SELECTOR);
+    const lineRippleElement =
+        this.root.querySelector(strings.LINE_RIPPLE_SELECTOR);
     this.lineRipple =
         lineRippleElement ? lineRippleFactory(lineRippleElement) : null;
 
@@ -93,17 +96,23 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     // Helper text
     const helperTextStrings = MDCTextFieldHelperTextFoundation.strings;
     const nextElementSibling = this.root.nextElementSibling;
-    const hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
-    const helperTextEl =
-        hasHelperLine && nextElementSibling && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
+    const hasHelperLine =
+        (nextElementSibling &&
+         nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
+    const helperTextEl = hasHelperLine && nextElementSibling &&
+        nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
     this.helperText = helperTextEl ? helperTextFactory(helperTextEl) : null;
 
     // Character counter
-    const characterCounterStrings = MDCTextFieldCharacterCounterFoundation.strings;
-    let characterCounterEl = this.root.querySelector(characterCounterStrings.ROOT_SELECTOR);
-    // If character counter is not found in root element search in sibling element.
+    const characterCounterStrings =
+        MDCTextFieldCharacterCounterFoundation.strings;
+    let characterCounterEl =
+        this.root.querySelector(characterCounterStrings.ROOT_SELECTOR);
+    // If character counter is not found in root element search in sibling
+    // element.
     if (!characterCounterEl && hasHelperLine && nextElementSibling) {
-      characterCounterEl = nextElementSibling.querySelector(characterCounterStrings.ROOT_SELECTOR);
+      characterCounterEl = nextElementSibling.querySelector(
+          characterCounterStrings.ROOT_SELECTOR);
     }
     this.characterCounter =
         characterCounterEl ? characterCounterFactory(characterCounterEl) : null;
@@ -312,8 +321,10 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   /**
-   * Enables or disables the use of native validation. Use this for custom validation.
-   * @param useNativeValidation Set this to false to ignore native input validation.
+   * Enables or disables the use of native validation. Use this for custom
+   * validation.
+   * @param useNativeValidation Set this to false to ignore native input
+   *     validation.
    */
   set useNativeValidation(useNativeValidation: boolean) {
     this.foundation.setUseNativeValidation(useNativeValidation);
@@ -367,8 +378,9 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   override getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTextFieldAdapter = {
       ...this.getRootAdapterMethods(),
@@ -398,11 +410,11 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
         this.unlisten(evtType, handler);
       },
       registerValidationAttributeChangeHandler: (handler) => {
-        const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
-          return mutationsList
-              .map((mutation) => mutation.attributeName)
-              .filter((attributeName) => attributeName) as string[];
-        };
+        const getAttributesList =
+            (mutationsList: MutationRecord[]): string[] => {
+              return mutationsList.map((mutation) => mutation.attributeName)
+                         .filter((attributeName) => attributeName) as string[];
+            };
         const observer = new MutationObserver((mutationsList) => {
           handler(getAttributesList(mutationsList));
         });
@@ -512,8 +524,9 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       return null;
     }
 
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),

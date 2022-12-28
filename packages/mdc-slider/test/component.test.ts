@@ -21,8 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getFixture} from '../../../testing/dom';
-import {html} from '../../../testing/dom';
+import {getFixture, html} from '../../../testing/dom';
 import {createMouseEvent, emitEvent} from '../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {attributes, cssClasses, events, MDCSlider, MDCSliderFoundation, Thumb} from '../index';

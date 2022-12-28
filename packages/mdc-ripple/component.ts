@@ -24,14 +24,19 @@
 import {MDCComponent} from '@material/base/component';
 import {applyPassive} from '@material/dom/events';
 import {matches} from '@material/dom/ponyfill';
+
 import {MDCRippleAdapter} from './adapter';
 import {MDCRippleFoundation} from './foundation';
 import {MDCRippleAttachOpts, MDCRippleCapableSurface} from './types';
 import * as util from './util';
 
-export type MDCRippleFactory = (el: Element, foundation?: MDCRippleFoundation) => MDCRipple;
+/** MDC Ripple Factory */
+export type MDCRippleFactory =
+    (el: Element, foundation?: MDCRippleFoundation) => MDCRipple;
 
-export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCRippleCapableSurface {
+/** MDC Ripple */
+export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
+    MDCRippleCapableSurface {
   static override attachTo(root: Element, opts: MDCRippleAttachOpts = {
     isUnbounded: undefined
   }): MDCRipple {
