@@ -41,8 +41,8 @@ interface InternalComponentRegistry {
 
 const registry: InternalComponentRegistry = {};
 
-const CONSOLE_WARN =
-    console.warn.bind(console);  // tslint:disable-line:no-console
+// tslint:disable-next-line:no-console
+const CONSOLE_WARN = console.warn.bind(console);
 
 function emit<T extends object>(
     evtType: string, evtData: T, shouldBubble = false) {
@@ -64,7 +64,7 @@ function emit<T extends object>(
 /**
  * Auto-initializes all MDC components on a page.
  */
-function mdcAutoInit(root = document) {
+function mdcAutoInit(root: ParentNode = document) {
   const components = [];
   let nodes: Element[] =
       Array.from(root.querySelectorAll(`[${AUTO_INIT_ATTR}]`));
@@ -77,8 +77,8 @@ function mdcAutoInit(root = document) {
       throw new Error('(mdc-auto-init) Constructor name must be given.');
     }
 
-    const Constructor =
-        registry[ctorName];  // tslint:disable-line:variable-name
+    // tslint:disable-next-line:enforce-name-casing
+    const Constructor = registry[ctorName];
     if (typeof Constructor !== 'function') {
       throw new Error(
           `(mdc-auto-init) Could not find constructor in registry for ${
@@ -105,9 +105,10 @@ function mdcAutoInit(root = document) {
 
 // Constructor is PascalCased because it is a direct reference to a class,
 // rather than an instance of a class.
-// tslint:disable-next-line:variable-name
 mdcAutoInit.register = function(
-    componentName: string, Constructor: MDCAttachable, warn = CONSOLE_WARN) {
+    componentName: string,
+    // tslint:disable-next-line:enforce-name-casing
+    Constructor: MDCAttachable, warn = CONSOLE_WARN) {
   if (typeof Constructor !== 'function') {
     throw new Error(`(mdc-auto-init) Invalid Constructor value: ${
         Constructor}. Expected function.`);
