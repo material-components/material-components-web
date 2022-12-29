@@ -38,13 +38,17 @@ const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 /** MDC Checkbox Factory */
 export type MDCCheckboxFactory =
-    (el: Element, foundation?: MDCCheckboxFoundation) => MDCCheckbox;
+    (el: HTMLElement, foundation?: MDCCheckboxFoundation) => MDCCheckbox;
 
 /** MDC Checkbox */
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements
     MDCRippleCapableSurface {
-  static override attachTo(root: Element) {
-    return new MDCCheckbox(root);
+  // TODO(b/157231863): remove these overloads when no clients are using them.
+  static override attachTo(root: HTMLElement): MDCCheckbox;
+  /** @deprecated use attachTo(root: HTMLElement) */
+  static override attachTo(root: Element): MDCCheckbox;
+  static override attachTo(root: HTMLElement|Element) {
+    return new MDCCheckbox(root as HTMLElement);
   }
 
   get ripple(): MDCRipple {
@@ -126,7 +130,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements
       addClass: (className) => {
         this.root.classList.add(className);
       },
-      forceLayout: () => (this.root as HTMLElement).offsetWidth,
+      forceLayout: () => this.root.offsetWidth,
       hasNativeControl: () => !!this.getNativeControl(),
       isAttachedToDOM: () => Boolean(this.root.parentNode),
       isChecked: () => this.checked,

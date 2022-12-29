@@ -33,7 +33,7 @@ import {MDCSwitchFoundation} from '../foundation';
 
 const {NATIVE_CONTROL_SELECTOR, RIPPLE_SURFACE_SELECTOR} = strings;
 
-function getFixture(): Element {
+function getFixture(): HTMLElement {
   return createFixture(html`
     <div class="mdc-switch">
       <div class="mdc-switch__track"></div>
@@ -49,7 +49,8 @@ function getFixture(): Element {
 function setupTest() {
   const root = getFixture();
   const component = new MDCSwitch(root);
-  const rippleSurface = root.querySelector(RIPPLE_SURFACE_SELECTOR);
+  const rippleSurface =
+      root.querySelector<HTMLElement>(RIPPLE_SURFACE_SELECTOR);
   return {root, component, rippleSurface};
 }
 
@@ -57,8 +58,7 @@ describe('MDCSwitch', () => {
   setUpMdcTestEnvironment();
 
   it('attachTo initializes and returns a MDCSwitch instance', () => {
-    expect(MDCSwitch.attachTo(getFixture() as HTMLElement) instanceof MDCSwitch)
-        .toBeTruthy();
+    expect(MDCSwitch.attachTo(getFixture()) instanceof MDCSwitch).toBeTruthy();
   });
 
   if (supportsCssVariables(window)) {
@@ -83,7 +83,7 @@ describe('MDCSwitch', () => {
      () => {
        const {root, component} = setupTest();
        const inputEl =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+           root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
        component.checked = true;
        expect(inputEl.checked).toBeTruthy();
        expect(component.checked).toEqual(inputEl.checked);
@@ -103,7 +103,7 @@ describe('MDCSwitch', () => {
      () => {
        const {root, component} = setupTest();
        const inputEl =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+           root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
        component.disabled = true;
        expect(inputEl.disabled).toBeTruthy();
        expect(component.disabled).toEqual(inputEl.disabled);
@@ -125,7 +125,7 @@ describe('MDCSwitch', () => {
   it('get/set checked updates the aria-checked of the native switch input element',
      () => {
        const {root, component} = setupTest();
-       const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
+       const inputEl = root.querySelector<HTMLElement>(NATIVE_CONTROL_SELECTOR);
        component.checked = true;
        expect(
            inputEl!.getAttribute(MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR))
@@ -150,7 +150,7 @@ describe('MDCSwitch', () => {
   it('#initialSyncWithDOM calls foundation.setChecked', () => {
     const root = getFixture();
     const inputEl =
-        root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+        root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
     inputEl.checked = true;
     const {mockFoundation} = setupMockFoundationTest(root);
     expect(mockFoundation.setChecked).toHaveBeenCalledWith(true);
@@ -161,7 +161,7 @@ describe('MDCSwitch', () => {
     const {root, mockFoundation} = setupMockFoundationTest();
 
     const inputEl =
-        root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+        root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
     emitEvent(inputEl, 'change');
 
     expect(mockFoundation.handleChange).toHaveBeenCalledTimes(1);
@@ -173,7 +173,7 @@ describe('MDCSwitch', () => {
        component.destroy();
 
        const inputEl =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+           root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
        emitEvent(inputEl, 'change');
 
        expect(mockFoundation.handleChange).not.toHaveBeenCalled();

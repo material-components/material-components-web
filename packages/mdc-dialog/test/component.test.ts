@@ -69,17 +69,17 @@ function getFixture() {
 }
 
 function setupTest(fixture = getFixture()) {
-  const root = fixture.querySelector('.mdc-dialog') as HTMLElement;
+  const root = fixture.querySelector<HTMLElement>('.mdc-dialog')!;
   const component = new MDCDialog(root);
-  const title = fixture.querySelector('.mdc-dialog__title') as HTMLElement;
-  const content = fixture.querySelector('.mdc-dialog__content') as HTMLElement;
-  const actions = fixture.querySelector('.mdc-dialog__actions') as HTMLElement;
+  const title = fixture.querySelector<HTMLElement>('.mdc-dialog__title')!;
+  const content = fixture.querySelector<HTMLElement>('.mdc-dialog__content')!;
+  const actions = fixture.querySelector<HTMLElement>('.mdc-dialog__actions')!;
   const yesButton =
-      fixture.querySelector('[data-mdc-dialog-action="yes"]') as HTMLElement;
+      fixture.querySelector<HTMLElement>('[data-mdc-dialog-action="yes"]')!;
   const noButton =
-      fixture.querySelector('[data-mdc-dialog-action="no"]') as HTMLElement;
+      fixture.querySelector<HTMLElement>('[data-mdc-dialog-action="no"]')!;
   const cancelButton =
-      fixture.querySelector('[data-mdc-dialog-action="cancel"]') as HTMLElement;
+      fixture.querySelector<HTMLElement>('[data-mdc-dialog-action="cancel"]')!;
   return {
     root,
     component,
@@ -109,18 +109,18 @@ describe('MDCDialog', () => {
 
   it('attachTo returns a component instance', () => {
     expect(MDCDialog.attachTo(
-               getFixture().querySelector('.mdc-dialog') as HTMLElement))
+               getFixture().querySelector<HTMLElement>('.mdc-dialog')!))
         .toEqual(jasmine.any(MDCDialog));
   });
 
   it('attachTo throws an error when container element is missing', () => {
     const fixture = getFixture();
     const container =
-        fixture.querySelector('.mdc-dialog__container') as HTMLElement;
+        fixture.querySelector<HTMLElement>('.mdc-dialog__container')!;
     container.parentElement!.removeChild(container);
     expect(
         () => MDCDialog.attachTo(
-            fixture.querySelector('.mdc-dialog') as HTMLElement))
+            fixture.querySelector<HTMLElement>('.mdc-dialog')!))
         .toThrow();
   });
 
@@ -280,8 +280,8 @@ describe('MDCDialog', () => {
 
   it('autoStackButtons adds scrollable class', () => {
     const fixture = getFixture();
-    const root = fixture.querySelector('.mdc-dialog') as HTMLElement;
-    const content = root.querySelector('.mdc-dialog__content') as HTMLElement;
+    const root = fixture.querySelector<HTMLElement>('.mdc-dialog')!;
+    const content = root.querySelector<HTMLElement>('.mdc-dialog__content')!;
 
     // Simulate a scrollable content area
     content.innerHTML = new Array(100).join(`<p>${content.textContent}</p>`);
@@ -331,14 +331,14 @@ describe('MDCDialog', () => {
     const {component} = setupTest();
     (component.getDefaultFoundation() as any)
         .adapter.addBodyClass('mdc-dialog--scroll-lock');
-    expect((document.querySelector('body') as HTMLElement)
-               .classList.contains('mdc-dialog--scroll-lock'))
+    expect((document.querySelector<HTMLElement>('body')!
+            ).classList.contains('mdc-dialog--scroll-lock'))
         .toBe(true);
   });
 
   it('adapter#removeBodyClass removes a class from the body', () => {
     const {component} = setupTest();
-    const body = document.querySelector('body') as HTMLElement;
+    const body = document.querySelector<HTMLElement>('body')!;
 
     body.classList.add('mdc-dialog--scroll-lock');
     (component.getDefaultFoundation() as any)
@@ -522,8 +522,8 @@ describe('MDCDialog', () => {
          strings.BUTTON_DEFAULT_ATTRIBUTE}`,
      () => {
        const fixture = getFixture();
-       const yesButton = fixture.querySelector(
-                             '[data-mdc-dialog-action="yes"]') as HTMLElement;
+       const yesButton = fixture.querySelector<HTMLElement>(
+           '[data-mdc-dialog-action="yes"]')!;
        yesButton.setAttribute(strings.BUTTON_DEFAULT_ATTRIBUTE, 'true');
 
        const {component} = setupTest(fixture);

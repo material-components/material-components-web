@@ -91,7 +91,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     }
   }
 
-  handleItemAction(listItem: Element) {
+  handleItemAction(listItem: HTMLElement) {
     const index = this.adapter.getElementIndex(listItem);
     if (index < 0) {
       return;

@@ -28,10 +28,12 @@ import {CloseReason, cssClasses, events, numbers, selectors} from '../constants'
 import {MDCBanner} from '../index';
 
 function setupTest(fixture: HTMLElement) {
-  const contentEl = fixture.querySelector(selectors.CONTENT)!;
-  const textEl = fixture.querySelector(selectors.TEXT)!;
-  const primaryActionEl = fixture.querySelector(selectors.PRIMARY_ACTION)!;
-  const secondaryActionEl = fixture.querySelector(selectors.SECONDARY_ACTION)!;
+  const contentEl = fixture.querySelector<HTMLElement>(selectors.CONTENT)!;
+  const textEl = fixture.querySelector<HTMLElement>(selectors.TEXT)!;
+  const primaryActionEl =
+      fixture.querySelector<HTMLElement>(selectors.PRIMARY_ACTION)!;
+  const secondaryActionEl =
+      fixture.querySelector<HTMLElement>(selectors.SECONDARY_ACTION)!;
   const component = new MDCBanner(fixture);
 
   return {
@@ -110,7 +112,7 @@ describe('MDCBanner', () => {
   it('#initialSyncWithDom adds a click event listener on the content element',
      () => {
        const contentEl =
-           fixture.querySelector('.mdc-banner__content') as HTMLElement;
+           fixture.querySelector<HTMLElement>('.mdc-banner__content')!;
        spyOn(contentEl, 'addEventListener').and.callThrough();
        const component = MDCBanner.attachTo(fixture);
 
@@ -187,8 +189,7 @@ describe('MDCBanner', () => {
 
     component.open();
     jasmine.clock().tick(1);
-    expect(fixture.offsetHeight)
-        .toEqual((contentEl as HTMLElement).offsetHeight);
+    expect(fixture.offsetHeight).toEqual(contentEl.offsetHeight);
   });
 
   it('#close sets the root element height back to 0', () => {
@@ -203,11 +204,10 @@ describe('MDCBanner', () => {
      () => {
        const {component, contentEl} = setupTest(fixture);
 
-       (contentEl as HTMLElement).style.height = '50px';
+       contentEl.style.height = '50px';
        component.layout();
        jasmine.clock().tick(1);
-       expect(fixture.offsetHeight)
-           .toEqual((contentEl as HTMLElement).offsetHeight);
+       expect(fixture.offsetHeight).toEqual(contentEl.offsetHeight);
      });
 
   it('get isOpen returns true when open', () => {

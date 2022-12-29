@@ -185,7 +185,7 @@ describe('MDCTabBar', () => {
        const {component, root} = setupTest();
        expect(
            (component.getDefaultFoundation() as any)
-               .adapter.getOffsetWidth() === (root as HTMLElement).offsetWidth)
+               .adapter.getOffsetWidth() === root.offsetWidth)
            .toBe(true);
      });
 
@@ -292,8 +292,8 @@ describe('MDCTabBar', () => {
          MDCTabFoundation.strings.INTERACTED_EVENT}, call handleTabInteraction`,
      () => {
        const {root, mockFoundation} = setupMockFoundationTest();
-       const tab = root.querySelector(
-                       MDCTabBarFoundation.strings.TAB_SELECTOR) as HTMLElement;
+       const tab = root.querySelector<HTMLElement>(
+           MDCTabBarFoundation.strings.TAB_SELECTOR)!;
        emitEvent(tab, MDCTabFoundation.strings.INTERACTED_EVENT, {
          bubbles: true,
        });

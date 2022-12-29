@@ -138,7 +138,8 @@ describe('MDCChipSet', () => {
       isMultiselectable: false,
     });
 
-    const primaryActionEl = root.querySelector('.mdc-evolution-chip__action')!;
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('.mdc-evolution-chip__action')!;
     emitEvent(primaryActionEl, 'click', {
       bubbles: true,
     });
@@ -149,10 +150,11 @@ describe('MDCChipSet', () => {
     }));
     expect(mockFoundation.handleChipNavigation).toHaveBeenCalled();
 
-    emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
-      bubbles: true,
-      cancelable: false,
-    });
+    emitEvent(
+        root.querySelector<HTMLElement>('#c0')!, MDCChipEvents.ANIMATION, {
+          bubbles: true,
+          cancelable: false,
+        });
     expect(mockFoundation.handleChipAnimation).toHaveBeenCalled();
     component.destroy();
   });
@@ -167,7 +169,8 @@ describe('MDCChipSet', () => {
     });
     component.destroy();
 
-    const primaryActionEl = root.querySelector('.mdc-evolution-chip__action')!;
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('.mdc-evolution-chip__action')!;
     emitEvent(primaryActionEl, 'click', {
       bubbles: true,
     });
@@ -178,10 +181,11 @@ describe('MDCChipSet', () => {
     }));
     expect(mockFoundation.handleChipNavigation).not.toHaveBeenCalled();
 
-    emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
-      bubbles: true,
-      cancelable: false,
-    });
+    emitEvent(
+        root.querySelector<HTMLElement>('#c0')!, MDCChipEvents.ANIMATION, {
+          bubbles: true,
+          cancelable: false,
+        });
     expect(mockFoundation.handleChipAnimation).not.toHaveBeenCalled();
   });
 
@@ -263,8 +267,8 @@ describe('MDCChipSet', () => {
 
     component.setChipSelected(1, MDCChipActionType.PRIMARY, true);
 
-    expect(root.querySelector('#c1 .mdc-evolution-chip__action')!.getAttribute(
-               'aria-selected'))
+    expect(root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!
+               .getAttribute('aria-selected'))
         .toBe('true');
   });
 
@@ -318,13 +322,13 @@ describe('MDCChipSet', () => {
     });
 
     const primaryActionEl =
-        root.querySelector('#c1 .mdc-evolution-chip__action')!;
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
     emitEvent(primaryActionEl, 'click', {
       bubbles: true,
     });
 
-    expect(root.querySelector('#c1 .mdc-evolution-chip__action')!.getAttribute(
-               'tabindex'))
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
         .toBe('0');
   });
 
@@ -338,18 +342,20 @@ describe('MDCChipSet', () => {
     });
 
     const primaryActionEl =
-        root.querySelector('#c1 .mdc-evolution-chip__action')!;
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
     emitEvent(primaryActionEl, 'click', {
       bubbles: true,
     });
 
-    expect(root.querySelector('#c0 .mdc-evolution-chip__action')!.getAttribute(
-               'tabindex'))
+    expect(root.querySelector<HTMLElement>(
+                   '#c0 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
         .toBe('-1');
-    expect(root.querySelector('#c0 .mdc-evolution-chip__action--trailing')!
+    expect(root.querySelector<HTMLElement>(
+                   '#c0 .mdc-evolution-chip__action--trailing')!
                .getAttribute('tabindex'))
         .toBe('-1');
-    expect(root.querySelector('#c1 .mdc-evolution-chip__action--trailing')!
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action--trailing')!
                .getAttribute('tabindex'))
         .toBe('-1');
   });
@@ -364,13 +370,13 @@ describe('MDCChipSet', () => {
     });
 
     const primaryActionEl =
-        root.querySelector('#c1 .mdc-evolution-chip__action')!;
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
     emitEvent(primaryActionEl, 'click', {
       bubbles: true,
     });
 
-    expect(root.querySelector('#c1 .mdc-evolution-chip__action')!.getAttribute(
-               'tabindex'))
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
         .not.toBe('0');
   });
 
@@ -384,13 +390,13 @@ describe('MDCChipSet', () => {
     });
 
     const primaryActionEl =
-        root.querySelector('#c0 .mdc-evolution-chip__action')!;
+        root.querySelector<HTMLElement>('#c0 .mdc-evolution-chip__action')!;
     emitEvent(primaryActionEl, 'click', {
       bubbles: true,
     });
 
-    expect(root.querySelector('#c0 .mdc-evolution-chip__action')!.getAttribute(
-               'aria-selected'))
+    expect(root.querySelector<HTMLElement>('#c0 .mdc-evolution-chip__action')!
+               .getAttribute('aria-selected'))
         .toBe('true');
   });
 
@@ -405,14 +411,14 @@ describe('MDCChipSet', () => {
        });
 
        const primaryActionEl =
-           root.querySelector('#c1 .mdc-evolution-chip__action')!;
+           root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
        emitEvent(primaryActionEl, 'click', {
          bubbles: true,
        });
 
        expect(
-           root.querySelector('#c0 .mdc-evolution-chip__action')!.getAttribute(
-               'aria-selected'))
+           root.querySelector<HTMLElement>('#c0 .mdc-evolution-chip__action')!
+               .getAttribute('aria-selected'))
            .toBe('false');
      });
 
@@ -427,14 +433,14 @@ describe('MDCChipSet', () => {
        });
 
        const primaryActionEl =
-           root.querySelector('#c1 .mdc-evolution-chip__action')!;
+           root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
        emitEvent(primaryActionEl, 'click', {
          bubbles: true,
        });
 
        expect(
-           root.querySelector('#c0 .mdc-evolution-chip__action')!.getAttribute(
-               'aria-selected'))
+           root.querySelector<HTMLElement>('#c0 .mdc-evolution-chip__action')!
+               .getAttribute('aria-selected'))
            .toBe('true');
      });
 
@@ -448,12 +454,13 @@ describe('MDCChipSet', () => {
     });
 
     const primaryActionEl =
-        root.querySelector('#c1 .mdc-evolution-chip__action')!;
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
     primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
       key: 'ArrowLeft',
     }));
 
-    expect(root.querySelector('#c0 .mdc-evolution-chip__action--trailing')!
+    expect(root.querySelector<HTMLElement>(
+                   '#c0 .mdc-evolution-chip__action--trailing')!
                .getAttribute('tabindex'))
         .toBe('0');
   });
@@ -468,18 +475,19 @@ describe('MDCChipSet', () => {
     });
 
     const primaryActionEl =
-        root.querySelector('#c1 .mdc-evolution-chip__action')!;
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
     primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
       key: 'ArrowLeft',
     }));
 
-    expect(root.querySelector('#c0 .mdc-evolution-chip__action')!.getAttribute(
-               'tabindex'))
+    expect(root.querySelector<HTMLElement>(
+                   '#c0 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
         .toBe('-1');
-    expect(root.querySelector('#c1 .mdc-evolution-chip__action')!.getAttribute(
-               'tabindex'))
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
         .toBe('-1');
-    expect(root.querySelector('#c1 .mdc-evolution-chip__action--trailing')!
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action--trailing')!
                .getAttribute('tabindex'))
         .toBe('-1');
   });
@@ -502,16 +510,17 @@ describe('MDCChipSet', () => {
          chipID: 'c0',
        };
 
-       emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
-         bubbles: true,
-         cancelable: false,
-         detail,
-       });
+       emitEvent(
+           root.querySelector<HTMLElement>('#c0')!, MDCChipEvents.ANIMATION, {
+             bubbles: true,
+             cancelable: false,
+             detail,
+           });
 
        // Tick clock forward to account for setTimeout inside "announce".
        jasmine.clock().tick(1);
-       const liveRegion =
-           document.querySelector(`[${DATA_MDC_DOM_ANNOUNCE}="true"]`)!;
+       const liveRegion = document.querySelector<HTMLElement>(
+           `[${DATA_MDC_DOM_ANNOUNCE}="true"]`)!;
        expect(liveRegion.textContent).toEqual('Added a chip');
        // Clean up the live region.
        liveRegion.parentNode!.removeChild(liveRegion);
@@ -533,11 +542,12 @@ describe('MDCChipSet', () => {
       chipID: 'c0',
     };
 
-    emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
-      bubbles: true,
-      cancelable: false,
-      detail,
-    });
+    emitEvent(
+        root.querySelector<HTMLElement>('#c0')!, MDCChipEvents.ANIMATION, {
+          bubbles: true,
+          cancelable: false,
+          detail,
+        });
 
     expect(component.getChipIndexByID('c0')).toBe(-1);
   });
@@ -551,7 +561,7 @@ describe('MDCChipSet', () => {
       isMultiselectable: false,
     });
 
-    const chip0 = root.querySelector('#c0')!;
+    const chip0 = root.querySelector<HTMLElement>('#c0')!;
     component.addChip(0);
     expect(chip0.classList.contains(MDCChipCssClasses.ENTER)).toBeTrue();
   });

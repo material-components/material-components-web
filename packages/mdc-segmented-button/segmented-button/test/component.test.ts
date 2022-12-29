@@ -172,7 +172,8 @@ describe('MDCSegmentedButton', () => {
     it('#selectSegment selects identified child segment if found', () => {
       const {root, component, adapter} = setupTest();
 
-      const segments = root.querySelectorAll(testSelectors.SEGMENT);
+      const segments =
+          root.querySelectorAll<HTMLElement>(testSelectors.SEGMENT);
       segments[testIndices.SELECTED].setAttribute(
           attributes.DATA_SEGMENT_ID, testSegmentIds.SELECTED_SEGMENT_ID);
 
@@ -196,7 +197,8 @@ describe('MDCSegmentedButton', () => {
     it('#selectSegment selects no child segment if none is identified', () => {
       const {root, component, adapter} = setupTest();
 
-      const segments = root.querySelectorAll(testSelectors.SEGMENT);
+      const segments =
+          root.querySelectorAll<HTMLElement>(testSelectors.SEGMENT);
       setAllUnselected(segments);
 
       adapter.selectSegment(testIndices.NOT_PRESENT);
@@ -217,7 +219,8 @@ describe('MDCSegmentedButton', () => {
     it('#unselectSegment unselectes identified child segment if found', () => {
       const {root, component, adapter} = setupTest();
 
-      const segments = root.querySelectorAll(testSelectors.SEGMENT);
+      const segments =
+          root.querySelectorAll<HTMLElement>(testSelectors.SEGMENT);
       segments[testIndices.UNSELECTED].setAttribute(
           attributes.DATA_SEGMENT_ID, testSegmentIds.UNSELECTED_SEGMENT_ID);
 
@@ -242,7 +245,8 @@ describe('MDCSegmentedButton', () => {
        () => {
          const {root, component, adapter} = setupTest();
 
-         const segments = root.querySelectorAll(testSelectors.SEGMENT);
+         const segments =
+             root.querySelectorAll<HTMLElement>(testSelectors.SEGMENT);
          setAllSelected(segments);
 
          adapter.unselectSegment(testIndices.NOT_PRESENT);
@@ -288,7 +292,8 @@ describe('MDCSegmentedButton', () => {
      () => {
        const {root, component} = setupTest();
 
-       const segments = root.querySelectorAll(testSelectors.SEGMENT);
+       const segments =
+           root.querySelectorAll<HTMLElement>(testSelectors.SEGMENT);
        setAllSelected(segments);
 
        const selectedSegments = component.getSelectedSegments();
@@ -308,7 +313,7 @@ describe('MDCSegmentedButton', () => {
   it('#selectSegment selects identified child segment', () => {
     const {root, component} = setupTest();
 
-    const segments = root.querySelectorAll(testSelectors.SEGMENT);
+    const segments = root.querySelectorAll<HTMLElement>(testSelectors.SEGMENT);
     const selectedSegment = segments[testIndices.SELECTED];
     selectedSegment.setAttribute(
         attributes.DATA_SEGMENT_ID, testSegmentIds.SELECTED_SEGMENT_ID);
@@ -329,7 +334,7 @@ describe('MDCSegmentedButton', () => {
   it('#unselectSegment unselects identified child segment', () => {
     const {root, component} = setupTest();
 
-    const segments = root.querySelectorAll(testSelectors.SEGMENT);
+    const segments = root.querySelectorAll<HTMLElement>(testSelectors.SEGMENT);
     const unselectedSegment = segments[testIndices.UNSELECTED];
     unselectedSegment.setAttribute(
         attributes.DATA_SEGMENT_ID, testSegmentIds.UNSELECTED_SEGMENT_ID);
@@ -351,7 +356,8 @@ describe('MDCSegmentedButton', () => {
      () => {
        const {root, component} = setupTest();
 
-       const segments = root.querySelectorAll(testSelectors.SEGMENT);
+       const segments =
+           root.querySelectorAll<HTMLElement>(testSelectors.SEGMENT);
        const selectedSegment = segments[testIndices.SELECTED];
        const unselectedSegment = segments[testIndices.UNSELECTED];
        selectedSegment.classList.add(testCssClasses.SELECTED);

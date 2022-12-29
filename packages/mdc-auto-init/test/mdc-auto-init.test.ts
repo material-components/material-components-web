@@ -72,11 +72,8 @@ describe('MDCAutoInit', () => {
        const root = setupTest();
        mdcAutoInit(root);
 
-       expect(
-           (root.querySelector('.mdc-fake') as FakeHTMLElement)
-               .FakeComponent instanceof
-           FakeComponent)
-           .toBeTruthy();
+       expect(root.querySelector<FakeHTMLElement>('.mdc-fake')!.FakeComponent)
+           .toBeInstanceOf(FakeComponent);
      });
 
   it('throws when attachTo() is missing', () => {
@@ -89,14 +86,14 @@ describe('MDCAutoInit', () => {
        const root = setupTest();
        mdcAutoInit(root);
 
-       const fake = root.querySelector('.mdc-fake') as FakeHTMLElement;
+       const fake = root.querySelector<FakeHTMLElement>('.mdc-fake')!;
        expect(fake.FakeComponent.node).toEqual(fake);
      });
 
   it('throws when no constructor name is specified within "data-mdc-auto-init"',
      () => {
        const root = setupTest();
-       (root.querySelector('.mdc-fake') as HTMLElement).dataset['mdcAutoInit'] =
+       root.querySelector<HTMLElement>('.mdc-fake')!.dataset['mdcAutoInit'] =
            '';
 
        expect(() => mdcAutoInit(root)).toThrow();
@@ -104,7 +101,7 @@ describe('MDCAutoInit', () => {
 
   it('throws when constructor is not registered', () => {
     const root = setupTest();
-    (root.querySelector('.mdc-fake') as HTMLElement).dataset['mdcAutoInit'] =
+    root.querySelector<HTMLElement>('.mdc-fake')!.dataset['mdcAutoInit'] =
         'MDCUnregisteredComponent';
 
     expect(() => mdcAutoInit(root)).toThrow();
@@ -169,8 +166,8 @@ describe('MDCAutoInit', () => {
        mdcAutoInit(root);
 
        expect(
-           (root.querySelector('.mdc-fake') as FakeHTMLElement)
-               .FakeComponent instanceof
+           root.querySelector<FakeHTMLElement>(
+                   '.mdc-fake')!.FakeComponent instanceof
            FakeComponent)
            .toBe(false);
      });

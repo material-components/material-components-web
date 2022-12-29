@@ -31,8 +31,8 @@ import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from '../
 import {MDCTooltip, MDCTooltipFoundation} from '../index';
 
 function setupTestWithMockFoundation(fixture: HTMLElement) {
-  const tooltipElem = fixture.querySelector('#tt0') as HTMLElement;
-  const anchorElem = fixture.querySelector('[aria-describedby]') as HTMLElement;
+  const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+  const anchorElem = fixture.querySelector<HTMLElement>('[aria-describedby]')!;
   const mockFoundation = createMockFoundation(MDCTooltipFoundation);
   const component = new MDCTooltip(tooltipElem, mockFoundation);
   return {anchorElem, tooltipElem, mockFoundation, component};
@@ -67,17 +67,17 @@ describe('MDCTooltip', () => {
 
     it('attachTo returns a component instance', () => {
       expect(MDCTooltip.attachTo(
-                 fixture.querySelector('.mdc-tooltip') as HTMLElement))
+                 fixture.querySelector<HTMLElement>('.mdc-tooltip')!))
           .toEqual(jasmine.any(MDCTooltip));
     });
 
     it('attachTo throws an error when anchor element is missing', () => {
       const container =
-          fixture.querySelector('[aria-describedby]') as HTMLElement;
+          fixture.querySelector<HTMLElement>('[aria-describedby]')!;
       container.parentElement!.removeChild(container);
       expect(
           () => MDCTooltip.attachTo(
-              container.querySelector('.mdc-tooltip') as HTMLElement))
+              container.querySelector<HTMLElement>('.mdc-tooltip')!))
           .toThrow();
     });
 
@@ -289,7 +289,7 @@ describe('MDCTooltip', () => {
 
     it('attachTo returns a component instance', () => {
       expect(MDCTooltip.attachTo(
-                 fixture.querySelector('.mdc-tooltip--rich') as HTMLElement))
+                 fixture.querySelector<HTMLElement>('.mdc-tooltip--rich')!))
           .toEqual(jasmine.any(MDCTooltip));
     });
 

@@ -42,12 +42,12 @@ const getFixture = () => {
 };
 
 function setupTest({useMockFoundation = false} = {}) {
-  let mockFoundation = useMockFoundation ?
+  const mockFoundation = useMockFoundation ?
       createMockFoundation(MDCTabFoundation) :
       new MDCTabFoundation();
   const root = getFixture();
-  const content = root.querySelector(
-                      MDCTabFoundation.strings.CONTENT_SELECTOR) as HTMLElement;
+  const content = root.querySelector<HTMLElement>(
+      MDCTabFoundation.strings.CONTENT_SELECTOR)!;
   const component = new MDCTab(root, mockFoundation);
   return {root, component, mockFoundation, content};
 }
@@ -117,7 +117,7 @@ describe('MDCTab', () => {
   it('#adapter.activateIndicator activates the indicator subcomponent', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.activateIndicator();
-    expect((root.querySelector('.mdc-tab-indicator') as Element)
+    expect((root.querySelector<HTMLElement>('.mdc-tab-indicator') as Element)
                .classList.contains('mdc-tab-indicator--active'))
         .toBeTruthy();
   });
@@ -126,7 +126,7 @@ describe('MDCTab', () => {
      () => {
        const {root, component} = setupTest();
        (component.getDefaultFoundation() as any).adapter.deactivateIndicator();
-       expect((root.querySelector('.mdc-tab-indicator') as Element)
+       expect((root.querySelector<HTMLElement>('.mdc-tab-indicator') as Element)
                   .classList.contains('mdc-tab-indicator--active'))
            .toBeFalsy();
      });
@@ -222,8 +222,8 @@ describe('MDCTab', () => {
        const {root, component} = setupTest();
        (component.getDefaultFoundation() as any).adapter.deactivateIndicator();
        expect(component.computeIndicatorClientRect())
-           .toEqual((root.querySelector('.mdc-tab-indicator') as HTMLElement)
-                        .getBoundingClientRect());
+           .toEqual(root.querySelector<HTMLElement>(
+                            '.mdc-tab-indicator')!.getBoundingClientRect());
      });
 
   it('#computeDimensions() calls computeDimensions', () => {

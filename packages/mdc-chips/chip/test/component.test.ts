@@ -84,7 +84,8 @@ describe('MDCChipAction', () => {
       id: 'c0',
     });
 
-    const primaryActionEl = root.querySelector('.mdc-evolution-chip__action')!;
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('.mdc-evolution-chip__action')!;
     const interactionHandler = jasmine.createSpy('emitInteractionHandler');
     component.listen(MDCChipEvents.INTERACTION, interactionHandler);
     emitEvent(primaryActionEl, 'click', {
@@ -110,7 +111,8 @@ describe('MDCChipAction', () => {
     });
     component.destroy();
 
-    const primaryActionEl = root.querySelector('.mdc-evolution-chip__action')!;
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('.mdc-evolution-chip__action')!;
     const interactionHandler = jasmine.createSpy('emitInteractionHandler');
     component.listen(MDCChipEvents.INTERACTION, interactionHandler);
     emitEvent(primaryActionEl, 'click', {
@@ -189,8 +191,8 @@ describe('MDCChipAction', () => {
 
     component.setActionFocus(
         MDCChipActionType.PRIMARY, MDCChipActionFocusBehavior.FOCUSABLE);
-    expect(root.querySelector('.mdc-evolution-chip__action')!.getAttribute(
-               'tabindex'))
+    expect(root.querySelector<HTMLElement>(
+                   '.mdc-evolution-chip__action')!.getAttribute('tabindex'))
         .toBe('0');
   });
 
@@ -201,8 +203,9 @@ describe('MDCChipAction', () => {
     });
 
     component.setActionSelected(MDCChipActionType.PRIMARY, true);
-    expect(root.querySelector('.mdc-evolution-chip__action')!.getAttribute(
-               'aria-selected'))
+    expect(
+        root.querySelector<HTMLElement>(
+                '.mdc-evolution-chip__action')!.getAttribute('aria-selected'))
         .toBe('true');
   });
 

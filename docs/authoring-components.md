@@ -127,7 +127,7 @@ class RedblueTogglePrototype {
   toggle(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
     const toggled = wasToggledExplicitlySet ? isToggled : !this.toggled;
-    const toggleColorEl = this.root.querySelector('.redblue-toggle__color');
+    const toggleColorEl = this.root.querySelector<HTMLElement>('.redblue-toggle__color');
     let toggleColor;
 
     this.root.setAttribute('aria-pressed', String(toggled));
@@ -142,7 +142,7 @@ class RedblueTogglePrototype {
   }
 }
 
-new RedblueTogglePrototype(document.querySelector('.redblue-toggle'));
+new RedblueTogglePrototype(document.querySelector<HTMLElement>('.redblue-toggle'));
 ```
 
 Note how the JS Component does not reference MDC Web in any way, nor does it have any notion
@@ -335,7 +335,7 @@ class RedblueToggle extends MDCComponent {
       addClass: className => this.root.classList.add(className),
       removeClass: className => this.root.classList.remove(className),
       setToggleColorTextContent: textContent => {
-        this.root.querySelector('.redblue-toggle__color').textContent = textContent;
+        this.root.querySelector<HTMLElement>('.redblue-toggle__color').textContent = textContent;
       },
     });
   }

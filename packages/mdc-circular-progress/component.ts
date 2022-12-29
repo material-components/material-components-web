@@ -38,13 +38,13 @@ export class MDCCircularProgress extends
         MDCCircularProgressFoundation.strings.DETERMINATE_CIRCLE_SELECTOR)!;
   }
 
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCCircularProgress(root);
   }
 
   /**
    * Sets whether the progress indicator is in determinate mode.
-   * @param isDeterminate Whether the indicator should be determinate.
+   * @param value Whether the indicator should be determinate.
    */
   set determinate(value: boolean) {
     this.foundation.setDeterminate(value);

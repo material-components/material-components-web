@@ -30,11 +30,12 @@ import {MDCSlidingTabIndicatorFoundation} from './sliding-foundation';
 
 /** MDC Tab Indicator Factory */
 export type MDCTabIndicatorFactory =
-    (el: Element, foundation?: MDCTabIndicatorFoundation) => MDCTabIndicator;
+    (el: HTMLElement, foundation?: MDCTabIndicatorFoundation) =>
+        MDCTabIndicator;
 
 /** MDC Tab Indicator */
 export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
-  static override attachTo(root: Element): MDCTabIndicator {
+  static override attachTo(root: HTMLElement): MDCTabIndicator {
     return new MDCTabIndicator(root);
   }
 

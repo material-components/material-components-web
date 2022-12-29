@@ -409,7 +409,7 @@ describe('MDCChip', () => {
      () => {
        const root = getFixtureWithCheckmark();
        const component = new MDCChip(root);
-       const checkmark = root.querySelector(CHECKMARK_SELECTOR);
+       const checkmark = root.querySelector<HTMLElement>(CHECKMARK_SELECTOR);
 
        checkmark!.getBoundingClientRect = jasmine.createSpy('');
        (component.getDefaultFoundation() as any)
@@ -449,7 +449,8 @@ describe('MDCChip', () => {
        document.documentElement.appendChild(root);
        (component.getDefaultFoundation() as any).adapter.focusPrimaryAction();
        expect(document.activeElement)
-           .toEqual(root.querySelector(chipStrings.PRIMARY_ACTION_SELECTOR));
+           .toEqual(root.querySelector<HTMLElement>(
+               chipStrings.PRIMARY_ACTION_SELECTOR));
        document.documentElement.removeChild(root);
      });
 
@@ -468,7 +469,7 @@ describe('MDCChip', () => {
      () => {
        const {root, component} = setupTest();
        const primaryAction =
-           root.querySelector(chipStrings.PRIMARY_ACTION_SELECTOR);
+           root.querySelector<HTMLElement>(chipStrings.PRIMARY_ACTION_SELECTOR);
        (component.getDefaultFoundation() as any)
            .adapter.setPrimaryActionAttr('tabindex', '-1');
        expect(primaryAction!.getAttribute('tabindex')).toEqual('-1');
@@ -579,6 +580,6 @@ describe('MDCChip', () => {
     const {component, root} = setupTest();
     document.documentElement.appendChild(root);
     component.remove();
-    expect(document.querySelector('.mdc-chip')).toEqual(null);
+    expect(document.querySelector<HTMLElement>('.mdc-chip')).toEqual(null);
   });
 });

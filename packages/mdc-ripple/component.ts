@@ -32,15 +32,21 @@ import * as util from './util';
 
 /** MDC Ripple Factory */
 export type MDCRippleFactory =
-    (el: Element, foundation?: MDCRippleFoundation) => MDCRipple;
+    (el: HTMLElement, foundation?: MDCRippleFoundation) => MDCRipple;
 
 /** MDC Ripple */
 export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
     MDCRippleCapableSurface {
-  static override attachTo(root: Element, opts: MDCRippleAttachOpts = {
-    isUnbounded: undefined
-  }): MDCRipple {
-    const ripple = new MDCRipple(root);
+  // TODO(b/157231863): remove these overloads when no clients are using them.
+  static override attachTo(root: HTMLElement, opts?: MDCRippleAttachOpts):
+      MDCRipple;
+  /** @deprecated use attachTo(root: HTMLElement) */
+  static override attachTo(root: Element, opts?: MDCRippleAttachOpts):
+      MDCRipple;
+  static override attachTo(
+      root: HTMLElement|Element,
+      opts: MDCRippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
+    const ripple = new MDCRipple(root as HTMLElement);
     // Only override unbounded behavior if option is explicitly specified
     if (opts.isUnbounded !== undefined) {
       ripple.unbounded = opts.isUnbounded;
@@ -61,8 +67,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
             evtType, handler, applyPassive());
       },
       deregisterInteractionHandler: (evtType, handler) => {
-        (instance.root as HTMLElement)
-            .removeEventListener(evtType, handler, applyPassive());
+        instance.root.removeEventListener(evtType, handler, applyPassive());
       },
       deregisterResizeHandler: (handler) => {
         window.removeEventListener('resize', handler);
@@ -77,8 +82,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
             evtType, handler, applyPassive());
       },
       registerInteractionHandler: (evtType, handler) => {
-        (instance.root as HTMLElement)
-            .addEventListener(evtType, handler, applyPassive());
+        instance.root.addEventListener(evtType, handler, applyPassive());
       },
       registerResizeHandler: (handler) => {
         window.addEventListener('resize', handler);
@@ -87,7 +91,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
         instance.root.classList.remove(className);
       },
       updateCssVariable: (varName, value) => {
-        (instance.root as HTMLElement).style.setProperty(varName, value);
+        instance.root.style.setProperty(varName, value);
       },
     };
   }
@@ -122,7 +126,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
   }
 
   override initialSyncWithDOM() {
-    const root = this.root as HTMLElement;
+    const root = this.root;
     this.isUnbounded = 'mdcRippleIsUnbounded' in root.dataset;
   }
 

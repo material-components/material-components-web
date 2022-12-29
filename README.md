@@ -47,7 +47,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 <!-- Instantiate single textfield component rendered in the document -->
 <script>
-  mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field'));
+  mdc.textField.MDCTextField.attachTo(document.querySelector<HTMLElement>('.mdc-text-field'));
 </script>
 ```
 
@@ -96,7 +96,7 @@ Import `MDCTextField` module to instantiate text field component.
 
 ```js
 import {MDCTextField} from '@material/textfield';
-const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
+const textField = new MDCTextField(document.querySelector<HTMLElement>('.mdc-text-field'));
 ```
 
 This'll initialize text field component on a single `.mdc-text-field` element.

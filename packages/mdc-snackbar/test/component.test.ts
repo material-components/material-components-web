@@ -45,11 +45,13 @@ function getFixture() {
 
 function setupTest(fixture = getFixture()) {
   const root = fixture;
-  const surface = fixture.querySelector(strings.SURFACE_SELECTOR)!;
-  const label = fixture.querySelector(strings.LABEL_SELECTOR)!;
-  const actions = fixture.querySelector('.mdc-snackbar__actions')!;
-  const actionButton = fixture.querySelector(strings.ACTION_SELECTOR)!;
-  const actionIcon = fixture.querySelector(strings.DISMISS_SELECTOR)!;
+  const surface = fixture.querySelector<HTMLElement>(strings.SURFACE_SELECTOR)!;
+  const label = fixture.querySelector<HTMLElement>(strings.LABEL_SELECTOR)!;
+  const actions = fixture.querySelector<HTMLElement>('.mdc-snackbar__actions')!;
+  const actionButton =
+      fixture.querySelector<HTMLElement>(strings.ACTION_SELECTOR)!;
+  const actionIcon =
+      fixture.querySelector<HTMLElement>(strings.DISMISS_SELECTOR)!;
   const announce = jasmine.createSpy('announce');
   const component = new MDCSnackbar(root, undefined, () => announce);
   return {
@@ -66,11 +68,13 @@ function setupTest(fixture = getFixture()) {
 
 function setupTestWithMocks(fixture = getFixture()) {
   const root = fixture;
-  const surface = fixture.querySelector(strings.SURFACE_SELECTOR)!;
-  const label = fixture.querySelector(strings.LABEL_SELECTOR)!;
-  const actions = fixture.querySelector('.mdc-snackbar__actions')!;
-  const actionButton = fixture.querySelector(strings.ACTION_SELECTOR)!;
-  const actionIcon = fixture.querySelector(strings.DISMISS_SELECTOR)!;
+  const surface = fixture.querySelector<HTMLElement>(strings.SURFACE_SELECTOR)!;
+  const label = fixture.querySelector<HTMLElement>(strings.LABEL_SELECTOR)!;
+  const actions = fixture.querySelector<HTMLElement>('.mdc-snackbar__actions')!;
+  const actionButton =
+      fixture.querySelector<HTMLElement>(strings.ACTION_SELECTOR)!;
+  const actionIcon =
+      fixture.querySelector<HTMLElement>(strings.DISMISS_SELECTOR)!;
 
   const mockFoundation = createMockFoundation(MDCSnackbarFoundation);
   const announce = jasmine.createSpy('announce');

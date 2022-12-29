@@ -38,7 +38,7 @@ import {MDCSegmentedButtonSegmentFoundation} from './foundation';
  * MDCSegmentedButtonSegment factory type.
  */
 export type MDCSegmentedButtonSegmentFactory =
-    (el: Element, foundation?: MDCSegmentedButtonSegmentFoundation) =>
+    (el: HTMLElement, foundation?: MDCSegmentedButtonSegmentFoundation) =>
         MDCSegmentedButtonSegment;
 
 /**
@@ -51,7 +51,7 @@ export class MDCSegmentedButtonSegment extends
     return this.rippleComponent;
   }
 
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCSegmentedButtonSegment(root);
   }
 

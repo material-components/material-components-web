@@ -28,11 +28,12 @@ import {MDCTextFieldIconFoundation} from './foundation';
 
 /** MDC Text Field Icon Factory */
 export type MDCTextFieldIconFactory =
-    (el: Element, foundation?: MDCTextFieldIconFoundation) => MDCTextFieldIcon;
+    (el: HTMLElement, foundation?: MDCTextFieldIconFoundation) =>
+        MDCTextFieldIcon;
 
 /** MDC Text Field Icon */
 export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
-  static override attachTo(root: Element): MDCTextFieldIcon {
+  static override attachTo(root: HTMLElement): MDCTextFieldIcon {
     return new MDCTextFieldIcon(root);
   }
 

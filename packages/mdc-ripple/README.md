@@ -129,7 +129,7 @@ components. For example, this is used for making form field labels trigger the r
 To use the `MDCRipple` component, first [import the `MDCRipple` JS](../../docs/importing-js.md). Then, initialize the ripple with the correct DOM element.
 
 ```javascript
-const surface = document.querySelector('.my-surface');
+const surface = document.querySelector<HTMLElement>('.my-surface');
 const ripple = new MDCRipple(surface);
 ```
 
@@ -137,7 +137,7 @@ You can also use `attachTo()` as an alias if you don't care about retaining a re
 ripple.
 
 ```javascript
-MDCRipple.attachTo(document.querySelector('.my-surface'));
+MDCRipple.attachTo(document.querySelector<HTMLElement>('.my-surface'));
 ```
 
 Property | Value Type | Description

@@ -40,12 +40,10 @@ function getFixture() {
 function setupTest() {
   const root = getFixture();
   const component = new MDCTabScroller(root);
-  const area =
-      root.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR) as
-      HTMLElement;
-  const content =
-      root.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR) as
-      HTMLElement;
+  const area = root.querySelector<HTMLElement>(
+      MDCTabScrollerFoundation.strings.AREA_SELECTOR)!;
+  const content = root.querySelector<HTMLElement>(
+      MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
   return {root, component, content, area};
 }
 
@@ -230,10 +228,8 @@ describe('MDCTabScroller', () => {
   it('#getScrollContentWidth() returns the offsetWidth of the content element',
      () => {
        const {component, root} = setupMockFoundationTest();
-       const contentElement =
-           root.querySelector(
-               MDCTabScrollerFoundation.strings.CONTENT_SELECTOR) as
-           HTMLElement;
+       const contentElement = root.querySelector<HTMLElement>(
+           MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
        expect(component.getScrollContentWidth())
            .toEqual(contentElement.offsetWidth);
      });
@@ -260,9 +256,8 @@ describe('MDCTabScroller', () => {
 
   it('on interaction in the area element, call #handleInteraction()', () => {
     const {root, mockFoundation} = setupMockFoundationTest();
-    const area =
-        root.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR) as
-        HTMLElement;
+    const area = root.querySelector<HTMLElement>(
+        MDCTabScrollerFoundation.strings.AREA_SELECTOR)!;
     emitEvent(area, 'touchstart', {bubbles: true});
     expect(mockFoundation.handleInteraction).toHaveBeenCalled();
   });
@@ -270,9 +265,8 @@ describe('MDCTabScroller', () => {
   it('on transitionend of the content element, call #handleTransitionEnd()',
      () => {
        const {root, mockFoundation} = setupMockFoundationTest();
-       const content = root.querySelector(
-                           MDCTabScrollerFoundation.strings.CONTENT_SELECTOR) as
-           HTMLElement;
+       const content = root.querySelector<HTMLElement>(
+           MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
        emitEvent(content, 'transitionend', {bubbles: true});
        expect(mockFoundation.handleTransitionEnd)
            .toHaveBeenCalledWith(jasmine.anything());

@@ -28,13 +28,13 @@ import {MDCTextFieldHelperTextFoundation} from './foundation';
 
 /** MDC Text Field Helper Text Factory */
 export type MDCTextFieldHelperTextFactory =
-    (el: Element, foundation?: MDCTextFieldHelperTextFoundation) =>
+    (el: HTMLElement, foundation?: MDCTextFieldHelperTextFoundation) =>
         MDCTextFieldHelperText;
 
 /** MDC Text Field Helper Text */
 export class MDCTextFieldHelperText extends
     MDCComponent<MDCTextFieldHelperTextFoundation> {
-  static override attachTo(root: Element): MDCTextFieldHelperText {
+  static override attachTo(root: HTMLElement): MDCTextFieldHelperText {
     return new MDCTextFieldHelperText(root);
   }
 

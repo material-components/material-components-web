@@ -289,7 +289,8 @@ describe('MDCSlider', () => {
 
     it('adds tick mark elements on component initialization', () => {
       const tickMarks =
-          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+          root.querySelector<HTMLElement>(
+                  `.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
       expect(tickMarks.length).toBe(11);
       for (let i = 0; i < tickMarks.length; i++) {
         const tickMarkClass = i === 0 ? cssClasses.TICK_MARK_ACTIVE :
@@ -300,8 +301,8 @@ describe('MDCSlider', () => {
 
     it('updates tick mark classes after slider update', () => {
       // Sanity check that tick mark classes are as we expect on component init.
-      let tickMarks =
-          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+      let tickMarks = root.querySelector<HTMLElement>(
+                              `.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
       expect(tickMarks.length).toBe(11);
       for (let i = 0; i < tickMarks.length; i++) {
         const tickMarkClass = i === 0 ? cssClasses.TICK_MARK_ACTIVE :
@@ -313,8 +314,8 @@ describe('MDCSlider', () => {
       root.dispatchEvent(downEvent);
       jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
 
-      tickMarks =
-          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+      tickMarks = root.querySelector<HTMLElement>(
+                          `.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
       expect(tickMarks.length).toBe(11);
       for (let i = 0; i < tickMarks.length; i++) {
         // 55.3 rounds up to 60, since step value is 10.
@@ -543,9 +544,9 @@ describe('MDCSlider', () => {
           </div>
         </div>`);
 
-      thumb = root.querySelector(`.${cssClasses.THUMB}`) as HTMLElement;
+      thumb = root.querySelector<HTMLElement>(`.${cssClasses.THUMB}`)!;
       trackActive =
-          root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+          root.querySelector<HTMLElement>(`.${cssClasses.TRACK_ACTIVE}`)!;
 
       spyOn(root, 'getBoundingClientRect').and.returnValue({
         left: 0,
@@ -665,11 +666,11 @@ function setUpTest(
       root.querySelectorAll<HTMLInputElement>(`.${cssClasses.INPUT}`);
   const startInput = isRange ? inputs[0] : null;
   const endInput = inputs[inputs.length - 1];
-  const thumbs = root.querySelectorAll(`.${cssClasses.THUMB}`);
+  const thumbs = root.querySelectorAll<HTMLElement>(`.${cssClasses.THUMB}`);
   const startThumb = isRange ? thumbs[0] as HTMLElement : null;
   const endThumb = thumbs[thumbs.length - 1] as HTMLElement;
   const trackActive =
-      root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+      root.querySelector<HTMLElement>(`.${cssClasses.TRACK_ACTIVE}`)!;
 
   spyOn(root, 'getBoundingClientRect').and.returnValue({
     left: 0,

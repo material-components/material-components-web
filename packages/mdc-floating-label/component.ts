@@ -29,11 +29,12 @@ import {MDCFloatingLabelFoundation} from './foundation';
 
 /** MDC Floating Label Factory */
 export type MDCFloatingLabelFactory =
-    (el: Element, foundation?: MDCFloatingLabelFoundation) => MDCFloatingLabel;
+    (el: HTMLElement, foundation?: MDCFloatingLabelFoundation) =>
+        MDCFloatingLabel;
 
 /** MDC Floating Label */
 export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
-  static override attachTo(root: Element): MDCFloatingLabel {
+  static override attachTo(root: HTMLElement): MDCFloatingLabel {
     return new MDCFloatingLabel(root);
   }
 

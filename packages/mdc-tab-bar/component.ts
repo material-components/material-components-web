@@ -38,8 +38,12 @@ let tabIdCounter = 0;
 
 /** MDC Tab Bar */
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
-  static override attachTo(root: Element): MDCTabBar {
-    return new MDCTabBar(root);
+  // TODO(b/157231863): remove these overloads when no clients are using them.
+  static override attachTo(root: HTMLElement): MDCTabBar;
+  /** @deprecated use attachTo(root: HTMLElement) */
+  static override attachTo(root: Element): MDCTabBar;
+  static override attachTo(root: HTMLElement|Element): MDCTabBar {
+    return new MDCTabBar(root as HTMLElement);
   }
 
   private tabList!: MDCTab[];                 // assigned in initialize()
@@ -117,7 +121,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
       },
       getScrollPosition: () => this.tabScroller!.getScrollPosition(),
       getScrollContentWidth: () => this.tabScroller!.getScrollContentWidth(),
-      getOffsetWidth: () => (this.root as HTMLElement).offsetWidth,
+      getOffsetWidth: () => this.root.offsetWidth,
       isRTL: () => window.getComputedStyle(this.root).getPropertyValue(
                        'direction') === 'rtl',
       setActiveTab: (index) => {
@@ -147,7 +151,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
       getFocusedTabIndex: () => {
         const tabElements = this.getTabElements();
         const activeElement = document.activeElement!;
-        return tabElements.indexOf(activeElement);
+        return tabElements.indexOf(activeElement as HTMLElement);
       },
       getIndexOfTabById: (id) => {
         for (let i = 0; i < this.tabList.length; i++) {
@@ -186,8 +190,9 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   /**
    * Returns all the tab elements in a nice clean array
    */
-  private getTabElements(): Element[] {
-    return Array.from(this.root.querySelectorAll(strings.TAB_SELECTOR));
+  private getTabElements() {
+    return Array.from(
+        this.root.querySelectorAll<HTMLElement>(strings.TAB_SELECTOR));
   }
 
   /**
@@ -206,7 +211,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   private instantiatetabScroller(tabScrollerFactory: MDCTabScrollerFactory):
       MDCTabScroller|null {
     const tabScrollerElement =
-        this.root.querySelector(strings.TAB_SCROLLER_SELECTOR);
+        this.root.querySelector<HTMLElement>(strings.TAB_SCROLLER_SELECTOR);
     if (tabScrollerElement) {
       return tabScrollerFactory(tabScrollerElement);
     }

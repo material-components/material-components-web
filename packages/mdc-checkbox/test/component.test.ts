@@ -54,7 +54,7 @@ function getFixture() {
 function setupTest() {
   const root = getFixture();
   const cb =
-      root.querySelector(strings.NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+      root.querySelector<HTMLInputElement>(strings.NATIVE_CONTROL_SELECTOR)!;
   const component = new MDCCheckbox(root);
   return {root, cb, component};
 }
@@ -62,7 +62,7 @@ function setupTest() {
 function setupMockFoundationTest() {
   const root = getFixture();
   const cb =
-      root.querySelector(strings.NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+      root.querySelector<HTMLInputElement>(strings.NATIVE_CONTROL_SELECTOR)!;
   const mockFoundation = createMockFoundation(MDCCheckboxFoundation);
   const component = new MDCCheckbox(root, mockFoundation);
   return {root, cb, component, mockFoundation};
@@ -89,7 +89,7 @@ describe('MDCCheckbox', () => {
     it('(regression) activates ripple on keydown when the input element surface is active',
        () => {
          const {root} = setupTest();
-         const input = root.querySelector('input') as HTMLInputElement;
+         const input = root.querySelector('input')!;
          jasmine.clock().tick(1);
 
          const fakeMatches = jasmine.createSpy('.matches');

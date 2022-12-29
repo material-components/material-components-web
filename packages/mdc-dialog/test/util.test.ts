@@ -30,7 +30,7 @@ describe('MDCDialog - util', () => {
        const surface = document.createElement('div');
        const yesBtn = document.createElement('button');
        const focusTrapFactory = jasmine.createSpy('focusTrapFactory');
-       const properlyConfiguredFocusTrapInstance = {} as FocusTrap;
+       const properlyConfiguredFocusTrapInstance: FocusTrap = {} as FocusTrap;
        focusTrapFactory
            .withArgs(surface, {
              initialFocusEl: yesBtn,
@@ -182,8 +182,7 @@ describe('MDCDialog - util', () => {
                      justify-content: flex-end;">
            <button>1</button>
          </div>`);
-       const buttons =
-           Array.from(parent.querySelectorAll('button')) as HTMLElement[];
+       const buttons = Array.from(parent.querySelectorAll('button'));
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.
@@ -207,8 +206,7 @@ describe('MDCDialog - util', () => {
            <button>1</button>
            <button>2</button>
          </div>`);
-       const buttons =
-           Array.from(parent.querySelectorAll('button')) as HTMLElement[];
+       const buttons = Array.from(parent.querySelectorAll('button'));
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.
@@ -232,8 +230,7 @@ describe('MDCDialog - util', () => {
            <button>1</button>
            <button>2</button>
          </div>`);
-       const buttons =
-           Array.from(parent.querySelectorAll('button')) as HTMLElement[];
+       const buttons = Array.from(parent.querySelectorAll('button'));
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.

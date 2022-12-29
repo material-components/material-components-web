@@ -40,9 +40,9 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
 
   input?: MDCFormFieldInput;
 
-  private labelEl(): Element|null {
+  private labelEl() {
     const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
-    return this.root.querySelector(LABEL_SELECTOR);
+    return this.root.querySelector<HTMLElement>(LABEL_SELECTOR);
   }
 
   override getDefaultFoundation() {
@@ -61,16 +61,10 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
         }
       },
       deregisterInteractionHandler: (evtType, handler) => {
-        const labelEl = this.labelEl();
-        if (labelEl) {
-          (labelEl as HTMLElement).removeEventListener(evtType, handler);
-        }
+        this.labelEl()?.removeEventListener(evtType, handler);
       },
       registerInteractionHandler: (evtType, handler) => {
-        const labelEl = this.labelEl();
-        if (labelEl) {
-          (labelEl as HTMLElement).addEventListener(evtType, handler);
-        }
+        this.labelEl()?.addEventListener(evtType, handler);
       },
     };
     return new MDCFormFieldFoundation(adapter);

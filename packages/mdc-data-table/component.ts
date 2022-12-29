@@ -34,7 +34,7 @@ import {MDCDataTableRowSelectionChangedEventDetail, RowClickEventData} from './t
 
 /** MDC Data Table */
 export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
-  static override attachTo(root: Element): MDCDataTable {
+  static override attachTo(root: HTMLElement): MDCDataTable {
     return new MDCDataTable(root);
   }
 
@@ -53,13 +53,13 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
 
   override initialize(
       checkboxFactory:
-          MDCCheckboxFactory = (el: Element) => new MDCCheckbox(el)) {
+          MDCCheckboxFactory = (el: HTMLElement) => new MDCCheckbox(el)) {
     this.checkboxFactory = checkboxFactory;
   }
 
   override initialSyncWithDOM() {
     this.headerRow =
-        this.root.querySelector(`.${cssClasses.HEADER_ROW}`) as HTMLElement;
+        this.root.querySelector<HTMLElement>(`.${cssClasses.HEADER_ROW}`)!;
     this.handleHeaderRowCheckboxChange = () => {
       this.foundation.handleHeaderRowCheckboxChange();
     };
@@ -73,7 +73,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
 
 
     this.content =
-        this.root.querySelector(`.${cssClasses.CONTENT}`) as HTMLElement;
+        this.root.querySelector<HTMLElement>(`.${cssClasses.CONTENT}`)!;
     this.handleContentClick = (event) => {
       const dataRowEl =
           closest(event.target as Element, selectors.ROW) as HTMLElement;
@@ -108,14 +108,15 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   /**
    * @return Returns array of header row cell elements.
    */
-  getHeaderCells(): Element[] {
-    return Array.from(this.root.querySelectorAll(selectors.HEADER_CELL));
+  getHeaderCells() {
+    return Array.from(
+        this.root.querySelectorAll<HTMLElement>(selectors.HEADER_CELL));
   }
 
   /**
    * @return Returns array of row elements.
    */
-  getRows(): Element[] {
+  getRows(): HTMLElement[] {
     return this.foundation.getRows();
   }
 
@@ -241,7 +242,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       },
       getRowCount: () => this.getRows().length,
       getRowElements: () =>
-          Array.from(this.root.querySelectorAll(selectors.ROW)),
+          Array.from(this.root.querySelectorAll<HTMLElement>(selectors.ROW)),
       getRowIdAtIndex: (rowIndex: number) =>
           this.getRows()[rowIndex].getAttribute(dataAttributes.ROW_ID),
       getRowIndexByChildElement: (el: Element) => {
@@ -249,13 +250,14 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
             (closest(el, selectors.ROW) as HTMLElement));
       },
       getSelectedRowCount: () =>
-          this.root.querySelectorAll(selectors.ROW_SELECTED).length,
+          this.root.querySelectorAll<HTMLElement>(selectors.ROW_SELECTED)
+              .length,
       isCheckboxAtRowIndexChecked: (rowIndex: number) =>
           this.rowCheckboxList[rowIndex].checked,
       isHeaderRowCheckboxChecked: () => this.headerRowCheckbox.checked,
       isRowsSelectable: () =>
-          !!this.root.querySelector(selectors.ROW_CHECKBOX) ||
-          !!this.root.querySelector(selectors.HEADER_ROW_CHECKBOX),
+          !!this.root.querySelector<HTMLElement>(selectors.ROW_CHECKBOX) ||
+          !!this.root.querySelector<HTMLElement>(selectors.HEADER_ROW_CHECKBOX),
       notifyRowSelectionChanged:
           (data: MDCDataTableRowSelectionChangedEventDetail) => {
             this.emit(
@@ -281,9 +283,8 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
           this.headerRowCheckbox.destroy();
         }
 
-        const checkboxEl =
-            (this.root.querySelector(selectors.HEADER_ROW_CHECKBOX) as
-             HTMLElement);
+        const checkboxEl = this.root.querySelector<HTMLElement>(
+            selectors.HEADER_ROW_CHECKBOX)!;
         this.headerRowCheckbox = this.checkboxFactory(checkboxEl);
       },
       registerRowCheckboxes: () => {
@@ -296,7 +297,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
         this.rowCheckboxList = [];
         this.getRows().forEach((rowEl) => {
           const checkbox = this.checkboxFactory(
-              (rowEl.querySelector(selectors.ROW_CHECKBOX) as HTMLElement));
+              rowEl.querySelector<HTMLElement>(selectors.ROW_CHECKBOX)!);
           this.rowCheckboxList.push(checkbox);
         });
       },

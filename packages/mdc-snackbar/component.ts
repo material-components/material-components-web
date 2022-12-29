@@ -44,7 +44,7 @@ const {
 
 /** MDC Snackbar */
 export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCSnackbar(root);
   }
 
@@ -65,9 +65,9 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   override initialSyncWithDOM() {
-    this.surfaceEl = this.root.querySelector(SURFACE_SELECTOR)!;
-    this.labelEl = this.root.querySelector(LABEL_SELECTOR)!;
-    this.actionEl = this.root.querySelector(ACTION_SELECTOR)!;
+    this.surfaceEl = this.root.querySelector<HTMLElement>(SURFACE_SELECTOR)!;
+    this.labelEl = this.root.querySelector<HTMLElement>(LABEL_SELECTOR)!;
+    this.actionEl = this.root.querySelector<HTMLElement>(ACTION_SELECTOR)!;
 
     this.handleKeyDown = (evt) => {
       this.foundation.handleKeyDown(evt);

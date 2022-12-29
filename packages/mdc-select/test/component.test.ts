@@ -184,7 +184,7 @@ function getOutlineFixture() {
 
 function getHelperTextFixture(root = getFixture()) {
   const containerDiv = document.createElement('div');
-  root.querySelector(strings.SELECT_ANCHOR_SELECTOR)!.setAttribute(
+  root.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!.setAttribute(
       'aria-controls', 'test-helper-text');
   containerDiv.appendChild(root);
   containerDiv.appendChild(createFixture(
@@ -196,7 +196,7 @@ function setupTest(
     hasOutline = false, hasLabel = true, hasMockFoundation = false,
     hasMockMenu = true, hasHelperText = false) {
   // Clean up: Remove all menu elements from DOM first.
-  const menuEls = document.querySelectorAll(strings.MENU_SELECTOR);
+  const menuEls = document.querySelectorAll<HTMLElement>(strings.MENU_SELECTOR);
   [].forEach.call(
       menuEls, (el: HTMLElement) => el.parentElement!.removeChild(el));
 
@@ -204,15 +204,15 @@ function setupTest(
   const label = new FakeLabel();
   const fixture = hasOutline ? getOutlineFixture() : getFixture();
   const anchor =
-      fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
+      fixture.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!;
   const container = hasHelperText ? getHelperTextFixture(fixture) : null;
   const selectedText =
-      fixture.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
-  const labelEl = fixture.querySelector(strings.LABEL_SELECTOR) as HTMLElement;
+      fixture.querySelector<HTMLElement>(strings.SELECTED_TEXT_SELECTOR)!;
+  const labelEl = fixture.querySelector<HTMLElement>(strings.LABEL_SELECTOR)!;
   const bottomLineEl =
-      fixture.querySelector(strings.LINE_RIPPLE_SELECTOR) as HTMLElement;
+      fixture.querySelector<HTMLElement>(strings.LINE_RIPPLE_SELECTOR)!;
   const menuSurface =
-      fixture.querySelector(strings.MENU_SELECTOR) as HTMLElement;
+      fixture.querySelector<HTMLElement>(strings.MENU_SELECTOR)!;
   const mockFoundation = createMockFoundation(MDCSelectFoundation);
   const mockMenu = new FakeMenu();
 
@@ -288,7 +288,9 @@ describe('MDCSelect', () => {
     component.selectedIndex = 1;
     component.selectedIndex = 2;
     expect(component.selectedIndex).toEqual(2);
-    expect(menuSurface.querySelectorAll('.mdc-deprecated-list-item--selected')
+    expect(menuSurface
+               .querySelectorAll<HTMLElement>(
+                   '.mdc-deprecated-list-item--selected')
                .length)
         .toEqual(1);
     menuSurface.parentElement!.removeChild(menuSurface);
@@ -729,7 +731,7 @@ describe('MDCSelect', () => {
 
     expect((component as any).ripple).toEqual(jasmine.any(MDCRipple));
     const anchor =
-        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
+        fixture.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!;
     expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.ROOT))
         .toBe(true);
   });
@@ -754,7 +756,7 @@ describe('MDCSelect', () => {
     jasmine.clock().tick(1);
 
     const anchor =
-        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
+        fixture.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!;
 
     emitEvent(anchor, 'focus');
     jasmine.clock().tick(1);
@@ -774,7 +776,7 @@ describe('MDCSelect', () => {
     jasmine.clock().tick(1);
 
     const anchor =
-        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
+        fixture.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!;
 
     expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.ROOT))
         .toBe(true);
@@ -1014,8 +1016,8 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
     const index = 1;
-    const menuItem =
-        menuSurface.querySelectorAll('.mdc-deprecated-list-item')[index];
+    const menuItem = menuSurface.querySelectorAll<HTMLElement>(
+        '.mdc-deprecated-list-item')[index];
     const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.focusMenuItemAtIndex(index);
@@ -1234,8 +1236,8 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
 
     const index = 1;
-    const menuItem =
-        menuSurface.querySelectorAll('.mdc-deprecated-list-item')[index];
+    const menuItem = menuSurface.querySelectorAll<HTMLElement>(
+        '.mdc-deprecated-list-item')[index];
     const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(adapter.getMenuItemAttr(menuItem, strings.VALUE_ATTR))
@@ -1383,7 +1385,8 @@ describe('MDCSelect', () => {
            {bubbles: false, cancelable: true});
 
        expect(document.activeElement)
-           .toEqual(menuSurface.querySelector('.mdc-deprecated-list-item'));
+           .toEqual(menuSurface.querySelector<HTMLElement>(
+               '.mdc-deprecated-list-item'));
        document.body.removeChild(fixture);
      });
 
@@ -1422,8 +1425,8 @@ describe('MDCSelect', () => {
         {bubbles: false, cancelable: true});
 
     expect(document.activeElement)
-        .toEqual(
-            menuSurface.querySelector('.mdc-deprecated-list-item--selected'));
+        .toEqual(menuSurface.querySelector<HTMLElement>(
+            '.mdc-deprecated-list-item--selected'));
     expect(component.selectedIndex).toEqual(1);
     document.body.removeChild(fixture);
   });
@@ -1432,7 +1435,8 @@ describe('MDCSelect', () => {
     const {fixture, mockFoundation} = setupWithMockFoundation();
     document.body.appendChild(fixture);
     emitEvent(
-        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement,
+        fixture.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR) as
+            HTMLElement,
         'keydown');
     expect(mockFoundation.handleKeydown)
         .toHaveBeenCalledWith(jasmine.anything());
@@ -1445,7 +1449,8 @@ describe('MDCSelect', () => {
     document.body.appendChild(fixture);
     component.destroy();
     emitEvent(
-        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement,
+        fixture.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR) as
+            HTMLElement,
         'keydown');
     expect(mockFoundation.handleKeydown)
         .not.toHaveBeenCalledWith(jasmine.anything());
@@ -1528,12 +1533,13 @@ describe('MDCSelect', () => {
   it('#constructor does not instantiate the helper text if the aria-controls id does not match an element',
      () => {
        const containerDiv = getHelperTextFixture();
-       containerDiv.querySelector('.mdc-select-helper-text')!.id =
+       containerDiv.querySelector<HTMLElement>('.mdc-select-helper-text')!.id =
            'hello-world';
        document.body.appendChild(containerDiv);
 
        const component = new MDCSelect(
-           containerDiv.querySelector('.mdc-select') as HTMLElement);
+           containerDiv.querySelector<HTMLElement>('.mdc-select') as
+           HTMLElement);
        expect((component as any).helperText).toBe(undefined);
        document.body.removeChild(containerDiv as HTMLElement);
      });

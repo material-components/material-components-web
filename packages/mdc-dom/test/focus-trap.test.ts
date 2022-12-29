@@ -66,15 +66,15 @@ function getFixture() {
 function setUp() {
   const root = getFixture();
   document.body.appendChild(root);
-  const button = root.querySelector('button') as HTMLElement;
-  const container1 = root.querySelector('#container1_innerDiv') as HTMLElement;
-  const container2 = root.querySelector('#container2_standard') as HTMLElement;
+  const button = root.querySelector('button')!;
+  const container1 = root.querySelector<HTMLElement>('#container1_innerDiv')!;
+  const container2 = root.querySelector<HTMLElement>('#container2_standard')!;
   const container3 =
-      root.querySelector('#container3_notVisibleElements') as HTMLElement;
+      root.querySelector<HTMLElement>('#container3_notVisibleElements')!;
   const container4 =
-      root.querySelector('#container4_disabledOrHiddenElements') as HTMLElement;
+      root.querySelector<HTMLElement>('#container4_disabledOrHiddenElements')!;
   const container5 =
-      root.querySelector('#container5_noFocusableChild') as HTMLElement;
+      root.querySelector<HTMLElement>('#container5_noFocusableChild')!;
   return {button, container1, container2, container3, container4, container5};
 }
 
@@ -139,7 +139,7 @@ describe('FocusTrap', () => {
 
   it('sets initial focus to initialFocusEl', () => {
     const {container1} = setUp();
-    const initialFocusEl = container1.querySelector('#con1b') as HTMLElement;
+    const initialFocusEl = container1.querySelector<HTMLElement>('#con1b')!;
     const focusTrap = new FocusTrap(container1, {initialFocusEl});
     focusTrap.trapFocus();
     expect(document.activeElement!.id).toBe('con1b');

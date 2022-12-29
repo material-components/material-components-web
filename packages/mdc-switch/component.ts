@@ -65,7 +65,8 @@ export class MDCSwitch extends
   }
 
   override initialSyncWithDOM() {
-    const rippleElement = this.root.querySelector(Selectors.RIPPLE);
+    const rippleElement =
+        this.root.querySelector<HTMLElement>(Selectors.RIPPLE);
     if (!rippleElement) {
       throw new Error(`Switch ${Selectors.RIPPLE} element is required.`);
     }

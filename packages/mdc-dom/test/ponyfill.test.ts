@@ -109,7 +109,7 @@ describe('MDCDom - ponyfill', () => {
        const root = getFixture(`<span>
     <span id="i0" style="width:10px;"></span>
   </span>`);
-       const el = root.querySelector('#i0') as HTMLElement;
+       const el = root.querySelector<HTMLSpanElement>('#i0')!;
        expect(estimateScrollWidth(el)).toBe(10);
      });
 
@@ -118,7 +118,7 @@ describe('MDCDom - ponyfill', () => {
        const root = getFixture(`<span style="display:none;">
     <span id="i0" style="width:10px;"></span>
   </span>`);
-       const el = root.querySelector('#i0') as HTMLElement;
+       const el = root.querySelector<HTMLSpanElement>('#i0')!;
        expect(estimateScrollWidth(el)).toBe(10);
      });
 });

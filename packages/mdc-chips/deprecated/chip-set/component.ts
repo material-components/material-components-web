@@ -39,7 +39,7 @@ let idCounter = 0;
 
 /** MDC Chip Set */
 export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCChipSet(root);
   }
 
@@ -54,8 +54,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     return this.foundation.getSelectedChipIds();
   }
 
-  private chipsList!: MDCChip[];                   // assigned in initialize()
-  private chipFactory!: (el: Element) => MDCChip;  // assigned in initialize()
+  private chipsList!: MDCChip[];  // assigned in initialize()
+  private chipFactory!:
+      (el: HTMLElement) => MDCChip;  // assigned in initialize()
   private handleChipInteraction!: (evt: MDCChipInteractionEvent) =>
       void;  // assigned in initialSyncWithDOM()
   private handleChipSelection!:
@@ -114,7 +115,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /**
    * Adds a new chip object to the chip set from the given chip element.
    */
-  addChip(chipEl: Element) {
+  addChip(chipEl: HTMLElement) {
     chipEl.id = chipEl.id || `mdc-chip-${++idCounter}`;
     this.chipsList.push(this.chipFactory(chipEl));
   }
@@ -164,8 +165,8 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
    * Instantiates chip components on all of the chip set's child chip elements.
    */
   private instantiateChips(chipFactory: MDCChipFactory): MDCChip[] {
-    const chipElements: Element[] =
-        Array.from(this.root.querySelectorAll(CHIP_SELECTOR));
+    const chipElements =
+        Array.from(this.root.querySelectorAll<HTMLElement>(CHIP_SELECTOR));
     return chipElements.map((el) => {
       el.id = el.id || `mdc-chip-${++idCounter}`;
       return chipFactory(el);

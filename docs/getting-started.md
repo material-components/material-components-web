@@ -38,7 +38,7 @@ Then include MDC markup...
 ...and instantiate JavaScript:
 
 ```js
-mdc.ripple.MDCRipple.attachTo(document.querySelector('.foo-button'));
+mdc.ripple.MDCRipple.attachTo(document.querySelector<HTMLElement>('.foo-button'));
 ```
 
 ## Installing Locally
@@ -392,7 +392,7 @@ We need to tell our `app.js` to import the ES2015 file for `@material/ripple`. W
 
 ```js
 import {MDCRipple} from '@material/ripple/index';
-const ripple = new MDCRipple(document.querySelector('.foo-button'));
+const ripple = new MDCRipple(document.querySelector<HTMLElement>('.foo-button'));
 ```
 
 > Note: We explicitly reference `index` within each MDC Web package in order to import the ES2015 source directly.

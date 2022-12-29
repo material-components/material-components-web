@@ -57,9 +57,8 @@ describe('MDCTabIndicator', () => {
   function setupTest() {
     const root = getFixture();
     const component = new MDCTabIndicator(root);
-    const content =
-        root.querySelector(
-            MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR) as HTMLElement;
+    const content = root.querySelector<HTMLElement>(
+        MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
     return {root, component, content};
   }
 

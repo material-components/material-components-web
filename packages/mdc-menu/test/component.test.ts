@@ -116,8 +116,8 @@ class FakeList {
   getPrimaryText: jasmine.Spy = jasmine.createSpy('.getPrimaryText');
 
   constructor(root: HTMLElement) {
-    this.listElements =
-        Array.from(root.querySelectorAll('.mdc-deprecated-list-item'));
+    this.listElements = Array.from(
+        root.querySelectorAll<HTMLElement>('.mdc-deprecated-list-item'));
   }
 }
 
@@ -144,7 +144,7 @@ function setupTestWithFakes(open = false) {
   const mockFoundation = createMockFoundation(MDCMenuFoundation);
 
   const list =
-      new FakeList(root.querySelector('.mdc-deprecated-list') as HTMLElement);
+      new FakeList(root.querySelector<HTMLElement>('.mdc-deprecated-list')!);
   const component =
       new MDCMenu(root, mockFoundation, () => menuSurface, () => list);
   return {root, component, menuSurface, list, mockFoundation};
@@ -179,7 +179,7 @@ describe('MDCMenu', () => {
 
   it('destroy does not throw an error if the list is not instantiated', () => {
     const fixture = getFixture();
-    const list = fixture.querySelector('.mdc-deprecated-list') as HTMLElement;
+    const list = fixture.querySelector<HTMLElement>('.mdc-deprecated-list')!;
     (list.parentElement as HTMLElement).removeChild(list);
     const component = new MDCMenu(fixture);
 
@@ -431,7 +431,7 @@ describe('MDCMenu', () => {
        const {component, root, list} = setupTestWithFakes();
        list.listElements = [];
        document.body.appendChild(root);
-       root.querySelector('.mdc-deprecated-list-item');
+       root.querySelector<HTMLElement>('.mdc-deprecated-list-item');
        expect(() => {
          component.open = true;
        }).not.toThrow();
@@ -453,7 +453,7 @@ describe('MDCMenu', () => {
      () => {
        const {root, component} = setupTest();
        const firstItem =
-           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
+           root.querySelector<HTMLElement>('.mdc-deprecated-list-item')!;
        (component.getDefaultFoundation() as any)
            .adapter.addClassToElementAtIndex(0, 'foo');
        expect(firstItem.classList.contains('foo')).toBe(true);
@@ -463,7 +463,7 @@ describe('MDCMenu', () => {
      () => {
        const {root, component} = setupTest();
        const firstItem =
-           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
+           root.querySelector<HTMLElement>('.mdc-deprecated-list-item')!;
        firstItem.classList.add('foo');
        (component.getDefaultFoundation() as any)
            .adapter.removeClassFromElementAtIndex(0, 'foo');
@@ -474,7 +474,7 @@ describe('MDCMenu', () => {
      () => {
        const {root, component} = setupTest();
        const firstItem =
-           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
+           root.querySelector<HTMLElement>('.mdc-deprecated-list-item')!;
        (component.getDefaultFoundation() as any)
            .adapter.addAttributeToElementAtIndex(0, 'foo', 'true');
        expect(firstItem.getAttribute('foo') === 'true').toBe(true);
@@ -484,7 +484,7 @@ describe('MDCMenu', () => {
      () => {
        const {root, component} = setupTest();
        const firstItem =
-           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
+           root.querySelector<HTMLElement>('.mdc-deprecated-list-item')!;
        firstItem.setAttribute('foo', 'true');
        (component.getDefaultFoundation() as any)
            .adapter.removeAttributeFromElementAtIndex(0, 'foo');
@@ -495,7 +495,7 @@ describe('MDCMenu', () => {
      () => {
        const {root, component} = setupTest();
        const firstItem =
-           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
+           root.querySelector<HTMLElement>('.mdc-deprecated-list-item')!;
        firstItem.classList.add('foo');
        const containsFoo = (component.getDefaultFoundation() as any)
                                .adapter.elementContainsClass(firstItem, 'foo');
@@ -505,7 +505,8 @@ describe('MDCMenu', () => {
   it('adapter#elementContainsClass returns false if the class does not exist on the element',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-deprecated-list-item');
+       const firstItem =
+           root.querySelector<HTMLElement>('.mdc-deprecated-list-item');
        const containsFoo = (component.getDefaultFoundation() as any)
                                .adapter.elementContainsClass(firstItem, 'foo');
        expect(containsFoo).toBe(false);
@@ -522,7 +523,8 @@ describe('MDCMenu', () => {
   it('adapter#getElementIndex returns the index value of an element in the list',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-deprecated-list-item');
+       const firstItem =
+           root.querySelector<HTMLElement>('.mdc-deprecated-list-item');
        const indexValue = (component.getDefaultFoundation() as any)
                               .adapter.getElementIndex(firstItem);
        expect(indexValue).toEqual(0);
@@ -568,7 +570,7 @@ describe('MDCMenu', () => {
     (component.getDefaultFoundation() as any).adapter.focusListRoot();
     // TODO(b/182902089): use list constants once this code has been migrated.
     expect(document.activeElement)
-        .toEqual(root.querySelector('.mdc-deprecated-list'));
+        .toEqual(root.querySelector<HTMLElement>('.mdc-deprecated-list'));
 
     document.body.removeChild(root);
   });

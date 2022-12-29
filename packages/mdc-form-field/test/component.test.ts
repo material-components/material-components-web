@@ -61,7 +61,7 @@ describe('MDCFormField', () => {
      () => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('eventHandler');
-       const label = root.querySelector('label') as HTMLElement;
+       const label = root.querySelector('label')!;
 
        (component.getDefaultFoundation() as any)
            .adapter.registerInteractionHandler('click', handler);
@@ -74,7 +74,7 @@ describe('MDCFormField', () => {
      () => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('eventHandler');
-       const label = root.querySelector('label') as HTMLElement;
+       const label = root.querySelector('label')!;
        label.addEventListener('click', handler);
 
        (component.getDefaultFoundation() as any)

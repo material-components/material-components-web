@@ -267,7 +267,7 @@ function renderComponent(props: RenderComponentProps): HTMLElement {
     </div>
   `;
 
-  const prevTable = document.querySelector(`.${cssClasses.ROOT}`);
+  const prevTable = document.querySelector<HTMLElement>(`.${cssClasses.ROOT}`);
   if (prevTable) {
     document.body.removeChild(prevTable.parentElement as HTMLElement);
   }
@@ -306,13 +306,12 @@ describe('MDCDataTable', () => {
        const {root} = setupTest();
 
        const rowCheckbox =
-           root.querySelector(selectors.ROW_CHECKBOX)!.querySelector('input') as
-           HTMLInputElement;
+           root.querySelector(selectors.ROW_CHECKBOX)!.querySelector('input')!;
        rowCheckbox.click();
 
        const headerRowCheckbox =
            root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
-               'input') as HTMLInputElement;
+               'input')!;
        expect(headerRowCheckbox.indeterminate).toBe(true);
      });
 
@@ -338,7 +337,7 @@ describe('MDCDataTable', () => {
 
        const nativeCheckbox =
            root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
-               'input') as HTMLInputElement;
+               'input')!;
 
        nativeCheckbox.checked = false;
        expect(adapter.isHeaderRowCheckboxChecked()).toBe(false);
@@ -401,7 +400,7 @@ describe('MDCDataTable', () => {
     const {component, root, adapter} = setupTest();
 
     const rows = Array.from(root.querySelectorAll<HTMLElement>(selectors.ROW));
-    const inputEl = rows[2].querySelector('input') as HTMLInputElement;
+    const inputEl = rows[2].querySelector('input')!;
     expect(adapter.getRowIndexByChildElement(inputEl)).toEqual(2);
 
     component.destroy();
@@ -474,7 +473,7 @@ describe('MDCDataTable', () => {
   it('adapter#setRowCheckboxCheckedAtIndex', () => {
     const {component, root, adapter} = setupTest();
     const nativeCheckbox =
-        root.querySelector(selectors.ROW_CHECKBOX)!.querySelector('input')!;
+        root.querySelector(selectors.ROW_CHECKBOX)!.querySelector('input');
 
     expect(nativeCheckbox!.checked).toBe(false);
     adapter.setRowCheckboxCheckedAtIndex(0, true);
@@ -512,7 +511,7 @@ describe('MDCDataTable', () => {
 
     const handler = jasmine.createSpy('mockRowClickListener');
     component.listen(events.ROW_CLICK, handler);
-    (component.getRows()[1] as HTMLElement).click();
+    component.getRows()[1].click();
     expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
       detail: {
         rowId: 'u1',
@@ -534,15 +533,14 @@ describe('MDCDataTable', () => {
 
        const handler = jasmine.createSpy('mockRowClickListener');
        component.listen(events.ROW_CLICK, handler);
-       (component.getRows()[1] as HTMLElement)
-           .dispatchEvent(createMouseEvent('click', {
-             bubbles: true,
-             cancelable: true,
-             altKey: true,
-             ctrlKey: true,
-             metaKey: true,
-             shiftKey: true
-           }));
+       component.getRows()[1].dispatchEvent(createMouseEvent('click', {
+         bubbles: true,
+         cancelable: true,
+         altKey: true,
+         ctrlKey: true,
+         metaKey: true,
+         shiftKey: true
+       }));
 
        expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
          detail: {

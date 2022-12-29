@@ -63,7 +63,7 @@ For permanently visible drawer, the list must be instantiated for appropriate ke
 
 ```js
 import {MDCList} from "@material/list";
-const list = MDCList.attachTo(document.querySelector('.mdc-deprecated-list'));
+const list = MDCList.attachTo(document.querySelector<HTMLElement>('.mdc-deprecated-list'));
 list.wrapFocus = true;
 ```
 
@@ -71,7 +71,7 @@ Other variants use the `MDCDrawer` component, which will instantiate `MDCList` a
 
 ```js
 import {MDCDrawer} from "@material/drawer";
-const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+const drawer = MDCDrawer.attachTo(document.querySelector<HTMLElement>('.mdc-drawer'));
 ```
 
 ### Icons
@@ -97,15 +97,15 @@ It is recommended to shift focus to the first focusable element in the main cont
 Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
 
 ```js
-const listEl = document.querySelector('.mdc-drawer .mdc-deprecated-list');
-const mainContentEl = document.querySelector('.main-content');
+const listEl = document.querySelector<HTMLElement>('.mdc-drawer .mdc-deprecated-list');
+const mainContentEl = document.querySelector<HTMLElement>('.main-content');
 
 listEl.addEventListener('click', (event) => {
-  mainContentEl.querySelector('input, button').focus();
+  mainContentEl.querySelector<HTMLElement>('input, button').focus();
 });
 
 document.body.addEventListener('MDCDrawer:closed', () => {
-  mainContentEl.querySelector('input, button').focus();
+  mainContentEl.querySelector<HTMLElement>('input, button').focus();
 });
 ```
 
@@ -114,15 +114,15 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
 
 ```js
-const listEl = document.querySelector('.mdc-drawer .mdc-deprecated-list');
-const mainContentEl = document.querySelector('.main-content');
+const listEl = document.querySelector<HTMLElement>('.mdc-drawer .mdc-deprecated-list');
+const mainContentEl = document.querySelector<HTMLElement>('.main-content');
 
 listEl.addEventListener('click', (event) => {
   drawer.open = false;
 });
 
 document.body.addEventListener('MDCDrawer:closed', () => {
-  mainContentEl.querySelector('input, button').focus();
+  mainContentEl.querySelector<HTMLElement>('input, button').focus();
 });
 ```
 

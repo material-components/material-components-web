@@ -111,7 +111,7 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements
   private createRipple(): MDCRipple {
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
     const rippleSurface =
-        this.root.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
+        this.root.querySelector<HTMLElement>(RIPPLE_SURFACE_SELECTOR)!;
 
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
@@ -145,6 +145,6 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements
 
   private get nativeControl() {
     const {NATIVE_CONTROL_SELECTOR} = MDCSwitchFoundation.strings;
-    return this.root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+    return this.root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
   }
 }

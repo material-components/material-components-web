@@ -34,8 +34,12 @@ const ARIA_ATTR_PREFIX = [safeAttrPrefix`aria-`];
 
 /** MDC Tooltip */
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
-  static override attachTo(root: Element) {
-    return new MDCTooltip(root);
+  // TODO(b/157231863): remove these overloads when no clients are using them.
+  static override attachTo(root: HTMLElement): MDCTooltip;
+  /** @deprecated use attachTo(root: HTMLElement) */
+  static override attachTo(root: Element): MDCTooltip;
+  static override attachTo(root: HTMLElement|Element) {
+    return new MDCTooltip(root as HTMLElement);
   }
 
   private anchorElem!: HTMLElement;       // assigned in initialize
@@ -206,7 +210,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
             propertyName);
       },
       setStyleProperty: (propertyName, value) => {
-        (this.root as HTMLElement).style.setProperty(propertyName, value);
+        this.root.style.setProperty(propertyName, value);
       },
       setSurfaceAnimationStyleProperty: (propertyName, value) => {
         const surface = this.root.querySelector<HTMLElement>(
@@ -216,10 +220,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       getViewportWidth: () => window.innerWidth,
       getViewportHeight: () => window.innerHeight,
       getTooltipSize: () => {
-        return {
-          width: (this.root as HTMLElement).offsetWidth,
-          height: (this.root as HTMLElement).offsetHeight
-        };
+        return {width: this.root.offsetWidth, height: this.root.offsetHeight};
       },
       getAnchorBoundingRect: () => {
         return this.anchorElem ? this.anchorElem.getBoundingClientRect() : null;

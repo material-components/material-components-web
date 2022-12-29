@@ -43,7 +43,7 @@ import {MDCChipTrailingActionFoundation} from './trailing-foundation';
  * chip actions.
  */
 export type MDCChipActionFactory =
-    (el: Element, foundation?: MDCChipActionFoundation) => MDCChipAction;
+    (el: HTMLElement, foundation?: MDCChipActionFoundation) => MDCChipAction;
 
 
 const ALLOWED_ATTR_PREFIXES = [
@@ -60,11 +60,11 @@ const ALLOWED_ATTR_PREFIXES = [
  */
 export class MDCChipAction extends
     MDCComponent<MDCChipActionFoundation> implements MDCRippleCapableSurface {
-  static override attachTo(root: Element): MDCChipAction {
+  static override attachTo(root: HTMLElement): MDCChipAction {
     return new MDCChipAction(root);
   }
 
-  private readonly rootHTML = this.root as HTMLElement;
+  private readonly rootHTML = this.root;
 
   // Assigned in #initialize()
   private rippleInstance!: MDCRipple;

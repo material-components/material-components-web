@@ -143,9 +143,8 @@ describe('MDCCircularProgress', () => {
     const {root, component} = setupTest();
     const progressTestValue = 0.5;
     component.progress = progressTestValue;
-    const determinateCircle =
-        root.querySelector(MDCCircularProgressFoundation.strings
-                               .DETERMINATE_CIRCLE_SELECTOR) as HTMLElement;
+    const determinateCircle = root.querySelector<HTMLElement>(
+        MDCCircularProgressFoundation.strings.DETERMINATE_CIRCLE_SELECTOR)!;
 
     expect(
         root.getAttribute(MDCCircularProgressFoundation.strings.ARIA_VALUENOW))

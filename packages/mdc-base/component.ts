@@ -26,19 +26,32 @@ import {CustomEventListener, EventType, SpecificEventListener} from './types';
 
 /** MDC Component base */
 export class MDCComponent<FoundationType extends MDCFoundation> {
-  static attachTo(root: Element): MDCComponent<MDCFoundation<{}>> {
+  // TODO(b/157231863): remove these overloads when no clients are using them.
+  static attachTo(root: HTMLElement): MDCComponent<MDCFoundation<{}>>;
+  /** @deprecated use attachTo(root: HTMLElement) */
+  static attachTo(root: Element): MDCComponent<MDCFoundation<{}>>;
+  static attachTo(root: HTMLElement|Element): MDCComponent<MDCFoundation<{}>> {
     // Subclasses which extend MDCBase should provide an attachTo() method that
     // takes a root element and returns an instantiated component with its root
     // set to that element. Also note that in the cases of subclasses, an
     // explicit foundation class will not have to be passed in; it will simply
     // be initialized from getDefaultFoundation().
-    return new MDCComponent(root, new MDCFoundation({}));
+    return new MDCComponent(root as HTMLElement, new MDCFoundation({}));
   }
 
   protected foundation: FoundationType;
 
+  root: HTMLElement;
+
+  // TODO(b/157231863): remove this overload when no clients are using it.
   constructor(
-      public root: Element, foundation?: FoundationType, ...args: unknown[]) {
+      root: HTMLElement, foundation?: FoundationType, ...args: unknown[]);
+  /** @deprecated use constructor(root: HTMLElement, ...) */
+  constructor(root: Element, foundation?: FoundationType, ...args: unknown[]);
+  constructor(
+      root: HTMLElement|Element, foundation?: FoundationType,
+      ...args: unknown[]) {
+    this.root = root as HTMLElement;
     this.initialize(...args);
     // Note that we initialize foundation here and not within the constructor's
     // default param so that this.root is defined and can be used within the

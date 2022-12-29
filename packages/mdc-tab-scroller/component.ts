@@ -35,11 +35,11 @@ type InteractionEventType =
 
 /** MDC Tab Scroller Factory */
 export type MDCTabScrollerFactory =
-    (el: Element, foundation?: MDCTabScrollerFoundation) => MDCTabScroller;
+    (el: HTMLElement, foundation?: MDCTabScrollerFoundation) => MDCTabScroller;
 
 /** MDC Tab Scroller */
 export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
-  static override attachTo(root: Element): MDCTabScroller {
+  static override attachTo(root: HTMLElement): MDCTabScroller {
     return new MDCTabScroller(root);
   }
 

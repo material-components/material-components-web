@@ -105,7 +105,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   /**
    * @return Returns array of row elements.
    */
-  getRows(): Element[] {
+  getRows(): HTMLElement[] {
     return this.adapter.getRowElements();
   }
 

@@ -134,7 +134,7 @@ describe('MDCCheckboxFoundation', () => {
 
   /*
    * Shims Object.getOwnPropertyDescriptor for the checkbox's WebIDL attributes.
-   * Used to test the behavior of overridding WebIDL properties in different
+   * Used to test the behavior of overriding WebIDL properties in different
    * browser environments. For example, in Safari WebIDL attributes don't
    * return get/set in descriptors.
    */

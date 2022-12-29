@@ -28,13 +28,13 @@ import {MDCTextFieldCharacterCounterFoundation} from './foundation';
 
 /** MDC Text Field Character Counter Factory */
 export type MDCTextFieldCharacterCounterFactory =
-    (el: Element, foundation?: MDCTextFieldCharacterCounterFoundation) =>
+    (el: HTMLElement, foundation?: MDCTextFieldCharacterCounterFoundation) =>
         MDCTextFieldCharacterCounter;
 
 /** MDC Text Field Character Counter */
 export class MDCTextFieldCharacterCounter extends
     MDCComponent<MDCTextFieldCharacterCounterFoundation> {
-  static override attachTo(root: Element): MDCTextFieldCharacterCounter {
+  static override attachTo(root: HTMLElement): MDCTextFieldCharacterCounter {
     return new MDCTextFieldCharacterCounter(root);
   }
 

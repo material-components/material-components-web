@@ -262,7 +262,8 @@ describe('MDCTextField', () => {
 
   it('#constructor instantiates a trailing icon if the icon is present', () => {
     const root = getFixture();
-    const leadingIcon = root.querySelector('.mdc-text-field__icon');
+    const leadingIcon =
+        root.querySelector<HTMLElement>('.mdc-text-field__icon');
     root.removeChild(leadingIcon as HTMLElement);
     const wrapper = document.createElement('div');
     wrapper.innerHTML =
@@ -507,7 +508,7 @@ describe('MDCTextField', () => {
   it('#focus calls focus on the input element', () => {
     const {root, component} = setupTest();
     const input =
-        root.querySelector('.mdc-text-field__input') as HTMLInputElement;
+        root.querySelector<HTMLInputElement>('.mdc-text-field__input')!;
     input.focus = jasmine.createSpy('focus');
     component.focus();
 
@@ -517,7 +518,7 @@ describe('MDCTextField', () => {
   it('get/set disabled updates the input element', () => {
     const {root, component} = setupTest();
     const input =
-        root.querySelector('.mdc-text-field__input') as HTMLInputElement;
+        root.querySelector<HTMLInputElement>('.mdc-text-field__input')!;
     component.disabled = true;
     expect(input.disabled).toBeTruthy();
     component.disabled = false;
@@ -603,7 +604,7 @@ describe('MDCTextField', () => {
   it('#adapter.setInputAttr sets attribute on input element', () => {
     const {root, component} = setupTest();
     const input =
-        root.querySelector('.mdc-text-field__input') as HTMLInputElement;
+        root.querySelector<HTMLInputElement>('.mdc-text-field__input')!;
 
     (component.getDefaultFoundation() as any)
         .adapter.setInputAttr('foo', 'bar');
@@ -613,7 +614,7 @@ describe('MDCTextField', () => {
   it('#adapter.removeInputAttr removes attribute on input element', () => {
     const {root, component} = setupTest();
     const input =
-        root.querySelector('.mdc-text-field__input') as HTMLInputElement;
+        root.querySelector<HTMLInputElement>('.mdc-text-field__input')!;
 
     input.setAttribute('foo', 'bar!');
     (component.getDefaultFoundation() as any).adapter.removeInputAttr('foo');
@@ -624,7 +625,7 @@ describe('MDCTextField', () => {
      () => {
        const {root, component} = setupTest();
        const input =
-           root.querySelector('.mdc-text-field__input') as HTMLInputElement;
+           root.querySelector<HTMLInputElement>('.mdc-text-field__input')!;
        const handler = jasmine.createSpy('eventHandler');
        (component.getDefaultFoundation() as any)
            .adapter.registerInputInteractionHandler('click', handler);
@@ -636,7 +637,7 @@ describe('MDCTextField', () => {
      () => {
        const {root, component} = setupTest();
        const input =
-           root.querySelector('.mdc-text-field__input') as HTMLInputElement;
+           root.querySelector<HTMLInputElement>('.mdc-text-field__input')!;
        const handler = jasmine.createSpy('eventHandler');
 
        input.addEventListener('click', handler);
@@ -679,8 +680,8 @@ describe('MDCTextField', () => {
 
        component['foundation']['adapter']
            .registerValidationAttributeChangeHandler(handler);
-       (root.querySelector('.mdc-text-field__input') as HTMLInputElement)
-           .required = true;
+       (root.querySelector<HTMLInputElement>('.mdc-text-field__input')!
+        ).required = true;
      });
 
   it('#adapter.deregisterValidationAttributeChangeHandler disconnects the passed observer',
@@ -698,7 +699,7 @@ describe('MDCTextField', () => {
   it('#adapter.getNativeInput returns the component input element', () => {
     const {root, component} = setupTest();
     expect((component.getDefaultFoundation() as any).adapter.getNativeInput())
-        .toEqual(root.querySelector('.mdc-text-field__input'));
+        .toEqual(root.querySelector<HTMLElement>('.mdc-text-field__input'));
   });
 
   it('#adapter.activateLineRipple calls the activate method on the line ripple',
@@ -725,17 +726,22 @@ describe('MDCTextField', () => {
 
   it('should not focus input when clicking icon', () => {
     const root = getFixture();
-    const icon = root.querySelector('.mdc-text-field__icon') as HTMLElement;
+    const icon = root.querySelector<HTMLElement>('.mdc-text-field__icon')!;
     const component = new MDCTextField(root);
     document.body.appendChild(root);
     root.click();
     const input = (component as any).input as HTMLInputElement;
-    expect(document.activeElement).toBe(input, 'input should be focused');
+    expect(document.activeElement)
+        .withContext('input should be focused')
+        .toBe(input);
     input.blur();
-    expect(document.activeElement).not.toBe(input, 'ensure input was blurred');
+    expect(document.activeElement)
+        .withContext('ensure input was blurred')
+        .not.toBe(input);
     icon.click();
     expect(document.activeElement)
-        .not.toBe(input, 'input should not be focused');
+        .withContext('input should not be focused')
+        .not.toBe(input);
     document.body.removeChild(root);
   });
 
@@ -870,7 +876,8 @@ describe('MDCTextField', () => {
     const prefixComponent = new MDCTextField(prefixRoot);
     prefixComponent.prefixText = 'foo';
     expect(prefixComponent.prefixText).toEqual('foo');
-    const prefixEl = prefixRoot.querySelector(strings.PREFIX_SELECTOR)!;
+    const prefixEl =
+        prefixRoot.querySelector<HTMLElement>(strings.PREFIX_SELECTOR)!;
     expect(prefixEl.textContent).toEqual('foo');
   });
 
@@ -893,7 +900,8 @@ describe('MDCTextField', () => {
     const suffixComponent = new MDCTextField(suffixRoot);
     suffixComponent.suffixText = 'foo';
     expect(suffixComponent.suffixText).toEqual('foo');
-    const suffixEl = suffixRoot.querySelector(strings.SUFFIX_SELECTOR)!;
+    const suffixEl =
+        suffixRoot.querySelector<HTMLElement>(strings.SUFFIX_SELECTOR)!;
     expect(suffixEl.textContent).toEqual('foo');
   });
 });

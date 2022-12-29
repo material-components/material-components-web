@@ -30,13 +30,13 @@ import {MDCNotchedOutlineFoundation} from './foundation';
 
 /** MDC Notched Outline Factory */
 export type MDCNotchedOutlineFactory =
-    (el: Element, foundation?: MDCNotchedOutlineFoundation) =>
+    (el: HTMLElement, foundation?: MDCNotchedOutlineFoundation) =>
         MDCNotchedOutline;
 
 /** MDC Notched Outline */
 export class MDCNotchedOutline extends
     MDCComponent<MDCNotchedOutlineFoundation> {
-  static override attachTo(root: Element): MDCNotchedOutline {
+  static override attachTo(root: HTMLElement): MDCNotchedOutline {
     return new MDCNotchedOutline(root);
   }
 

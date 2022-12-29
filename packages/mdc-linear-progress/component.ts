@@ -31,7 +31,7 @@ import {WithMDCResizeObserver} from './types';
 /** MDC Linear Progress */
 export class MDCLinearProgress extends
     MDCComponent<MDCLinearProgressFoundation> implements MDCProgressIndicator {
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCLinearProgress(root);
   }
 
@@ -97,7 +97,7 @@ export class MDCLinearProgress extends
         this.root.setAttribute(attributeName, value);
       },
       setStyle: (name: string, value: string) => {
-        (this.root as HTMLElement).style.setProperty(name, value);
+        this.root.style.setProperty(name, value);
       },
       attachResizeObserver: (callback) => {
         const RO = (window as unknown as WithMDCResizeObserver).ResizeObserver;
@@ -109,7 +109,7 @@ export class MDCLinearProgress extends
 
         return null;
       },
-      getWidth: () => (this.root as HTMLElement).offsetWidth,
+      getWidth: () => this.root.offsetWidth,
     };
     return new MDCLinearProgressFoundation(adapter);
   }

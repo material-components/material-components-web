@@ -28,11 +28,11 @@ import {MDCSelectIconFoundation} from './foundation';
 
 /** MDC Select Icon Factory */
 export type MDCSelectIconFactory =
-    (el: Element, foundation?: MDCSelectIconFoundation) => MDCSelectIcon;
+    (el: HTMLElement, foundation?: MDCSelectIconFoundation) => MDCSelectIcon;
 
 /** MDC Select Icon */
 export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
-  static override attachTo(root: Element): MDCSelectIcon {
+  static override attachTo(root: HTMLElement): MDCSelectIcon {
     return new MDCSelectIcon(root);
   }
 

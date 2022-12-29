@@ -72,7 +72,7 @@ export interface MDCMenuAdapter {
   /**
    * @return Index of the element in the list or -1 if it is not in the list.
    */
-  getElementIndex(element: Element): number;
+  getElementIndex(element: HTMLElement): number;
 
   /**
    * Emit an event when a menu item is selected.

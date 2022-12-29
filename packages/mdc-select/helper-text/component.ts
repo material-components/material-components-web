@@ -28,13 +28,13 @@ import {MDCSelectHelperTextFoundation} from './foundation';
 
 /** MDC Select Helper Text Factory */
 export type MDCSelectHelperTextFactory =
-    (el: Element, foundation?: MDCSelectHelperTextFoundation) =>
+    (el: HTMLElement, foundation?: MDCSelectHelperTextFoundation) =>
         MDCSelectHelperText;
 
 /** MDC Select Helper Text */
 export class MDCSelectHelperText extends
     MDCComponent<MDCSelectHelperTextFoundation> {
-  static override attachTo(root: Element): MDCSelectHelperText {
+  static override attachTo(root: HTMLElement): MDCSelectHelperText {
     return new MDCSelectHelperText(root);
   }
 

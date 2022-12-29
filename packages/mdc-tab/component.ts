@@ -33,13 +33,13 @@ import {MDCTabFoundation} from './foundation';
 import {MDCTabDimensions, MDCTabInteractionEventDetail} from './types';
 
 /** MDC Tab Factory */
-export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) =>
+export type MDCTabFactory = (el: HTMLElement, foundation?: MDCTabFoundation) =>
     MDCTab;
 
 /** MDC Tab */
 export class MDCTab extends MDCComponent<MDCTabFoundation> implements
     MDCRippleCapableSurface {
-  static override attachTo(root: Element): MDCTab {
+  static override attachTo(root: HTMLElement): MDCTab {
     return new MDCTab(root);
   }
 
@@ -62,7 +62,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements
         new MDCRippleFoundation(MDCRipple.createAdapter(this));
     this.ripple = rippleFactory(this.root, rippleFoundation);
 
-    const tabIndicatorElement = this.root.querySelector(
+    const tabIndicatorElement = this.root.querySelector<HTMLElement>(
         MDCTabFoundation.strings.TAB_INDICATOR_SELECTOR)!;
     this.tabIndicator = tabIndicatorFactory(tabIndicatorElement);
     this.content = this.root.querySelector<HTMLElement>(
@@ -109,12 +109,12 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements
             MDCTabFoundation.strings.INTERACTED_EVENT, {tabId: this.id},
             true /* bubble */);
       },
-      getOffsetLeft: () => (this.root as HTMLElement).offsetLeft,
-      getOffsetWidth: () => (this.root as HTMLElement).offsetWidth,
+      getOffsetLeft: () => this.root.offsetLeft,
+      getOffsetWidth: () => this.root.offsetWidth,
       getContentOffsetLeft: () => this.content.offsetLeft,
       getContentOffsetWidth: () => this.content.offsetWidth,
       focus: () => {
-        (this.root as HTMLElement).focus();
+        this.root.focus();
       },
     };
     // tslint:enable:object-literal-sort-keys
@@ -161,6 +161,6 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements
    * Focuses the tab
    */
   focus() {
-    (this.root as HTMLElement).focus();
+    this.root.focus();
   }
 }

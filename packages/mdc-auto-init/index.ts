@@ -32,7 +32,7 @@ const {AUTO_INIT_ATTR, AUTO_INIT_STATE_ATTR, INITIALIZED_STATE} = strings;
 
 /** MDC Attachable */
 export interface MDCAttachable extends Function {
-  attachTo(root: Element): MDCComponent<MDCFoundation>;
+  attachTo(root: HTMLElement): MDCComponent<MDCFoundation>;
 }
 
 interface InternalComponentRegistry {
@@ -66,8 +66,8 @@ function emit<T extends object>(
  */
 function mdcAutoInit(root: ParentNode = document) {
   const components = [];
-  let nodes: Element[] =
-      Array.from(root.querySelectorAll(`[${AUTO_INIT_ATTR}]`));
+  let nodes =
+      Array.from(root.querySelectorAll<HTMLElement>(`[${AUTO_INIT_ATTR}]`));
   nodes = nodes.filter(
       (node) => node.getAttribute(AUTO_INIT_STATE_ATTR) !== INITIALIZED_STATE);
 

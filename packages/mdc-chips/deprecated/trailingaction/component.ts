@@ -37,7 +37,7 @@ import {MDCChipTrailingActionInteractionEventDetail, MDCChipTrailingActionNaviga
  * Creates a trailing action component on the given element.
  */
 export type MDCChipTrailingActionFactory =
-    (el: Element, foundation?: MDCChipTrailingActionFoundation) =>
+    (el: HTMLElement, foundation?: MDCChipTrailingActionFoundation) =>
         MDCChipTrailingAction;
 
 /** MDC Chip Trailing Action */
@@ -48,7 +48,7 @@ export class MDCChipTrailingAction extends
     return this.rippleSurface;
   }
 
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCChipTrailingAction(root);
   }
 
@@ -94,8 +94,7 @@ export class MDCChipTrailingAction extends
     // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipTrailingActionAdapter = {
       focus: () => {
-        // TODO(b/157231863): Migate MDCComponent#root to HTMLElement
-        (this.root as HTMLElement).focus();
+        this.root.focus();
       },
       getAttribute: (attr) => this.root.getAttribute(attr),
       notifyInteraction: (trigger) => {

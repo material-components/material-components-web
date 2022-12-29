@@ -38,8 +38,8 @@ import {MDCChipFoundation} from './foundation';
 import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail} from './types';
 
 /** MDC Chip Factory */
-export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) =>
-    MDCChip;
+export type MDCChipFactory =
+    (el: HTMLElement, foundation?: MDCChipFoundation) => MDCChip;
 
 /** MDC Chip */
 export class MDCChip extends MDCComponent<MDCChipFoundation> implements
@@ -88,13 +88,13 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements
     return this.root.id;
   }
 
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCChip(root);
   }
 
-  private leadingIcon!: Element|null;    // assigned in initialize()
-  private checkmark!: Element|null;      // assigned in initialize()
-  private primaryAction!: Element|null;  // assigned in initialize()
+  private leadingIcon!: HTMLElement|null;    // assigned in initialize()
+  private checkmark!: HTMLElement|null;      // assigned in initialize()
+  private primaryAction!: HTMLElement|null;  // assigned in initialize()
   private trailingAction!: MDCChipTrailingAction|
       null;                           // assigned in initialize()
   private rippleSurface!: MDCRipple;  // assigned in initialize()
@@ -123,13 +123,15 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements
       trailingActionFactory:
           MDCChipTrailingActionFactory = (el) => new MDCChipTrailingAction(el),
   ) {
-    this.leadingIcon = this.root.querySelector(strings.LEADING_ICON_SELECTOR);
-    this.checkmark = this.root.querySelector(strings.CHECKMARK_SELECTOR);
+    this.leadingIcon =
+        this.root.querySelector<HTMLElement>(strings.LEADING_ICON_SELECTOR);
+    this.checkmark =
+        this.root.querySelector<HTMLElement>(strings.CHECKMARK_SELECTOR);
     this.primaryAction =
-        this.root.querySelector(strings.PRIMARY_ACTION_SELECTOR);
+        this.root.querySelector<HTMLElement>(strings.PRIMARY_ACTION_SELECTOR);
 
     const trailingActionEl =
-        this.root.querySelector(strings.TRAILING_ACTION_SELECTOR);
+        this.root.querySelector<HTMLElement>(strings.TRAILING_ACTION_SELECTOR);
 
     if (trailingActionEl) {
       this.trailingAction = trailingActionFactory(trailingActionEl);
@@ -234,7 +236,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements
           target ? (target as Element).classList.contains(className) : false,
       focusPrimaryAction: () => {
         if (this.primaryAction) {
-          (this.primaryAction as HTMLElement).focus();
+          this.primaryAction.focus();
         }
       },
       focusTrailingAction: () => {
@@ -304,7 +306,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements
         }
       },
       setStyleProperty: (propertyName, value) => {
-        (this.root as HTMLElement).style.setProperty(propertyName, value);
+        this.root.style.setProperty(propertyName, value);
       },
     };
     return new MDCChipFoundation(adapter);

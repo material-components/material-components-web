@@ -28,12 +28,16 @@ import {MDCLineRippleFoundation} from './foundation';
 
 /** MDC Line Ripple Factory */
 export type MDCLineRippleFactory =
-    (el: Element, foundation?: MDCLineRippleFoundation) => MDCLineRipple;
+    (el: HTMLElement, foundation?: MDCLineRippleFoundation) => MDCLineRipple;
 
 /** MDC Line Ripple */
 export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
-  static override attachTo(root: Element): MDCLineRipple {
-    return new MDCLineRipple(root);
+  // TODO(b/157231863): remove these overloads when no clients are using them.
+  static override attachTo(root: HTMLElement): MDCLineRipple;
+  /** @deprecated use attachTo(root: HTMLElement) */
+  static override attachTo(root: Element): MDCLineRipple;
+  static override attachTo(root: HTMLElement|Element): MDCLineRipple {
+    return new MDCLineRipple(root as HTMLElement);
   }
 
   /**
@@ -72,7 +76,7 @@ export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
       },
       hasClass: (className) => this.root.classList.contains(className),
       setStyle: (propertyName, value) => {
-        (this.root as HTMLElement).style.setProperty(propertyName, value);
+        this.root.style.setProperty(propertyName, value);
       },
       registerEventHandler: (evtType, handler) => {
         this.listen(evtType, handler);

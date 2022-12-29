@@ -75,7 +75,7 @@ describe('MDCRadio', () => {
      () => {
        const {root, component} = setupTest();
        const radio =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+           root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
        component.checked = true;
        expect(radio.checked).toBeTruthy();
        expect(component.checked).toEqual(radio.checked);
@@ -85,7 +85,7 @@ describe('MDCRadio', () => {
      () => {
        const {root, component} = setupTest();
        const radio =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+           root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
        component.disabled = true;
        expect(radio.disabled).toBeTruthy();
        expect(component.disabled).toEqual(radio.disabled);
@@ -97,7 +97,7 @@ describe('MDCRadio', () => {
   it('get/set value updates the value of the native radio element', () => {
     const {root, component} = setupTest();
     const radio =
-        root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+        root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
     component.value = 'new value';
     expect(radio.value).toEqual('new value');
     expect(component.value).toEqual(radio.value);
@@ -124,8 +124,8 @@ describe('MDCRadio', () => {
   it('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to true',
      () => {
        const {root, component} = setupTest();
-       const radio =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+       const radio = root.querySelector<HTMLElement>(NATIVE_CONTROL_SELECTOR) as
+           HTMLInputElement;
 
        (component.getDefaultFoundation() as any)
            .adapter.setNativeControlDisabled(true);
@@ -135,8 +135,8 @@ describe('MDCRadio', () => {
   it('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to false',
      () => {
        const {root, component} = setupTest();
-       const radio =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+       const radio = root.querySelector<HTMLElement>(NATIVE_CONTROL_SELECTOR) as
+           HTMLInputElement;
        radio.disabled = true;
 
        (component.getDefaultFoundation() as any)

@@ -102,10 +102,8 @@ describe('MDCLinearProgress', () => {
     const {root, component} = setupTest();
 
     component.progress = 0.5;
-    const primaryBar =
-        root.querySelector(
-            MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR) as
-        HTMLElement;
+    const primaryBar = root.querySelector<HTMLElement>(
+        MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR)!;
     // External GitHub TS compiler insists that `buffer.style.transform` could
     // be null
     // tslint:disable-next-line:no-unnecessary-type-assertion
@@ -118,10 +116,8 @@ describe('MDCLinearProgress', () => {
     const {root, component} = setupTest();
 
     component.buffer = 0.5;
-    const buffer =
-        root.querySelector(
-            MDCLinearProgressFoundation.strings.BUFFER_BAR_SELECTOR) as
-        HTMLElement;
+    const buffer = root.querySelector<HTMLElement>(
+        MDCLinearProgressFoundation.strings.BUFFER_BAR_SELECTOR)!;
     // External GitHub TS compiler insists that `buffer.style.transform` could
     // be null
     // tslint:disable-next-line:no-unnecessary-type-assertion

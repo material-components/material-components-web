@@ -43,7 +43,7 @@ import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
 /** MDC Select */
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
-  static override attachTo(root: Element): MDCSelect {
+  static override attachTo(root: HTMLElement): MDCSelect {
     return new MDCSelect(root);
   }
 
@@ -55,7 +55,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private selectedText!: HTMLElement;           // assigned in initialize()
   private hiddenInput!: HTMLInputElement|null;  // assigned in initialize()
 
-  private menuElement!: Element;                  // assigned in menuSetup()
+  private menuElement!: HTMLElement;              // assigned in menuSetup()
   private menuItemValues!: string[];              // assigned in menuSetup()
   private leadingIcon?: MDCSelectIcon;            // assigned in initialize()
   private helperText!: MDCSelectHelperText|null;  // assigned in initialize()
@@ -84,11 +84,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
           MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
     this.selectAnchor =
-        this.root.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
+        this.root.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!;
     this.selectedText =
-        this.root.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
-    this.hiddenInput = this.root.querySelector(strings.HIDDEN_INPUT_SELECTOR) as
-        HTMLInputElement;
+        this.root.querySelector<HTMLElement>(strings.SELECTED_TEXT_SELECTOR)!;
+    this.hiddenInput = this.root.querySelector<HTMLInputElement>(
+        strings.HIDDEN_INPUT_SELECTOR)!;
 
     if (!this.selectedText) {
       throw new Error(
@@ -107,18 +107,21 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
     this.menuSetup(menuFactory);
 
-    const labelElement = this.root.querySelector(strings.LABEL_SELECTOR);
+    const labelElement =
+        this.root.querySelector<HTMLElement>(strings.LABEL_SELECTOR);
     this.label = labelElement ? labelFactory(labelElement) : null;
 
     const lineRippleElement =
-        this.root.querySelector(strings.LINE_RIPPLE_SELECTOR);
+        this.root.querySelector<HTMLElement>(strings.LINE_RIPPLE_SELECTOR);
     this.lineRipple =
         lineRippleElement ? lineRippleFactory(lineRippleElement) : null;
 
-    const outlineElement = this.root.querySelector(strings.OUTLINE_SELECTOR);
+    const outlineElement =
+        this.root.querySelector<HTMLElement>(strings.OUTLINE_SELECTOR);
     this.outline = outlineElement ? outlineFactory(outlineElement) : null;
 
-    const leadingIcon = this.root.querySelector(strings.LEADING_ICON_SELECTOR);
+    const leadingIcon =
+        this.root.querySelector<HTMLElement>(strings.LEADING_ICON_SELECTOR);
     if (leadingIcon) {
       this.leadingIcon = iconFactory(leadingIcon);
     }
@@ -354,7 +357,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    * Handles setup for the menu.
    */
   private menuSetup(menuFactory: MDCMenuFactory) {
-    this.menuElement = this.root.querySelector(strings.MENU_SELECTOR)!;
+    this.menuElement =
+        this.root.querySelector<HTMLElement>(strings.MENU_SELECTOR)!;
     this.menu = menuFactory(this.menuElement);
     this.menu.hasTypeahead = true;
     this.menu.singleSelection = true;
@@ -391,7 +395,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         let index = this.menu.selectedIndex;
         if (index === -1) return;
         index = index instanceof Array ? index[0] : index;
-        const selectedItem = (this.menu.items[index] as HTMLElement);
+        const selectedItem = this.menu.items[index];
         if (!selectedItem) return;
         this.selectedText.setAttribute(
             'aria-label', selectedItem.getAttribute('aria-label') || '');
@@ -418,7 +422,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         this.menu.open = false;
       },
       getAnchorElement: () =>
-          this.root.querySelector(strings.SELECT_ANCHOR_SELECTOR)!,
+          this.root.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!,
       setMenuAnchorElement: (anchorEl: HTMLElement) => {
         this.menu.setAnchorElement(anchorEl);
       },
@@ -436,7 +440,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         this.menu.selectedIndex = index;
       },
       focusMenuItemAtIndex: (index: number) => {
-        (this.menu.items[index] as HTMLElement).focus();
+        this.menu.items[index]?.focus();
       },
       getMenuItemCount: () => this.menu.items.length,
       // Cache menu item values. layoutOptions() updates this cache.
@@ -461,7 +465,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       },
       hasClass: (className: string) => this.root.classList.contains(className),
       setRippleCenter: (normalizedX: number) => {
-          this.lineRipple && this.lineRipple.setRippleCenter(normalizedX)},
+        this.lineRipple && this.lineRipple.setRippleCenter(normalizedX);
+      },
       activateBottomLine: () => {
         this.lineRipple && this.lineRipple.activate();
       },

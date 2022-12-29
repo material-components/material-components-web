@@ -36,13 +36,12 @@ import {MDCSliderChangeEventDetail, Thumb, TickMark} from './types';
 
 /** Vanilla implementation of slider component. */
 export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
-  static override attachTo(root: Element, options: {
+  static override attachTo(root: HTMLElement, options: {
     skipInitialUIUpdate?: boolean
   } = {}) {
     return new MDCSlider(root, undefined, options);
   }
 
-  override root!: HTMLElement;          // Assigned in MDCComponent constructor.
   private inputs!: HTMLInputElement[];  // Assigned in #initialize.
   private thumbs!: HTMLElement[];       // Assigned in #initialize.
   private trackActive!: HTMLElement;    // Assigned in #initialize.
@@ -216,7 +215,7 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     this.thumbs = Array.from(
         this.root.querySelectorAll<HTMLElement>(`.${cssClasses.THUMB}`));
     this.trackActive =
-        this.root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+        this.root.querySelector<HTMLElement>(`.${cssClasses.TRACK_ACTIVE}`)!;
     this.ripples = this.createRipples();
 
     if (skipInitialUIUpdate) {

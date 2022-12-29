@@ -63,7 +63,7 @@ export interface MDCDataTableAdapter {
   /**
    * @return Array of row elements excluding header row.
    */
-  getRowElements(): Element[];
+  getRowElements(): HTMLElement[];
 
   /**
    * Returns row id of row element at given row index based on `data-row-id`
@@ -190,7 +190,7 @@ export interface MDCDataTableAdapter {
   /**
    * @return Array of header cell elements.
    */
-  getHeaderCellElements(): Element[];
+  getHeaderCellElements(): HTMLElement[];
 
   /**
    * @return Attribute value for given header cell index.

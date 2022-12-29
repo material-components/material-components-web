@@ -38,7 +38,7 @@ import {ChipAnimationEvent, ChipInteractionEvent, ChipNavigationEvent} from './t
  * MDCChip provides component encapsulation of the foundation implementation.
  */
 export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
-  static override attachTo(root: Element): MDCChipSet {
+  static override attachTo(root: HTMLElement): MDCChipSet {
     return new MDCChipSet(root);
   }
 
@@ -49,9 +49,10 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   private chips!: MDCChip[];
 
   override initialize(
-      chipFactory: MDCChipFactory = (el: Element) => new MDCChip(el)) {
+      chipFactory: MDCChipFactory = (el: HTMLElement) => new MDCChip(el)) {
     this.chips = [];
-    const chipEls = this.root.querySelectorAll(`.${MDCChipSetCssClasses.CHIP}`);
+    const chipEls = this.root.querySelectorAll<HTMLElement>(
+        `.${MDCChipSetCssClasses.CHIP}`);
     for (let i = 0; i < chipEls.length; i++) {
       const chip = chipFactory(chipEls[i]);
       this.chips.push(chip);

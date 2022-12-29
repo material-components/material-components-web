@@ -45,8 +45,12 @@ import {MDCTextFieldFoundationMap} from './types';
 /** MDC Text Field */
 export class MDCTextField extends
     MDCComponent<MDCTextFieldFoundation> implements MDCRippleCapableSurface {
-  static override attachTo(root: Element): MDCTextField {
-    return new MDCTextField(root);
+  // TODO(b/157231863): remove these overloads when no clients are using them.
+  static override attachTo(root: HTMLElement): MDCTextField;
+  /** @deprecated use attachTo(root: HTMLElement) */
+  static override attachTo(root: Element): MDCTextField;
+  static override attachTo(root: HTMLElement|Element): MDCTextField {
+    return new MDCTextField(root as HTMLElement);
   }
 
   ripple!: MDCRipple|null;  // assigned in initialize()
@@ -82,15 +86,17 @@ export class MDCTextField extends
     this.input =
         this.root.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
 
-    const labelElement = this.root.querySelector(strings.LABEL_SELECTOR);
+    const labelElement =
+        this.root.querySelector<HTMLElement>(strings.LABEL_SELECTOR);
     this.label = labelElement ? labelFactory(labelElement) : null;
 
     const lineRippleElement =
-        this.root.querySelector(strings.LINE_RIPPLE_SELECTOR);
+        this.root.querySelector<HTMLElement>(strings.LINE_RIPPLE_SELECTOR);
     this.lineRipple =
         lineRippleElement ? lineRippleFactory(lineRippleElement) : null;
 
-    const outlineElement = this.root.querySelector(strings.OUTLINE_SELECTOR);
+    const outlineElement =
+        this.root.querySelector<HTMLElement>(strings.OUTLINE_SELECTOR);
     this.outline = outlineElement ? outlineFactory(outlineElement) : null;
 
     // Helper text
@@ -100,18 +106,19 @@ export class MDCTextField extends
         (nextElementSibling &&
          nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
     const helperTextEl = hasHelperLine && nextElementSibling &&
-        nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
+        nextElementSibling.querySelector<HTMLElement>(
+            helperTextStrings.ROOT_SELECTOR);
     this.helperText = helperTextEl ? helperTextFactory(helperTextEl) : null;
 
     // Character counter
     const characterCounterStrings =
         MDCTextFieldCharacterCounterFoundation.strings;
-    let characterCounterEl =
-        this.root.querySelector(characterCounterStrings.ROOT_SELECTOR);
+    let characterCounterEl = this.root.querySelector<HTMLElement>(
+        characterCounterStrings.ROOT_SELECTOR);
     // If character counter is not found in root element search in sibling
     // element.
     if (!characterCounterEl && hasHelperLine && nextElementSibling) {
-      characterCounterEl = nextElementSibling.querySelector(
+      characterCounterEl = nextElementSibling.querySelector<HTMLElement>(
           characterCounterStrings.ROOT_SELECTOR);
     }
     this.characterCounter =
@@ -119,17 +126,17 @@ export class MDCTextField extends
 
     // Leading icon
     const leadingIconEl =
-        this.root.querySelector(strings.LEADING_ICON_SELECTOR);
+        this.root.querySelector<HTMLElement>(strings.LEADING_ICON_SELECTOR);
     this.leadingIcon = leadingIconEl ? iconFactory(leadingIconEl) : null;
 
     // Trailing icon
     const trailingIconEl =
-        this.root.querySelector(strings.TRAILING_ICON_SELECTOR);
+        this.root.querySelector<HTMLElement>(strings.TRAILING_ICON_SELECTOR);
     this.trailingIcon = trailingIconEl ? iconFactory(trailingIconEl) : null;
 
     // Prefix and Suffix
-    this.prefix = this.root.querySelector(strings.PREFIX_SELECTOR);
-    this.suffix = this.root.querySelector(strings.SUFFIX_SELECTOR);
+    this.prefix = this.root.querySelector<HTMLElement>(strings.PREFIX_SELECTOR);
+    this.suffix = this.root.querySelector<HTMLElement>(strings.SUFFIX_SELECTOR);
 
     this.ripple = this.createRipple(rippleFactory);
   }

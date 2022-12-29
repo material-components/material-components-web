@@ -135,7 +135,7 @@ export class MyComponent extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const btn = this.root.querySelector(`.${MyComponentFoundation.cssClasses.BUTTON}`);
+    const btn = this.root.querySelector<HTMLElement>(`.${MyComponentFoundation.cssClasses.BUTTON}`)!;
     return new MyComponentFoundation({
       toggleClass: className => {
         if (this.root.classList.contains(className)) {
@@ -196,7 +196,7 @@ dependency.
 class MyComponent extends MDCComponent {
   initialize(childComponent = null) {
     this.child = childComponent ?
-      childComponent : new ChildComponent(this.root.querySelector('.child'));
+      childComponent : new ChildComponent(this.root.querySelector<HTMLElement>('.child'));
   }
 
   getDefaultFoundation() {
@@ -211,9 +211,9 @@ class MyComponent extends MDCComponent {
 You could call this code like so:
 
 ```js
-const childComponent = new ChildComponent(document.querySelector('.some-child'));
+const childComponent = new ChildComponent(document.querySelector<HTMLElement>('.some-child'));
 const myComponent = new MyComponent(
-  document.querySelector('.my-component'), /* foundation */ undefined, childComponent
+  document.querySelector<HTMLElement>('.my-component'), /* foundation */ undefined, childComponent
 );
 // use myComponent
 ```

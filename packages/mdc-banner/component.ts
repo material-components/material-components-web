@@ -32,11 +32,10 @@ import {MDCBannerFoundation} from './foundation';
 
 /** Vanilla implementation of banner component. */
 export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCBanner(root);
   }
 
-  override root!: HTMLElement;  // Assigned in MDCComponent constructor.
   private handleContentClick!:
       SpecificEventListener<'click'>;            // Assigned in #initialize.
   private primaryActionEl!: HTMLElement;         // Assigned in #initialize.
@@ -51,12 +50,12 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
       focusTrapFactory: MDCBannerFocusTrapFactory = (el, focusOptions) =>
           new FocusTrap(el, focusOptions),
   ) {
-    this.contentEl = this.root.querySelector(selectors.CONTENT) as HTMLElement;
-    this.textEl = this.root.querySelector(selectors.TEXT) as HTMLElement;
+    this.contentEl = this.root.querySelector<HTMLElement>(selectors.CONTENT)!;
+    this.textEl = this.root.querySelector<HTMLElement>(selectors.TEXT)!;
     this.primaryActionEl =
-        this.root.querySelector(selectors.PRIMARY_ACTION) as HTMLElement;
+        this.root.querySelector<HTMLElement>(selectors.PRIMARY_ACTION)!;
     this.secondaryActionEl =
-        this.root.querySelector(selectors.SECONDARY_ACTION) as HTMLElement;
+        this.root.querySelector<HTMLElement>(selectors.SECONDARY_ACTION)!;
     this.focusTrapFactory = focusTrapFactory;
 
     this.handleContentClick = (evt) => {

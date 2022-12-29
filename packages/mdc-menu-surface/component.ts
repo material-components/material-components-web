@@ -34,11 +34,11 @@ type RegisterFunction = () => void;
 
 /** MDC Menu Surface Factory */
 export type MDCMenuSurfaceFactory =
-    (el: Element, foundation?: MDCMenuSurfaceFoundation) => MDCMenuSurface;
+    (el: HTMLElement, foundation?: MDCMenuSurfaceFoundation) => MDCMenuSurface;
 
 /** MDC Menu Surface */
 export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
-  static override attachTo(root: Element): MDCMenuSurface {
+  static override attachTo(root: HTMLElement): MDCMenuSurface {
     return new MDCMenuSurface(root);
   }
 
@@ -113,8 +113,8 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   /**
-   * Sets the foundation to use page offsets for an positioning when the menu
-   * is hoisted to the body.
+   * Sets the foundation to use page offsets for a positioning when the menu is
+   * hoisted to the body.
    */
   setIsHoisted(isHoisted: boolean) {
     this.foundation.setIsHoisted(isHoisted);
@@ -188,7 +188,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       setTransformOrigin: (origin) => {
         const propertyName =
             `${getCorrectPropertyName(window, 'transform')}-origin`;
-        (this.root as HTMLElement).style.setProperty(propertyName, origin);
+        this.root.style.setProperty(propertyName, origin);
       },
 
       isFocused: () => document.activeElement === this.root,
@@ -204,10 +204,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         }
       },
       getInnerDimensions: () => {
-        return {
-          width: (this.root as HTMLElement).offsetWidth,
-          height: (this.root as HTMLElement).offsetHeight
-        };
+        return {width: this.root.offsetWidth, height: this.root.offsetHeight};
       },
       getAnchorDimensions: () => this.anchorElement ?
           this.anchorElement.getBoundingClientRect() :
@@ -225,7 +222,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
-        const rootHTML = this.root as HTMLElement;
+        const rootHTML = this.root;
         rootHTML.style.left = 'left' in position ? `${position.left}px` : '';
         rootHTML.style.right = 'right' in position ? `${position.right}px` : '';
         rootHTML.style.top = 'top' in position ? `${position.top}px` : '';
@@ -233,7 +230,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
             'bottom' in position ? `${position.bottom}px` : '';
       },
       setMaxHeight: (height) => {
-        (this.root as HTMLElement).style.maxHeight = height;
+        this.root.style.maxHeight = height;
       },
     };
     // tslint:enable:object-literal-sort-keys

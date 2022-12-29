@@ -39,12 +39,12 @@ import {MDCMenuFoundation} from './foundation';
 import {MDCMenuItemComponentEventDetail} from './types';
 
 /** MDC Menu Factory */
-export type MDCMenuFactory = (el: Element, foundation?: MDCMenuFoundation) =>
-    MDCMenu;
+export type MDCMenuFactory =
+    (el: HTMLElement, foundation?: MDCMenuFoundation) => MDCMenu;
 
 /** MDC Menu */
 export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCMenu(root);
   }
 
@@ -74,7 +74,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   override initialSyncWithDOM() {
     this.menuSurface = this.menuSurfaceFactory(this.root);
 
-    const list = this.root.querySelector(strings.LIST_SELECTOR);
+    const list = this.root.querySelector<HTMLElement>(strings.LIST_SELECTOR);
     if (list) {
       this.list = this.listFactory(list);
       this.list.wrapFocus = true;
@@ -188,7 +188,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
    * elements within the items container that are proper list items, and not
    * supplemental / presentational DOM elements.
    */
-  get items(): Element[] {
+  get items(): HTMLElement[] {
     return this.list ? this.list.listElements : [];
   }
 
@@ -350,10 +350,10 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       },
       getMenuItemCount: () => this.items.length,
       focusItemAtIndex: (index) => {
-        (this.items[index] as HTMLElement).focus();
+        this.items[index].focus();
       },
       focusListRoot: () => {
-        (this.root.querySelector(strings.LIST_SELECTOR) as HTMLElement).focus();
+        this.root.querySelector<HTMLElement>(strings.LIST_SELECTOR)!.focus();
       },
       isSelectableItemAtIndex: (index) =>
           !!closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`),
@@ -361,7 +361,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const selectionGroupEl =
             closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`) as
             HTMLElement;
-        const selectedItemEl = selectionGroupEl.querySelector(
+        const selectedItemEl = selectionGroupEl.querySelector<HTMLElement>(
             `.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedItemEl ? this.items.indexOf(selectedItemEl) : -1;
       },

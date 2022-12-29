@@ -65,7 +65,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.foundation.setAutoStackButtons(autoStack);
   }
 
-  static override attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCDialog(root);
   }
 
@@ -251,6 +251,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   private getInitialFocusEl(): HTMLElement|null {
-    return this.root.querySelector(`[${strings.INITIAL_FOCUS_ATTRIBUTE}]`);
+    return this.root.querySelector<HTMLElement>(
+        `[${strings.INITIAL_FOCUS_ATTRIBUTE}]`);
   }
 }
