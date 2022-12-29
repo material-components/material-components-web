@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../../testing/dom';
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {MDCChipActionFocusBehavior, MDCChipActionType} from '../../action/constants';
@@ -51,16 +52,11 @@ function actionFixture(
 }
 
 function getFixture({primary, trailing, id}: TestOptions): HTMLElement {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
-  <div>
+  return createFixture(html`
+  <div id="${id}">
     ${actionFixture(primary)}
     ${trailing === undefined ? '' : actionFixture(trailing, true)}
-  </div>`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  el.id = id;
-  wrapper.removeChild(el);
-  return el;
+  </div>`);
 }
 
 function setupTest(options: TestOptions) {

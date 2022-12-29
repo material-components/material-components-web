@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../../testing/dom';
 import {emitEvent} from '../../../../testing/dom/events';
 import {attributes} from '../../segment/constants';
 import {MDCSegmentedButtonSegment} from '../../segment/index';
@@ -30,8 +31,7 @@ import {MDCSegmentedButton} from '../index';
 import {testCssClasses, testIndices, testSegmentIds, testSelectors} from './constants';
 
 const getFixtureMultiWithLabel = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-segmented-button" role="group">
       <button class="mdc-segmented-button__segment" aria-pressed="false">
         <div class="mdc-segmented-button__label">Segment Label</div>
@@ -44,11 +44,7 @@ const getFixtureMultiWithLabel = () => {
         <i class="material-icons mdc-segmented-button__icon">favorite</i>
       </button>
     </div>
-  `;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 const setupTest = () => {

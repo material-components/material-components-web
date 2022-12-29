@@ -21,14 +21,14 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../../../testing/dom';
 import {emitEvent} from '../../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../../testing/helpers/foundation';
 import {MDCChipFoundation} from '../../chip/index';
 import {MDCChipSet, MDCChipSetFoundation} from '../index';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <div class="mdc-chip-set">
     <div class="mdc-chip" id="chip1">
       <div class="mdc-chip__text">Chip content</div>
@@ -39,11 +39,7 @@ const getFixture = () => {
     <div class="mdc-chip" id="chip3">
       <div class="mdc-chip__text">Chip content</div>
     </div>
-  </div>`;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  </div>`);
 };
 
 describe('MDCChipSet', () => {
@@ -218,14 +214,10 @@ describe('MDCChipSet', () => {
     const {component} = setupTest();
     // component.initialSyncWithDOM(); // TODO: why is this here?
 
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const chipEl = createFixture(html`
     <div class="mdc-chip">
       <div class="mdc-chip__text">Hello world</div>
-    </div>`;
-
-    const chipEl = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(chipEl);
+    </div>`);
     component.addChip(chipEl);
 
     expect(component.chips.length).toEqual(4);

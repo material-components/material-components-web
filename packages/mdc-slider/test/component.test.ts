@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getFixture, html} from '../../../testing/dom';
+import {createFixture, html} from '../../../testing/dom';
 import {createMouseEvent, emitEvent} from '../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {attributes, cssClasses, events, MDCSlider, MDCSliderFoundation, Thumb} from '../index';
@@ -520,7 +520,7 @@ describe('MDCSlider', () => {
     let root: HTMLElement, thumb: HTMLElement, trackActive: HTMLElement;
 
     beforeEach(() => {
-      root = getFixture(html`
+      root = createFixture(html`
         <div class="mdc-slider mdc-slider--discrete">
           <input class="mdc-slider__input" type="hidden" min="0" max="100"
                         value="70" step="10">
@@ -645,7 +645,7 @@ function setUpTest(
       </div>` :
                                    '';
 
-  const root = getFixture(html`
+  const root = createFixture(html`
     <div class="mdc-slider ${discreteClass} ${rangeClass} ${tickMarksClass}">
       ${inputStart}
       ${inputEnd}

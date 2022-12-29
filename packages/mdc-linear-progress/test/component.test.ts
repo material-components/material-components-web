@@ -25,6 +25,7 @@
 import {animationDimensionPercentages as percentages} from '../../mdc-linear-progress/constants';
 import {MDCLinearProgress, MDCLinearProgressFoundation} from '../../mdc-linear-progress/index';
 import {MDCResizeObserver, MDCResizeObserverCallback, MDCResizeObserverEntry, WithMDCResizeObserver} from '../../mdc-linear-progress/types';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
@@ -41,8 +42,7 @@ const roundPixelsToTwoDecimals = (val: string) => {
 };
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div role="progressbar" class="mdc-linear-progress" aria-label="Unit Test Progress Bar" aria-valuemin="0"
       aria-valuemax="1" aria-valuenow="0" style="width: 100px">
       <div class="mdc-linear-progress__buffer">
@@ -56,10 +56,7 @@ function getFixture() {
         <span class="mdc-linear-progress__bar-inner"></span>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 const originalResizeObserver = RO;

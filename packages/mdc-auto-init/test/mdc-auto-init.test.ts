@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {MDCAttachable, mdcAutoInit} from '../index';
 
 class FakeComponent {
@@ -43,30 +44,26 @@ interface FakeHTMLElement extends HTMLElement {
   FakeComponent: FakeComponent;
 }
 
-const createFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+function getFixture() {
+  return createFixture(html`
   <div id="root">
     <p data-mdc-auto-init="FakeComponent" class="mdc-fake">Fake Element</p>
   </div>
-`;
-  const el = wrapper.firstElementChild as unknown as Document;
-  wrapper.removeChild(el);
-  return el;
-};
+`);
+}
 
 const setupTest = () => {
   mdcAutoInit.deregisterAll();
   mdcAutoInit.register(
       'FakeComponent', FakeComponent as unknown as MDCAttachable);
-  return createFixture();
+  return getFixture();
 };
 
 const setupInvalidTest = () => {
   mdcAutoInit.deregisterAll();
   mdcAutoInit.register(
       'InvalidComponent', InvalidComponent as unknown as MDCAttachable);
-  return createFixture();
+  return getFixture();
 };
 
 describe('MDCAutoInit', () => {

@@ -22,13 +22,13 @@
  */
 
 import {MDCTab, MDCTabFoundation} from '../../mdc-tab/index';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {MDCTabBar, MDCTabBarFoundation} from '../index';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-tab-bar">
       <div class="mdc-tab-scroller">
         <div class="mdc-tab-scroller__scroll-area">
@@ -49,10 +49,7 @@ function getFixture() {
         </div>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as Element;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 describe('MDCTabBar', () => {

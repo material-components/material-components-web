@@ -22,19 +22,16 @@
  */
 
 import {MDCFormField} from '../../mdc-form-field/index';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-form-field">
       <input type="radio" id="radio" checked name="radio">
       <label for="radio">Foo</label>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {

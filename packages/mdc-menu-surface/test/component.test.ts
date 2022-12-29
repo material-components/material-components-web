@@ -23,6 +23,7 @@
 
 import {getCorrectPropertyName} from '@material/animation/util';
 
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {Corner, cssClasses, strings} from '../constants';
@@ -32,8 +33,7 @@ function getFixture(open = false, fixedPosition = false) {
   const openClass = open ? 'mdc-menu-surface--open' : '';
   const fixedClass = fixedPosition ? 'mdc-menu-surface--fixed' : '';
 
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-menu-surface ${openClass} ${fixedClass}" tabindex="-1">
       <ul class="mdc-deprecated-list" role="menu">
         <li class="mdc-deprecated-list-item" role="menuitem" tabindex="0">Item</a>
@@ -41,21 +41,15 @@ function getFixture(open = false, fixedPosition = false) {
         <li class="mdc-deprecated-list-item" role="menuitem" tabindex="0">Another Item</a>
       </nav>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function getAnchorFixture(menuFixture: HTMLElement) {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  const anchorEl = createFixture(html`
     <div class="mdc-menu-surface--anchor">
       <button class="mdc-button">Open</button>
     </div>
-  `;
-  const anchorEl = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(anchorEl);
+  `);
 
   anchorEl.appendChild(menuFixture);
   return anchorEl;

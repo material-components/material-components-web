@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {strings} from '../constants';
@@ -30,8 +31,7 @@ import {MDCShortTopAppBarFoundation} from '../short/foundation';
 import {MDCTopAppBarFoundation} from '../standard/foundation';
 
 function getFixture(removeIcon = false) {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  const el = createFixture(html`
     <div>
       <header class="mdc-top-app-bar">
       <div class="mdc-top-app-bar__row">
@@ -59,10 +59,7 @@ function getFixture(removeIcon = false) {
       <main class="mdc-top-app-bar-fixed-adjust">
       </main>
     </div>
-  `;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
+  `);
 
   if (removeIcon) {
     const icon =

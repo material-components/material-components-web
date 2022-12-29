@@ -23,15 +23,15 @@
 
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {strings} from '../constants';
 import {MDCCheckbox, MDCCheckboxFoundation} from '../index';
 
-function getFixture(): Element {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+function getFixture() {
+  return createFixture(html`
     <div class="mdc-checkbox">
       <input type="checkbox"
              class="mdc-checkbox__native-control"
@@ -48,10 +48,7 @@ function getFixture(): Element {
         <div class="mdc-checkbox__mixedmark"></div>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as Element;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {

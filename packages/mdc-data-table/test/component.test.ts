@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {html} from '../../../testing/dom';
+import {createFixture, html} from '../../../testing/dom';
 import {createMouseEvent} from '../../../testing/dom/events';
 import {MDCDataTable} from '../component';
 import {cssClasses, dataAttributes, events, selectors, SortValue} from '../constants';
@@ -43,11 +43,11 @@ interface CheckboxTemplateProps {
   isChecked: boolean;
 }
 
-function mdcCheckboxTemplate(props: Partial<CheckboxTemplateProps>): string {
+function mdcCheckboxTemplate(props: Partial<CheckboxTemplateProps>) {
   return html`
     <div class="mdc-checkbox ${props.classNames || ''}">
       <input type="checkbox" class="mdc-checkbox__native-control" ${
-      props.isChecked ? 'checked' : ''}></input>
+      props.isChecked ? 'checked' : ''}>
       <div class="mdc-checkbox__background">
         <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
           <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -62,7 +62,7 @@ interface IconButtonProps {
   classNames: string;
 }
 
-function mdcIconButtonTemplate(props: IconButtonProps): string {
+function mdcIconButtonTemplate(props: IconButtonProps) {
   const classes = {
     'mdc-icon-button': true,
     'material-icons': true,
@@ -73,14 +73,14 @@ function mdcIconButtonTemplate(props: IconButtonProps): string {
 }
 
 interface DataTableHeaderCellTemplateProps {
-  content: string;
+  content: string|ReturnType<typeof html>;
   isSortable?: boolean;
   columnId?: string;
 }
 
 
 function mdcDataTableHeaderCellTemplate(
-    props: DataTableHeaderCellTemplateProps): string {
+    props: DataTableHeaderCellTemplateProps) {
   const classes = {
     [cssClasses.HEADER_CELL]: true,
     [cssClasses.HEADER_CELL_WITH_SORT]: !!props.isSortable,
@@ -107,11 +107,10 @@ function mdcDataTableHeaderCellTemplate(
 
 interface DataTableCellTemplateProps {
   isNumeric: boolean;
-  content: string|number;
+  content: string|number|ReturnType<typeof html>;
 }
 
-function mdcDataTableCellTemplate(props: Partial<DataTableCellTemplateProps>):
-    string {
+function mdcDataTableCellTemplate(props: Partial<DataTableCellTemplateProps>) {
   const classes = {
     [cssClasses.CELL_NUMERIC]: !!props.isNumeric,
   };
@@ -127,7 +126,7 @@ interface DataTableRowTemplateProps {
   withoutRowSelection?: boolean;
 }
 
-function mdcDataTableRowTemplate(props: DataTableRowTemplateProps): string {
+function mdcDataTableRowTemplate(props: DataTableRowTemplateProps) {
   const classes = {
     [cssClasses.ROW]: true,
     [cssClasses.ROW_SELECTED]: props.isSelected,
@@ -151,7 +150,7 @@ function mdcDataTableRowTemplate(props: DataTableRowTemplateProps): string {
   `;
 }
 
-const progressIndicatorTemplate = (): string => {
+const progressIndicatorTemplate = () => {
   return html`
       <div class="mdc-data-table__progress-indicator">
         <div class="mdc-data-table__scrim"></div>
@@ -224,18 +223,16 @@ interface RenderComponentProps {
 
 function renderComponent(props: RenderComponentProps): HTMLElement {
   const headerRowContent =
-      (props.withoutRowSelection ? '' : mdcDataTableHeaderCellTemplate({
+      html`${props.withoutRowSelection ? '' : mdcDataTableHeaderCellTemplate({
         content: mdcCheckboxTemplate({
           classNames: cssClasses.HEADER_ROW_CHECKBOX,
         }),
-      })) +
-      props.data.headers
-          .map((header: DataTableHeader) => mdcDataTableHeaderCellTemplate({
-                 content: header.name,
-                 isSortable: header.isSortable,
-                 columnId: header.columnId,
-               }))
-          .join('');
+      })}
+      ${props.data.headers.map((header) => mdcDataTableHeaderCellTemplate({
+                                 content: header.name,
+                                 isSortable: header.isSortable,
+                                 columnId: header.columnId,
+                               }))}`;
   const bodyContent =
       props.data.rows.map((row: Array<string|number>, index: number) => {
         const isSelected = props.data.selectedRowIndexes.indexOf(index) >= 0;
@@ -275,10 +272,7 @@ function renderComponent(props: RenderComponentProps): HTMLElement {
     document.body.removeChild(prevTable.parentElement as HTMLElement);
   }
 
-  const container = document.createElement('div');
-  container.innerHTML = blobHtml;
-  document.body.appendChild(container);
-  return document.querySelector(`.${cssClasses.ROOT}`) as HTMLElement;
+  return createFixture(blobHtml);
 }
 
 interface SetupProps {

@@ -22,22 +22,18 @@
  */
 
 import {MDCRipple} from '../../../../mdc-ripple/index';
+import {createFixture, html} from '../../../../../testing/dom';
 import {emitEvent} from '../../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../../testing/helpers/foundation';
 import {MDCChipTrailingAction, MDCChipTrailingActionFoundation, trailingActionStrings as strings} from '../index';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <button class="mdc-deprecated-chip-trailing-action" tabindex="-1">
     <span class="mdc-deprecated-chip-trailing-action__ripple"></span>
     <span class="mdc-deprecated-chip-trailing-action__touch-target"></span>
     <span class="mdc-deprecated-chip-trailing-action__icon">X</span>
-  </div>`;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  </div>`);
 };
 
 class FakeRipple {

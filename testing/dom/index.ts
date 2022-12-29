@@ -37,10 +37,12 @@ export const html =
 /**
  * @return HTMLElement for given HTML content in string format.
  */
-export function getFixture(content: string): HTMLElement {
+export function createFixture<T extends HTMLElement = HTMLElement>(
+    content: string): T {
   const wrapper = document.createElement('div');
+  // TODO(b/263899951): do not assign innerHTML
   wrapper.innerHTML = content;
-  const el = wrapper.firstElementChild as HTMLElement;
+  const el = wrapper.firstElementChild as T;
   wrapper.removeChild(el);
   return el;
 }

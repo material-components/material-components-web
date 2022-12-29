@@ -21,13 +21,13 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {cssClasses, deprecatedClassNameMap, strings} from '../constants';
 import {MDCList, MDCListFoundation} from '../index';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <ul class="mdc-deprecated-list" tabindex="-1">
       <li class="mdc-deprecated-list-item" tabindex="0">
         <span class="mdc-deprecated-list-item__ripple"></span>
@@ -50,15 +50,11 @@ function getFixture() {
         <input type="radio"/>
       </li>
      </ul>
-    `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+    `);
 }
 
 function getFixtureWithDisabledItems() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <ul class="mdc-deprecated-list" tabindex="-1">
       <li class="mdc-deprecated-list-item" tabindex="0">
         <span class="mdc-deprecated-list-item__ripple"></span>
@@ -81,15 +77,11 @@ function getFixtureWithDisabledItems() {
         <input type="radio"/>
       </li>
      </ul>
-    `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+    `);
 }
 
 function getTwoLineFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
       <ul class="mdc-deprecated-list mdc-deprecated-list--two-line">
         <li class="mdc-deprecated-list-item" tabindex="0">
           <span class="mdc-deprecated-list-item__text">
@@ -122,10 +114,7 @@ function getTwoLineFixture() {
           </span>
         </li>
       </ul>
-    `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+    `);
 }
 
 function setupTest(root = getFixture()) {

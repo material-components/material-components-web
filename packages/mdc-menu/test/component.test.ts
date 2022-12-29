@@ -24,14 +24,14 @@
 import {MDCListFoundation} from '../../mdc-list/index';
 import {Corner} from '../../mdc-menu-surface/constants';
 import {MDCMenuSurfaceFoundation} from '../../mdc-menu-surface/foundation';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {DefaultFocusState} from '../constants';
 import {MDCMenu, MDCMenuFoundation} from '../index';
 
 function getFixture(open = false) {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-menu mdc-menu-surface ${
       open ? 'mdc-menu-surface--open' : ''}">
       <ul class="mdc-deprecated-list" role="menu" tabIndex="-1">
@@ -58,15 +58,11 @@ function getFixture(open = false) {
         </li>
       </ul>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function getFixtureWithMultipleSelectionGroups(open = false) {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-menu mdc-menu-surface ${
       open ? 'mdc-menu-surface--open' : ''}">
       <ul class="mdc-deprecated-list" role="menu" tabIndex="-1">
@@ -106,10 +102,7 @@ function getFixtureWithMultipleSelectionGroups(open = false) {
         </li>
       </ul>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 class FakeList {

@@ -23,6 +23,7 @@
 
 import {MDCRipple} from '../../../mdc-ripple/component';
 import {supportsCssVariables} from '../../../mdc-ripple/util';
+import {createFixture, html} from '../../../../testing/dom';
 import {emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
@@ -33,8 +34,7 @@ import {MDCSwitchFoundation} from '../foundation';
 const {NATIVE_CONTROL_SELECTOR, RIPPLE_SURFACE_SELECTOR} = strings;
 
 function getFixture(): Element {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-switch">
       <div class="mdc-switch__track"></div>
       <div class="mdc-switch__thumb-underlay">
@@ -43,10 +43,7 @@ function getFixture(): Element {
         </div>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as Element;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {

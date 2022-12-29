@@ -22,6 +22,7 @@
  */
 
 import {DATA_MDC_DOM_ANNOUNCE} from '../../../mdc-dom/announce';
+import {createFixture, html} from '../../../../testing/dom';
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
@@ -66,14 +67,10 @@ function chipFixture({primary, trailing, id}: ChipOptions): string {
 }
 
 function getFixture({chips, isMultiselectable}: TestOptions): HTMLElement {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <div ${isMultiselectable ? 'aria-multiselectable="true"' : ''}>
     ${chips.map((chip) => chipFixture(chip))}
-  </div>`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  </div>`);
 }
 
 function setupTest(options: TestOptions) {

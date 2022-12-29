@@ -22,17 +22,13 @@
  */
 
 
+import {createFixture, html} from '../../../../testing/dom';
 import {MDCTextFieldHelperText} from '../../../mdc-textfield/helper-text/index';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <div class="mdc-textfield__helper-text"></div>
-`;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+`);
 };
 
 describe('MDCTextFieldHelperText', () => {

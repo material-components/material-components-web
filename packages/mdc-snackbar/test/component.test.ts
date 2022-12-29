@@ -21,14 +21,14 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {numbers, strings} from '../constants';
 import {MDCSnackbar, MDCSnackbarFoundation} from '../index';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div>
       <aside class="mdc-snackbar">
         <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
@@ -40,10 +40,7 @@ function getFixture() {
           </div>
         </div>
       </aside>
-    </div>`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+    </div>`);
 }
 
 function setupTest(fixture = getFixture()) {

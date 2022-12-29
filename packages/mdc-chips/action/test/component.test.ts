@@ -22,6 +22,7 @@
  */
 
 
+import {createFixture, html} from '../../../../testing/dom';
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {MDCChipAction, MDCChipActionAttributes, MDCChipActionEvents, MDCChipActionFocusBehavior, MDCChipActionType} from '../index';
 
@@ -38,16 +39,12 @@ function getFixture({
   isFocusable,
   isSelectable,
 }: TestOptions): HTMLButtonElement {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture<HTMLButtonElement>(html`
   <button class="mdc-evolution-chip-action
       ${isTrailing ? 'mdc-evolution-chip__action--trailing' : ''}"
       ${isFocusable ? '' : 'aria-hidden="true"'}
       ${isSelectable ? 'role="option"' : ''}
-      ${isDisabled ? 'disabled' : ''}>Label</button> `;
-  const el = wrapper.firstElementChild as HTMLButtonElement;
-  wrapper.removeChild(el);
-  return el;
+      ${isDisabled ? 'disabled' : ''}>Label</button> `);
 }
 
 function setupTest(options: TestOptions = {

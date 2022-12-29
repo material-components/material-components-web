@@ -23,14 +23,14 @@
 
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
+import {createFixture, html} from '../../../testing/dom';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCRadio, MDCRadioFoundation} from '../index';
 
 const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-radio">
       <input type="radio" id="my-radio" name="my-radio-group"
              class="mdc-radio__native-control" aria-labelledby="my-radio-label">
@@ -39,10 +39,7 @@ function getFixture() {
         <div class="mdc-radio__inner-circle"></div>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as Element;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {

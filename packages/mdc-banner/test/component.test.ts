@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getFixture} from '../../../testing/dom';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {CloseReason, cssClasses, events, numbers, selectors} from '../constants';
@@ -49,7 +49,7 @@ describe('MDCBanner', () => {
   let fixture: HTMLElement;
 
   beforeEach(() => {
-    fixture = getFixture(`<div>
+    fixture = createFixture(html`<div>
       <div class="mdc-banner" role="banner">
         <div class="mdc-banner__content">
           <div class="mdc-banner__text"
@@ -258,7 +258,7 @@ describe('MDCBanner', () => {
   });
 
   it('getSecondaryActionText returns null if no secondary action', () => {
-    fixture = getFixture(`<div>
+    fixture = createFixture(html`<div>
       <div class="mdc-banner" role="banner">
         <div class="mdc-banner__content">
           <div class="mdc-banner__text"

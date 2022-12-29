@@ -23,7 +23,7 @@
 
 import {KEY} from '@material/dom/keyboard';
 
-import {getFixture} from '../../../testing/dom';
+import {createFixture, html} from '../../../testing/dom';
 import {createKeyboardEvent, emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
@@ -48,7 +48,7 @@ describe('MDCTooltip', () => {
   setUpMdcTestEnvironment();
   describe('plain tooltip tests', () => {
     beforeEach(() => {
-      fixture = getFixture(`<div>
+      fixture = createFixture(html`<div>
         <button aria-describedby="tt0">
           anchor
         </button>
@@ -232,7 +232,7 @@ describe('MDCTooltip', () => {
 
     it('detects tooltip labels that span multiple lines', () => {
       document.body.removeChild(fixture);
-      fixture = getFixture(`<div>
+      fixture = createFixture(html`<div>
         <button data-tooltip-id="tt0">
           anchor
         </button>
@@ -263,7 +263,7 @@ describe('MDCTooltip', () => {
 
   describe('default interactive rich tooltip tests', () => {
     beforeEach(() => {
-      fixture = getFixture(`<div>
+      fixture = createFixture(html`<div>
         <button data-tooltip-id="tt0" aria-haspopup="dialog" aria-expanded="false">
           anchor
         </button>
@@ -491,7 +491,7 @@ describe('MDCTooltip', () => {
 
   describe('persistent non-interactive rich tooltip tests', () => {
     beforeEach(() => {
-      fixture = getFixture(`<div>
+      fixture = createFixture(html`<div>
         <button aria-describedby="tt0">
           anchor
         </button>

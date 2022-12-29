@@ -28,7 +28,7 @@ import {MDCNotchedOutline} from '../../mdc-notched-outline/index';
 import {MDCRipple, MDCRippleFoundation} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
 import {emitEvent} from '../../../testing/dom/events';
-import {getFixture as createFixture} from '../../../testing/dom/index';
+import {createFixture, html} from '../../../testing/dom/index';
 import {checkNumTimesSpyCalledWithArgs, createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, strings} from '../constants';
@@ -87,7 +87,7 @@ class FakeHelperText {
 }
 
 function getFixture() {
-  return createFixture(`
+  return createFixture(html`
     <div class="mdc-select mdc-select--with-leading-icon">
       <input type="hidden" name="test-input">
       <div class="mdc-select__anchor">
@@ -133,7 +133,7 @@ function getFixture() {
 }
 
 function getOutlineFixture() {
-  return createFixture(`
+  return createFixture(html`
     <div class="mdc-select mdc-select--outlined mdc-select--with-leading-icon">
       <input type="hidden" name="test-input">
       <div class="mdc-select__anchor">
@@ -188,7 +188,7 @@ function getHelperTextFixture(root = getFixture()) {
       'aria-controls', 'test-helper-text');
   containerDiv.appendChild(root);
   containerDiv.appendChild(createFixture(
-      `<p class="mdc-select-helper-text" id="test-helper-text">Hello World</p>`));
+      html`<p class="mdc-select-helper-text" id="test-helper-text">Hello World</p>`));
   return containerDiv;
 }
 
@@ -525,7 +525,7 @@ describe('MDCSelect', () => {
   it('#initialSyncWithDOM sets the selected index and hidden input value' +
          ' if an option has the selected class',
      () => {
-       const fixture = createFixture(`
+       const fixture = createFixture(html`
         <div class="mdc-select">
           <input type="hidden" name="test-input">
           <div class="mdc-select__anchor">
@@ -574,7 +574,7 @@ describe('MDCSelect', () => {
      });
 
   it('#initialSyncWithDOM sets value if hidden input has value', () => {
-    const fixture = createFixture(`
+    const fixture = createFixture(html`
       <div class="mdc-select mdc-select--with-leading-icon">
         <input type="hidden" name="test-input" value="orange">
         <div class="mdc-select__anchor">
@@ -623,7 +623,7 @@ describe('MDCSelect', () => {
 
   it('#initialSyncWithDOM sets the selected index if empty option has the selected class',
      () => {
-       const fixture = createFixture(`
+       const fixture = createFixture(html`
         <div class="mdc-select">
           <div class="mdc-select__anchor">
             <span class="mdc-select__ripple"></span>
@@ -671,7 +671,7 @@ describe('MDCSelect', () => {
 
   it('#initialSyncWithDOM disables the select if the disabled class is found',
      () => {
-       const fixture = createFixture(`
+       const fixture = createFixture(html`
     <div class="mdc-select mdc-select--disabled">
       <div class="mdc-select__anchor">
         <span class="mdc-select__ripple"></span>
@@ -823,7 +823,7 @@ describe('MDCSelect', () => {
      });
 
   it('adapter#floatLabel does not throw error if label does not exist', () => {
-    const fixture = createFixture(`
+    const fixture = createFixture(html`
     <div class="mdc-select">
       <div class="mdc-select__anchor">
         <span class="mdc-select__ripple"></span>
@@ -874,7 +874,7 @@ describe('MDCSelect', () => {
   it('adapter#activateBottomLine and adapter.deactivateBottomLine ' +
          'does not throw error if bottomLine does not exist',
      () => {
-       const fixture = createFixture(`
+       const fixture = createFixture(html`
     <div class="mdc-select">
       <div class="mdc-select__anchor">
         <span class="mdc-select__ripple"></span>

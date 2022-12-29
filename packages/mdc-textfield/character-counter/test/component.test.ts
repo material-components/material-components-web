@@ -22,17 +22,13 @@
  */
 
 
+import {createFixture, html} from '../../../../testing/dom';
 import {MDCTextFieldCharacterCounter} from '../../../mdc-textfield/character-counter/index';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-text-field-character-counter">0/10</div>
-  `;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 describe('MDCTextFieldCharacterCounter', () => {

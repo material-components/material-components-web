@@ -23,15 +23,12 @@
 
 
 import {MDCFloatingLabel} from '../../mdc-floating-label/index';
+import {createFixture, html} from '../../../testing/dom';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <label class="mdc-floating-label"></label>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 

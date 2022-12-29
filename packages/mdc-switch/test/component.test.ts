@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {spyOnAllFunctions, spyOnAllPrototypeFunctions} from '../../../testing/helpers/jasmine';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCSwitchRenderAdapter} from '../adapter';
@@ -29,8 +30,7 @@ import {CssClasses} from '../constants';
 import {MDCSwitchRenderFoundation} from '../foundation';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture<HTMLButtonElement>(html`
     <button class="mdc-switch" role="switch" type="button" aria-checked="false">
       <div class="mdc-switch__track"></div>
       <div class="mdc-switch__handle-track">
@@ -52,10 +52,7 @@ function getFixture() {
         </div>
       </div>
     </button>
-  `;
-  const el = wrapper.firstElementChild as HTMLButtonElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 class MockMDCSwitch extends MDCSwitch {

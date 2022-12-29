@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../../testing/dom';
 import {emitEvent} from '../../../../testing/dom/events';
 import {attributes, booleans, cssClasses, events} from '../constants';
 import {MDCSegmentedButtonSegment} from '../index';
@@ -28,16 +29,11 @@ import {MDCSegmentedButtonSegment} from '../index';
 import {testStrings} from './constants';
 
 const getFixtureMultiSelectWithLabel = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <button class="mdc-segmented-button__segment" aria-pressed="false">
       <div class="mdc-segmented-button__label">Segment Label</div>
     </button>
-  `;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 const setupTest = () => {

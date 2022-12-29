@@ -21,14 +21,14 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCTab, MDCTabFoundation} from '../index';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <button class="mdc-tab" aria-selected="false" role="tab">
     <span class="mdc-tab__content">
       <span class="mdc-tab__text-label">Foo</span>
@@ -38,10 +38,7 @@ const getFixture = () => {
     <span class="mdc-tab-indicator">
       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
     </span>
-  </button>`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  </button>`);
 };
 
 function setupTest({useMockFoundation = false} = {}) {

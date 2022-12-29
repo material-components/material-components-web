@@ -22,7 +22,7 @@
  */
 
 
-import {getFixture} from '../../../../testing/dom';
+import {createFixture, html} from '../../../../testing/dom';
 import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {cssClasses, strings} from '../../constants';
@@ -225,7 +225,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
 
   it('#handleTransitionEnd removes all animating classes', () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEventTarget = getFixture(`<div class="foo">bar</div>`);
+    const mockEventTarget = createFixture(html`<div class="foo">bar</div>`);
     mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
         .and.returnValue(true);
     foundation.handleTransitionEnd(
@@ -238,7 +238,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('#handleTransitionEnd removes open class after closing, restores the focus and calls notifyClose',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEventTarget = getFixture(`<div>root</div>`);
+       const mockEventTarget = createFixture(html`<div>root</div>`);
        mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
            .and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.CLOSING).and.returnValue(true);
@@ -254,7 +254,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
     focuses on active navigation item and calls notifyOpen`,
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEventTarget = getFixture(`<div>root</div>`);
+       const mockEventTarget = createFixture(html`<div>root</div>`);
        mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
            .and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.CLOSING).and.returnValue(false);
@@ -270,7 +270,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('#handleTransitionEnd doesn\'t do anything if event is not triggered by root element',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEventTarget = getFixture(`<div>child</div>`);
+       const mockEventTarget = createFixture(html`<div>child</div>`);
        mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
            .and.returnValue(false);
 
@@ -301,7 +301,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
 
   it('#handleTransitionEnd restores the focus.', () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEventTarget = getFixture(`<div class="foo">bar</div>`);
+    const mockEventTarget = createFixture(html`<div class="foo">bar</div>`);
 
     mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
         .and.returnValue(true);

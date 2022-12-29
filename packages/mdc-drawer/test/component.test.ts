@@ -22,7 +22,7 @@
  */
 
 import {MDCList} from '../../mdc-list/index';
-import {getFixture} from '../../../testing/dom';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
@@ -45,7 +45,7 @@ const defaultSetupOptions = {
 
 function getDrawerFixture(options: Partial<DrawerSetupOptions>): HTMLElement|
     DocumentFragment {
-  const listContent = `
+  const listContent = html`
     <div class="mdc-deprecated-list-group">
       <nav class="mdc-deprecated-list">
         <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page">
@@ -54,17 +54,17 @@ function getDrawerFixture(options: Partial<DrawerSetupOptions>): HTMLElement|
       </nav>
     </div>
     `;
-  const drawerContent = `
+  const drawerContent = html`
     <div class="mdc-drawer ${options.variantClass}">
       <div class="mdc-drawer__content">
         ${options.hasList ? listContent : ''}
       </div>
     </div>
     `;
-  const scrimContent = `<div class="mdc-drawer-scrim"></div>`;
+  const scrimContent = html`<div class="mdc-drawer-scrim"></div>`;
   const isModal = options.variantClass === cssClasses.MODAL;
-  const drawerEl = getFixture(drawerContent);
-  const scrimEl = getFixture(scrimContent);
+  const drawerEl = createFixture(drawerContent);
+  const scrimEl = createFixture(scrimContent);
 
   if (options.shadowRoot) {
     const fragment = document.createDocumentFragment();
@@ -74,7 +74,7 @@ function getDrawerFixture(options: Partial<DrawerSetupOptions>): HTMLElement|
     }
     return fragment;
   } else {
-    return getFixture(`
+    return createFixture(html`
       <div class="body-content">
         ${drawerContent}
         ${isModal ? scrimContent : ''}
@@ -248,7 +248,7 @@ describe('MDCDrawer', () => {
   it('adapter#elementHasClass returns true when class is found on event target',
      () => {
        const {component} = setupTest();
-       const mockEventTarget = getFixture(`<div class="foo">bar</div>`);
+       const mockEventTarget = createFixture(html`<div class="foo">bar</div>`);
 
        expect((component.getDefaultFoundation() as any)
                   .adapter.elementHasClass(mockEventTarget, 'foo'))
@@ -257,7 +257,7 @@ describe('MDCDrawer', () => {
 
   it('adapter#restoreFocus restores focus to previously saved focus', () => {
     const {component, root} = setupTest();
-    const button = getFixture(`<button>Foo</button>`);
+    const button = createFixture(html`<button>Foo</button>`);
     document.body.appendChild(button);
     document.body.appendChild(root);
     button.focus();
@@ -275,8 +275,8 @@ describe('MDCDrawer', () => {
   it('adapter#restoreFocus focus shouldn\'t restore if focus is not within root element',
      () => {
        const {component, root} = setupTest();
-       const navButtonEl = getFixture(`<button>Foo</button>`);
-       const otherButtonEl = getFixture(`<button>Bar</button>`);
+       const navButtonEl = createFixture(html`<button>Foo</button>`);
+       const otherButtonEl = createFixture(html`<button>Bar</button>`);
        document.body.appendChild(navButtonEl);
        document.body.appendChild(otherButtonEl);
        document.body.appendChild(root);
@@ -295,7 +295,7 @@ describe('MDCDrawer', () => {
   it('adapter#restoreFocus focus is not restored if saveFocus never called',
      () => {
        const {component, root} = setupTest();
-       const button = getFixture(`<button>Foo</button>`);
+       const button = createFixture(html`<button>Foo</button>`);
        document.body.appendChild(button);
        document.body.appendChild(root);
        button.focus();

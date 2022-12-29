@@ -22,6 +22,7 @@
  */
 
 import {MDCRipple} from '../../../../mdc-ripple/index';
+import {createFixture, html} from '../../../../../testing/dom';
 import {emitEvent} from '../../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../../testing/helpers/foundation';
 import {strings as trailingActionStrings} from '../../trailingaction/constants';
@@ -30,24 +31,18 @@ import {chipStrings, MDCChip, MDCChipFoundation} from '../index';
 const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <div class="mdc-chip" role="row">
     <span role="gridcell">
       <span role="button" tabindex="0" class="mdc-chip__primary-action">
         <span class="mdc-chip__text">Chip content</span>
       </span>
     </span>
-  </div>`;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  </div>`);
 };
 
 const getFixtureWithCheckmark = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <div class="mdc-chip">
     <div class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
@@ -60,49 +55,36 @@ const getFixtureWithCheckmark = () => {
         <span class="mdc-chip__text">Chip content</span>
       </span>
     </span>
-  </div>`;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  </div>`);
 };
 
 const addLeadingIcon = (root: HTMLElement) => {
-  const wrapper = document.createElement('div');
-
-  wrapper.innerHTML =
-      `<i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>`;
-  const icon = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(icon);
+  const icon = createFixture(
+      html`<i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>`);
 
   root.insertBefore(icon, root.firstChild);
   return icon;
 };
 
 const addTrailingAction = (root: HTMLElement, isFocusable?: boolean) => {
-  const wrapper = document.createElement('div');
+  const parent = createFixture(html`<span role="gridcell"></span>`);
 
-  wrapper.innerHTML = `<span role="gridcell"></span>`;
-  const parent = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(parent);
-
-  let innerHTML: string;
+  let innerHTML: ReturnType<typeof html>;
   if (isFocusable) {
     innerHTML =
-        `<button class="mdc-chip-trailing-action aria-label="Remove chip" tabindex="-1">
+        html`<button class="mdc-chip-trailing-action" aria-label="Remove chip" tabindex="-1">
   <span class='mdc-chip-trailing-action__ripple'></span>
   <span class="mdc-chip-trailing-action__icon material-icons">close</span>
 </button>`;
   } else {
-    innerHTML = `<button class="mdc-chip-trailing-action aria-hidden="true">
+    innerHTML =
+        html`<button class="mdc-chip-trailing-action" aria-hidden="true">
   <span class='mdc-chip-trailing-action__ripple'></span>
   <span class="mdc-chip-trailing-action__icon material-icons">close</span>
 </button>`;
   }
 
-  wrapper.innerHTML = innerHTML;
-  const trailingAction = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(trailingAction);
+  const trailingAction = createFixture(innerHTML);
 
   parent.appendChild(trailingAction);
   root.appendChild(parent);
@@ -234,15 +216,11 @@ describe('MDCChip', () => {
   });
 
   it('sets id on chip if attribute exists', () => {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = `
+    const root = createFixture(html`
     <div class="mdc-chip" id="hello-chip">
       <div class="mdc-chip__text">Hello</div>
     </div>
-  `;
-    const root = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(root);
+  `);
 
     const component = new MDCChip(root);
     expect(component.id).toEqual('hello-chip');
@@ -313,12 +291,7 @@ describe('MDCChip', () => {
   it('adapter#eventTargetHasClass returns true if given element has class',
      () => {
        const {component} = setupTest();
-
-       const wrapper = document.createElement('div');
-
-       wrapper.innerHTML = `<div class="foo">bar</div>`;
-       const mockEventTarget = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(mockEventTarget);
+       const mockEventTarget = createFixture(html`<div class="foo">bar</div>`);
 
        expect((component.getDefaultFoundation() as any)
                   .adapter.eventTargetHasClass(mockEventTarget, 'foo'))

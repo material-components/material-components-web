@@ -23,19 +23,16 @@
 
 
 import {MDCNotchedOutline} from '../../mdc-notched-outline/index';
+import {createFixture, html} from '../../../testing/dom';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <span class="mdc-notched-outline">
       <span class="mdc-notched-outline__leading"></span>
       <span class="mdc-notched-outline__notch"></span>
       <span class="mdc-notched-outline__trailing"></span>
     </span>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 describe('MDCNotchedOutline', () => {

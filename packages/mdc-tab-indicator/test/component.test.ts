@@ -21,31 +21,25 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {MDCFadingTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCTabIndicator, MDCTabIndicatorFoundation} from '../index';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <span class="mdc-tab-indicator">
     <span class="mdc-tab-indicator__content"></span>
   </span>
-`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+`);
+  ;
 };
 
 const getFadingFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <span class="mdc-tab-indicator mdc-tab-indicator--fade">
     <span class="mdc-tab-indicator__content"></span>
   </span>
-`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+`);
 };
 
 describe('MDCTabIndicator', () => {

@@ -22,10 +22,10 @@
  */
 
 import {emitEvent} from '../../../../testing/dom/events';
-import {getFixture as createFixture} from '../../../../testing/dom/index';
+import {createFixture, html} from '../../../../testing/dom/index';
 import {MDCSelectIcon, MDCSelectIconFoundation} from '../index';
 
-const getFixture = () => createFixture(`
+const getFixture = () => createFixture(html`
   <div class="mdc-select__icon"></div>
 `);
 
