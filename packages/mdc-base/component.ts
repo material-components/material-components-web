@@ -21,8 +21,16 @@
  * THE SOFTWARE.
  */
 
+import {safeAttrPrefix} from 'safevalues';
+import {safeElement} from 'safevalues/dom';
+
 import {MDCFoundation} from './foundation';
 import {CustomEventListener, EventType, SpecificEventListener} from './types';
+
+function toCamelCase(str: string) {
+  // tslint:disable-next-line:enforce-name-casing
+  return String(str).replace(/\-([a-z])/g, (_, match) => match.toUpperCase());
+}
 
 /** MDC Component base */
 export class MDCComponent<FoundationType extends MDCFoundation> {
@@ -145,6 +153,35 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     }
 
     this.root.dispatchEvent(evt);
+  }
+
+  /**
+   * This is a intermediate fix to allow components to use safevalues. This
+   * limits setAttribute to setting tabindex, data attributes, and aria
+   * attributes.
+   *
+   * TODO(b/263990206): remove this method and add these directly in each
+   * component. This will remove this abstraction and make it clear that the
+   * caller can't set any attribute.
+   */
+  protected safeSetAttribute(
+      element: HTMLElement,
+      attribute: string,
+      value: string,
+  ) {
+    if (attribute === 'tabindex') {
+      element.tabIndex = Number(value);
+    } else if (attribute.indexOf('data-') === 0) {
+      const dataKey = toCamelCase(attribute.replace(/^data-/, ''));
+      element.dataset[dataKey] = value;
+    } else {
+      safeElement.setPrefixedAttribute(
+          [safeAttrPrefix`aria-`, safeAttrPrefix`role`],
+          element,
+          attribute,
+          value,
+      );
+    }
   }
 }
 

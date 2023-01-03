@@ -326,7 +326,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       },
       addAttributeToElementAtIndex: (index, attr, value) => {
         const list = this.items;
-        list[index].setAttribute(attr, value);
+        this.safeSetAttribute(list[index], attr, value);
       },
       removeAttributeFromElementAtIndex: (index, attr) => {
         const list = this.items;

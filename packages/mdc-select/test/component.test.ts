@@ -1100,9 +1100,9 @@ describe('MDCSelect', () => {
     document.body.appendChild(fixture);
     const adapter = (component.getDefaultFoundation() as any).adapter;
 
-    expect(anchor.hasAttribute('foo')).toBe(false);
-    adapter.setSelectAnchorAttr('foo', '1');
-    expect(anchor.getAttribute('foo')).toEqual('1');
+    expect(anchor.hasAttribute('data-foo')).toBe(false);
+    adapter.setSelectAnchorAttr('data-foo', '1');
+    expect(anchor.getAttribute('data-foo')).toEqual('1');
     document.body.removeChild(fixture);
   });
 

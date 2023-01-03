@@ -404,7 +404,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       getSelectAnchorAttr: (attr: string) =>
           this.selectAnchor.getAttribute(attr),
       setSelectAnchorAttr: (attr: string, value: string) => {
-        this.selectAnchor.setAttribute(attr, value);
+        this.safeSetAttribute(this.selectAnchor, attr, value);
       },
       removeSelectAnchorAttr: (attr: string) => {
         this.selectAnchor.removeAttribute(attr);

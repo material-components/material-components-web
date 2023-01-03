@@ -28,7 +28,7 @@ import {MDCFoundation} from '@material/base/foundation';
 
 import {strings} from './constants';
 
-const {AUTO_INIT_ATTR, AUTO_INIT_STATE_ATTR, INITIALIZED_STATE} = strings;
+const {AUTO_INIT_ATTR, DATASET_AUTO_INIT_STATE, INITIALIZED_STATE} = strings;
 
 /** MDC Attachable */
 export interface MDCAttachable extends Function {
@@ -69,7 +69,7 @@ function mdcAutoInit(root: ParentNode = document) {
   let nodes =
       Array.from(root.querySelectorAll<HTMLElement>(`[${AUTO_INIT_ATTR}]`));
   nodes = nodes.filter(
-      (node) => node.getAttribute(AUTO_INIT_STATE_ATTR) !== INITIALIZED_STATE);
+      (node) => node.dataset[DATASET_AUTO_INIT_STATE] !== INITIALIZED_STATE);
 
   for (const node of nodes) {
     const ctorName = node.getAttribute(AUTO_INIT_ATTR);
@@ -96,7 +96,7 @@ function mdcAutoInit(root: ParentNode = document) {
       writable: false,
     });
     components.push(component);
-    node.setAttribute(AUTO_INIT_STATE_ATTR, INITIALIZED_STATE);
+    node.dataset[DATASET_AUTO_INIT_STATE] = INITIALIZED_STATE;
   }
 
   emit('MDCAutoInit:End', {});

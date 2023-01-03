@@ -89,7 +89,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabAdapter = {
       setAttr: (attr, value) => {
-        this.root.setAttribute(attr, value);
+        this.safeSetAttribute(this.root, attr, value);
       },
       addClass: (className) => {
         this.root.classList.add(className);

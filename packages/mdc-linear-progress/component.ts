@@ -94,7 +94,7 @@ export class MDCLinearProgress extends
         this.root.classList.remove(className);
       },
       setAttribute: (attributeName: string, value: string) => {
-        this.root.setAttribute(attributeName, value);
+        this.safeSetAttribute(this.root, attributeName, value);
       },
       setStyle: (name: string, value: string) => {
         this.root.style.setProperty(name, value);

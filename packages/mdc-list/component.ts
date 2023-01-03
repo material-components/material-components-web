@@ -303,7 +303,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       setAttributeForElementIndex: (index, attr, value) => {
         const element = this.listElements[index];
         if (element) {
-          element.setAttribute(attr, value);
+          this.safeSetAttribute(element, attr, value);
         }
       },
       setCheckedCheckboxOrRadioAtIndex: (index, isChecked) => {
@@ -320,8 +320,9 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         const element = this.listElements[listItemIndex];
         const selector = strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX;
         Array.prototype.forEach.call(
-            element.querySelectorAll<HTMLElement>(selector), (el: Element) => {
-              el.setAttribute('tabindex', tabIndexValue);
+            element.querySelectorAll<HTMLElement>(selector),
+            (el: HTMLElement) => {
+              el.tabIndex = Number(tabIndexValue);
             });
       },
     };

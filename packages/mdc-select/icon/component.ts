@@ -49,7 +49,7 @@ export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
     const adapter: MDCSelectIconAdapter = {
       getAttr: (attr) => this.root.getAttribute(attr),
       setAttr: (attr, value) => {
-        this.root.setAttribute(attr, value);
+        this.safeSetAttribute(this.root, attr, value);
       },
       removeAttr: (attr) => {
         this.root.removeAttribute(attr);

@@ -566,8 +566,8 @@ describe('MDCTextField', () => {
         root.querySelector<HTMLInputElement>('.mdc-text-field__input')!;
 
     (component.getDefaultFoundation() as any)
-        .adapter.setInputAttr('foo', 'bar');
-    expect(input.getAttribute('foo')).toEqual('bar');
+        .adapter.setInputAttr('data-foo', 'bar');
+    expect(input.getAttribute('data-foo')).toEqual('bar');
   });
 
   it('#adapter.removeInputAttr removes attribute on input element', () => {

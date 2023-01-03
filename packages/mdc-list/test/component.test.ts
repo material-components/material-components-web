@@ -253,8 +253,8 @@ describe('MDCList', () => {
        const selectedNode =
            root.querySelectorAll<HTMLElement>('.mdc-deprecated-list-item')[1];
        (component.getDefaultFoundation() as any)
-           .adapter.setAttributeForElementIndex(1, 'foo', 'bar');
-       expect('bar').toEqual(selectedNode.getAttribute('foo') as string);
+           .adapter.setAttributeForElementIndex(1, 'data-foo', 'bar');
+       expect('bar').toEqual(selectedNode.getAttribute('data-foo') as string);
        document.body.removeChild(root);
      });
 

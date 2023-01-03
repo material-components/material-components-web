@@ -302,7 +302,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements
       },
       setPrimaryActionAttr: (attr, value) => {
         if (this.primaryAction) {
-          this.primaryAction.setAttribute(attr, value);
+          this.safeSetAttribute(this.primaryAction, attr, value);
         }
       },
       setStyleProperty: (propertyName, value) => {

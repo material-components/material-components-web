@@ -106,7 +106,7 @@ export class MDCChipTrailingAction extends
             strings.NAVIGATION_EVENT, {key}, true /* shouldBubble */);
       },
       setAttribute: (attr, value) => {
-        this.root.setAttribute(attr, value);
+        this.safeSetAttribute(this.root, attr, value);
       },
     };
     return new MDCChipTrailingActionFoundation(adapter);

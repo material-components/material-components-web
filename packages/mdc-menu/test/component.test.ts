@@ -476,8 +476,8 @@ describe('MDCMenu', () => {
        const firstItem =
            root.querySelector<HTMLElement>('.mdc-deprecated-list-item')!;
        (component.getDefaultFoundation() as any)
-           .adapter.addAttributeToElementAtIndex(0, 'foo', 'true');
-       expect(firstItem.getAttribute('foo') === 'true').toBe(true);
+           .adapter.addAttributeToElementAtIndex(0, 'data-foo', 'true');
+       expect(firstItem.getAttribute('data-foo') === 'true').toBe(true);
      });
 
   it('adapter#removeAttributeFromElementAtIndex adds a class to the element at the index provided',

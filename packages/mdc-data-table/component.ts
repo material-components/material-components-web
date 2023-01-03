@@ -194,7 +194,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
         return this.getHeaderCells()[index].getAttribute(attribute);
       },
       setAttributeByHeaderCellIndex: (index, attribute, value) => {
-        this.getHeaderCells()[index].setAttribute(attribute, value);
+        this.safeSetAttribute(this.getHeaderCells()[index], attribute, value);
       },
       setClassNameByHeaderCellIndex: (index, className) => {
         this.getHeaderCells()[index].classList.add(className);
@@ -306,7 +306,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       },
       setAttributeAtRowIndex:
           (rowIndex: number, attr: string, value: string) => {
-            this.getRows()[rowIndex].setAttribute(attr, value);
+            this.safeSetAttribute(this.getRows()[rowIndex], attr, value);
           },
       setHeaderRowCheckboxChecked: (checked: boolean) => {
         this.headerRowCheckbox.checked = checked;

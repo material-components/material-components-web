@@ -101,7 +101,7 @@ export class MDCSegmentedButtonSegment extends
         return this.root.getAttribute(attrName);
       },
       setAttr: (attrName, value) => {
-        this.root.setAttribute(attrName, value);
+        this.safeSetAttribute(this.root, attrName, value);
       },
       addClass: (className) => {
         this.root.classList.add(className);

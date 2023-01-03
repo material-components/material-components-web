@@ -142,7 +142,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements
         this.getNativeControl().removeAttribute(attr);
       },
       setNativeControlAttr: (attr, value) => {
-        this.getNativeControl().setAttribute(attr, value);
+        this.safeSetAttribute(this.getNativeControl(), attr, value);
       },
       setNativeControlDisabled: (disabled) => {
         this.getNativeControl().disabled = disabled;

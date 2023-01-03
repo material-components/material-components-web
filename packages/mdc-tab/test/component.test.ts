@@ -110,8 +110,9 @@ describe('MDCTab', () => {
 
   it('#adapter.setAttr adds a given attribute to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter.setAttr('foo', 'bar');
-    expect(root.getAttribute('foo')).toEqual('bar');
+    (component.getDefaultFoundation() as any)
+        .adapter.setAttr('data-foo', 'bar');
+    expect(root.getAttribute('data-foo')).toEqual('bar');
   });
 
   it('#adapter.activateIndicator activates the indicator subcomponent', () => {

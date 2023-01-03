@@ -23,6 +23,6 @@
 
 export const strings = {
   AUTO_INIT_ATTR: 'data-mdc-auto-init',
-  AUTO_INIT_STATE_ATTR: 'data-mdc-auto-init-state',
+  DATASET_AUTO_INIT_STATE: 'mdcAutoInitState',
   INITIALIZED_STATE: 'initialized',
 };

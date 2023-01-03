@@ -99,7 +99,7 @@ export class MDCCircularProgress extends
         this.root.removeAttribute(attributeName);
       },
       setAttribute: (attributeName: string, value: string) => {
-        this.root.setAttribute(attributeName, value);
+        this.safeSetAttribute(this.root, attributeName, value);
       },
       setDeterminateCircleAttribute: (attributeName: string, value: string) => {
         this.determinateCircle.setAttribute(attributeName, value);

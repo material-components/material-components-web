@@ -441,7 +441,7 @@ export class MDCTextField extends
     return {
       getNativeInput: () => this.input,
       setInputAttr: (attr, value) => {
-        this.input.setAttribute(attr, value);
+        this.safeSetAttribute(this.input, attr, value);
       },
       removeInputAttr: (attr) => {
         this.input.removeAttribute(attr);

@@ -73,7 +73,7 @@ export class MDCIconButtonToggle extends
       },
       getAttr: (attrName) => this.root.getAttribute(attrName),
       setAttr: (attrName, attrValue) => {
-        this.root.setAttribute(attrName, attrValue);
+        this.safeSetAttribute(this.root, attrName, attrValue);
       },
     };
     return new MDCIconButtonToggleFoundation(adapter);
