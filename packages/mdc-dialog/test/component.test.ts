@@ -22,15 +22,17 @@
  */
 
 import {supportsCssVariables} from '../../mdc-ripple/util';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {numbers, strings} from '../constants';
 import {MDCDialog, MDCDialogFoundation, util} from '../index';
 
-function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+const DEFAULT_CONTENT = html`Let Google help apps determine location.`;
+
+function getFixture(content: ReturnType<typeof html> = DEFAULT_CONTENT) {
+  return createFixture(html`
     <div>
       <button class="open-dialog-button">click</button>
       <div id="test-dialog"
@@ -44,7 +46,7 @@ function getFixture() {
               Use Google's location service?
             </h2>
             <section class="mdc-dialog__content">
-              Let Google help apps determine location.
+              ${content}
             </section>
             <div class="mdc-dialog__actions">
               <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel" type="button">
@@ -62,10 +64,7 @@ function getFixture() {
         </div>
         <div class="mdc-dialog__scrim"></div>
       </div>
-    </div>`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+    </div>`);
 }
 
 function setupTest(fixture = getFixture()) {
@@ -279,12 +278,13 @@ describe('MDCDialog', () => {
      });
 
   it('autoStackButtons adds scrollable class', () => {
-    const fixture = getFixture();
+    // Simulate a scrollable content area
+    const contentChildren =
+        new Array(100).join(html`<p>${DEFAULT_CONTENT}</p>`);
+    const fixture = getFixture(contentChildren);
     const root = fixture.querySelector<HTMLElement>('.mdc-dialog')!;
     const content = root.querySelector<HTMLElement>('.mdc-dialog__content')!;
 
-    // Simulate a scrollable content area
-    content.innerHTML = new Array(100).join(`<p>${content.textContent}</p>`);
     content.style.height = '50px';
     content.style.overflow = 'auto';
 

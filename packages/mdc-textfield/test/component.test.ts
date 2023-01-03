@@ -25,6 +25,7 @@ import {MDCFloatingLabel} from '../../mdc-floating-label/index';
 import {MDCLineRipple} from '../../mdc-line-ripple/index';
 import {MDCNotchedOutline} from '../../mdc-notched-outline/index';
 import {MDCRipple} from '../../mdc-ripple/index';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {cssClasses as characterCounterCssClasses} from '../../mdc-textfield/character-counter/constants';
@@ -34,72 +35,52 @@ import {MDCTextField, MDCTextFieldCharacterCounter, MDCTextFieldFoundation, MDCT
 const {cssClasses, strings} = MDCTextFieldFoundation;
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-leading-icon">
       <span class="mdc-floating-label" id="my-label">My Label</span>
       <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
       <span class="mdc-line-ripple"></span>
     </label>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 const getHelperLineWithHelperText = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="${cssClasses.HELPER_LINE}">
       <div class="${helperTextCssClasses.ROOT}">helper text</div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 const getHelperLineWithCharacterCounter = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="${cssClasses.HELPER_LINE}">
       <div class="${characterCounterCssClasses.ROOT}">helper text</div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 const getFixtureWithPrefix = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <label class="mdc-text-field mdc-text-field--filled">
       <span class="mdc-floating-label" id="my-label">My Label</span>
       <span class="mdc-text-field__affix mdc-text-field__affix--prefix">$</span>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
       <span class="mdc-line-ripple"></span>
     </label>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 const getFixtureWithSuffix = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <label class="mdc-text-field mdc-text-field--filled">
       <span class="mdc-floating-label" id="my-label">My Label</span>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
       <span class="mdc-text-field__affix mdc-text-field__affix--suffix">/100</span>
       <span class="mdc-line-ripple"></span>
     </label>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 describe('MDCTextField', () => {
@@ -249,11 +230,8 @@ describe('MDCTextField', () => {
     const root = getFixture();
     root.classList.add('mdc-text-field--with-trailing-icon');
 
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML =
-        `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`;
-    const el = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(el);
+    const el = createFixture(
+        html`<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`);
     root.appendChild(el);
     const component = new MDCTextField(root);
     expect(component['leadingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
@@ -265,10 +243,8 @@ describe('MDCTextField', () => {
     const leadingIcon =
         root.querySelector<HTMLElement>('.mdc-text-field__icon');
     root.removeChild(leadingIcon as HTMLElement);
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML =
-        `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`;
-    const trailingIcon = wrapper.firstElementChild as HTMLElement;
+    const trailingIcon = createFixture(
+        html`<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`);
     root.appendChild(trailingIcon);
     root.classList.add('mdc-text-field--with-trailing-icon');
     root.classList.remove('mdc-text-field--with-leading-icon');
@@ -286,10 +262,8 @@ describe('MDCTextField', () => {
 
   it('#constructor instantiates an outline on the `.mdc-notched-outline` element if present',
      () => {
-       const wrapper = document.createElement('div');
-       wrapper.innerHTML = `<span class="mdc-notched-outline"></span>`;
-       const child = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(child);
+       const child =
+           createFixture(html`<span class="mdc-notched-outline"></span>`);
 
        const root = getFixture();
        root.appendChild(child);
@@ -298,14 +272,11 @@ describe('MDCTextField', () => {
      });
 
   it('#constructor handles undefined optional sub-elements gracefully', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const root = createFixture(`
       <label class="mdc-text-field mdc-text-field--filled">
         <input type="text" class="mdc-text-field__input" id="my-text-field">
       </label>
-    `;
-    const root = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(root);
+    `);
 
     expect(() => new MDCTextField(root)).not.toThrow();
   });
@@ -321,14 +292,11 @@ describe('MDCTextField', () => {
 
   it('default adapter methods handle undefined optional sub-elements gracefully',
      () => {
-       const wrapper = document.createElement('div');
-       wrapper.innerHTML = `
+       const root = createFixture(html`
          <label class="mdc-text-field mdc-text-field--filled">
            <input type="text" class="mdc-text-field__input" id="my-text-field">
          </label>
-       `;
-       const root = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(root);
+       `);
 
        const component = new MDCTextField(root);
        const adapter = (component.getDefaultFoundation() as any).adapter;
@@ -440,10 +408,7 @@ describe('MDCTextField', () => {
   });
 
   it('#destroy cleans up the outline if present', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `<span class="mdc-notched-outline"></span>`;
-    const child = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(child);
+    const child = createFixture(`<span class="mdc-notched-outline"></span>`);
 
     const root = getFixture();
     root.appendChild(child);
@@ -453,14 +418,11 @@ describe('MDCTextField', () => {
   });
 
   it('#destroy handles undefined optional sub-elements gracefully', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const root = createFixture(`
       <label class="mdc-text-field mdc-text-field--filled">
         <input type="text" class="mdc-text-field__input" id="my-text-field">
       </label>
-    `;
-    const root = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(root);
+    `);
 
     const component = new MDCTextField(root);
     expect(() => component.destroy).not.toThrow();
@@ -477,11 +439,8 @@ describe('MDCTextField', () => {
     const root = getFixture();
     root.classList.add('mdc-text-field--with-trailing-icon');
 
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML =
-        `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`;
-    const child = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(child);
+    const child = createFixture(
+        `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`);
     root.appendChild(child);
 
     const component = new MDCTextField(root);

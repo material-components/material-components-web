@@ -21,14 +21,14 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {FocusTrap} from '../focus-trap';
 
 const FOCUS_SENTINEL_CLASS = 'mdc-dom-focus-sentinel';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div id="root">
       <button>Hello</button>
       <div id="container1_innerDiv">
@@ -57,10 +57,7 @@ function getFixture() {
       <div id="container5_noFocusableChild">
         <div id="con5a">5a</div>
       </div>
-    </div>`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+    </div>`);
 }
 
 function setUp() {

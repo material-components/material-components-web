@@ -22,6 +22,7 @@
  */
 
 import {FocusTrap} from '../../mdc-dom/focus-trap';
+import {createFixture, html} from '../../../testing/dom';
 import * as util from '../util';
 
 describe('MDCDialog - util', () => {
@@ -61,7 +62,7 @@ describe('MDCDialog - util', () => {
 
   it('isScrollable returns false when element content does not overflow its bounding box',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="height: 20px; overflow: auto;">
            <div style="height: 10px;"></div>
          </div>`);
@@ -78,7 +79,7 @@ describe('MDCDialog - util', () => {
 
   it('isScrollable returns true when element content overflows its bounding box',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="height: 20px; overflow: auto;">
            <div style="height: 30px;"></div>
          </div>`);
@@ -95,7 +96,7 @@ describe('MDCDialog - util', () => {
 
   it('isScrollAtTop returns true when scrollable content has not been scrolled',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="height: 20px; overflow: auto;">
            <div style="height: 30px;"></div>
          </div>`);
@@ -113,7 +114,7 @@ describe('MDCDialog - util', () => {
 
   it('isScrollAtTop returns false when scrollable content has been scrolled',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="height: 20px; overflow: auto;">
            <div style="height: 30px;"></div>
          </div>`);
@@ -132,7 +133,7 @@ describe('MDCDialog - util', () => {
 
   it('isScrollAtBottom returns false when scrollable content is not scrolled to the bottom',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="height: 20px; overflow: auto;">
            <div style="height: 30px;"></div>
          </div>`);
@@ -150,7 +151,7 @@ describe('MDCDialog - util', () => {
 
   it('isScrollAtBottom returns true when scrollable content has been scrolled to the bottom',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="height: 20px; overflow: auto;">
            <div style="height: 30px;"></div>
          </div>`);
@@ -173,7 +174,7 @@ describe('MDCDialog - util', () => {
 
   it('areTopsMisaligned returns false when array only contains one element',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="display: flex;
                      position: relative;
                      flex-direction: row;
@@ -196,7 +197,7 @@ describe('MDCDialog - util', () => {
 
   it('areTopsMisaligned returns false when elements have same offsetTop',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="display: flex;
                      position: relative;
                      flex-direction: row;
@@ -220,7 +221,7 @@ describe('MDCDialog - util', () => {
 
   it('areTopsMisaligned returns true when elements have different "top" values',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="display: flex;
                      position: relative;
                      flex-direction: column;
@@ -242,11 +243,3 @@ describe('MDCDialog - util', () => {
        }
      });
 });
-
-function getElement(innerHTML: string) {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = innerHTML;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-}

@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {numbers, strings} from '../constants';
 import * as util from '../util';
@@ -33,16 +34,12 @@ describe('MDCSnackbar - util', () => {
 
   it('#announce temporarily disables ARIA attributes and then restores them',
      () => {
-       const wrapper = document.createElement('div');
-       wrapper.innerHTML = `
+       const fixture = createFixture(html`
         <div>
           <div class="aria" role="status" aria-live="polite">
             <div class="label"></div>
           </div>
-        </div>`;
-       const el = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(el);
-       const fixture = el;
+        </div>`);
 
        const ariaEl = fixture.querySelector('.aria')!;
        const labelEl = fixture.querySelector('.label')!;
@@ -64,16 +61,12 @@ describe('MDCSnackbar - util', () => {
 
   it('#announce prevents flicker by displaying label text on ::before pseudo-element and then removing it',
      () => {
-       const wrapper = document.createElement('div');
-       wrapper.innerHTML = `
+       const fixture = createFixture(`
         <div>
           <div class="aria" role="status" aria-live="polite">
             <div class="label"></div>
           </div>
-        </div>`;
-       const el = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(el);
-       const fixture = el;
+        </div>`);
 
        const ariaEl = fixture.querySelector('.aria')!;
        const labelEl = fixture.querySelector('.label')!;
@@ -92,14 +85,10 @@ describe('MDCSnackbar - util', () => {
      });
 
   it('#announce second argument is optional', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const fixture = createFixture(html`
       <div>
         <div class="aria label" role="status" aria-live="polite"></div>
-      </div>`;
-    const el = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(el);
-    const fixture = el;
+      </div>`);
 
     const ariaEl = fixture.querySelector('.aria')!;
 
@@ -121,16 +110,12 @@ describe('MDCSnackbar - util', () => {
   });
 
   it('#announce does nothing if textContent is empty', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const fixture = createFixture(html`
       <div>
         <div class="aria" role="status" aria-live="polite">
           <div class="label"></div>
         </div>
-      </div>`;
-    const el = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(el);
-    const fixture = el;
+      </div>`);
 
     const ariaEl = fixture.querySelector('.aria')!;
     const labelEl = fixture.querySelector('.label')!;
@@ -143,14 +128,10 @@ describe('MDCSnackbar - util', () => {
   });
 
   it('#announce does nothing if aria-live was not present', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const fixture = createFixture(html`
       <div>
         <div class="aria label" role="status">Foo</div>
-      </div>`;
-    const el = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(el);
-    const fixture = el;
+      </div>`);
     const ariaEl = fixture.querySelector('.aria')!;
 
     util.announce(ariaEl);

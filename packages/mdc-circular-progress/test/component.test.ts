@@ -21,12 +21,12 @@
  * THE SOFTWARE.
  */
 
-
 import {MDCCircularProgress, MDCCircularProgressFoundation} from '../../mdc-circular-progress/index';
+import {createFixture, html} from '../../../testing/dom';
+
 const RADIUS = 18;
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
   <div class="mdc-circular-progress" style="width:48px;height:48px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
     <div class="mdc-circular-progress__determinate-container">
       <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -108,10 +108,7 @@ function getFixture() {
       </div>
     </div>
   </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {
