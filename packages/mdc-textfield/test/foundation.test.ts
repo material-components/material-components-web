@@ -176,7 +176,8 @@ describe('MDCTextFieldFoundation', () => {
       value: 'initValue',
     } as MDCTextFieldNativeInputElement);
     expect('initValue')
-        .toEqual(foundation.getValue(), 'getValue does not match input value.');
+        .withContext('getValue does not match input value.')
+        .toEqual(foundation.getValue());
   });
 
   it('#setValue with non-empty value styles the label', () => {

@@ -99,14 +99,15 @@ verifyDefaultAdapter<C extends MDCFoundationDeprecatedConstructor>(
       adapterKeys.filter((key) => typeof defaultAdapter[key] === 'function');
 
   expect(adapterKeys.length)
-      .toEqual(
-          actualMethodNames.length, 'Every adapter key must be a function');
+      .withContext('Every adapter key must be a function')
+      .toEqual(actualMethodNames.length);
 
   // Test for equality without requiring that the array be in a specific order.
   const actualArray = actualMethodNames.slice().sort();
   const expectedArray = expectedMethodNames.slice().sort();
   expect(expectedArray)
-      .toEqual(actualArray, getUnequalArrayMessage(actualArray, expectedArray));
+      .withContext(getUnequalArrayMessage(actualArray, expectedArray))
+      .toEqual(actualArray);
 
   // Test default methods.
   actualMethodNames.forEach((method) => {
