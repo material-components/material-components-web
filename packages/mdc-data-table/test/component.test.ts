@@ -30,13 +30,13 @@ interface ClassMap {
   [className: string]: boolean;
 }
 
-const classMap = (classesMap: ClassMap) => {
+function classMap(classesMap: ClassMap) {
   return Object.keys(classesMap)
       .filter((className: string) => {
         return classesMap[className];
       })
       .join(' ');
-};
+}
 
 interface CheckboxTemplateProps {
   classNames: string;
@@ -150,7 +150,7 @@ function mdcDataTableRowTemplate(props: DataTableRowTemplateProps) {
   `;
 }
 
-const progressIndicatorTemplate = () => {
+function progressIndicatorTemplate() {
   return html`
       <div class="mdc-data-table__progress-indicator">
         <div class="mdc-data-table__scrim"></div>
@@ -168,7 +168,7 @@ const progressIndicatorTemplate = () => {
         </div>
       </div>
       `;
-};
+}
 
 interface DataTableHeader {
   name: string;

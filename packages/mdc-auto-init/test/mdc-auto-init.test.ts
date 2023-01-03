@@ -26,7 +26,7 @@ import {MDCAttachable, mdcAutoInit} from '../index';
 
 class FakeComponent {
   static attachTo(node: HTMLElement) {
-    return new this(node);
+    return new FakeComponent(node);
   }
 
   constructor(readonly node: HTMLElement) {
@@ -52,19 +52,19 @@ function getFixture() {
 `);
 }
 
-const setupTest = () => {
+function setupTest() {
   mdcAutoInit.deregisterAll();
   mdcAutoInit.register(
       'FakeComponent', FakeComponent as unknown as MDCAttachable);
   return getFixture();
-};
+}
 
-const setupInvalidTest = () => {
+function setupInvalidTest() {
   mdcAutoInit.deregisterAll();
   mdcAutoInit.register(
       'InvalidComponent', InvalidComponent as unknown as MDCAttachable);
   return getFixture();
-};
+}
 
 describe('MDCAutoInit', () => {
   it('calls attachTo() on components registered for identifier on nodes w/ data-mdc-auto-init attr',

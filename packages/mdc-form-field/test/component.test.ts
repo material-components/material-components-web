@@ -86,7 +86,7 @@ describe('MDCFormField', () => {
 
   it('adapter#activateInputRipple calls activate on the input ripple', () => {
     const {component} = setupTest();
-    const ripple = {activate: jasmine.createSpy('activate')} as any;
+    const ripple: any = {activate: jasmine.createSpy('activate')};
     const input = {ripple};
 
     component.input = input;
@@ -120,7 +120,7 @@ describe('MDCFormField', () => {
   it('adapter#deactivateInputRipple calls deactivate on the input ripple',
      () => {
        const {component} = setupTest();
-       const ripple = {deactivate: jasmine.createSpy('deactivate')} as any;
+       const ripple: any = {deactivate: jasmine.createSpy('deactivate')};
        const input = {ripple};
 
        component.input = input;

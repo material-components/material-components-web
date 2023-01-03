@@ -30,7 +30,7 @@ import {chipStrings, MDCChip, MDCChipFoundation} from '../index';
 
 const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
 
-const getFixture = () => {
+function getFixture() {
   return createFixture(html`
   <div class="mdc-chip" role="row">
     <span role="gridcell">
@@ -39,9 +39,9 @@ const getFixture = () => {
       </span>
     </span>
   </div>`);
-};
+}
 
-const getFixtureWithCheckmark = () => {
+function getFixtureWithCheckmark() {
   return createFixture(html`
   <div class="mdc-chip">
     <div class="mdc-chip__checkmark" >
@@ -56,17 +56,17 @@ const getFixtureWithCheckmark = () => {
       </span>
     </span>
   </div>`);
-};
+}
 
-const addLeadingIcon = (root: HTMLElement) => {
+function addLeadingIcon(root: HTMLElement) {
   const icon = createFixture(
       html`<i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>`);
 
   root.insertBefore(icon, root.firstChild);
   return icon;
-};
+}
 
-const addTrailingAction = (root: HTMLElement, isFocusable?: boolean) => {
+function addTrailingAction(root: HTMLElement, isFocusable?: boolean) {
   const parent = createFixture(html`<span role="gridcell"></span>`);
 
   let innerHTML: ReturnType<typeof html>;
@@ -89,10 +89,11 @@ const addTrailingAction = (root: HTMLElement, isFocusable?: boolean) => {
   parent.appendChild(trailingAction);
   root.appendChild(parent);
   return trailingAction;
-};
+}
 
-const addFocusableTrailingAction = (root: HTMLElement) =>
-    addTrailingAction(root, true);
+function addFocusableTrailingAction(root: HTMLElement) {
+  return addTrailingAction(root, true);
+}
 
 class FakeRipple {
   destroy: jasmine.Spy;

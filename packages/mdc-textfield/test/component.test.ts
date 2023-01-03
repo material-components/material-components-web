@@ -34,7 +34,7 @@ import {MDCTextField, MDCTextFieldCharacterCounter, MDCTextFieldFoundation, MDCT
 
 const {cssClasses, strings} = MDCTextFieldFoundation;
 
-const getFixture = () => {
+function getFixture() {
   return createFixture(html`
     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-leading-icon">
       <span class="mdc-floating-label" id="my-label">My Label</span>
@@ -43,25 +43,25 @@ const getFixture = () => {
       <span class="mdc-line-ripple"></span>
     </label>
   `);
-};
+}
 
-const getHelperLineWithHelperText = () => {
+function getHelperLineWithHelperText() {
   return createFixture(html`
     <div class="${cssClasses.HELPER_LINE}">
       <div class="${helperTextCssClasses.ROOT}">helper text</div>
     </div>
   `);
-};
+}
 
-const getHelperLineWithCharacterCounter = () => {
+function getHelperLineWithCharacterCounter() {
   return createFixture(html`
     <div class="${cssClasses.HELPER_LINE}">
       <div class="${characterCounterCssClasses.ROOT}">helper text</div>
     </div>
   `);
-};
+}
 
-const getFixtureWithPrefix = () => {
+function getFixtureWithPrefix() {
   return createFixture(html`
     <label class="mdc-text-field mdc-text-field--filled">
       <span class="mdc-floating-label" id="my-label">My Label</span>
@@ -70,9 +70,9 @@ const getFixtureWithPrefix = () => {
       <span class="mdc-line-ripple"></span>
     </label>
   `);
-};
+}
 
-const getFixtureWithSuffix = () => {
+function getFixtureWithSuffix() {
   return createFixture(html`
     <label class="mdc-text-field mdc-text-field--filled">
       <span class="mdc-floating-label" id="my-label">My Label</span>
@@ -81,7 +81,7 @@ const getFixtureWithSuffix = () => {
       <span class="mdc-line-ripple"></span>
     </label>
   `);
-};
+}
 
 describe('MDCTextField', () => {
   it('attachTo returns an MDCTextField instance', () => {

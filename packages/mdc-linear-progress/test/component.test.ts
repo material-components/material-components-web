@@ -36,10 +36,10 @@ interface WithObserverFoundation {
 
 const RO = (window as unknown as WithMDCResizeObserver).ResizeObserver;
 
-const roundPixelsToTwoDecimals = (val: string) => {
+function roundPixelsToTwoDecimals(val: string) {
   const numberVal = Number(val.split('px')[0]);
   return Math.floor(numberVal * 100) / 100;
-};
+}
 
 function getFixture() {
   return createFixture(html`

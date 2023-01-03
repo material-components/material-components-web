@@ -30,7 +30,7 @@ import {MDCSegmentedButton} from '../index';
 
 import {testCssClasses, testIndices, testSegmentIds, testSelectors} from './constants';
 
-const getFixtureMultiWithLabel = () => {
+function getFixtureMultiWithLabel() {
   return createFixture(html`
     <div class="mdc-segmented-button" role="group">
       <button class="mdc-segmented-button__segment" aria-pressed="false">
@@ -45,28 +45,26 @@ const getFixtureMultiWithLabel = () => {
       </button>
     </div>
   `);
-};
+}
 
-const setupTest = () => {
+function setupTest() {
   const root = getFixtureMultiWithLabel();
   const component = new MDCSegmentedButton(root);
   const adapter = (component.getDefaultFoundation() as any).adapter;
   return {root, component, adapter};
-};
+}
 
-const setAllSelected =
-    (els: NodeListOf<Element>) => {
-      Array.from(els).forEach((el: Element) => {
-        el.classList.add(testCssClasses.SELECTED);
-      });
-    }
+function setAllSelected(els: NodeListOf<Element>) {
+  Array.from(els).forEach((el: Element) => {
+    el.classList.add(testCssClasses.SELECTED);
+  });
+}
 
-const setAllUnselected =
-    (els: NodeListOf<Element>) => {
-      Array.from(els).forEach((el: Element) => {
-        el.classList.remove(testCssClasses.SELECTED);
-      });
-    }
+function setAllUnselected(els: NodeListOf<Element>) {
+  Array.from(els).forEach((el: Element) => {
+    el.classList.remove(testCssClasses.SELECTED);
+  });
+}
 
 describe('MDCSegmentedButton', () => {
   it('#attachTo returns an MDCSegmentedButton instance', () => {
@@ -90,7 +88,7 @@ describe('MDCSegmentedButton', () => {
 
   it('#destroy cleans up child segment components', () => {
     const {root, component} = setupTest();
-    const handler = jasmine.createSpy('handle click')
+    const handler = jasmine.createSpy('handle click');
     for (let i = 0; i < component.segments.length; i++) {
       component.segments[i].listen('click', handler);
     }
@@ -132,7 +130,7 @@ describe('MDCSegmentedButton', () => {
 
        for (let i = 0; i < component.segments.length; i++) {
          const segmentAdapter =
-             (component.segments[i].getDefaultFoundation() as any).adapter
+             (component.segments[i].getDefaultFoundation() as any).adapter;
          segmentAdapter.notifySelectedChange(true);
 
          expect(handler.calls.mostRecent().args[0].detail.index).toEqual(i);

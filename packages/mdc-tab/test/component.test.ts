@@ -27,7 +27,7 @@ import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCTab, MDCTabFoundation} from '../index';
 
-const getFixture = () => {
+function getFixture() {
   return createFixture(html`
   <button class="mdc-tab" aria-selected="false" role="tab">
     <span class="mdc-tab__content">
@@ -39,7 +39,7 @@ const getFixture = () => {
       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
     </span>
   </button>`);
-};
+}
 
 function setupTest({useMockFoundation = false} = {}) {
   const mockFoundation = useMockFoundation ?

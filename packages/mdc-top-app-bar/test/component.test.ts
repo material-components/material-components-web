@@ -267,7 +267,7 @@ describe('MDCTopAppBar', () => {
   it('adapter#getViewportScrollY returns scroll distance when scrollTarget is not window',
      () => {
        const {component} = setupTest();
-       const mockContent = {addEventListener: () => {}, scrollTop: 20} as any;
+       const mockContent: any = {addEventListener: () => {}, scrollTop: 20};
        component.setScrollTarget(mockContent);
        expect((component.getDefaultFoundation() as any)
                   .adapter.getViewportScrollY())

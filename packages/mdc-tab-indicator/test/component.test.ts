@@ -25,22 +25,21 @@ import {createFixture, html} from '../../../testing/dom';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {MDCFadingTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCTabIndicator, MDCTabIndicatorFoundation} from '../index';
 
-const getFixture = () => {
+function getFixture() {
   return createFixture(html`
   <span class="mdc-tab-indicator">
     <span class="mdc-tab-indicator__content"></span>
   </span>
 `);
-  ;
-};
+}
 
-const getFadingFixture = () => {
+function getFadingFixture() {
   return createFixture(html`
   <span class="mdc-tab-indicator mdc-tab-indicator--fade">
     <span class="mdc-tab-indicator__content"></span>
   </span>
 `);
-};
+}
 
 describe('MDCTabIndicator', () => {
   it('attachTo returns an MDCTabIndicator instance', () => {
