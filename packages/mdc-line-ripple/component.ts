@@ -32,12 +32,8 @@ export type MDCLineRippleFactory =
 
 /** MDC Line Ripple */
 export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
-  // TODO(b/157231863): remove these overloads when no clients are using them.
-  static override attachTo(root: HTMLElement): MDCLineRipple;
-  /** @deprecated use attachTo(root: HTMLElement) */
-  static override attachTo(root: Element): MDCLineRipple;
-  static override attachTo(root: HTMLElement|Element): MDCLineRipple {
-    return new MDCLineRipple(root as HTMLElement);
+  static override attachTo(root: HTMLElement): MDCLineRipple {
+    return new MDCLineRipple(root);
   }
 
   /**

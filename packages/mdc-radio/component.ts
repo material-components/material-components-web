@@ -34,12 +34,8 @@ import {MDCRadioFoundation} from './foundation';
 /** MDC Radio */
 export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements
     MDCRippleCapableSurface {
-  // TODO(b/157231863): remove these overloads when no clients are using them.
-  static override attachTo(root: HTMLElement): MDCRadio;
-  /** @deprecated use attachTo(root: HTMLElement) */
-  static override attachTo(root: Element): MDCRadio;
-  static override attachTo(root: HTMLElement|Element) {
-    return new MDCRadio(root as HTMLElement);
+  static override attachTo(root: HTMLElement) {
+    return new MDCRadio(root);
   }
 
   get checked(): boolean {

@@ -38,12 +38,8 @@ let tabIdCounter = 0;
 
 /** MDC Tab Bar */
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
-  // TODO(b/157231863): remove these overloads when no clients are using them.
-  static override attachTo(root: HTMLElement): MDCTabBar;
-  /** @deprecated use attachTo(root: HTMLElement) */
-  static override attachTo(root: Element): MDCTabBar;
-  static override attachTo(root: HTMLElement|Element): MDCTabBar {
-    return new MDCTabBar(root as HTMLElement);
+  static override attachTo(root: HTMLElement): MDCTabBar {
+    return new MDCTabBar(root);
   }
 
   private tabList!: MDCTab[];                 // assigned in initialize()

@@ -45,12 +45,8 @@ import {MDCTextFieldFoundationMap} from './types';
 /** MDC Text Field */
 export class MDCTextField extends
     MDCComponent<MDCTextFieldFoundation> implements MDCRippleCapableSurface {
-  // TODO(b/157231863): remove these overloads when no clients are using them.
-  static override attachTo(root: HTMLElement): MDCTextField;
-  /** @deprecated use attachTo(root: HTMLElement) */
-  static override attachTo(root: Element): MDCTextField;
-  static override attachTo(root: HTMLElement|Element): MDCTextField {
-    return new MDCTextField(root as HTMLElement);
+  static override attachTo(root: HTMLElement): MDCTextField {
+    return new MDCTextField(root);
   }
 
   ripple!: MDCRipple|null;  // assigned in initialize()

@@ -34,12 +34,8 @@ const ARIA_ATTR_PREFIX = [safeAttrPrefix`aria-`];
 
 /** MDC Tooltip */
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
-  // TODO(b/157231863): remove these overloads when no clients are using them.
-  static override attachTo(root: HTMLElement): MDCTooltip;
-  /** @deprecated use attachTo(root: HTMLElement) */
-  static override attachTo(root: Element): MDCTooltip;
-  static override attachTo(root: HTMLElement|Element) {
-    return new MDCTooltip(root as HTMLElement);
+  static override attachTo(root: HTMLElement) {
+    return new MDCTooltip(root);
   }
 
   private anchorElem!: HTMLElement;       // assigned in initialize

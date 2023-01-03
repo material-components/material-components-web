@@ -43,12 +43,8 @@ export type MDCCheckboxFactory =
 /** MDC Checkbox */
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements
     MDCRippleCapableSurface {
-  // TODO(b/157231863): remove these overloads when no clients are using them.
-  static override attachTo(root: HTMLElement): MDCCheckbox;
-  /** @deprecated use attachTo(root: HTMLElement) */
-  static override attachTo(root: Element): MDCCheckbox;
-  static override attachTo(root: HTMLElement|Element) {
-    return new MDCCheckbox(root as HTMLElement);
+  static override attachTo(root: HTMLElement) {
+    return new MDCCheckbox(root);
   }
 
   get ripple(): MDCRipple {

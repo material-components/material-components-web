@@ -37,16 +37,10 @@ export type MDCRippleFactory =
 /** MDC Ripple */
 export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
     MDCRippleCapableSurface {
-  // TODO(b/157231863): remove these overloads when no clients are using them.
-  static override attachTo(root: HTMLElement, opts?: MDCRippleAttachOpts):
-      MDCRipple;
-  /** @deprecated use attachTo(root: HTMLElement) */
-  static override attachTo(root: Element, opts?: MDCRippleAttachOpts):
-      MDCRipple;
-  static override attachTo(
-      root: HTMLElement|Element,
-      opts: MDCRippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
-    const ripple = new MDCRipple(root as HTMLElement);
+  static override attachTo(root: HTMLElement, opts: MDCRippleAttachOpts = {
+    isUnbounded: undefined
+  }): MDCRipple {
+    const ripple = new MDCRipple(root);
     // Only override unbounded behavior if option is explicitly specified
     if (opts.isUnbounded !== undefined) {
       ripple.unbounded = opts.isUnbounded;
