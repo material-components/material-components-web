@@ -204,6 +204,37 @@
       }
     }
 
+    @include test.it('emits styles for track height using custom properties') {
+      @include test.assert {
+        @include test.output {
+          @include slider-theme.theme-styles(
+            (
+              'active-track-height': 42px,
+              'inactive-track-height': 7px,
+            )
+          );
+        }
+
+        // stylelint-disable selector-class-pattern -- testing 'mdc-*''
+        @include test.contains {
+          .mdc-slider__track--active {
+            top: calc(
+              (
+                  var(--mdc-slider-inactive-track-height, 7px) -
+                    var(--mdc-slider-active-track-height, 42px)
+                ) / 2
+            );
+          }
+
+          .mdc-slider__track--active_fill {
+            border-top-width: 42px;
+            border-top-width: var(--mdc-slider-active-track-height, 42px);
+          }
+        }
+        // stylelint-enable
+      }
+    }
+
     @include test.it('emits no styles with feature targeting any') {
       $theme: slider-theme.$light-theme;
 
