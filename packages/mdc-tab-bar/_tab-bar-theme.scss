@@ -28,12 +28,17 @@
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
 @use '@material/tokens/resolvers';
+@use '@material/theme/theme';
+@use '@material/theme/keys';
+@use '@material/theme/validate';
 
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
 $custom-property-prefix: 'tab-bar';
 
+// Complete tokens set for primary tabs component
+// tab bar should validate all tokens as it is the entry point
 $primary-navigation-tabs-light-theme: (
   active-focus-state-layer-color: theme-color.$primary,
   active-focus-state-layer-opacity: 0.12,
@@ -89,7 +94,9 @@ $primary-navigation-tabs-light-theme: (
   with-label-text-label-text-weight: typography.get-weight(subhead2),
 );
 
-$secondary-navigation-tab-light-theme: (
+// Complete tokens set for secondary tabs component
+// tab bar should validate all tokens as it is the entry point
+$secondary-navigation-tabs-light-theme: (
   active-indicator-color: null,
   active-indicator-height: null,
   active-label-text-color: null,
@@ -127,6 +134,7 @@ $secondary-navigation-tab-light-theme: (
 );
 
 @mixin primary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
+  $theme: validate.theme($primary-navigation-tabs-light-theme, $theme);
   @include tab-theme.primary-navigation-tab-theme(
     map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
     $resolvers
@@ -137,6 +145,7 @@ $secondary-navigation-tab-light-theme: (
 }
 
 @mixin secondary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
+  $theme: validate.theme($secondary-navigation-tabs-light-theme, $theme);
   @include tab-theme.secondary-navigation-tab-theme(
     map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
     $resolvers
@@ -150,6 +159,12 @@ $secondary-navigation-tab-light-theme: (
   $theme,
   $resolvers: resolvers.$material
 ) {
+  // TODO(b/251881053): Use theme-styles mixin from validate module
+  // when all customers are migrated
+  @include theme.validate-theme-styles(
+    $primary-navigation-tabs-light-theme,
+    $theme
+  );
   .mdc-tab {
     @include tab-theme.primary-navigation-tab-theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
@@ -168,6 +183,12 @@ $secondary-navigation-tab-light-theme: (
   $theme,
   $resolvers: resolvers.$material
 ) {
+  // TODO(b/251881053): Use theme-styles mixin from validate module
+  // when all customers are migrated
+  @include theme.validate-theme-styles(
+    $secondary-navigation-tabs-light-theme,
+    $theme
+  );
   .mdc-tab {
     @include tab-theme.secondary-navigation-tab-theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
