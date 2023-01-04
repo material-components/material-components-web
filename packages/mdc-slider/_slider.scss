@@ -159,10 +159,6 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__track--active {
     @include feature-targeting.targets($feat-structure) {
-      // Set border-radius on the outer `track--active` element, and apply
-      // transform: scale(...) to the inner `track--active_fill` element,
-      // such that the track grows/shrinks as needed, but the border-radius
-      // is not affected by the scaling.
       overflow: hidden;
       top: math.div($_track-inactive-height - $_track-active-height, 2);
     }

@@ -526,6 +526,10 @@ $light-theme: (
 
   .mdc-slider__track--active {
     @include feature-targeting.targets($query) {
+      // Set border-radius on the outer `track--active` element, and apply
+      // transform: scale(...) to the inner `track--active_fill` element,
+      // such that the track grows/shrinks as needed, but the border-radius
+      // is not affected by the scaling.
       @include theme.property(border-radius, $active-track-radius);
     }
   }
