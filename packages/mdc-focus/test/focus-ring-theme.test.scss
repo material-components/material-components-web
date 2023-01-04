@@ -39,7 +39,44 @@
   }
 
   @include test.describe('.theme-styles') {
-    @include test.it('returns the expected CSS.') {
+    // TODO(b/263502978): Do not remove this first test until a more
+    // deterministic way to test sass output with @keyframes is found.
+    @include test.it('returns CSS for the underlying focus-ring structure.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-theme.theme-styles(
+            (
+              'color': blue,
+              'offset': 2px,
+              'track-width': 3px,
+              'target-shape': 5px,
+            )
+          );
+        }
+
+        @include test.contains {
+          border: var(--mdc-focus-ring-track-width, 3px) solid
+            var(--mdc-focus-ring-color, blue);
+          border-radius: calc(
+            var(--mdc-focus-ring-target-shape, 5px) +
+              var(--mdc-focus-ring-track-width, 3px) +
+              var(--mdc-focus-ring-offset, 2px)
+          );
+          inset-block: calc(
+            -1 * (var(--mdc-focus-ring-offset, 2px) +
+                  var(--mdc-focus-ring-track-width, 3px))
+          );
+          inset-inline: calc(
+            -1 * (var(--mdc-focus-ring-offset, 2px) +
+                  var(--mdc-focus-ring-track-width, 3px))
+          );
+        }
+      }
+    }
+
+    @include test.it(
+      'returns animation styles for newly visible focus-rings.'
+    ) {
       @include test.assert {
         @include test.output {
           @include focus-ring-theme.theme-styles(
@@ -68,7 +105,55 @@
             -1 * (var(--mdc-focus-ring-offset, 2px) +
                   var(--mdc-focus-ring-track-width, 3px))
           );
-        }
+
+          @keyframes focus-ring-grows {
+            from {
+              border-width: 0;
+              border-radius: calc(
+                var(--mdc-focus-ring-target-shape, 5px) + 0 +
+                  var(--mdc-focus-ring-offset, 2px)
+              );
+            }
+            to {
+              border-width: 8px;
+              inset-block: calc(-1 * (var(--mdc-focus-ring-offset, 2px) + 8px));
+              inset-inline: calc(
+                -1 * (var(--mdc-focus-ring-offset, 2px) + 8px)
+              );
+              border-radius: calc(
+                var(--mdc-focus-ring-target-shape, 5px) + 8px +
+                  var(--mdc-focus-ring-offset, 2px)
+              );
+            }
+          }
+
+          @keyframes focus-ring-shrinks {
+            from {
+              border-width: 8px;
+              inset-block: calc(-1 * (var(--mdc-focus-ring-offset, 2px) + 8px));
+              inset-inline: calc(
+                -1 * (var(--mdc-focus-ring-offset, 2px) + 8px)
+              );
+              border-radius: calc(
+                var(--mdc-focus-ring-target-shape, 5px) + 8px +
+                  var(--mdc-focus-ring-offset, 2px)
+              );
+            }
+
+            to {
+              border-width: var(--mdc-focus-ring-track-width, 3px);
+            }
+          }
+          animation-name: focus-ring-grows, focus-ring-shrinks;
+          animation-duration: 150ms, 450ms;
+          animation-delay: 0s, 150ms;
+          animation-timing-function: cubic-bezier(0.2, 0, 0, 1),
+            cubic-bezier(0.2, 0, 0, 1);
+
+          @media (prefers-reduced-motion) {
+            animation: none;
+          }
+        } // end expect
       }
     }
   }

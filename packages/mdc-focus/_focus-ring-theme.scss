@@ -10,6 +10,8 @@ $_ring-offset-key: 'offset';
 $_ring-color-key: 'color';
 $_track-width-key: 'track-width';
 $_target-shape-key: 'target-shape';
+$_grow-animation-duration: 150ms;
+$_shrink-animation-duration: 450ms;
 
 $default-theme: (
   $_ring-offset-key: 2px,
@@ -44,10 +46,65 @@ $default-theme: (
   border-radius: calc($target-shape + $track-width + $ring-offset);
   inset-block: calc(-1 * ($ring-offset + $track-width));
   inset-inline: calc(-1 * ($ring-offset + $track-width));
+
+  @include _focus-ring-animation-keyframes($theme);
+  @include _focus-ring-animation();
 }
 
 /// This should be applied to the focus ring element when the focus ring
 /// should be shown (e.g. based on `:focus-visible` pseudoclass).
 @mixin show-focus-ring() {
   display: block;
+}
+
+// Motion spec for focus ring:
+// https://direct.googleplex.com/#/spec/273380003&264990003
+@mixin _focus-ring-animation {
+  animation-name: focus-ring-grows, focus-ring-shrinks;
+  animation-duration: $_grow-animation-duration, $_shrink-animation-duration;
+  animation-delay: 0s, $_grow-animation-duration;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1),
+    cubic-bezier(0.2, 0, 0, 1);
+
+  @media (prefers-reduced-motion) {
+    animation: none;
+  }
+}
+
+@mixin _focus-ring-animation-keyframes($theme) {
+  $ring-offset: map.get($theme, $_ring-offset-key);
+  $track-width: map.get($theme, $_track-width-key);
+  $target-shape: map.get($theme, $_target-shape-key);
+
+  $start-border-width: 0;
+  $midpoint-border-width: 8px;
+
+  @keyframes focus-ring-grows {
+    from {
+      border-width: $start-border-width;
+      border-radius: calc($target-shape + $start-border-width + $ring-offset);
+    }
+    to {
+      border-width: $midpoint-border-width;
+      inset-block: calc(-1 * ($ring-offset + $midpoint-border-width));
+      inset-inline: calc(-1 * ($ring-offset + $midpoint-border-width));
+      border-radius: calc(
+        $target-shape + $midpoint-border-width + $ring-offset
+      );
+    }
+  }
+
+  @keyframes focus-ring-shrinks {
+    from {
+      border-width: $midpoint-border-width;
+      inset-block: calc(-1 * ($ring-offset + $midpoint-border-width));
+      inset-inline: calc(-1 * ($ring-offset + $midpoint-border-width));
+      border-radius: calc(
+        $target-shape + $midpoint-border-width + $ring-offset
+      );
+    }
+    to {
+      border-width: $track-width;
+    }
+  }
 }
