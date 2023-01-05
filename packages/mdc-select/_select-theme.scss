@@ -298,6 +298,7 @@ $error-color: error !default;
         default: map.get($theme, text-field-trailing-icon-color),
         hover: map.get($theme, text-field-hover-trailing-icon-color),
         focus: map.get($theme, text-field-focus-trailing-icon-color),
+        disabled: map.get($theme, text-field-disabled-trailing-icon-color),
       )
     );
     @include _text-field-error-trailing-icon-color(
