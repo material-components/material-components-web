@@ -133,8 +133,20 @@ $secondary-navigation-tabs-light-theme: (
   with-icon-icon-size: null,
 );
 
+// Tab bar related tokens to create custom properties
+$light-theme: (
+  divider-color: null,
+  divider-height: null,
+);
+
 @mixin primary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
   $theme: validate.theme($primary-navigation-tabs-light-theme, $theme);
+  $tab-bar-theme: map-ext.pick($theme, map.keys($light-theme)...);
+  @include keys.declare-custom-properties(
+    $tab-bar-theme,
+    $prefix: $custom-property-prefix
+  );
+
   @include tab-theme.primary-navigation-tab-theme(
     map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
     $resolvers
@@ -146,6 +158,12 @@ $secondary-navigation-tabs-light-theme: (
 
 @mixin secondary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
   $theme: validate.theme($secondary-navigation-tabs-light-theme, $theme);
+  $tab-bar-theme: map-ext.pick($theme, map.keys($light-theme)...);
+  @include keys.declare-custom-properties(
+    $tab-bar-theme,
+    $prefix: $custom-property-prefix
+  );
+
   @include tab-theme.secondary-navigation-tab-theme(
     map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
     $resolvers
@@ -165,6 +183,17 @@ $secondary-navigation-tabs-light-theme: (
     $primary-navigation-tabs-light-theme,
     $theme
   );
+  $tab-bar-theme: map-ext.pick($theme, map.keys($light-theme)...);
+  $tab-bar-theme: keys.create-theme-properties(
+    $tab-bar-theme,
+    $prefix: $custom-property-prefix
+  );
+
+  &.mdc-tab-bar {
+    @include _divider-color(map.get($tab-bar-theme, divider-color));
+    @include _divider-height(map.get($tab-bar-theme, divider-height));
+  }
+
   .mdc-tab {
     @include tab-theme.primary-navigation-tab-theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
@@ -189,6 +218,17 @@ $secondary-navigation-tabs-light-theme: (
     $secondary-navigation-tabs-light-theme,
     $theme
   );
+  $tab-bar-theme: map-ext.pick($theme, map.keys($light-theme)...);
+  $tab-bar-theme: keys.create-theme-properties(
+    $tab-bar-theme,
+    $prefix: $custom-property-prefix
+  );
+
+  &.mdc-tab-bar {
+    @include _divider-color(map.get($tab-bar-theme, divider-color));
+    @include _divider-height(map.get($tab-bar-theme, divider-height));
+  }
+
   .mdc-tab {
     @include tab-theme.secondary-navigation-tab-theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
@@ -201,4 +241,12 @@ $secondary-navigation-tabs-light-theme: (
       map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
     );
   }
+}
+
+@mixin _divider-color($color) {
+  @include theme.property('border-bottom-color', $color);
+}
+
+@mixin _divider-height($height) {
+  @include theme.property('border-bottom-width', $height);
 }
