@@ -157,7 +157,7 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
       attribute: string,
       value: string,
   ) {
-    if (attribute === 'tabindex') {
+    if (attribute.toLowerCase() === 'tabindex') {
       element.tabIndex = Number(value);
     } else if (attribute.indexOf('data-') === 0) {
       const dataKey = toCamelCase(attribute.replace(/^data-/, ''));
