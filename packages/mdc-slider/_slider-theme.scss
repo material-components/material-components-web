@@ -189,6 +189,25 @@ $light-theme: (
   .mdc-slider__track--active {
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(height, map.get($theme, 'active-track-height'));
+      @include theme.property(
+        top,
+        // Using 'xactive' because string replace finds 'active' in 'inactive'
+        'calc((inactive-track-height - xactive-track-height) / 2)',
+        $replace: (
+          'inactive-track-height': map.get($theme, 'inactive-track-height'),
+          'xactive-track-height': map.get($theme, 'active-track-height')
+        )
+      );
+    }
+  }
+
+  .mdc-slider__track--active_fill {
+    @include feature-targeting.targets($feat-structure) {
+      // Use border rather than background-color to fill track, for HCM.
+      @include theme.property(
+        border-top-width,
+        map.get($theme, 'active-track-height')
+      );
     }
   }
 

@@ -160,14 +160,13 @@ $_track-inactive-height: 4px;
   .mdc-slider__track--active {
     @include feature-targeting.targets($feat-structure) {
       overflow: hidden;
-      top: math.div($_track-inactive-height - $_track-active-height, 2);
     }
   }
 
   .mdc-slider__track--active_fill {
     @include feature-targeting.targets($feat-structure) {
       // Use border rather than background-color to fill track, for HCM.
-      border-top: $_track-active-height solid;
+      border-top-style: solid;
       box-sizing: border-box;
       height: 100%;
       width: 100%;
