@@ -42,6 +42,9 @@ $light-theme: (
   hover-label-text-color: null,
   hover-state-layer-color: primary,
   hover-state-layer-opacity: 0.04,
+  /// Prevent the increased touch target from being reseted if the
+  /// container-height differs from the default (36px)
+  keep-touch-target: false,
   label-text-color: primary,
   label-text-font: button-font-family,
   label-text-size: button-font-size,

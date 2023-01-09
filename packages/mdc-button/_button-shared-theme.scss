@@ -142,7 +142,15 @@ $disabled-container-color: rgba(
     custom-properties.get-fallback($container-height),
     $container-height
   );
-  @if $container-height-value != null and $container-height-value != $height {
+
+  /// Token "keep-touch-target":
+  /// Prevent the increased touch target from being reseted if the
+  /// container-height differs from the default (36px)
+  $keep-touch-target: map.get($theme, keep-touch-target);
+  @if (not $keep-touch-target) and
+    ($container-height-value != null) and
+    ($container-height-value != $height)
+  {
     @include _touch-target-reset($query: $query);
   }
 
