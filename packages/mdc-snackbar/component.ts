@@ -50,9 +50,9 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
 
   private announce!: MDCSnackbarAnnouncer;  // assigned in initialize()
 
-  private actionEl!: Element;   // assigned in initialSyncWithDOM()
-  private labelEl!: Element;    // assigned in initialSyncWithDOM()
-  private surfaceEl!: Element;  // assigned in initialSyncWithDOM()
+  private actionEl!: HTMLElement;   // assigned in initialSyncWithDOM()
+  private labelEl!: HTMLElement;    // assigned in initialSyncWithDOM()
+  private surfaceEl!: HTMLElement;  // assigned in initialSyncWithDOM()
 
   private handleKeyDown!:
       SpecificEventListener<'keydown'>;  // assigned in initialSyncWithDOM()

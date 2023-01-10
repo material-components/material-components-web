@@ -24,9 +24,10 @@
 import {numbers, strings} from './constants';
 
 const {ARIA_LIVE_DELAY_MS} = numbers;
-const {ARIA_LIVE_LABEL_TEXT_ATTR} = strings;
+const {DATA_LIVE_LABEL_TEXT} = strings;
 
-function announce(ariaEl: Element, labelEl: Element = ariaEl) {
+/** Accounce helper for snackbar */
+export function announce(ariaEl: HTMLElement, labelEl: HTMLElement = ariaEl) {
   const priority = ariaEl.getAttribute('aria-live');
 
   // Trim text to ignore `&nbsp;` (see below).
@@ -85,19 +86,17 @@ function announce(ariaEl: Element, labelEl: Element = ariaEl) {
   // https://tink.uk/accessibility-support-for-css-generated-content/); however,
   // `aria-live` is turned off, so this DOM update will be ignored by screen
   // readers.
-  labelEl.setAttribute(ARIA_LIVE_LABEL_TEXT_ATTR, labelText);
+  labelEl.dataset[DATA_LIVE_LABEL_TEXT] = labelText;
 
   setTimeout(() => {
     // Allow screen readers to announce changes to the DOM again.
     ariaEl.setAttribute('aria-live', priority);
 
     // Remove the message from the ::before pseudo-element.
-    labelEl.removeAttribute(ARIA_LIVE_LABEL_TEXT_ATTR);
+    delete labelEl.dataset[DATA_LIVE_LABEL_TEXT];
 
     // Restore the original label text, which will be announced by screen
     // readers.
     labelEl.textContent = labelText;
   }, ARIA_LIVE_DELAY_MS);
 }
-
-export {announce};
