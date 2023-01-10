@@ -21,12 +21,17 @@
  * THE SOFTWARE.
  */
 
-import {createKeyboardEvent, createMouseEvent, emitEvent} from '../../../testing/dom/events';
+import {createMouseEvent, emitEvent} from '../../../testing/dom/events';
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCTooltipAdapter} from '../adapter';
 import {AnchorBoundaryType, attributes, CssClasses, numbers, PositionWithCaret, XPosition, YPosition} from '../constants';
 import {MDCTooltipFoundation} from '../foundation';
+
+const ESC_EVENTS = [
+  {type: 'keydown', key: 'Escape', target: {}} as KeyboardEvent,
+  {type: 'keydown', keyCode: 27, target: {}} as KeyboardEvent,
+];
 
 const CARET_WIDTH = 24;
 const CARET_HEIGHT = 32;
@@ -687,26 +692,29 @@ describe('MDCTooltipFoundation', () => {
            .toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
      });
 
-  it(`#handleKeydown with ESC key hides tooltip`, () => {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+  for (const evt of ESC_EVENTS) {
+    it(`#handleKeydown(${evt}) hides tooltip`, () => {
+      const {foundation, mockAdapter} =
+          setUpFoundationTest(MDCTooltipFoundation);
 
-    foundation.show();
-    foundation.handleKeydown(createKeyboardEvent('keydown', {key: 'Escape'}));
+      foundation.show();
+      foundation.handleKeydown(evt);
 
-    expect((foundation as any).hideTimeout).toEqual(null);
-    expect(mockAdapter.setAttribute)
-        .toHaveBeenCalledWith('aria-hidden', 'true');
-    expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.HIDE);
-    expect(mockAdapter.addClass)
-        .toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
-    expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.SHOWN);
-    expect(mockAdapter.removeClass)
-        .toHaveBeenCalledWith(CssClasses.SHOWING_TRANSITION);
-    expect(mockAdapter.deregisterDocumentEventHandler)
-        .toHaveBeenCalledWith('click', jasmine.any(Function));
-    expect(mockAdapter.deregisterDocumentEventHandler)
-        .toHaveBeenCalledWith('keydown', jasmine.any(Function));
-  });
+      expect((foundation as any).hideTimeout).toEqual(null);
+      expect(mockAdapter.setAttribute)
+          .toHaveBeenCalledWith('aria-hidden', 'true');
+      expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.HIDE);
+      expect(mockAdapter.addClass)
+          .toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
+      expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.SHOWN);
+      expect(mockAdapter.removeClass)
+          .toHaveBeenCalledWith(CssClasses.SHOWING_TRANSITION);
+      expect(mockAdapter.deregisterDocumentEventHandler)
+          .toHaveBeenCalledWith('click', jasmine.any(Function));
+      expect(mockAdapter.deregisterDocumentEventHandler)
+          .toHaveBeenCalledWith('keydown', jasmine.any(Function));
+    });
+  }
 
   it('#handleKeydown does not hide the tooltip if the ESCAPE key was not pressed',
      () => {
@@ -715,7 +723,8 @@ describe('MDCTooltipFoundation', () => {
        foundation.hide = jasmine.createSpy('hide');
 
        foundation.show();
-       foundation.handleKeydown(createKeyboardEvent('keydown', {key: 'Space'}));
+       foundation.handleKeydown(
+           {type: 'keydown', key: 'Space'} as KeyboardEvent);
 
        expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -727,7 +736,7 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.getActiveElement.and.returnValue(null);
 
        foundation.handleKeydown(
-           createKeyboardEvent('keydown', {key: 'Escape'}));
+           {type: 'keydown', key: 'Escape'} as KeyboardEvent);
 
        expect(mockAdapter.focusAnchorElement).not.toHaveBeenCalled();
      });
@@ -740,7 +749,7 @@ describe('MDCTooltipFoundation', () => {
 
        document.body.focus();
        foundation.handleKeydown(
-           createKeyboardEvent('keydown', {key: 'Escape'}));
+           {type: 'keydown', key: 'Escape'} as KeyboardEvent);
 
        expect(mockAdapter.focusAnchorElement).not.toHaveBeenCalled();
      });
@@ -755,9 +764,8 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.tooltipContainsElement.and.returnValue(true);
 
        document.body.focus();
-       const mockKeyboardEvent =
-           createKeyboardEvent('keydown', {key: 'Escape'});
-       foundation.handleKeydown(mockKeyboardEvent);
+       foundation.handleKeydown(
+           {type: 'keydown', key: 'Escape'} as KeyboardEvent);
 
        expect(mockAdapter.tooltipContainsElement)
            .toHaveBeenCalledWith(activeElement);

@@ -312,11 +312,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         this.adapter.focusAnchorElement();
       }
       this.hide();
-      // prevent event from bubbling
-      evt.stopPropagation();
-      return false;
     }
-    return true;
   }
 
   private handleAnchorBlur(evt: FocusEvent) {
