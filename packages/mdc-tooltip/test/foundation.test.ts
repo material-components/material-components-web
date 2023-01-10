@@ -2258,6 +2258,95 @@ describe('MDCTooltipFoundation', () => {
             'left', `${expectedTooltipLeft + xPositionDiff}px`);
   });
 
+  it('doesn\'t recalculates position of tooltip if anchor is scrolled above viewport',
+     () => {
+       const anchorBoundingRect =
+           {top: 0, bottom: 35, left: 200, right: 250, height: 35};
+       const parentBoundingRect =
+           {top: 5, bottom: 40, left: 100, right: 150, height: 35};
+       const tooltipSize = {width: 40, height: 30};
+
+       const scrollableAncestor = document.createElement('div');
+       scrollableAncestor.setAttribute('id', 'scrollable');
+       document.body.appendChild(scrollableAncestor);
+
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
+       mockAdapter.getViewportWidth.and.returnValue(300);
+       mockAdapter.getViewportHeight.and.returnValue(150);
+       mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
+       mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+
+       mockAdapter.registerWindowEventHandler.and.callFake(
+           (ev: string, handler: EventListener) => {
+             window.addEventListener(ev, handler);
+           });
+       foundation.show();
+
+       const yPositionDiff = 50;
+       const newAnchorBoundingRect = {
+         top: anchorBoundingRect.top - yPositionDiff,
+         bottom: anchorBoundingRect.bottom - yPositionDiff,
+         left: anchorBoundingRect.left,
+         right: anchorBoundingRect.right,
+         height: anchorBoundingRect.height
+       };
+       mockAdapter.getAnchorBoundingRect.and.returnValue(newAnchorBoundingRect);
+
+       // Reset spy on setStyleProperty so we can verify it is not called again
+       // after the scroll event.
+       mockAdapter.setStyleProperty.calls.reset();
+       emitEvent(window, 'scroll');
+       jasmine.clock().tick(1);
+
+       expect(mockAdapter.setStyleProperty).not.toHaveBeenCalled();
+     });
+
+  it('doesn\'t recalculates position of tooltip if anchor is scrolled below viewport',
+     () => {
+       const anchorBoundingRect =
+           {top: 110, bottom: 145, left: 200, right: 250, height: 35};
+       const parentBoundingRect =
+           {top: 115, bottom: 150, left: 100, right: 150, height: 35};
+       const tooltipSize = {width: 40, height: 30};
+
+       const scrollableAncestor = document.createElement('div');
+       scrollableAncestor.setAttribute('id', 'scrollable');
+       document.body.appendChild(scrollableAncestor);
+
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
+       mockAdapter.getViewportWidth.and.returnValue(300);
+       mockAdapter.getViewportHeight.and.returnValue(150);
+       mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
+       mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+
+       mockAdapter.registerWindowEventHandler.and.callFake(
+           (ev: string, handler: EventListener) => {
+             window.addEventListener(ev, handler);
+           });
+       foundation.show();
+
+       const newAnchorBoundingRect = {
+         top: anchorBoundingRect.top + 50,
+         bottom: anchorBoundingRect.bottom + 50,
+         left: anchorBoundingRect.left,
+         right: anchorBoundingRect.right,
+         height: anchorBoundingRect.height
+       };
+       mockAdapter.getAnchorBoundingRect.and.returnValue(newAnchorBoundingRect);
+
+       // Reset spy on setStyleProperty so we can verify it is not called again
+       // after the scroll event.
+       mockAdapter.setStyleProperty.calls.reset();
+       emitEvent(window, 'scroll');
+       jasmine.clock().tick(1);
+
+       expect(mockAdapter.setStyleProperty).not.toHaveBeenCalled();
+     });
+
   it('#show registers additional user-specified scroll handlers', () => {
     const scrollableAncestor = document.createElement('div');
     scrollableAncestor.setAttribute('id', 'scrollable');

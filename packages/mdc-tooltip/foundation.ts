@@ -1023,6 +1023,13 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   private repositionTooltipOnAnchorMove() {
     const newAnchorRect = this.adapter.getAnchorBoundingRect();
     if (!newAnchorRect || !this.anchorRect) return;
+    // Don't repositioning the tooltip if the anchor is moved/scrolled out of
+    // the viewport. See b/264343145 for more info.
+    const windowHeight = this.adapter.getViewportHeight();
+    if ((newAnchorRect.top + newAnchorRect.height) < 0 ||
+        (newAnchorRect.bottom - newAnchorRect.height) >= windowHeight) {
+      return;
+    }
 
     if (newAnchorRect.top !== this.anchorRect.top ||
         newAnchorRect.left !== this.anchorRect.left ||
