@@ -92,7 +92,7 @@
     }
   }
 
-  .mdc-floating-label--required {
+  .mdc-floating-label--required:not(.mdc-floating-label--hide-required-marker) {
     &::after {
       @include _required-content($query);
     }

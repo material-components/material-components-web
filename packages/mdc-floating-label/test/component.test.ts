@@ -80,6 +80,14 @@ describe('MDCFloatingLabel', () => {
     expect(root.classList.contains('foo')).toBe(false);
   });
 
+  it('#adapter.hasClass returns presence of a class', () => {
+    const {root, component} = setupTest();
+    const adapter = (component.getDefaultFoundation() as any).adapter;
+    expect(adapter.hasClass('foo')).toBe(false);
+    root.classList.add('foo');
+    expect(adapter.hasClass('foo')).toBe(true);
+  });
+
   it('#adapter.getWidth returns the width of the label element', () => {
     const {root, component} = setupTest();
     expect((component.getDefaultFoundation() as any).adapter.getWidth())

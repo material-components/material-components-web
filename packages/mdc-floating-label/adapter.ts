@@ -42,6 +42,11 @@ export interface MDCFloatingLabelAdapter {
   removeClass(className: string): void;
 
   /**
+   * Checks if the label element has the given class.
+   */
+  hasClass(className: string): boolean;
+
+  /**
    * Returns the width of the label element.
    */
   getWidth(): number;

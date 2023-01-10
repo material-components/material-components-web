@@ -81,6 +81,7 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
       removeClass: (className) => {
         this.root.classList.remove(className);
       },
+      hasClass: (className) => this.root.classList.contains(className),
       getWidth: () => estimateScrollWidth(this.root),
       registerInteractionHandler: (evtType, handler) => {
         this.listen(evtType, handler);

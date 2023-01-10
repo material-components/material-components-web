@@ -43,6 +43,7 @@ export class MDCFloatingLabelFoundation extends
     return {
       addClass: () => undefined,
       removeClass: () => undefined,
+      hasClass: () => false,
       getWidth: () => 0,
       registerInteractionHandler: () => undefined,
       deregisterInteractionHandler: () => undefined,
@@ -120,6 +121,20 @@ export class MDCFloatingLabelFoundation extends
     } else {
       this.adapter.removeClass(LABEL_REQUIRED);
     }
+  }
+
+  setHideRequiredMarker(hideRequiredMarker: boolean) {
+    const {LABEL_HIDE_REQUIRED_MARKER} = MDCFloatingLabelFoundation.cssClasses;
+    if (hideRequiredMarker) {
+      this.adapter.addClass(LABEL_HIDE_REQUIRED_MARKER);
+    } else {
+      this.adapter.removeClass(LABEL_HIDE_REQUIRED_MARKER);
+    }
+  }
+
+  getHideRequiredMarker(): boolean {
+    const {LABEL_HIDE_REQUIRED_MARKER} = MDCFloatingLabelFoundation.cssClasses;
+    return this.adapter.hasClass(LABEL_HIDE_REQUIRED_MARKER);
   }
 
   private handleShakeAnimationEnd() {
