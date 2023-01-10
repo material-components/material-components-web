@@ -30,6 +30,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/keys';
+@use '@material/theme/map-ext';
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -83,7 +84,7 @@ $light-theme: (
   label-container-height: null,
   label-label-text-color: $value-indicator-text-color,
   label-label-text-font: typography.get-font(subtitle2),
-  label-label-text-font-size: typography.get-size(subtitle2),
+  label-label-text-size: typography.get-size(subtitle2),
   label-label-text-line-height: typography.get-line-height(subtitle2),
   label-label-text-tracking: typography.get-tracking(subtitle2),
   label-label-text-weight: typography.get-weight(subtitle2),
@@ -105,6 +106,13 @@ $light-theme: (
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
+  // TODO(b/262862785): Remove once Angular Material is using supported key
+  $theme: map-ext.rename-keys(
+    $theme,
+    (
+      'label-label-text-font-size': 'label-label-text-size',
+    )
+  );
   @include theme.validate-theme($light-theme, $theme);
   $theme: _resolve-theme-elevation-keys($theme, $resolvers: $resolvers);
   @include keys.declare-custom-properties($theme, $_custom-property-prefix);
@@ -119,6 +127,13 @@ $light-theme: (
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
 
+  // TODO(b/262862785): Remove once Angular Material is using supported key
+  $theme: map-ext.rename-keys(
+    $theme,
+    (
+      'label-label-text-font-size': 'label-label-text-size',
+    )
+  );
   @include theme.validate-theme-styles($light-theme, $theme);
   $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
 
@@ -519,7 +534,7 @@ $light-theme: (
 
 @mixin _value-indicator-typography($theme, $query: feature-targeting.all()) {
   $font: map.get($theme, 'label-label-text-font');
-  $size: map.get($theme, 'label-label-text-font-size');
+  $size: map.get($theme, 'label-label-text-size');
   $tracking: map.get($theme, 'label-label-text-tracking');
   $weight: map.get($theme, 'label-label-text-weight');
   $line-height: map.get($theme, 'label-label-text-line-height');
