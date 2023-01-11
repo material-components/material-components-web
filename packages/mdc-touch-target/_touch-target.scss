@@ -103,7 +103,9 @@ $width: $height !default;
     @if keys.is-key($touch-target-height) or
       keys.is-key($component-height) or
       custom-properties.is-custom-prop($touch-target-height) or
-      custom-properties.is-custom-prop($component-height)
+      custom-properties.is-custom-prop($component-height) or
+      custom-properties.is-custom-prop-string($touch-target-height) or
+      custom-properties.is-custom-prop-string($component-height)
     {
       // Custom properties
       @include theme.property(
@@ -138,7 +140,9 @@ $width: $height !default;
       @if keys.is-key($touch-target-width) or
         keys.is-key($component-width) or
         custom-properties.is-custom-prop($touch-target-width) or
-        custom-properties.is-custom-prop($component-width)
+        custom-properties.is-custom-prop($component-width) or
+        custom-properties.is-custom-prop-string($touch-target-width) or
+        custom-properties.is-custom-prop-string($component-width)
       {
         // Custom properties
         @include theme.property(
