@@ -2,4 +2,10 @@
   display: none;
   pointer-events: none;
   position: absolute;
+
+  // Focus rings should render above other elements by default (although
+  // note that this does not guarantee that focus rings *always* render
+  // above other elements, due to how z-index and stacking contexts work).
+  // See also: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
+  z-index: 1;
 }
