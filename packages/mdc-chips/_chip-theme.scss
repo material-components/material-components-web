@@ -539,13 +539,13 @@ $_custom-property-prefix: 'chip';
 }
 
 @mixin _selected-ripple-theme($ripple-theme) {
-  @include _is-selected() {
+  &.mdc-evolution-chip--selected {
     @include _ripple-theme($ripple-theme);
   }
 }
 
 @mixin _unselected-ripple-theme($ripple-theme) {
-  @include _is-unselected() {
+  &:not(.mdc-evolution-chip--selected) {
     @include _ripple-theme($ripple-theme);
   }
 }
@@ -755,13 +755,13 @@ $_custom-property-prefix: 'chip';
 }
 
 @mixin _selected-outline-width($width) {
-  @include _is-selected() {
+  &.mdc-evolution-chip--selected {
     @include outline-width($width);
   }
 }
 
 @mixin _unselected-outline-width($width) {
-  @include _is-unselected() {
+  &:not(.mdc-evolution-chip--selected) {
     @include outline-width($width);
   }
 }
@@ -780,17 +780,17 @@ $_custom-property-prefix: 'chip';
 ///
 @mixin outline-color($color-or-map, $query: feature-targeting.all()) {
   @include _outline-color(state.get-default-state($color-or-map), $query);
-  @include _is-enabled() {
+  &:not(.mdc-evolution-chip--disabled) {
     @include _outline-color(state.get-enabled-state($color-or-map), $query);
   }
   @include _focus-outline-color(state.get-focus-state($color-or-map), $query);
-  @include _is-disabled() {
+  &.mdc-evolution-chip--disabled {
     @include _outline-color(state.get-disabled-state($color-or-map), $query);
   }
 }
 
 @mixin _selected-outline-color($color-or-map) {
-  @include _is-selected() {
+  &.mdc-evolution-chip--selected {
     @include _outline-color($color-or-map);
   }
 }
@@ -808,13 +808,13 @@ $_custom-property-prefix: 'chip';
 /// @param {Color | Map} $color-or-map - The outline's color or a state Map
 ///
 @mixin selected-outline-color($color-or-map, $query: feature-targeting.all()) {
-  @include _is-selected() {
+  &.mdc-evolution-chip--selected {
     @include outline-color($color-or-map, $query: $query);
   }
 }
 
 @mixin _unselected-outline-color($color-or-map) {
-  @include _is-unselected() {
+  &:not(.mdc-evolution-chip--selected) {
     @include outline-color($color-or-map);
   }
 }
@@ -882,10 +882,10 @@ $_custom-property-prefix: 'chip';
 ///
 @mixin container-color($color-or-map, $query: feature-targeting.all()) {
   @include _container-color(state.get-default-state($color-or-map), $query);
-  @include _is-enabled() {
+  &:not(.mdc-evolution-chip--disabled) {
     @include _container-color(state.get-enabled-state($color-or-map), $query);
   }
-  @include _is-disabled() {
+  &.mdc-evolution-chip--disabled {
     @include _container-color(state.get-disabled-state($color-or-map), $query);
   }
 }
@@ -906,13 +906,13 @@ $_custom-property-prefix: 'chip';
   $color-or-map,
   $query: feature-targeting.all()
 ) {
-  @include _is-selected() {
+  &.mdc-evolution-chip--selected {
     @include container-color($color-or-map, $query: $query);
   }
 }
 
 @mixin _unselected-container-color($color-or-map) {
-  @include _is-unselected() {
+  &:not(.mdc-evolution-chip--selected) {
     @include container-color($color-or-map);
   }
 }
@@ -941,7 +941,7 @@ $_custom-property-prefix: 'chip';
 ///
 @mixin text-label-color($color-or-map, $query: feature-targeting.all()) {
   @include _text-label-color(state.get-default-state($color-or-map), $query);
-  @include _is-enabled() {
+  &:not(.mdc-evolution-chip--disabled) {
     @include _text-label-color(state.get-enabled-state($color-or-map), $query);
   }
   .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational):hover {
@@ -954,7 +954,7 @@ $_custom-property-prefix: 'chip';
     }
   }
 
-  @include _is-disabled() {
+  &.mdc-evolution-chip--disabled {
     @include _text-label-color(state.get-disabled-state($color-or-map), $query);
   }
 }
@@ -981,13 +981,13 @@ $_custom-property-prefix: 'chip';
   $color-or-map,
   $query: feature-targeting.all()
 ) {
-  @include _is-selected() {
+  &.mdc-evolution-chip--selected {
     @include text-label-color($color-or-map, $query: $query);
   }
 }
 
 @mixin _unselected-text-label-color($color-or-map) {
-  @include _is-unselected() {
+  &:not(.mdc-evolution-chip--selected) {
     @include text-label-color($color-or-map);
   }
 }
@@ -1057,7 +1057,7 @@ $_custom-property-prefix: 'chip';
 @mixin icon-color($color-or-map, $query: feature-targeting.all()) {
   @include _icon-color(state.get-default-state($color-or-map), $query);
 
-  @include _is-enabled() {
+  &:not(.mdc-evolution-chip--disabled) {
     @include _icon-color(state.get-enabled-state($color-or-map), $query);
   }
 
@@ -1071,7 +1071,7 @@ $_custom-property-prefix: 'chip';
     }
   }
 
-  @include _is-disabled() {
+  &.mdc-evolution-chip--disabled {
     @include _icon-color(state.get-disabled-state($color-or-map), $query);
   }
 }
@@ -1081,7 +1081,7 @@ $_custom-property-prefix: 'chip';
 }
 
 @mixin _unselected-icon-color($color-or-map) {
-  @include _is-unselected() {
+  &:not(.mdc-evolution-chip--selected) {
     @include icon-color($color-or-map);
   }
 }
@@ -1202,7 +1202,7 @@ $_custom-property-prefix: 'chip';
     $query
   );
 
-  @include _is-enabled() {
+  &:not(.mdc-evolution-chip--disabled) {
     @include _trailing-action-color(
       state.get-enabled-state($color-or-map),
       $query
@@ -1225,7 +1225,7 @@ $_custom-property-prefix: 'chip';
     }
   }
 
-  @include _is-disabled() {
+  &.mdc-evolution-chip--disabled {
     @include _trailing-action-color(
       state.get-disabled-state($color-or-map),
       $query
@@ -1275,7 +1275,7 @@ $_custom-property-prefix: 'chip';
 @mixin checkmark-color($color-or-map, $query: feature-targeting.all()) {
   @include _checkmark-color(state.get-default-state($color-or-map), $query);
 
-  @include _is-enabled() {
+  &:not(.mdc-evolution-chip--disabled) {
     @include _checkmark-color(state.get-enabled-state($color-or-map), $query);
   }
 
@@ -1289,7 +1289,7 @@ $_custom-property-prefix: 'chip';
     }
   }
 
-  @include _is-disabled() {
+  &.mdc-evolution-chip--disabled {
     @include _checkmark-color(state.get-disabled-state($color-or-map), $query);
   }
 }
@@ -1510,7 +1510,7 @@ $_custom-property-prefix: 'chip';
     @include _container-elevation-theme($default-state);
   }
 
-  @include _is-enabled() {
+  &:not(.mdc-evolution-chip--disabled) {
     $enabled-state: state.get-enabled-state($map);
     @if $enabled-state {
       @include _container-elevation-theme($enabled-state);
@@ -1538,7 +1538,7 @@ $_custom-property-prefix: 'chip';
     }
   }
 
-  @include _is-disabled() {
+  &.mdc-evolution-chip--disabled {
     $disabled-state: state.get-disabled-state($map);
     @if $disabled-state {
       @include _container-elevation-theme($disabled-state);
@@ -1547,38 +1547,14 @@ $_custom-property-prefix: 'chip';
 }
 
 @mixin _selected-container-elevation($map) {
-  @include _is-selected() {
+  &.mdc-evolution-chip--selected {
     @include _container-elevation($map);
   }
 }
 
 @mixin _unselected-container-elevation($map) {
-  @include _is-unselected() {
-    @include _container-elevation($map);
-  }
-}
-
-@mixin _is-enabled() {
-  &:not(.mdc-evolution-chip--disabled) {
-    @content;
-  }
-}
-
-@mixin _is-disabled() {
-  &.mdc-evolution-chip--disabled {
-    @content;
-  }
-}
-
-@mixin _is-selected() {
-  &.mdc-evolution-chip--selected {
-    @content;
-  }
-}
-
-@mixin _is-unselected() {
   &:not(.mdc-evolution-chip--selected) {
-    @content;
+    @include _container-elevation($map);
   }
 }
 
