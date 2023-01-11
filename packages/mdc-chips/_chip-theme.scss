@@ -789,12 +789,6 @@ $_custom-property-prefix: 'chip';
   }
 }
 
-@mixin _selected-outline-color($color-or-map) {
-  &.mdc-evolution-chip--selected {
-    @include _outline-color($color-or-map);
-  }
-}
-
 ///
 /// Customizes the selected outline color, using a Color or state Map.
 /// - To set only the default color, provide a single Color.
