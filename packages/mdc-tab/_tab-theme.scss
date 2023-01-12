@@ -576,6 +576,10 @@ $custom-property-prefix-secondary: 'secondary-navigation-tab';
 
 @mixin _container-shape($shape-radius) {
   @include theme.property(border-radius, $shape-radius);
+
+  .mdc-tab__ripple {
+    @include theme.property(border-radius, $shape-radius);
+  }
 }
 
 @mixin _icon-size($size) {
