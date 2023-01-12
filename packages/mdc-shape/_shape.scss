@@ -159,6 +159,9 @@ $category-keywords: (
       $component-height: $component-height
     );
     @return custom-properties.set-fallback($radius, $fallback, $shallow: true);
+  } @else if custom-properties.is-custom-prop-string($radius) {
+    // $radius is a CSS custom property string, e.g. var(--mdc-shape-small, 8px)
+    @return $radius;
   } @else if meta.type-of($radius) == 'map' {
     // $radius is a shape Map
     $family: map.get($radius, family);
