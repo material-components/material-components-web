@@ -33,7 +33,6 @@ $default-theme: (
 @mixin theme-styles($theme: $default-theme) {
   $theme: validate.theme-styles($default-theme, $theme);
   $theme: keys.create-theme-vars($theme, $_custom-property-prefix);
-
   $ring-color: map.get($theme, $_ring-color-key);
   $ring-offset: map.get($theme, $_ring-offset-key);
   $track-width: map.get($theme, $_track-width-key);
