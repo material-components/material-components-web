@@ -165,23 +165,6 @@
         }
       }
     }
-
-    // TODO(b/262862785): Remove this test once support for deprecated token is removed
-    @include test.it('emits correct custom property given deprecated token') {
-      @include test.assert {
-        @include test.output {
-          @include slider-theme.theme(
-            (
-              'label-label-text-font-size': 999px,
-            )
-          );
-        }
-
-        @include test.expect {
-          --mdc-slider-label-label-text-size: 999px;
-        }
-      }
-    }
   }
 
   @include test.describe('theme-styles()') {
@@ -262,30 +245,6 @@
 
         // stylelint-disable block-no-empty -- testing for empty
         @include test.expect {
-        }
-        // stylelint-enable
-      }
-    }
-
-    // TODO(b/262862785): Remove this test once support for deprecated token is removed
-    @include test.it(
-      'emits styles using correct custom property given deprecated token'
-    ) {
-      @include test.assert {
-        @include test.output {
-          @include slider-theme.theme-styles(
-            (
-              'label-label-text-font-size': 10px,
-            )
-          );
-        }
-
-        // stylelint-disable selector-class-pattern -- testing 'mdc-*'
-        @include test.contains {
-          .mdc-slider__value-indicator-text {
-            font-size: 10px;
-            font-size: var(--mdc-slider-label-label-text-size, 10px);
-          }
         }
         // stylelint-enable
       }
