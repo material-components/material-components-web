@@ -41,11 +41,10 @@ $default-theme: (
 
   /// Mold the focus ring to the target shape.
   /// See the diagram for insights into why the border-radius calc is needed:
-  /// https://screenshot.googleplex.com/3cYw8Pi8WQNa3h8.png
-  border: $track-width solid $ring-color;
-  border-radius: calc($target-shape + $track-width + $ring-offset);
-  inset-block: calc(-1 * ($ring-offset + $track-width));
-  inset-inline: calc(-1 * ($ring-offset + $track-width));
+  /// http://screen/9J9CzpCxJxxDHCb.png
+  border-radius: calc($target-shape + $ring-offset);
+  inset: calc(-1 * $ring-offset);
+  outline: $track-width solid $ring-color;
 
   @include _focus-ring-animation-keyframes($theme);
   @include _focus-ring-animation();
@@ -74,37 +73,26 @@ $default-theme: (
 @mixin _focus-ring-animation-keyframes($theme) {
   $ring-offset: map.get($theme, $_ring-offset-key);
   $track-width: map.get($theme, $_track-width-key);
-  $target-shape: map.get($theme, $_target-shape-key);
 
-  $start-border-width: 0;
-  $midpoint-border-width: 8px;
+  $midpoint-outline-width: 8px;
+  $inset: calc(-1 * $ring-offset);
+  $half-track-width-diff: calc(($midpoint-outline-width - $track-width) / 2);
+  $midpoint-inset: calc($inset + $half-track-width-diff);
 
   @keyframes focus-ring-grows {
     from {
-      border-width: $start-border-width;
-      border-radius: calc($target-shape + $start-border-width + $ring-offset);
+      outline-width: 0;
     }
     to {
-      border-width: $midpoint-border-width;
-      inset-block: calc(-1 * ($ring-offset + $midpoint-border-width));
-      inset-inline: calc(-1 * ($ring-offset + $midpoint-border-width));
-      border-radius: calc(
-        $target-shape + $midpoint-border-width + $ring-offset
-      );
+      outline-width: $midpoint-outline-width;
+      inset: $midpoint-inset;
     }
   }
 
   @keyframes focus-ring-shrinks {
     from {
-      border-width: $midpoint-border-width;
-      inset-block: calc(-1 * ($ring-offset + $midpoint-border-width));
-      inset-inline: calc(-1 * ($ring-offset + $midpoint-border-width));
-      border-radius: calc(
-        $target-shape + $midpoint-border-width + $ring-offset
-      );
-    }
-    to {
-      border-width: $track-width;
+      outline-width: $midpoint-outline-width;
+      inset: $midpoint-inset;
     }
   }
 }
