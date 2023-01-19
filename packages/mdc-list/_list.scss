@@ -1359,6 +1359,7 @@ $ripple-target: variables.$ripple-target;
   );
 
   #{variables.$ripple-target} {
+    @include ripple.surface-styles($query: $query);
     @include ripple.target-common($query: $query);
   }
 }
