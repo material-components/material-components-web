@@ -55,21 +55,15 @@
         }
 
         @include test.contains {
-          border: var(--mdc-focus-ring-outward-track-width, 3px) solid
-            var(--mdc-focus-ring-outward-color, blue);
           border-radius: calc(
             var(--mdc-focus-ring-outward-target-shape, 5px) +
-              var(--mdc-focus-ring-outward-track-width, 3px) +
               var(--mdc-focus-ring-outward-offset, 2px)
           );
-          inset-block: calc(
-            -1 * (var(--mdc-focus-ring-outward-offset, 2px) +
-                  var(--mdc-focus-ring-outward-track-width, 3px))
-          );
-          inset-inline: calc(
-            -1 * (var(--mdc-focus-ring-outward-offset, 2px) +
-                  var(--mdc-focus-ring-outward-track-width, 3px))
-          );
+          inset: calc(-1 * var(--mdc-focus-ring-outward-offset, 2px));
+          box-shadow: 0 0 0 var(--mdc-focus-ring-outward-track-width, 3px)
+            var(--mdc-focus-ring-outward-color, blue);
+          outline: var(--mdc-focus-ring-outward-track-width, 3px) solid
+            transparent;
         }
       }
     }
@@ -90,62 +84,28 @@
         }
 
         @include test.expect {
-          border: var(--mdc-focus-ring-outward-track-width, 3px) solid
-            var(--mdc-focus-ring-outward-color, blue);
           border-radius: calc(
             var(--mdc-focus-ring-outward-target-shape, 5px) +
-              var(--mdc-focus-ring-outward-track-width, 3px) +
               var(--mdc-focus-ring-outward-offset, 2px)
           );
-          inset-block: calc(
-            -1 * (var(--mdc-focus-ring-outward-offset, 2px) +
-                  var(--mdc-focus-ring-outward-track-width, 3px))
-          );
-          inset-inline: calc(
-            -1 * (var(--mdc-focus-ring-outward-offset, 2px) +
-                  var(--mdc-focus-ring-outward-track-width, 3px))
-          );
+          inset: calc(-1 * var(--mdc-focus-ring-outward-offset, 2px));
+          box-shadow: 0 0 0 var(--mdc-focus-ring-outward-track-width, 3px)
+            var(--mdc-focus-ring-outward-color, blue);
+          outline: var(--mdc-focus-ring-outward-track-width, 3px) solid
+            transparent;
 
           @keyframes focus-ring-grows {
             from {
-              border-width: 0;
-              border-radius: calc(
-                var(--mdc-focus-ring-outward-target-shape, 5px) + 0 +
-                  var(--mdc-focus-ring-outward-offset, 2px)
-              );
+              box-shadow: 0 0 0 0 var(--mdc-focus-ring-outward-color, blue);
             }
             to {
-              border-width: 8px;
-              inset-block: calc(
-                -1 * (var(--mdc-focus-ring-outward-offset, 2px) + 8px)
-              );
-              inset-inline: calc(
-                -1 * (var(--mdc-focus-ring-outward-offset, 2px) + 8px)
-              );
-              border-radius: calc(
-                var(--mdc-focus-ring-outward-target-shape, 5px) + 8px +
-                  var(--mdc-focus-ring-outward-offset, 2px)
-              );
+              box-shadow: 0 0 0 8px var(--mdc-focus-ring-outward-color, blue);
             }
           }
 
           @keyframes focus-ring-shrinks {
             from {
-              border-width: 8px;
-              inset-block: calc(
-                -1 * (var(--mdc-focus-ring-outward-offset, 2px) + 8px)
-              );
-              inset-inline: calc(
-                -1 * (var(--mdc-focus-ring-outward-offset, 2px) + 8px)
-              );
-              border-radius: calc(
-                var(--mdc-focus-ring-outward-target-shape, 5px) + 8px +
-                  var(--mdc-focus-ring-outward-offset, 2px)
-              );
-            }
-
-            to {
-              border-width: var(--mdc-focus-ring-outward-track-width, 3px);
+              box-shadow: 0 0 0 8px var(--mdc-focus-ring-outward-color, blue);
             }
           }
           animation-name: focus-ring-grows, focus-ring-shrinks;
