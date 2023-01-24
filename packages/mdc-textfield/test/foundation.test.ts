@@ -77,8 +77,11 @@ describe('MDCTextFieldFoundation', () => {
     useHelperText = false,
     useLeadingIcon = false,
     useTrailingIcon = false,
+    optIsValid = true,
   } = {}) => {
     const {mockAdapter} = setUpFoundationTest(MDCTextFieldFoundation);
+    mockAdapter.hasClass.withArgs('mdc-text-field--invalid')
+        .and.returnValue(!optIsValid);
 
     const helperText = useHelperText ?
         jasmine.createSpyObj(
@@ -152,6 +155,7 @@ describe('MDCTextFieldFoundation', () => {
       useHelperText,
       useLeadingIcon,
       useTrailingIcon,
+      optIsValid,
     });
     const nativeInput = {
       value,
@@ -178,6 +182,18 @@ describe('MDCTextFieldFoundation', () => {
     expect('initValue')
         .withContext('getValue does not match input value.')
         .toEqual(foundation.getValue());
+  });
+
+  it(`initializes 'valid' property to false when field is invalid`, () => {
+    const {foundation} = setupTest({optIsValid: false});
+    foundation.setUseNativeValidation(false);
+    expect(foundation.isValid()).toBe(false);
+  });
+
+  it(`initializes 'valid' property to true when field is valid`, () => {
+    const {foundation} = setupTest({optIsValid: true});
+    foundation.setUseNativeValidation(false);
+    expect(foundation.isValid()).toBe(true);
   });
 
   it('#setValue with non-empty value styles the label', () => {

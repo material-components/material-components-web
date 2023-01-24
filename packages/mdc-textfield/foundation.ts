@@ -103,9 +103,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
 
   private isFocused = false;
   private receivedUserInput = false;
-  private valid = true;
   private useNativeValidation = true;
   private validateOnValueChange = true;
+  private valid: boolean;
 
   private readonly inputFocusHandler: () => void;
   private readonly inputBlurHandler: SpecificEventListener<'blur'>;
@@ -136,6 +136,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.characterCounter = foundationMap.characterCounter;
     this.leadingIcon = foundationMap.leadingIcon;
     this.trailingIcon = foundationMap.trailingIcon;
+    this.valid =
+        !this.adapter.hasClass(MDCTextFieldFoundation.cssClasses.INVALID);
 
     this.inputFocusHandler = () => {
       this.activateFocus();
