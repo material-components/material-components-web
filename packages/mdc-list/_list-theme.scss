@@ -473,12 +473,14 @@ $light-theme: (
 }
 
 @mixin _list-item-leading-image-shape($shape) {
-  .mdc-list-item--with-leading-image .mdc-list-item__start > img {
-    @include theme.property('border-radius', $shape);
-  }
+  .mdc-list-item--with-leading-image .mdc-list-item__start {
+    > img {
+      @include theme.property('border-radius', $shape);
+    }
 
-  @if $shape {
-    overflow: hidden;
+    @if $shape {
+      overflow: hidden;
+    }
   }
 }
 
