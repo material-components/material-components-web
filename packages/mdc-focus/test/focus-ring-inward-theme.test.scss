@@ -1,0 +1,136 @@
+@use 'true' as test;
+@use 'third_party/javascript/material_components_web/focus/focus-ring-inward-theme';
+
+@include test.describe('Calling focus-ring-inward-theme') {
+  @include test.describe('.theme') {
+    @include test.it('returns nothing when no theme is provided.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-inward-theme.theme(());
+        }
+
+        @include test.expect {
+          // No content. This is testing that an error isn't thrown.
+        }
+      }
+    }
+
+    @include test.it('returns the expected custom property declarations.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-inward-theme.theme(
+            (
+              'color': blue,
+              'offset': 2px,
+              'track-width': 3px,
+              'target-shape': 5px,
+            )
+          );
+        }
+
+        @include test.expect {
+          --mdc-focus-ring-inward-color: blue;
+          --mdc-focus-ring-inward-offset: 2px;
+          --mdc-focus-ring-inward-track-width: 3px;
+          --mdc-focus-ring-inward-target-shape: 5px;
+        }
+      }
+    }
+  }
+
+  @include test.describe('.theme-styles') {
+    // TODO(b/263502978): Do not remove this first test until a more
+    // deterministic way to test sass output with @keyframes is found.
+    @include test.it('returns CSS for the underlying focus-ring structure.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-inward-theme.theme-styles(
+            (
+              'color': blue,
+              'offset': 2px,
+              'track-width': 3px,
+              'target-shape': 5px,
+            )
+          );
+        }
+
+        @include test.contains {
+          border: var(--mdc-focus-ring-inward-track-width, 3px) solid
+            var(--mdc-focus-ring-inward-color, blue);
+          border-radius: calc(
+            var(--mdc-focus-ring-inward-target-shape, 5px) +
+              var(--mdc-focus-ring-inward-track-width, 3px) +
+              var(--mdc-focus-ring-inward-offset, 2px)
+          );
+          inset-block: calc(
+            -1 * (var(--mdc-focus-ring-inward-offset, 2px) +
+                  var(--mdc-focus-ring-inward-track-width, 3px))
+          );
+          inset-inline: calc(
+            -1 * (var(--mdc-focus-ring-inward-offset, 2px) +
+                  var(--mdc-focus-ring-inward-track-width, 3px))
+          );
+        }
+      }
+    }
+
+    @include test.it(
+      'returns animation styles for newly visible focus-rings.'
+    ) {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-inward-theme.theme-styles(
+            (
+              'color': blue,
+              'offset': 2px,
+              'track-width': 3px,
+              'target-shape': 5px,
+            )
+          );
+        }
+
+        @include test.expect {
+          border: var(--mdc-focus-ring-inward-track-width, 3px) solid
+            var(--mdc-focus-ring-inward-color, blue);
+          border-radius: calc(
+            var(--mdc-focus-ring-inward-target-shape, 5px) +
+              var(--mdc-focus-ring-inward-track-width, 3px) +
+              var(--mdc-focus-ring-inward-offset, 2px)
+          );
+          inset-block: calc(
+            -1 * (var(--mdc-focus-ring-inward-offset, 2px) +
+                  var(--mdc-focus-ring-inward-track-width, 3px))
+          );
+          inset-inline: calc(
+            -1 * (var(--mdc-focus-ring-inward-offset, 2px) +
+                  var(--mdc-focus-ring-inward-track-width, 3px))
+          );
+
+          @keyframes focus-ring-grows {
+            from {
+              border-width: 0;
+            }
+            to {
+              border-width: 8px;
+            }
+          }
+
+          @keyframes focus-ring-shrinks {
+            from {
+              border-width: 8px;
+            }
+          }
+          animation-name: focus-ring-grows, focus-ring-shrinks;
+          animation-duration: 150ms, 450ms;
+          animation-delay: 0s, 150ms;
+          animation-timing-function: cubic-bezier(0.2, 0, 0, 1),
+            cubic-bezier(0.2, 0, 0, 1);
+
+          @media (prefers-reduced-motion) {
+            animation: none;
+          }
+        } // end expect
+      }
+    }
+  }
+}

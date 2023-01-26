@@ -1,0 +1,31 @@
+$ring-offset-key: 'offset';
+$ring-color-key: 'color';
+$track-width-key: 'track-width';
+$target-shape-key: 'target-shape';
+$_grow-animation-duration: 150ms;
+$_shrink-animation-duration: 450ms;
+$_animation-timing: cubic-bezier(0.2, 0, 0, 1);
+
+$default-theme: (
+  $ring-offset-key: 2px,
+  $track-width-key: 3px,
+  $ring-color-key: 'secondary',
+  $target-shape-key: 0px,
+);
+
+@mixin focus-ring-animation($grow-animation-name, $shrink-animation-name) {
+  animation-name: $grow-animation-name, $shrink-animation-name;
+  animation-duration: $_grow-animation-duration, $_shrink-animation-duration;
+  animation-delay: 0s, $_grow-animation-duration;
+  animation-timing-function: $_animation-timing, $_animation-timing;
+
+  @media (prefers-reduced-motion) {
+    animation: none;
+  }
+}
+
+/// This should be applied to the focus ring element when the focus ring
+/// should be shown (e.g. based on `:focus-visible` pseudoclass).
+@mixin show-focus-ring() {
+  display: block;
+}

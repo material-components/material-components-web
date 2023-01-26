@@ -1,4 +1,4 @@
-// Styles for a focus ring that animates outwards.
+// Styles for a focus ring that animates inward.
 
 @use 'sass:map';
 @use 'sass:list';
@@ -8,7 +8,7 @@
 @use '@material/theme/validate';
 @use './focus-ring-shared-theme';
 
-$_custom-property-prefix: 'focus-ring-outward';
+$_custom-property-prefix: 'focus-ring-inward';
 
 /// Generates CSS custom properties that are consumed by the focus ring styles.
 /// Intended to be used directly by Material Design customers, as the only
@@ -37,49 +37,29 @@ $_custom-property-prefix: 'focus-ring-outward';
   inset-block: calc(-1 * ($ring-offset + $track-width));
   inset-inline: calc(-1 * ($ring-offset + $track-width));
 
-  // Motion spec for focus ring:
-  // https://direct.googleplex.com/#/spec/273380003&264990003
-  @include _focus-ring-animation-keyframes($theme);
+  @include _focus-ring-animation-keyframes();
   @include focus-ring-shared-theme.focus-ring-animation(
     $grow-animation-name: focus-ring-grows,
     $shrink-animation-name: focus-ring-shrinks
   );
 }
 
-@mixin _focus-ring-animation-keyframes($theme) {
-  $ring-offset: map.get($theme, focus-ring-shared-theme.$ring-offset-key);
-  $track-width: map.get($theme, focus-ring-shared-theme.$track-width-key);
-  $target-shape: map.get($theme, focus-ring-shared-theme.$target-shape-key);
-
+@mixin _focus-ring-animation-keyframes() {
   $start-border-width: 0;
   $midpoint-border-width: 8px;
 
   @keyframes focus-ring-grows {
     from {
       border-width: $start-border-width;
-      border-radius: calc($target-shape + $start-border-width + $ring-offset);
     }
     to {
       border-width: $midpoint-border-width;
-      inset-block: calc(-1 * ($ring-offset + $midpoint-border-width));
-      inset-inline: calc(-1 * ($ring-offset + $midpoint-border-width));
-      border-radius: calc(
-        $target-shape + $midpoint-border-width + $ring-offset
-      );
     }
   }
 
   @keyframes focus-ring-shrinks {
     from {
       border-width: $midpoint-border-width;
-      inset-block: calc(-1 * ($ring-offset + $midpoint-border-width));
-      inset-inline: calc(-1 * ($ring-offset + $midpoint-border-width));
-      border-radius: calc(
-        $target-shape + $midpoint-border-width + $ring-offset
-      );
-    }
-    to {
-      border-width: $track-width;
     }
   }
 }
