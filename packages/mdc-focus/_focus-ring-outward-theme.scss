@@ -31,14 +31,14 @@ $_custom-property-prefix: 'focus-ring-outward';
 
   /// Mold the focus ring to the target shape.
   /// See the diagram for insights into why the border-radius calc is needed:
-  /// https://screenshot.googleplex.com/3cYw8Pi8WQNa3h8.png
-  border: $track-width solid $ring-color;
-  border-radius: calc($target-shape + $track-width + $ring-offset);
-  inset-block: calc(-1 * ($ring-offset + $track-width));
-  inset-inline: calc(-1 * ($ring-offset + $track-width));
+  /// http://screen/9J9CzpCxJxxDHCb.png
+  border-radius: calc($target-shape + $ring-offset);
+  inset: calc(-1 * $ring-offset);
+  box-shadow: 0 0 0 $track-width $ring-color;
+  // HCM ignores box-shadow, so a transparent outline is added to ensure
+  // focus ring is shown in HCM.
+  outline: $track-width solid transparent;
 
-  // Motion spec for focus ring:
-  // https://direct.googleplex.com/#/spec/273380003&264990003
   @include _focus-ring-animation-keyframes($theme);
   @include focus-ring-shared-theme.focus-ring-animation(
     $grow-animation-name: focus-ring-grows,
@@ -47,39 +47,24 @@ $_custom-property-prefix: 'focus-ring-outward';
 }
 
 @mixin _focus-ring-animation-keyframes($theme) {
-  $ring-offset: map.get($theme, focus-ring-shared-theme.$ring-offset-key);
   $track-width: map.get($theme, focus-ring-shared-theme.$track-width-key);
-  $target-shape: map.get($theme, focus-ring-shared-theme.$target-shape-key);
+  $ring-color: map.get($theme, focus-ring-shared-theme.$ring-color-key);
 
   $start-border-width: 0;
   $midpoint-border-width: 8px;
 
   @keyframes focus-ring-grows {
     from {
-      border-width: $start-border-width;
-      border-radius: calc($target-shape + $start-border-width + $ring-offset);
+      box-shadow: 0 0 0 $start-border-width $ring-color;
     }
     to {
-      border-width: $midpoint-border-width;
-      inset-block: calc(-1 * ($ring-offset + $midpoint-border-width));
-      inset-inline: calc(-1 * ($ring-offset + $midpoint-border-width));
-      border-radius: calc(
-        $target-shape + $midpoint-border-width + $ring-offset
-      );
+      box-shadow: 0 0 0 $midpoint-border-width $ring-color;
     }
   }
 
   @keyframes focus-ring-shrinks {
     from {
-      border-width: $midpoint-border-width;
-      inset-block: calc(-1 * ($ring-offset + $midpoint-border-width));
-      inset-inline: calc(-1 * ($ring-offset + $midpoint-border-width));
-      border-radius: calc(
-        $target-shape + $midpoint-border-width + $ring-offset
-      );
-    }
-    to {
-      border-width: $track-width;
+      box-shadow: 0 0 0 $midpoint-border-width $ring-color;
     }
   }
 }
