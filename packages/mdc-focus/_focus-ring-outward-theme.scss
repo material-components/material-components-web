@@ -47,7 +47,6 @@ $_custom-property-prefix: 'focus-ring-outward';
 }
 
 @mixin _focus-ring-animation-keyframes($theme) {
-  $track-width: map.get($theme, focus-ring-shared-theme.$track-width-key);
   $ring-color: map.get($theme, focus-ring-shared-theme.$ring-color-key);
 
   $start-border-width: 0;
