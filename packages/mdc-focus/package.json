@@ -3,12 +3,7 @@
   "description": "The Material Components Web focus ring utilities",
   "version": "14.0.0",
   "license": "MIT",
-  "keywords": [
-    "material components",
-    "material design",
-    "focus",
-    "focusring"
-  ],
+  "keywords": ["material components", "material design", "focus", "focusring"],
   "sideEffects": false,
   "repository": {
     "type": "git",
@@ -19,6 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/theme": "^14.0.0"
+    "@material/theme": "^14.0.0",
+    "@material/tokens": "^14.0.0"
   }
 }
