@@ -237,10 +237,9 @@ $_ripple-theme: (
   @if $has-nested-focusable-element {
     // JS-enabled selectors.
     &.mdc-ripple-upgraded--background-focused,
-    &.mdc-ripple-upgraded:focus-within,
     // CSS-only selectors.
     &:not(.mdc-ripple-upgraded):focus,
-    &:not(.mdc-ripple-upgraded):focus-within {
+    &:focus-within {
       @include states-background-selector($ripple-target) {
         @include states-focus-opacity-properties_(
           $opacity: $opacity,
