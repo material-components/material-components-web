@@ -41,8 +41,8 @@ $_custom-property-prefix: 'focus-ring-outward';
 
   @include _focus-ring-animation-keyframes($theme);
   @include focus-ring-shared-theme.focus-ring-animation(
-    $grow-animation-name: focus-ring-grows,
-    $shrink-animation-name: focus-ring-shrinks
+    $grow-animation-name: focus-ring-outward-grows,
+    $shrink-animation-name: focus-ring-outward-shrinks
   );
 }
 
@@ -52,7 +52,7 @@ $_custom-property-prefix: 'focus-ring-outward';
   $start-border-width: 0;
   $midpoint-border-width: 8px;
 
-  @keyframes focus-ring-grows {
+  @keyframes focus-ring-outward-grows {
     from {
       box-shadow: 0 0 0 $start-border-width $ring-color;
     }
@@ -61,7 +61,7 @@ $_custom-property-prefix: 'focus-ring-outward';
     }
   }
 
-  @keyframes focus-ring-shrinks {
+  @keyframes focus-ring-outward-shrinks {
     from {
       box-shadow: 0 0 0 $midpoint-border-width $ring-color;
     }

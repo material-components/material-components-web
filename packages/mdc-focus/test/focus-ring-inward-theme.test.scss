@@ -106,7 +106,7 @@
                   var(--mdc-focus-ring-inward-track-width, 3px))
           );
 
-          @keyframes focus-ring-grows {
+          @keyframes focus-ring-inward-grows {
             from {
               border-width: 0;
             }
@@ -115,12 +115,12 @@
             }
           }
 
-          @keyframes focus-ring-shrinks {
+          @keyframes focus-ring-inward-shrinks {
             from {
               border-width: 8px;
             }
           }
-          animation-name: focus-ring-grows, focus-ring-shrinks;
+          animation-name: focus-ring-inward-grows, focus-ring-inward-shrinks;
           animation-duration: 150ms, 450ms;
           animation-delay: 0s, 150ms;
           animation-timing-function: cubic-bezier(0.2, 0, 0, 1),
