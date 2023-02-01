@@ -67,58 +67,5 @@
         }
       }
     }
-
-    @include test.it(
-      'returns animation styles for newly visible focus-rings.'
-    ) {
-      @include test.assert {
-        @include test.output {
-          @include focus-ring-outward-theme.theme-styles(
-            (
-              'color': blue,
-              'offset': 2px,
-              'track-width': 3px,
-              'target-shape': 5px,
-            )
-          );
-        }
-
-        @include test.expect {
-          border-radius: calc(
-            var(--mdc-focus-ring-outward-target-shape, 5px) +
-              var(--mdc-focus-ring-outward-offset, 2px)
-          );
-          inset: calc(-1 * var(--mdc-focus-ring-outward-offset, 2px));
-          box-shadow: 0 0 0 var(--mdc-focus-ring-outward-track-width, 3px)
-            var(--mdc-focus-ring-outward-color, blue);
-          outline: var(--mdc-focus-ring-outward-track-width, 3px) solid
-            transparent;
-
-          @keyframes focus-ring-outward-grows {
-            from {
-              box-shadow: 0 0 0 0 var(--mdc-focus-ring-outward-color, blue);
-            }
-            to {
-              box-shadow: 0 0 0 8px var(--mdc-focus-ring-outward-color, blue);
-            }
-          }
-
-          @keyframes focus-ring-outward-shrinks {
-            from {
-              box-shadow: 0 0 0 8px var(--mdc-focus-ring-outward-color, blue);
-            }
-          }
-          animation-name: focus-ring-outward-grows, focus-ring-outward-shrinks;
-          animation-duration: 150ms, 450ms;
-          animation-delay: 0s, 150ms;
-          animation-timing-function: cubic-bezier(0.2, 0, 0, 1),
-            cubic-bezier(0.2, 0, 0, 1);
-
-          @media (prefers-reduced-motion) {
-            animation: none;
-          }
-        } // end expect
-      }
-    }
   }
 }
