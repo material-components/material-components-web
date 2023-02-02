@@ -1043,7 +1043,7 @@ $_density-config: map.merge(
 
   .mdc-text-field__input {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(caret-color, $color);
+      @include theme.property(caret-color, $color);
     }
   }
 }
@@ -2519,7 +2519,7 @@ $_density-config: map.merge(
 
   .mdc-text-field__input {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -2530,7 +2530,7 @@ $_density-config: map.merge(
   @include feature-targeting.targets($feat-color) {
     .mdc-text-field__input {
       @include placeholder-selector_ {
-        @include theme.prop(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
@@ -2547,7 +2547,7 @@ $_density-config: map.merge(
     @if ($addAlternate) {
       /* @alternate */
     }
-    @include theme.prop(background-color, $color);
+    @include theme.property(background-color, $color);
   }
 }
 
@@ -2596,7 +2596,7 @@ $_density-config: map.merge(
 
   @include feature-targeting.targets($feat-color) {
     .mdc-text-field__affix--prefix {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -2606,7 +2606,7 @@ $_density-config: map.merge(
 
   @include feature-targeting.targets($feat-color) {
     .mdc-text-field__affix--suffix {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }

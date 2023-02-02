@@ -561,7 +561,7 @@
 
   .mdc-dialog__surface {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }

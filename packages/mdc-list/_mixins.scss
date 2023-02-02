@@ -619,7 +619,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme.prop(color, $color);
+    @include theme.property(color, $color);
   }
 }
 
@@ -631,7 +631,7 @@
 
   .mdc-deprecated-list-item__secondary-text {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -644,7 +644,7 @@
 
   .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }
@@ -657,7 +657,7 @@
 
   .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -667,7 +667,7 @@
 
   .mdc-deprecated-list-item__meta {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -710,7 +710,7 @@
 
   .mdc-deprecated-list-divider {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-bottom-color, $color);
+      @include theme.property(border-bottom-color, $color);
     }
   }
 }
@@ -723,7 +723,7 @@
 
   .mdc-deprecated-list-group__subheader {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -752,7 +752,7 @@
     .mdc-deprecated-list-item__primary-text,
     .mdc-deprecated-list-item__secondary-text {
       @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
