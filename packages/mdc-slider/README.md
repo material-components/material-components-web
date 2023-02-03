@@ -92,7 +92,6 @@ element.
 
 ```html
 <div class="mdc-slider">
-  <input class="mdc-slider__input" type="range" min="0" max="100" value="50" name="volume" aria-label="Continuous slider demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -101,6 +100,7 @@ element.
   </div>
   <div class="mdc-slider__thumb">
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="0" max="100" value="50" name="volume" aria-label="Continuous slider demo">
   </div>
 </div>
 ```
@@ -115,8 +115,6 @@ adjust the `min` and `max` attributes on the input elements accordingly.
 
 ```html
 <div class="mdc-slider mdc-slider--range" data-min-range="10">
-  <input class="mdc-slider__input" type="range" min="0" max="60" value="30" name="rangeStart" aria-label="Continuous range slider demo">
-  <input class="mdc-slider__input" type="range" min="40" max="100" value="70" name="rangeEnd" aria-label="Continuous range slider demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -125,9 +123,11 @@ adjust the `min` and `max` attributes on the input elements accordingly.
   </div>
   <div class="mdc-slider__thumb">
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="0" max="60" value="30" name="rangeStart" aria-label="Continuous range slider demo">
   </div>
   <div class="mdc-slider__thumb">
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="40" max="100" value="70" name="rangeEnd" aria-label="Continuous range slider demo">
   </div>
 </div>
 ```
@@ -147,7 +147,6 @@ To create a discrete slider, add the following:
 
 ```html
 <div class="mdc-slider mdc-slider--discrete">
-  <input class="mdc-slider__input" type="range" min="0" max="100" value="50" name="volume" step="10" aria-label="Discrete slider demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -163,6 +162,7 @@ To create a discrete slider, add the following:
       </div>
     </div>
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="0" max="100" value="50" name="volume" step="10" aria-label="Discrete slider demo">
   </div>
 </div>
 ```
@@ -184,7 +184,6 @@ To add tick marks to a discrete slider, add the following:
 
 ```html
 <div class="mdc-slider mdc-slider--discrete mdc-slider--tick-marks">
-  <input class="mdc-slider__input" type="range" min="0" max="100" value="50" name="volume" step="10" aria-label="Discrete slider with tick marks demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -213,6 +212,7 @@ To add tick marks to a discrete slider, add the following:
       </div>
     </div>
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="0" max="100" value="50" name="volume" step="10" aria-label="Discrete slider with tick marks demo">
   </div>
 </div>
 ```
@@ -221,8 +221,6 @@ To add tick marks to a discrete slider, add the following:
 
 ```html
 <div class="mdc-slider mdc-slider--range mdc-slider--discrete">
-  <input class="mdc-slider__input" type="range" min="0" max="50" value="20" step="10" name="rangeStart" aria-label="Discrete range slider demo">
-  <input class="mdc-slider__input" type="range" min="20" max="100" value="50" step="10" name="rangeEnd" aria-label="Discrete range slider demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -238,6 +236,7 @@ To add tick marks to a discrete slider, add the following:
       </div>
     </div>
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="0" max="50" value="20" step="10" name="rangeStart" aria-label="Discrete range slider demo">
   </div>
   <div class="mdc-slider__thumb">
     <div class="mdc-slider__value-indicator-container" aria-hidden="true">
@@ -248,6 +247,7 @@ To add tick marks to a discrete slider, add the following:
       </div>
     </div>
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="20" max="100" value="50" step="10" name="rangeEnd" aria-label="Discrete range slider demo">
   </div>
 </div>
 ```
@@ -263,7 +263,6 @@ To disable a slider, add the following:
 
 ```html
 <div class="mdc-slider mdc-slider--disabled">
-  <input class="mdc-slider__input" type="range" min="0" max="100" value="50" step="10" disabled name="volume" aria-label="Disabled slider demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -272,6 +271,7 @@ To disable a slider, add the following:
   </div>
   <div class="mdc-slider__thumb">
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="0" max="100" value="50" step="10" disabled name="volume" aria-label="Disabled slider demo">
   </div>
 </div>
 ```
@@ -289,8 +289,11 @@ as shown below:
 
 ```html
 <div class="mdc-slider">
-  <input class="mdc-slider__input" aria-label="Slider demo" min="0" max="100" value="75">
   <!-- ... -->
+  <div class="mdc-slider__thumb">
+    <!-- ... -->
+    <input class="mdc-slider__input" aria-label="Slider demo" min="0" max="100" value="75">
+  </div>
 </div>
 ```
 
@@ -327,8 +330,6 @@ This is an example of a range slider with internal values of
 
 ```html
 <div class="mdc-slider mdc-slider--range" data-min-range="10">
-  <input class="mdc-slider__input" type="range" min="0" max="60" value="30" name="rangeStart" aria-label="Range slider demo">
-  <input class="mdc-slider__input" type="range" min="40" max="100" value="70" name="rangeEnd" aria-label="Range slider demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -338,9 +339,11 @@ This is an example of a range slider with internal values of
   </div>
   <div class="mdc-slider__thumb" style="left:calc(30%-24px)">
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="0" max="60" value="30" name="rangeStart" aria-label="Range slider demo">
   </div>
   <div class="mdc-slider__thumb" style="left:calc(70%-24px)">
     <div class="mdc-slider__thumb-knob"></div>
+    <input class="mdc-slider__input" type="range" min="40" max="100" value="70" name="rangeEnd" aria-label="Range slider demo">
   </div>
 </div>
 ```

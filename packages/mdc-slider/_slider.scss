@@ -121,16 +121,18 @@ $_track-inactive-height: 4px;
   }
 
   .mdc-slider__input {
+    $indent: 2px;
+    $size: $_thumb-ripple-size - 2 * $indent;
     @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
-      left: 0;
+      left: $indent;
       margin: 0;
-      height: 100%;
+      height: $size;
       opacity: 0;
       pointer-events: none;
       position: absolute;
-      top: 0;
-      width: 100%;
+      top: $indent;
+      width: $size;
     }
   }
 }
