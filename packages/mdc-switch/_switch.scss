@@ -294,6 +294,7 @@ $ripple-target: '.mdc-switch__ripple';
   left: 50%;
   position: absolute;
   top: 50%;
+  @include rtl.ignore-next-line();
   transform: translate(-50%, -50%);
   // Move ripple beneath shadow overlay and handle background colors (see
   // handle() mixin for explanation).

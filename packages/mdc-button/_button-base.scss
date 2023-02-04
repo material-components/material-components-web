@@ -63,8 +63,10 @@
       @include feature-targeting.targets($feat-structure) {
         font-size: 0;
         position: absolute;
+        @include rtl.ignore-next-line();
         transform: translate(-50%, -50%);
         top: 50%;
+        @include rtl.ignore-next-line();
         left: 50%;
         line-height: initial;
       }

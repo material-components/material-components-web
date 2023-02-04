@@ -241,6 +241,7 @@ $_track-inactive-height: 4px;
       left: 50%;
       position: absolute;
       top: 50%;
+      @include rtl.ignore-next-line();
       transform: translate(-50%, -50%);
     }
   }
@@ -288,7 +289,8 @@ $_track-inactive-height: 4px;
       @include css.declaration(
         transform,
         var(--slider-value-indicator-container-transform, translateX(-50%)),
-        translateX(-50%)
+        translateX(-50%),
+        $gss: (noflip: true)
       );
     }
   }
@@ -332,7 +334,8 @@ $_track-inactive-height: 4px;
         @include css.declaration(
           transform,
           var(--slider-value-indicator-caret-transform, translateX(-50%)),
-          translateX(-50%)
+          translateX(-50%),
+          $gss: (noflip: true)
         );
         width: 0;
       }

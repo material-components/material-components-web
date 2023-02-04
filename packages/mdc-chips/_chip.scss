@@ -285,6 +285,7 @@
     .mdc-evolution-chip__checkmark {
       @include feature-targeting.targets($feat-animation) {
         transition: animation.standard(transform, 150ms);
+        @include rtl.ignore-next-line();
         transform: translate(-75%, -50%);
       }
     }
@@ -307,6 +308,7 @@
       @include feature-targeting.targets($feat-animation) {
         transition: animation.linear(opacity, 50ms),
           animation.standard(transform, 100ms);
+        @include rtl.ignore-next-line();
         transform: translate(-75%, -50%);
       }
     }
@@ -344,6 +346,7 @@
       @include feature-targeting.targets($feat-animation) {
         transition: animation.standard(opacity, 75ms);
         // Ensure the checkmark stays statically positioned
+        @include rtl.ignore-next-line();
         transform: translate(-50%, -50%);
       }
     }
@@ -365,6 +368,7 @@
 
     .mdc-evolution-chip__checkmark {
       @include feature-targeting.targets($feat-structure) {
+        @include rtl.ignore-next-line();
         transform: translate(-50%, -50%);
         opacity: 1;
       }

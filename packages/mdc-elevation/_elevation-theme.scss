@@ -305,6 +305,7 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
         top: 50%;
         @include rtl.ignore-next-line();
         left: 50%;
+        @include rtl.ignore-next-line();
         transform: translate(-50%, -50%);
       }
     }

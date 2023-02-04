@@ -77,6 +77,7 @@ $width: $height !default;
       @include rtl.ignore-next-line();
       left: 50%;
       width: $width;
+      @include rtl.ignore-next-line();
       transform: translate(-50%, -50%);
     }
   } @else {

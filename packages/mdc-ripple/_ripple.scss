@@ -210,6 +210,7 @@
 
       @include feature-targeting.targets($feat-structure) {
         // Retain transform from mdc-ripple-fg-radius-in activation
+        @include rtl.ignore-next-line();
         transform: translate(var(--mdc-ripple-fg-translate-end, 0))
           scale(var(--mdc-ripple-fg-scale, 1));
       }
@@ -309,10 +310,12 @@
       // used in conjunction with `.mdc-ripple-upgraded`. Since MDCRippleFoundation checks to ensure
       // that custom properties are supported within the browser before adding this class, we can
       // safely use them without a fallback.
+      @include rtl.ignore-next-line();
       transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
     }
 
     to {
+      @include rtl.ignore-next-line();
       transform: translate(var(--mdc-ripple-fg-translate-end, 0))
         scale(var(--mdc-ripple-fg-scale, 1));
     }
