@@ -116,6 +116,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements
       focus: () => {
         this.root.focus();
       },
+      isFocused: () => this.root === document.activeElement,
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCTabFoundation(adapter);

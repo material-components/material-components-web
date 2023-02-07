@@ -176,6 +176,23 @@ describe('MDCTab', () => {
     document.body.removeChild(root);
   });
 
+  it('#adapter.isFocused() returns true when the root element is focused',
+     () => {
+       const {root, component} = setupTest();
+       document.body.appendChild(root);
+       (component.getDefaultFoundation() as any).adapter.focus();
+       expect((component.getDefaultFoundation() as any).adapter.isFocused())
+           .toBe(true);
+     });
+
+  it('#adapter.isFocused() returns false when the root element is not focused',
+     () => {
+       const {root, component} = setupTest();
+       document.body.appendChild(root);
+       expect((component.getDefaultFoundation() as any).adapter.isFocused())
+           .toBe(false);
+     });
+
   it(`#adapter.notifyInteracted() emits the ${
          MDCTabFoundation.strings.INTERACTED_EVENT} event`,
      () => {

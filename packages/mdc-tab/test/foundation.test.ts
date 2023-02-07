@@ -53,6 +53,7 @@ describe('MDCTabFoundation', () => {
       'getContentOffsetWidth',
       'notifyInteracted',
       'focus',
+      'isFocused',
     ]);
   });
 
@@ -90,17 +91,26 @@ describe('MDCTabFoundation', () => {
     expect(mockAdapter.focus).toHaveBeenCalled();
   });
 
-  it('#activate focuses the root node if focusOnActivate is true', () => {
-    const {foundation, mockAdapter} = setupTest();
-    foundation.setFocusOnActivate(true);
-    foundation.activate({width: 100, left: 200} as DOMRect);
-    expect(mockAdapter.focus).toHaveBeenCalled();
-  });
+  it('#activate focuses the root node if focusOnActivate is true and it is not already focused',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.setFocusOnActivate(true);
+       foundation.activate({width: 100, left: 200} as DOMRect);
+       expect(mockAdapter.focus).toHaveBeenCalled();
+     });
 
   it('#activate does not focus the root node if focusOnActivate is false',
      () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.setFocusOnActivate(false);
+       foundation.activate({width: 100, left: 200} as DOMRect);
+       expect(mockAdapter.focus).not.toHaveBeenCalled();
+     });
+
+  it('#activate does not focus the root node if focusOnActivate is true but it is already focused',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.isFocused.and.returnValue(true);
        foundation.activate({width: 100, left: 200} as DOMRect);
        expect(mockAdapter.focus).not.toHaveBeenCalled();
      });

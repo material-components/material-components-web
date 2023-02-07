@@ -312,7 +312,7 @@ describe('MDCTabBarFoundation', () => {
            mockKeyDownEvent({key: MDCTabBarFoundation.strings.ARROW_LEFT_KEY});
        const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 37});
        foundation.setUseAutomaticActivation(true);
-       mockAdapter.getPreviousActiveTabIndex.and.returnValue(2);
+       mockAdapter.getFocusedTabIndex.and.returnValue(2);
        mockAdapter.getTabListLength.and.returnValue(13);
 
        foundation.handleKeyDown(fakeKeyEvent);

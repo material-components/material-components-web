@@ -131,24 +131,19 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
       evt.preventDefault();
     }
 
+    if (this.useAutomaticActivation && this.isActivationKey(key)) {
+      return;
+    }
+    const focusedTabIndex = this.adapter.getFocusedTabIndex();
+    if (this.isActivationKey(key)) {
+      this.adapter.setActiveTab(focusedTabIndex);
+      return;
+    }
+    const index = this.determineTargetFromKey(focusedTabIndex, key);
+    this.adapter.focusTabAtIndex(index);
+    this.scrollIntoView(index);
     if (this.useAutomaticActivation) {
-      if (this.isActivationKey(key)) {
-        return;
-      }
-
-      const index = this.determineTargetFromKey(
-          this.adapter.getPreviousActiveTabIndex(), key);
       this.adapter.setActiveTab(index);
-      this.scrollIntoView(index);
-    } else {
-      const focusedTabIndex = this.adapter.getFocusedTabIndex();
-      if (this.isActivationKey(key)) {
-        this.adapter.setActiveTab(focusedTabIndex);
-      } else {
-        const index = this.determineTargetFromKey(focusedTabIndex, key);
-        this.adapter.focusTabAtIndex(index);
-        this.scrollIntoView(index);
-      }
     }
   }
 

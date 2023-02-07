@@ -52,6 +52,7 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
       getContentOffsetLeft: () => 0,
       getContentOffsetWidth: () => 0,
       focus: () => undefined,
+      isFocused: () => false,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -87,7 +88,7 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
     this.adapter.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter.setAttr(strings.TABINDEX, '0');
     this.adapter.activateIndicator(previousIndicatorClientRect);
-    if (this.focusOnActivate) {
+    if (this.focusOnActivate && !this.adapter.isFocused()) {
       this.adapter.focus();
     }
   }
