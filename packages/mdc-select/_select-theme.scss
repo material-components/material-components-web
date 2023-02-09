@@ -272,7 +272,10 @@ $error-color: error !default;
     )
   );
   @include _text-field-active-indicator-height(
-    map.get($theme, text-field-active-indicator-height)
+    (
+      default: map.get($theme, text-field-active-indicator-height),
+      focus: map.get($theme, text-field-focus-active-indicator-height),
+    )
   );
   // TODO(b/259951357): Cleanup branch after fix and tokens upgrade.
   @if map.has-key($theme, text-field-caret-color) or
@@ -512,7 +515,8 @@ $error-color: error !default;
 
 @mixin _text-field-active-indicator-height($height) {
   .mdc-line-ripple {
-    @include line-ripple-mixins.height($height);
+    @include line-ripple-mixins.height(state.get-default-state($height));
+    @include line-ripple-mixins.active-height(state.get-focus-state($height));
   }
 }
 
@@ -809,25 +813,25 @@ $error-color: error !default;
   }
 }
 
-@mixin outline-width($width) {
+@mixin outline-width($width, $query: feature-targeting.all()) {
   @include _if-enabled {
-    @include _outline-width(state.get-default-state($width));
+    @include _outline-width(state.get-default-state($width), $query: $query);
 
     &:not(.mdc-select--focused) .mdc-select__anchor:hover {
-      @include _outline-width(state.get-hover-state($width));
+      @include _outline-width(state.get-hover-state($width), $query: $query);
     }
 
     @include _if-focused {
       .mdc-notched-outline {
-        @include _outline-width(state.get-focus-state($width));
+        @include _outline-width(state.get-focus-state($width), $query: $query);
       }
     }
   }
 }
 
-@mixin _outline-width($width) {
+@mixin _outline-width($width, $query: feature-targeting.all()) {
   @if $width {
-    @include notched-outline-mixins.stroke-width($width);
+    @include notched-outline-mixins.stroke-width($width, $query: $query);
   }
 }
 
@@ -1666,10 +1670,6 @@ $error-color: error !default;
 @mixin _focused-outline-color($color, $query: feature-targeting.all()) {
   @if $color {
     .mdc-notched-outline {
-      @include notched-outline-mixins.stroke-width(
-        $outlined-stroke-width,
-        $query: $query
-      );
       @include notched-outline-mixins.color($color, $query: $query);
     }
   }

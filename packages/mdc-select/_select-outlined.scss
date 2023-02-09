@@ -126,6 +126,12 @@
       ),
       $query: $query
     );
+    @include select-theme.outline-width(
+      (
+        focus: select-theme.$outlined-stroke-width,
+      ),
+      $query: $query
+    );
 
     @include select-theme.truncate-notched-outline-max-width(
       $leading-icon-size: 0,
