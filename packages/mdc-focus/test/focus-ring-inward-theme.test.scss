@@ -24,6 +24,7 @@
               'offset': 2px,
               'track-width': 3px,
               'target-shape': 5px,
+              'extra-offset-bottom': 4px,
             )
           );
         }
@@ -33,6 +34,7 @@
           --mdc-focus-ring-inward-offset: 2px;
           --mdc-focus-ring-inward-track-width: 3px;
           --mdc-focus-ring-inward-target-shape: 5px;
+          --mdc-focus-ring-inward-extra-offset-bottom: 4px;
         }
       }
     }
@@ -50,6 +52,7 @@
               'offset': 2px,
               'track-width': 3px,
               'target-shape': 5px,
+              'extra-offset-bottom': 0px,
             )
           );
         }
@@ -63,9 +66,14 @@
               var(--mdc-focus-ring-inward-offset, 2px)
           );
           inset-block: calc(
-            -1 * (var(--mdc-focus-ring-inward-offset, 2px) +
-                  var(--mdc-focus-ring-inward-track-width, 3px))
-          );
+              -1 * (var(--mdc-focus-ring-inward-offset, 2px) +
+                    var(--mdc-focus-ring-inward-track-width, 3px))
+            )
+            calc(
+              -1 * (var(--mdc-focus-ring-inward-offset, 2px) +
+                    var(--mdc-focus-ring-inward-track-width, 3px) +
+                    var(--mdc-focus-ring-inward-extra-offset-bottom, 0px))
+            );
           inset-inline: calc(
             -1 * (var(--mdc-focus-ring-inward-offset, 2px) +
                   var(--mdc-focus-ring-inward-track-width, 3px))

@@ -9,23 +9,33 @@
 @use './focus-ring-shared-theme';
 
 $_custom-property-prefix: 'focus-ring-inward';
+$_ring-extra-offset-bottom-key: 'extra-offset-bottom';
+
+$default-inward-theme: map.merge(
+  focus-ring-shared-theme.$default-shared-theme,
+  (
+    // Extra offset to bottom of focus ring in addition to default ring offset
+    $_ring-extra-offset-bottom-key: 0px
+  )
+);
 
 /// Generates CSS custom properties that are consumed by the focus ring styles.
 /// Intended to be used directly by Material Design customers, as the only
 /// formally supported means of customizing the focus ring.
 ///
-/// @param {Map} $theme - A map with one or more of the keys of $default-theme.
+/// @param {Map} $theme - A map with one or more of the keys of $default-inward-theme.
 @mixin theme($theme) {
-  $theme: validate.theme(focus-ring-shared-theme.$default-theme, $theme);
+  $theme: validate.theme($default-inward-theme, $theme);
   @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }
 
-@mixin theme-styles($theme: focus-ring-shared-theme.$default-theme) {
-  $theme: validate.theme-styles(focus-ring-shared-theme.$default-theme, $theme);
+@mixin theme-styles($theme: $default-inward-theme) {
+  $theme: validate.theme-styles($default-inward-theme, $theme);
   $theme: keys.create-theme-vars($theme, $_custom-property-prefix);
 
   $ring-color: map.get($theme, focus-ring-shared-theme.$ring-color-key);
   $ring-offset: map.get($theme, focus-ring-shared-theme.$ring-offset-key);
+  $ring-extra-offset-bottom: map.get($theme, $_ring-extra-offset-bottom-key);
   $track-width: map.get($theme, focus-ring-shared-theme.$track-width-key);
   $target-shape: map.get($theme, focus-ring-shared-theme.$target-shape-key);
 
@@ -34,7 +44,8 @@ $_custom-property-prefix: 'focus-ring-inward';
   /// https://screenshot.googleplex.com/3cYw8Pi8WQNa3h8.png
   border: $track-width solid $ring-color;
   border-radius: calc($target-shape + $track-width + $ring-offset);
-  inset-block: calc(-1 * ($ring-offset + $track-width));
+  inset-block: calc(-1 * ($ring-offset + $track-width))
+    calc(-1 * ($ring-offset + $track-width + $ring-extra-offset-bottom));
   inset-inline: calc(-1 * ($ring-offset + $track-width));
 
   @include _focus-ring-animation-keyframes();

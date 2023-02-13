@@ -10,18 +10,20 @@
 
 $_custom-property-prefix: 'focus-ring-outward';
 
+$default-outward-theme: focus-ring-shared-theme.$default-shared-theme;
+
 /// Generates CSS custom properties that are consumed by the focus ring styles.
 /// Intended to be used directly by Material Design customers, as the only
 /// formally supported means of customizing the focus ring.
 ///
-/// @param {Map} $theme - A map with one or more of the keys of $default-theme.
+/// @param {Map} $theme - A map with one or more of the keys of $default-outward-theme.
 @mixin theme($theme) {
-  $theme: validate.theme(focus-ring-shared-theme.$default-theme, $theme);
+  $theme: validate.theme($default-outward-theme, $theme);
   @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }
 
-@mixin theme-styles($theme: focus-ring-shared-theme.$default-theme) {
-  $theme: validate.theme-styles(focus-ring-shared-theme.$default-theme, $theme);
+@mixin theme-styles($theme: $default-outward-theme) {
+  $theme: validate.theme-styles($default-outward-theme, $theme);
   $theme: keys.create-theme-vars($theme, $_custom-property-prefix);
 
   $ring-color: map.get($theme, focus-ring-shared-theme.$ring-color-key);
