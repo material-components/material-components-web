@@ -14,8 +14,10 @@ $_ring-extra-offset-bottom-key: 'extra-offset-bottom';
 $default-inward-theme: map.merge(
   focus-ring-shared-theme.$default-shared-theme,
   (
+    focus-ring-shared-theme.$ring-offset-key: -1 * focus-ring-shared-theme.$track-width-value,
+    focus-ring-shared-theme.$target-shape-key: 8px,
     // Extra offset to bottom of focus ring in addition to default ring offset
-    $_ring-extra-offset-bottom-key: 0px
+    $_ring-extra-offset-bottom-key: 0px,
   )
 );
 

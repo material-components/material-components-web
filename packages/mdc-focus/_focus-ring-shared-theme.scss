@@ -6,6 +6,7 @@ $ring-offset-key: 'offset';
 $ring-color-key: 'color';
 $track-width-key: 'track-width';
 $target-shape-key: 'target-shape';
+$track-width-value: 3px;
 $_grow-animation-duration: 150ms;
 $_shrink-animation-duration: 450ms;
 $_animation-timing: cubic-bezier(0.2, 0, 0, 1);
@@ -13,10 +14,8 @@ $_animation-timing: cubic-bezier(0.2, 0, 0, 1);
 $_color-sys: tokens.md-sys-color-values-light();
 
 $default-shared-theme: (
-  $ring-offset-key: 2px,
-  $track-width-key: 3px,
-  $ring-color-key: map.get($_color-sys, secondary),
-  $target-shape-key: 0px,
+  $track-width-key: $track-width-value,
+  $ring-color-key: map.get($_color-sys, 'secondary'),
 );
 
 @mixin focus-ring-animation($grow-animation-name, $shrink-animation-name) {

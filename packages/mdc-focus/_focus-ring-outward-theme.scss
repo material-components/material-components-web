@@ -11,6 +11,13 @@
 $_custom-property-prefix: 'focus-ring-outward';
 
 $default-outward-theme: focus-ring-shared-theme.$default-shared-theme;
+$default-outward-theme: map.merge(
+  focus-ring-shared-theme.$default-shared-theme,
+  (
+    focus-ring-shared-theme.$ring-offset-key: 2px,
+    focus-ring-shared-theme.$target-shape-key: 0px,
+  )
+);
 
 /// Generates CSS custom properties that are consumed by the focus ring styles.
 /// Intended to be used directly by Material Design customers, as the only
