@@ -24,6 +24,7 @@
     "@material/feature-targeting": "^14.0.0",
     "@material/focus-ring": "^14.0.0",
     "@material/ripple": "^14.0.0",
+    "@material/rtl": "^14.0.0",
     "@material/theme": "^14.0.0",
     "@material/touch-target": "^14.0.0",
     "tslib": "^2.1.0"

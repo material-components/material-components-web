@@ -31,6 +31,7 @@
 @use '@material/dom/dom';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/focus-ring/focus-ring';
+@use '@material/rtl/rtl';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
@@ -462,6 +463,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
+    @include rtl.ignore-next-line();
     transform: rotate(45deg);
     opacity: 0;
   }
@@ -511,6 +513,7 @@
   @include feature-targeting.targets($feat-structure) {
     width: 100%;
     height: 0;
+    @include rtl.ignore-next-line();
     transform: scaleX(0) rotate(0deg);
     border-width: math.div(math.floor(checkbox-theme.$mark-stroke-size), 2);
     border-style: solid;
@@ -523,10 +526,12 @@
 }
 
 @mixin mixedmark--checked_ {
+  @include rtl.ignore-next-line();
   transform: scaleX(1) rotate(-45deg);
 }
 
 @mixin mixedmark--indeterminate_ {
+  @include rtl.ignore-next-line();
   transform: scaleX(1) rotate(0deg);
   opacity: 1;
 }
@@ -598,11 +603,13 @@ $indeterminate-checked-easing-function_: cubic-bezier(0.14, 0, 0, 1) !default;
   @keyframes mdc-checkbox-checked-indeterminate-checkmark {
     from {
       animation-timing-function: animation-variables.$deceleration-curve-timing-function;
+      @include rtl.ignore-next-line();
       transform: rotate(0deg);
       opacity: 1;
     }
 
     to {
+      @include rtl.ignore-next-line();
       transform: rotate(45deg);
       opacity: 0;
     }
@@ -611,11 +618,13 @@ $indeterminate-checked-easing-function_: cubic-bezier(0.14, 0, 0, 1) !default;
   @keyframes mdc-checkbox-indeterminate-checked-checkmark {
     from {
       animation-timing-function: $indeterminate-checked-easing-function_;
+      @include rtl.ignore-next-line();
       transform: rotate(45deg);
       opacity: 0;
     }
 
     to {
+      @include rtl.ignore-next-line();
       transform: rotate(360deg);
       opacity: 1;
     }
@@ -624,11 +633,13 @@ $indeterminate-checked-easing-function_: cubic-bezier(0.14, 0, 0, 1) !default;
   @keyframes mdc-checkbox-checked-indeterminate-mixedmark {
     from {
       animation-timing-function: mdc-animation-deceleration-curve-timing-function;
+      @include rtl.ignore-next-line();
       transform: rotate(-45deg);
       opacity: 0;
     }
 
     to {
+      @include rtl.ignore-next-line();
       transform: rotate(0deg);
       opacity: 1;
     }
@@ -637,11 +648,13 @@ $indeterminate-checked-easing-function_: cubic-bezier(0.14, 0, 0, 1) !default;
   @keyframes mdc-checkbox-indeterminate-checked-mixedmark {
     from {
       animation-timing-function: $indeterminate-checked-easing-function_;
+      @include rtl.ignore-next-line();
       transform: rotate(0deg);
       opacity: 1;
     }
 
     to {
+      @include rtl.ignore-next-line();
       transform: rotate(315deg);
       opacity: 0;
     }

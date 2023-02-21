@@ -88,6 +88,7 @@
 
   .mdc-circular-progress__determinate-container {
     @include feature-targeting.targets($feat-structure) {
+      @include rtl.ignore-next-line();
       transform: rotate(-90deg);
     }
   }
@@ -133,6 +134,7 @@
         @include rtl.ignore-next-line();
         left: -900%;
         width: 2000%;
+        @include rtl.ignore-next-line();
         transform: rotate(180deg);
       }
     }
@@ -265,6 +267,7 @@
 @mixin container-rotate-keyframes_ {
   @keyframes mdc-circular-progress-container-rotate {
     to {
+      @include rtl.ignore-next-line();
       transform: rotate(360deg);
     }
   }
@@ -276,6 +279,7 @@
   @keyframes mdc-circular-progress-spinner-layer-rotate {
     @for $i from 1 through 8 {
       #{$i * 12.5}% {
+        @include rtl.ignore-next-line();
         transform: rotate($i * 0.5 * circular-progress-theme.$arc-size);
       }
     }
@@ -389,12 +393,15 @@
 @mixin left-spin-keyframes_ {
   @keyframes mdc-circular-progress-left-spin {
     from {
+      @include rtl.ignore-next-line();
       transform: rotate(265deg);
     }
     50% {
+      @include rtl.ignore-next-line();
       transform: rotate(130deg);
     }
     to {
+      @include rtl.ignore-next-line();
       transform: rotate(265deg);
     }
   }
@@ -406,12 +413,15 @@
 @mixin right-spin-keyframes_ {
   @keyframes mdc-circular-progress-right-spin {
     from {
+      @include rtl.ignore-next-line();
       transform: rotate(-265deg);
     }
     50% {
+      @include rtl.ignore-next-line();
       transform: rotate(-130deg);
     }
     to {
+      @include rtl.ignore-next-line();
       transform: rotate(-265deg);
     }
   }

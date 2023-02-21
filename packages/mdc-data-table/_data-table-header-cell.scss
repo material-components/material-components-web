@@ -89,6 +89,7 @@
 
     @include feature-targeting.targets($feat-structure) {
       // Apply dummy `transform` to avoid pixel shift on sort down animation.
+      @include rtl.ignore-next-line();
       transform: rotate(0.0001deg);
     }
 
@@ -108,6 +109,7 @@
 
     .mdc-data-table__header-cell--sorted-descending & {
       @include feature-targeting.targets($feat-structure) {
+        @include rtl.ignore-next-line();
         transform: rotate(-180deg);
       }
     }

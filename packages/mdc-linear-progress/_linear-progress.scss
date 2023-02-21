@@ -120,6 +120,7 @@
         background-repeat: repeat-x;
         // background-size: 10px variables.$height;
         flex: auto;
+        @include rtl.ignore-next-line();
         transform: rotate(180deg);
       }
 
@@ -278,6 +279,7 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
+      @include rtl.ignore-next-line();
       transform: rotate(0);
     }
   }

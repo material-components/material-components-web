@@ -222,6 +222,7 @@ $_caret-size: 24px;
       // We override this transform in MDCTooltipFoundation, however these
       // styles must be present before the override happens in order to
       // calculate the correct boundingClientRect (with the transforms applied).
+      @include rtl.ignore-next-line();
       transform: rotate(35deg) skewY(20deg) scaleX(math.cos(20deg));
     }
   }
