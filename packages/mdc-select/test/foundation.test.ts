@@ -83,7 +83,8 @@ describe('MDCSelectFoundation', () => {
     ]);
   });
 
-  function setupTest(hasLeadingIcon = true, hasHelperText = false) {
+  function setupTest(
+      hasLeadingIcon = true, hasHelperText = false, describedbyElements = '') {
     const mockAdapter = createMockAdapter(MDCSelectFoundation);
     const leadingIcon = jasmine.createSpyObj('leadingIcon', [
       'setDisabled', 'setAriaLabel', 'setContent', 'registerInteractionHandler',
@@ -107,6 +108,8 @@ describe('MDCSelectFoundation', () => {
     mockAdapter.getMenuItemTextAtIndex.withArgs(0).and.returnValue('foo');
     mockAdapter.getMenuItemTextAtIndex.withArgs(1).and.returnValue('bar');
     mockAdapter.getMenuItemCount.and.returnValue(2);
+    mockAdapter.getSelectAnchorAttr.withArgs('aria-describedby')
+        .and.returnValue(describedbyElements);
 
     const foundation = new MDCSelectFoundation(mockAdapter, foundationMap);
     return {foundation, mockAdapter, leadingIcon, helperText};
@@ -768,10 +771,10 @@ describe('MDCSelectFoundation', () => {
      () => {
        const hasIcon = false;
        const hasHelperText = true;
-       const {foundation, mockAdapter, helperText} =
-           setupTest(hasIcon, hasHelperText);
-
        const mockId = 'foobarbazcool';
+       const {foundation, mockAdapter, helperText} =
+           setupTest(hasIcon, hasHelperText, mockId);
+
        helperText.getId.and.returnValue(mockId);
        helperText.isVisible.and.returnValue(true);
 
@@ -779,6 +782,59 @@ describe('MDCSelectFoundation', () => {
        expect(mockAdapter.setSelectAnchorAttr)
            .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY, mockId);
      });
+
+  it('#setValid, with client ids, sets aria-describedby', () => {
+    const hasIcon = false;
+    const hasHelperText = true;
+    const mockId = 'foobarbazcool';
+    const clientDescribedbyIds = 'id1 id2 id3';
+
+    const {foundation, mockAdapter, helperText} =
+        setupTest(hasIcon, hasHelperText, clientDescribedbyIds + ' ' + mockId);
+
+    helperText.getId.and.returnValue(mockId);
+    helperText.isVisible.and.returnValue(true);
+
+    foundation.setValid(false);
+    expect(mockAdapter.setSelectAnchorAttr)
+        .toHaveBeenCalledWith(
+            strings.ARIA_DESCRIBEDBY, clientDescribedbyIds + ' ' + mockId);
+  });
+
+  it('#setValid, w/ client ids, remove helpertextId from aria-describedby',
+     () => {
+       const hasIcon = false;
+       const hasHelperText = true;
+       const mockId = 'foobarbazcool';
+       const clientDescribedbyIds = `id1 id2 id3`;
+
+       const {foundation, mockAdapter, helperText} = setupTest(
+           hasIcon, hasHelperText, clientDescribedbyIds + ' ' + mockId);
+
+       helperText.getId.and.returnValue(mockId);
+       helperText.isVisible.and.returnValue(false);
+
+       foundation.setValid(false);
+       expect(mockAdapter.setSelectAnchorAttr)
+           .toHaveBeenCalledWith(
+               strings.ARIA_DESCRIBEDBY, clientDescribedbyIds);
+     });
+
+  it('#setValid, no client describedby ids, remove aria-describedby', () => {
+    const hasIcon = false;
+    const hasHelperText = true;
+    const mockId = 'foobarbazcool';
+
+    const {foundation, mockAdapter, helperText} =
+        setupTest(hasIcon, hasHelperText, mockId);
+
+    helperText.getId.and.returnValue(mockId);
+    helperText.isVisible.and.returnValue(false);
+
+    foundation.setValid(false);
+    expect(mockAdapter.removeSelectAnchorAttr)
+        .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY);
+  });
 
   it('#setValid true sets aria-invalid to false and removes invalid classes',
      () => {
