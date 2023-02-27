@@ -93,7 +93,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;
-  private readonly ariaDescribedbyIds: string[];
 
   // Disabled state
   private disabled = false;
@@ -122,11 +121,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     this.leadingIcon = foundationMap.leadingIcon;
     this.helperText = foundationMap.helperText;
-    this.ariaDescribedbyIds =
-        this.adapter.getSelectAnchorAttr(strings.ARIA_DESCRIBEDBY)
-            ?.trim()
-            ?.split(' ') ||
-        [];
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
@@ -486,20 +480,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const helperTextId = this.helperText.getId();
 
     if (helperTextVisible && helperTextId) {
-      this.adapter.setSelectAnchorAttr(
-          strings.ARIA_DESCRIBEDBY, this.ariaDescribedbyIds.join(' '));
+      this.adapter.setSelectAnchorAttr(strings.ARIA_DESCRIBEDBY, helperTextId);
     } else {
-      // Remove helptext from list of describedby ids. Needed because
-      // screenreaders will read labels pointed to by `aria-describedby` even if
-      // they are `aria-hidden`.
-      if (this.ariaDescribedbyIds.length > 1) {
-        this.adapter.setSelectAnchorAttr(
-            strings.ARIA_DESCRIBEDBY,
-            this.ariaDescribedbyIds.filter(id => id !== helperTextId)
-                .join(' '));
-      } else {  // helper text is the only describedby element
-        this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
-      }
+      // Needed because screenreaders will read labels pointed to by
+      // `aria-describedby` even if they are `aria-hidden`.
+      this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
     }
   }
 
