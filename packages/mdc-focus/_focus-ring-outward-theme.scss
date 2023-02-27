@@ -6,6 +6,7 @@
 
 @use '@material/theme/keys';
 @use '@material/theme/validate';
+@use '@material/shape/shape';
 @use './focus-ring-shared-theme';
 
 $_custom-property-prefix: 'focus-ring-outward';
@@ -15,6 +16,9 @@ $default-outward-theme: map.merge(
   focus-ring-shared-theme.$default-shared-theme,
   (
     focus-ring-shared-theme.$ring-offset-key: 2px,
+    // Target shape can be provided as a single value, or as a list with
+    // 1-4 values where each value would correspond to border radius of one
+    // or more corners.
     focus-ring-shared-theme.$target-shape-key: 0px,
   )
 );
@@ -26,22 +30,42 @@ $default-outward-theme: map.merge(
 /// @param {Map} $theme - A map with one or more of the keys of $default-outward-theme.
 @mixin theme($theme) {
   $theme: validate.theme($default-outward-theme, $theme);
+  $theme: _expand-target-shape-value($theme);
   @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }
 
 @mixin theme-styles($theme: $default-outward-theme) {
   $theme: validate.theme-styles($default-outward-theme, $theme);
+  $theme: _expand-target-shape-value($theme);
   $theme: keys.create-theme-vars($theme, $_custom-property-prefix);
 
   $ring-color: map.get($theme, focus-ring-shared-theme.$ring-color-key);
   $ring-offset: map.get($theme, focus-ring-shared-theme.$ring-offset-key);
   $track-width: map.get($theme, focus-ring-shared-theme.$track-width-key);
-  $target-shape: map.get($theme, focus-ring-shared-theme.$target-shape-key);
+  $target-shape-start-start: map.get(
+    $theme,
+    '#{focus-ring-shared-theme.$target-shape-key}-start-start'
+  );
+  $target-shape-start-end: map.get(
+    $theme,
+    '#{focus-ring-shared-theme.$target-shape-key}-start-end'
+  );
+  $target-shape-end-end: map.get(
+    $theme,
+    '#{focus-ring-shared-theme.$target-shape-key}-end-end'
+  );
+  $target-shape-end-start: map.get(
+    $theme,
+    '#{focus-ring-shared-theme.$target-shape-key}-end-start'
+  );
 
   /// Mold the focus ring to the target shape.
   /// See the diagram for insights into why the border-radius calc is needed:
   /// http://screen/9J9CzpCxJxxDHCb.png
-  border-radius: calc($target-shape + $ring-offset);
+  border-start-start-radius: calc($target-shape-start-start + $ring-offset);
+  border-start-end-radius: calc($target-shape-start-end + $ring-offset);
+  border-end-end-radius: calc($target-shape-end-end + $ring-offset);
+  border-end-start-radius: calc($target-shape-end-start + $ring-offset);
   inset: calc(-1 * $ring-offset);
   box-shadow: 0 0 0 $track-width $ring-color;
   // HCM ignores box-shadow, so a transparent outline is added to ensure
@@ -75,4 +99,24 @@ $default-outward-theme: map.merge(
       box-shadow: 0 0 0 $midpoint-border-width $ring-color;
     }
   }
+}
+
+/// Replaces target shape value or list provided in theme with four key-value
+/// pairs corresponding to four corners' border radiuses.
+///
+/// @example:
+/// _expand-target-shape-value(('target-shape': 4px)) =>
+///  (
+///    'target-shape-start-start': 4px,
+///    'target-shape-start-end': 4px,
+///    'target-shape-end-end': 4px,
+///    'target-shape-end-start': 4px
+///  )
+///
+@function _expand-target-shape-value($theme) {
+  @return shape.resolve-theme(
+    $theme,
+    meta.get-function('resolver', $module: 'shape'),
+    focus-ring-shared-theme.$target-shape-key
+  );
 }

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@material/theme": "^14.0.0",
-    "@material/tokens": "^14.0.0"
+    "@material/tokens": "^14.0.0",
+    "@material/shape": "^14.0.0"
   }
 }

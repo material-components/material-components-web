@@ -367,3 +367,70 @@ $category-keywords: (
 
   @return $theme;
 }
+
+/// Resolves a shape value by expanding it into logical values for each corner.
+///
+/// @example - scss
+///
+/// resolver($shape: (4px 4px 0 0)) =>
+///  (
+///    start-start: 4px,
+///    start-end: 4px,
+///    end-end: 0,
+///    end-start: 0,
+///  )
+///
+/// resolver($shape: 4px) =>
+///  (
+///    start-start: 4px,
+///    start-end: 4px,
+///    end-end: 4px,
+///    end-start: 4px,
+///  )
+
+/// @param {Number|List} $shape - The shape token's value.
+/// @return {Map} A map with logical tokens for each corner's value.
+@function resolver($shape) {
+  @if meta.type-of($shape) != 'list' {
+    @return (
+      start-start: $shape,
+      start-end: $shape,
+      end-end: $shape,
+      end-start: $shape
+    );
+  }
+
+  @if list.length($shape) == 1 {
+    @return (
+      start-start: list.nth($shape, 1),
+      start-end: list.nth($shape, 1),
+      end-end: list.nth($shape, 1),
+      end-start: list.nth($shape, 1)
+    );
+  }
+
+  @if list.length($shape) == 2 {
+    @return (
+      start-start: list.nth($shape, 1),
+      start-end: list.nth($shape, 2),
+      end-end: list.nth($shape, 1),
+      end-start: list.nth($shape, 2)
+    );
+  }
+
+  @if list.length($shape) == 3 {
+    @return (
+      start-start: list.nth($shape, 1),
+      start-end: list.nth($shape, 2),
+      end-end: list.nth($shape, 3),
+      end-start: list.nth($shape, 2)
+    );
+  }
+
+  @return (
+    start-start: list.nth($shape, 1),
+    start-end: list.nth($shape, 2),
+    end-end: list.nth($shape, 3),
+    end-start: list.nth($shape, 4)
+  );
+}

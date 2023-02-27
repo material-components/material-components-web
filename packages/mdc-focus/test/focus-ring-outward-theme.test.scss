@@ -29,10 +29,13 @@
         }
 
         @include test.expect {
+          --mdc-focus-ring-outward-target-shape-start-start: 5px;
+          --mdc-focus-ring-outward-target-shape-start-end: 5px;
+          --mdc-focus-ring-outward-target-shape-end-end: 5px;
+          --mdc-focus-ring-outward-target-shape-end-start: 5px;
           --mdc-focus-ring-outward-color: blue;
           --mdc-focus-ring-outward-offset: 2px;
           --mdc-focus-ring-outward-track-width: 3px;
-          --mdc-focus-ring-outward-target-shape: 5px;
         }
       }
     }
@@ -55,8 +58,20 @@
         }
 
         @include test.contains {
-          border-radius: calc(
-            var(--mdc-focus-ring-outward-target-shape, 5px) +
+          border-start-start-radius: calc(
+            var(--mdc-focus-ring-outward-target-shape-start-start, 5px) +
+              var(--mdc-focus-ring-outward-offset, 2px)
+          );
+          border-start-end-radius: calc(
+            var(--mdc-focus-ring-outward-target-shape-start-end, 5px) +
+              var(--mdc-focus-ring-outward-offset, 2px)
+          );
+          border-end-end-radius: calc(
+            var(--mdc-focus-ring-outward-target-shape-end-end, 5px) +
+              var(--mdc-focus-ring-outward-offset, 2px)
+          );
+          border-end-start-radius: calc(
+            var(--mdc-focus-ring-outward-target-shape-end-start, 5px) +
               var(--mdc-focus-ring-outward-offset, 2px)
           );
           inset: calc(-1 * var(--mdc-focus-ring-outward-offset, 2px));
