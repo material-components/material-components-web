@@ -372,15 +372,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   private handleWindowScrollEvent() {
-    if (this.persistentTooltip) {
-      // Persistent tooltips remain visible on user scroll, call appropriate
-      // handler to ensure the tooltip remains pinned to the anchor on page
-      // scroll.
-      this.handleWindowChangeEvent();
-      return;
+    if (!this.persistentTooltip) {
+      this.hide();
     }
-
-    this.hide();
   }
 
   /**

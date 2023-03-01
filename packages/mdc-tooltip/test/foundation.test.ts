@@ -2351,12 +2351,7 @@ describe('MDCTooltipFoundation', () => {
     const scrollableAncestor = document.createElement('div');
     scrollableAncestor.setAttribute('id', 'scrollable');
     document.body.appendChild(scrollableAncestor);
-    const {foundation} = setUpFoundationTestForRichTooltip(
-        MDCTooltipFoundation, {isPersistent: true});
-
-    (foundation as any).repositionTooltipOnAnchorMove =
-        jasmine.createSpy('repositionTooltipOnAnchorMove');
-
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
 
     foundation.attachScrollHandler((evt, handler) => {
       scrollableAncestor.addEventListener(evt, handler);
@@ -2364,22 +2359,18 @@ describe('MDCTooltipFoundation', () => {
     foundation.show();
 
     emitEvent(scrollableAncestor, 'scroll');
-    jasmine.clock().tick(1);
+    jasmine.clock().tick(numbers.HIDE_DELAY_MS);
 
-    expect((foundation as any).repositionTooltipOnAnchorMove)
-        .toHaveBeenCalled();
+    expectTooltipToHaveBeenHidden(foundation, mockAdapter);
   });
 
   it('#hide deregisters additional user-specified scroll handlers', () => {
     const scrollableAncestor = document.createElement('div');
     scrollableAncestor.setAttribute('id', 'scrollable');
     document.body.appendChild(scrollableAncestor);
-    const {foundation} = setUpFoundationTestForRichTooltip(
-        MDCTooltipFoundation, {isPersistent: true});
+    const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
 
-    (foundation as any).repositionTooltipOnAnchorMove =
-        jasmine.createSpy('repositionTooltipOnAnchorMove');
-
+    spyOn(foundation, 'hide').and.callThrough();
 
     foundation.attachScrollHandler((evt, handler) => {
       scrollableAncestor.addEventListener(evt, handler);
@@ -2393,74 +2384,28 @@ describe('MDCTooltipFoundation', () => {
     emitEvent(scrollableAncestor, 'scroll');
     jasmine.clock().tick(1);
 
-    expect((foundation as any).repositionTooltipOnAnchorMove)
-        .not.toHaveBeenCalled();
+    expect(foundation.hide).toHaveBeenCalledTimes(1);
   });
 
-  it('recalculates position of tooltip if user specified ancestor is scrolled',
+  it('persistent tooltip remains visible if user specified ancestor is scrolled',
      () => {
-       const anchorBoundingRect = {top: 0, bottom: 35, left: 200, right: 250};
-       const parentBoundingRect = {top: 5, bottom: 35, left: 100, right: 150};
-       const tooltipSize = {width: 40, height: 30};
-
        const scrollableAncestor = document.createElement('div');
        scrollableAncestor.setAttribute('id', 'scrollable');
        document.body.appendChild(scrollableAncestor);
 
-       const expectedTooltipTop = anchorBoundingRect.bottom +
-           numbers.BOUNDED_ANCHOR_GAP - parentBoundingRect.top;
-       const expectedTooltipLeft =
-           anchorBoundingRect.right - parentBoundingRect.left;
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {isPersistent: true});
-       mockAdapter.getViewportWidth.and.returnValue(300);
-       mockAdapter.getViewportHeight.and.returnValue(150);
-       mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
-       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-       mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
        foundation.attachScrollHandler((evt, handler) => {
          scrollableAncestor.addEventListener(evt, handler);
        });
        foundation.show();
+       expectTooltipToHaveBeenShown(foundation, mockAdapter);
 
-       expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
-       expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
-
-       // "Scroll" tooltip to the bottom of the page -- tooltip position flips
-       // from BELOW to ABOVE
-       const yPositionDiff = 150;
-       const xPositionDiff = 20;
-       const newAnchorBoundingRect = {
-         top: anchorBoundingRect.top + yPositionDiff,
-         bottom: anchorBoundingRect.bottom + yPositionDiff,
-         left: anchorBoundingRect.left + xPositionDiff,
-         right: anchorBoundingRect.right + xPositionDiff,
-       };
-
-       const newParentBoundingRect = {
-         top: parentBoundingRect.top + yPositionDiff,
-         bottom: parentBoundingRect.bottom + yPositionDiff,
-         left: parentBoundingRect.left + xPositionDiff,
-         right: parentBoundingRect.right + xPositionDiff,
-       };
-
-       mockAdapter.getAnchorBoundingRect.and.returnValue(newAnchorBoundingRect);
-       mockAdapter.getParentBoundingRect.and.returnValue(newParentBoundingRect);
        emitEvent(scrollableAncestor, 'scroll');
-       jasmine.clock().tick(1);
+       jasmine.clock().tick(numbers.HIDE_DELAY_MS);
 
-       const newExpectedTooltipTop =
-           (newAnchorBoundingRect.top -
-            (numbers.BOUNDED_ANCHOR_GAP + tooltipSize.height)) -
-           newParentBoundingRect.top;
-
-       expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith('top', `${newExpectedTooltipTop}px`);
-       expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
 
   for (const pos of CARET_POSITION_STYLES.keys()) {
