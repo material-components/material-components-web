@@ -34,7 +34,7 @@
 @use './text-field-theme';
 @use './mixins';
 
-$_custom-property-prefix: 'outlined-text-field';
+$custom-property-prefix: 'outlined-text-field';
 
 $_light-theme: (
   caret-color: null,
@@ -129,7 +129,7 @@ $_light-theme: (
 
   @include keys.declare-custom-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
 }
 
@@ -138,7 +138,7 @@ $_light-theme: (
 
   $theme: keys.create-theme-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
 
   @include text-field-theme.theme-styles($theme, $resolvers: $resolvers);
