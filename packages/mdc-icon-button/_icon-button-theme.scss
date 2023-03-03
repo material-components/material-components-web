@@ -343,13 +343,6 @@ $light-theme: (
 @mixin _icon-color-with-map($color-map) {
   @include ink-color_(state.get-default-state($color-map));
 
-  $disabled: state.get-disabled-state($color-map);
-  @if $disabled {
-    &:disabled {
-      @include ink-color_($disabled);
-    }
-  }
-
   $focus: state.get-focus-state($color-map);
   @if $focus {
     @include ripple-theme.focus {
@@ -368,6 +361,13 @@ $light-theme: (
   @if $pressed {
     @include ripple-theme.active {
       @include ink-color_($pressed);
+    }
+  }
+
+  $disabled: state.get-disabled-state($color-map);
+  @if $disabled {
+    &:disabled {
+      @include ink-color_($disabled);
     }
   }
 }

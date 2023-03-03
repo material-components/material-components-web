@@ -191,6 +191,18 @@
       $ripple-target: icon-button-theme.$ripple-target
     );
 
+    &:disabled {
+      @include ripple-theme.states-opacities(
+        (
+          hover: 0,
+          focus: 0,
+          press: 0,
+        ),
+        $ripple-target: icon-button-theme.$ripple-target,
+        $query: $query
+      );
+    }
+
     .mdc-icon-button__ripple {
       $feat-structure: feature-targeting.create-target($query, structure);
       @include feature-targeting.targets($feat-structure) {
