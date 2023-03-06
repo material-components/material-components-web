@@ -83,7 +83,9 @@ describe('MDCSelectFoundation', () => {
     ]);
   });
 
-  function setupTest(hasLeadingIcon = true, hasHelperText = false) {
+  function setupTest(
+      hasLeadingIcon = true, hasHelperText = false,
+      describedbyIds: string[] = []) {
     const mockAdapter = createMockAdapter(MDCSelectFoundation);
     const leadingIcon = jasmine.createSpyObj('leadingIcon', [
       'setDisabled', 'setAriaLabel', 'setContent', 'registerInteractionHandler',
@@ -107,6 +109,13 @@ describe('MDCSelectFoundation', () => {
     mockAdapter.getMenuItemTextAtIndex.withArgs(0).and.returnValue('foo');
     mockAdapter.getMenuItemTextAtIndex.withArgs(1).and.returnValue('bar');
     mockAdapter.getMenuItemCount.and.returnValue(2);
+    mockAdapter.getSelectAnchorAttr.withArgs('aria-describedby')
+        .and.returnValue(describedbyIds.join(' '));
+
+    if (hasHelperText) {
+      helperText.getId.and.returnValue(
+          describedbyIds[describedbyIds.length - 1]);
+    }
 
     const foundation = new MDCSelectFoundation(mockAdapter, foundationMap);
     return {foundation, mockAdapter, leadingIcon, helperText};
@@ -768,17 +777,67 @@ describe('MDCSelectFoundation', () => {
      () => {
        const hasIcon = false;
        const hasHelperText = true;
+       const helperTextId = 'foobarbazcool';
        const {foundation, mockAdapter, helperText} =
-           setupTest(hasIcon, hasHelperText);
+           setupTest(hasIcon, hasHelperText, [helperTextId]);
 
-       const mockId = 'foobarbazcool';
-       helperText.getId.and.returnValue(mockId);
        helperText.isVisible.and.returnValue(true);
 
        foundation.setValid(false);
        expect(mockAdapter.setSelectAnchorAttr)
-           .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY, mockId);
+           .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY, helperTextId);
      });
+
+  it('#setValid, with client ids, sets aria-describedby', () => {
+    const hasIcon = false;
+    const hasHelperText = true;
+    const helperTextId = 'foobarbazcool';
+    const clientDescribedbyIds = ['id1', 'id2', 'id3'];
+
+    const {foundation, mockAdapter, helperText} = setupTest(
+        hasIcon, hasHelperText, [...clientDescribedbyIds, helperTextId]);
+
+    helperText.isVisible.and.returnValue(true);
+
+    foundation.setValid(false);
+    expect(mockAdapter.setSelectAnchorAttr)
+        .toHaveBeenCalledWith(
+            strings.ARIA_DESCRIBEDBY,
+            [...clientDescribedbyIds, helperTextId].join(' '));
+  });
+
+  it('#setValid, w/ client ids, remove helpertextId from aria-describedby',
+     () => {
+       const hasIcon = false;
+       const hasHelperText = true;
+       const helperTextId = 'foobarbazcool';
+       const clientDescribedbyIds = ['id1', 'id2', 'id3'];
+
+       const {foundation, mockAdapter, helperText} = setupTest(
+           hasIcon, hasHelperText, [...clientDescribedbyIds, helperTextId]);
+
+       helperText.isVisible.and.returnValue(false);
+
+       foundation.setValid(false);
+       expect(mockAdapter.setSelectAnchorAttr)
+           .toHaveBeenCalledWith(
+               strings.ARIA_DESCRIBEDBY, clientDescribedbyIds.join(' '));
+     });
+
+  it('#setValid, no client describedby ids, remove aria-describedby', () => {
+    const hasIcon = false;
+    const hasHelperText = true;
+    const helperTextId = 'foobarbazcool';
+
+    const {foundation, mockAdapter, helperText} =
+        setupTest(hasIcon, hasHelperText, [helperTextId]);
+
+    helperText.isVisible.and.returnValue(false);
+
+    foundation.setValid(false);
+    expect(mockAdapter.removeSelectAnchorAttr)
+        .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY);
+  });
 
   it('#setValid true sets aria-invalid to false and removes invalid classes',
      () => {
@@ -805,8 +864,10 @@ describe('MDCSelectFoundation', () => {
      () => {
        const hasIcon = false;
        const hasHelperText = true;
+       const helperTextId = 'foobarbazcool';
+
        const {foundation, mockAdapter, helperText} =
-           setupTest(hasIcon, hasHelperText);
+           setupTest(hasIcon, hasHelperText, [helperTextId]);
 
        helperText.isVisible.and.returnValue(false);
 

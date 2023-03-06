@@ -93,6 +93,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;
+  // Client provided `aria-describedby` ids. Does not include helpTextId.
+  private readonly ariaDescribedbyIds: string[];
 
   // Disabled state
   private disabled = false;
@@ -121,6 +123,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     this.leadingIcon = foundationMap.leadingIcon;
     this.helperText = foundationMap.helperText;
+    this.ariaDescribedbyIds =
+        this.adapter.getSelectAnchorAttr(strings.ARIA_DESCRIBEDBY)
+            ?.split(' ')
+            ?.filter(id => id !== this.helperText?.getId() && id !== '') ||
+        [];
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
@@ -480,11 +487,19 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const helperTextId = this.helperText.getId();
 
     if (helperTextVisible && helperTextId) {
-      this.adapter.setSelectAnchorAttr(strings.ARIA_DESCRIBEDBY, helperTextId);
+      this.adapter.setSelectAnchorAttr(
+          strings.ARIA_DESCRIBEDBY,
+          [...this.ariaDescribedbyIds, helperTextId].join(' '));
     } else {
-      // Needed because screenreaders will read labels pointed to by
-      // `aria-describedby` even if they are `aria-hidden`.
-      this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
+      // Remove helptext from list of describedby ids. Needed because
+      // screenreaders will read labels pointed to by `aria-describedby` even if
+      // they are `aria-hidden`.
+      if (this.ariaDescribedbyIds.length > 0) {
+        this.adapter.setSelectAnchorAttr(
+            strings.ARIA_DESCRIBEDBY, this.ariaDescribedbyIds.join(' '));
+      } else {  // helper text is the only describedby element
+        this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
+      }
     }
   }
 
