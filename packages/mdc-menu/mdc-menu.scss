@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use './mixins';
-@include mixins.core-styles;
+@use './menu';
+@include menu.core-styles;

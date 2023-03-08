@@ -1,4 +1,4 @@
-@use '../mixins' as menu;
+@use '../menu';
 @use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
