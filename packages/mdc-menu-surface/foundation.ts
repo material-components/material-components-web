@@ -22,6 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {SpecificEventListener} from '@material/base/types';
 
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
@@ -86,6 +87,8 @@ export class MDCMenuSurfaceFoundation extends
       notifyClosing: () => undefined,
       notifyOpen: () => undefined,
       notifyOpening: () => undefined,
+      registerWindowEventHandler: () => undefined,
+      deregisterWindowEventHandler: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -104,6 +107,9 @@ export class MDCMenuSurfaceFoundation extends
   private animationRequestId = 0;
 
   private anchorCorner: Corner = Corner.TOP_START;
+
+  private resizeListener!:
+      SpecificEventListener<'resize'>;  // Assigned in #initialize.
 
   /**
    * Corner of the menu surface to which menu surface is attached to anchor.
@@ -141,6 +147,9 @@ export class MDCMenuSurfaceFoundation extends
     if (this.adapter.hasClass(OPEN)) {
       this.isSurfaceOpen = true;
     }
+
+    this.resizeListener = this.handleResize.bind(this);
+    this.adapter.registerWindowEventHandler('resize', this.resizeListener);
   }
 
   override destroy() {
@@ -148,6 +157,8 @@ export class MDCMenuSurfaceFoundation extends
     clearTimeout(this.closeAnimationEndTimerId);
     // Cancel any currently running animations.
     cancelAnimationFrame(this.animationRequestId);
+
+    this.adapter.deregisterWindowEventHandler('resize', this.resizeListener);
   }
 
   /**
@@ -265,6 +276,8 @@ export class MDCMenuSurfaceFoundation extends
 
       this.isSurfaceOpen = true;
     }
+
+    this.adapter.registerWindowEventHandler('resize', this.resizeListener);
   }
 
   /**
@@ -276,6 +289,7 @@ export class MDCMenuSurfaceFoundation extends
     }
 
     this.adapter.notifyClosing();
+    this.adapter.deregisterWindowEventHandler('resize', this.resizeListener);
 
     if (this.isQuickOpen) {
       this.isSurfaceOpen = false;
@@ -327,6 +341,12 @@ export class MDCMenuSurfaceFoundation extends
     if (isEscape) {
       this.close();
     }
+  }
+
+  /** Handles resize events on the window. */
+  private handleResize() {
+    this.dimensions = this.adapter.getInnerDimensions();
+    this.autoposition();
   }
 
   private autoposition() {

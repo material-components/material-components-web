@@ -232,6 +232,12 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       setMaxHeight: (height) => {
         this.root.style.maxHeight = height;
       },
+      registerWindowEventHandler: (evtType, handler) => {
+        window.addEventListener(evtType, handler);
+      },
+      deregisterWindowEventHandler: (evtType, handler) => {
+        window.removeEventListener(evtType, handler);
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCMenuSurfaceFoundation(adapter);

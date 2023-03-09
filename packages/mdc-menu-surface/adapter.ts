@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener} from '@material/base/types';
+
 import {MDCMenuDimensions, MDCMenuDistance, MDCMenuPoint} from './types';
 
 /**
@@ -70,4 +72,12 @@ export interface MDCMenuSurfaceAdapter {
 
   /** Emits an event when the menu surface is opening. */
   notifyOpening(): void;
+
+  /** Registers an event listener on the window. */
+  registerWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /** Deregisters an event listener on the window. */
+  deregisterWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 }

@@ -211,6 +211,8 @@ describe('MDCMenuSurfaceFoundation', () => {
       'getWindowScroll',
       'setPosition',
       'setMaxHeight',
+      'registerWindowEventHandler',
+      'deregisterWindowEventHandler'
     ]);
   });
 
@@ -1025,6 +1027,12 @@ describe('MDCMenuSurfaceFoundation', () => {
       });
 
   testFoundation(
+      '#open registers window resize listener', ({foundation, mockAdapter}) => {
+        foundation.open();
+        expect(mockAdapter.registerWindowEventHandler).toHaveBeenCalled();
+      });
+
+  testFoundation(
       '#close adds the animation class to start an animation',
       ({foundation, mockAdapter}) => {
         (foundation as unknown as WithIsSurfaceOpen).isSurfaceOpen = true;
@@ -1141,6 +1149,14 @@ describe('MDCMenuSurfaceFoundation', () => {
         foundation.close();
         jasmine.clock().tick(numbers.TOUCH_EVENT_WAIT_MS);
         expect(mockAdapter.restoreFocus).not.toHaveBeenCalled();
+      });
+
+  testFoundation(
+      '#close deregisters window resize listener',
+      ({foundation, mockAdapter}) => {
+        foundation.open();
+        foundation.close();
+        expect(mockAdapter.deregisterWindowEventHandler).toHaveBeenCalled();
       });
 
   it('#isOpen returns true when the menu surface is open', () => {

@@ -566,4 +566,28 @@ describe('MDCMenuSurface', () => {
        (component.getDefaultFoundation() as any).adapter.setMaxHeight('100px');
        expect(root.style.maxHeight).toEqual('100px');
      });
+
+  it('adapter#registerWindowEventHandler uses the handler as a window resize listener',
+     () => {
+       const {component} = setupTest();
+       const handler = jasmine.createSpy('resizeListener');
+       (component.getDefaultFoundation() as any)
+           .adapter.registerWindowEventHandler('resize', handler);
+       emitEvent(window, 'resize');
+       expect(handler).toHaveBeenCalledWith(jasmine.anything());
+       window.removeEventListener('resize', handler);
+     });
+
+  it('adapter#deregisterWindowEventHandler unlistens the handler for window resize',
+     () => {
+       const {component} = setupTest();
+       const handler = jasmine.createSpy('resizeListener');
+       window.addEventListener('resize', handler);
+       (component.getDefaultFoundation() as any)
+           .adapter.deregisterWindowEventHandler('resize', handler);
+       emitEvent(window, 'resize');
+       expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
+       // Just to be safe
+       window.removeEventListener('resize', handler);
+     });
 });
