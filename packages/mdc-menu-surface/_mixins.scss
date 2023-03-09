@@ -41,7 +41,7 @@
 
   // postcss-bem-linter: define menu-surface
   .mdc-menu-surface {
-    @include base_($query);
+    @include _base($query);
     @include elevation-mixins.elevation($z-value: 8, $query: $query);
     @include fill-color(surface, $query);
     @include ink-color(on-surface, $query);
@@ -114,7 +114,7 @@
 // Private
 //
 
-@mixin base_($query: feature-targeting.all()) {
+@mixin _base($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
