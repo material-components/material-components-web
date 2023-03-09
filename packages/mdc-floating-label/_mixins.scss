@@ -143,14 +143,14 @@
       0% {
         @include rtl.ignore-next-line();
         transform: translateX(calc(0 - #{$positionX}))
-          translateY(-#{$positionY}) scale(#{$scale});
+          translateY(calc(0 - #{$positionY})) scale(#{$scale});
       }
 
       33% {
         animation-timing-function: cubic-bezier(0.5, 0, 0.701732, 0.495819);
         @include rtl.ignore-next-line();
         transform: translateX(calc(4% - #{$positionX}))
-          translateY(-#{$positionY}) scale(#{$scale});
+          translateY(calc(0 - #{$positionY})) scale(#{$scale});
       }
 
       66% {
@@ -162,13 +162,13 @@
         );
         @include rtl.ignore-next-line();
         transform: translateX(calc(-4% - #{$positionX}))
-          translateY(-#{$positionY}) scale(#{$scale});
+          translateY(calc(0 - #{$positionY})) scale(#{$scale});
       }
 
       100% {
         @include rtl.ignore-next-line();
         transform: translateX(calc(0 - #{$positionX}))
-          translateY(-#{$positionY}) scale(#{$scale});
+          translateY(calc(0 - #{$positionY})) scale(#{$scale});
       }
     }
   }

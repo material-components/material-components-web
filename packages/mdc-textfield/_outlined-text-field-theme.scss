@@ -34,7 +34,7 @@
 @use './text-field-theme';
 @use './mixins';
 
-$_custom-property-prefix: 'outlined-text-field';
+$custom-property-prefix: 'outlined-text-field';
 
 $_light-theme: (
   caret-color: null,
@@ -129,7 +129,7 @@ $_light-theme: (
 
   @include keys.declare-custom-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
 }
 
@@ -138,7 +138,7 @@ $_light-theme: (
 
   $theme: keys.create-theme-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
 
   @include text-field-theme.theme-styles($theme, $resolvers: $resolvers);
@@ -147,15 +147,25 @@ $_light-theme: (
     $container-height: map.get($theme, container-height);
 
     @if $container-height {
-      $container-height: if(
+      $container-height-value: if(
         custom-properties.is-custom-prop($container-height),
         custom-properties.get-declaration-value($container-height),
         $container-height
       );
-      @include mixins.outlined-height($container-height);
+      $keyframe-suffix: if(
+        custom-properties.is-custom-prop($container-height),
+        'text-field-outlined-#{custom-properties.get-fallback($container-height)}',
+        'text-field-outlined-#{$container-height}'
+      );
+      @include mixins.outlined-height($container-height-value, $keyframe-suffix);
 
       &.mdc-text-field--with-leading-icon {
-        @include mixins.outlined-with-leading-icon-height($container-height);
+        $with-leading-icon-keyframe-suffix: if(
+          custom-properties.is-custom-prop($container-height),
+          'text-field-outlined-with-leading-icon-#{custom-properties.get-fallback($container-height)}',
+          'text-field-outlined-with-leading-icon-#{$container-height}'
+        );
+        @include mixins.outlined-with-leading-icon-height($container-height-value, $with-leading-icon-keyframe-suffix);
       }
     }
   }
