@@ -39,13 +39,68 @@
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
+  @include static-styles($query);
+
   // postcss-bem-linter: define menu-surface
   .mdc-menu-surface {
     @include _base($query);
-    @include elevation-mixins.elevation($z-value: 8, $query: $query);
     @include fill-color(surface, $query);
     @include ink-color(on-surface, $query);
     @include shape-radius(variables.$shape-radius, false, $query);
+  }
+  // postcss-bem-linter: end
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  // postcss-bem-linter: define menu-surface
+  .mdc-menu-surface {
+    @include feature-targeting.targets($feat-structure) {
+      display: none;
+      position: absolute;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transform: scale(1);
+      transform-origin: top left;
+      opacity: 0;
+      overflow: auto;
+      will-change: transform, opacity;
+    }
+
+    &:focus {
+      @include feature-targeting.targets($feat-structure) {
+        outline: none;
+      }
+    }
+
+    &--animating-open {
+      @include feature-targeting.targets($feat-structure) {
+        display: inline-block;
+        transform: scale(0.8);
+        opacity: 0;
+      }
+    }
+
+    // Render this after `--animating-open` to override `opacity` & `transform`
+    // CSS properties.
+    &--open {
+      @include feature-targeting.targets($feat-structure) {
+        display: inline-block;
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    &--animating-closed {
+      @include feature-targeting.targets($feat-structure) {
+        display: inline-block;
+        opacity: 0;
+      }
+    }
+
+    @include elevation-mixins.elevation($z-value: 8, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       @include rtl.reflexive-property(transform-origin, top left, top right);
@@ -119,10 +174,6 @@
   $feat-animation: feature-targeting.create-target($query, animation);
 
   @include feature-targeting.targets($feat-structure) {
-    display: none;
-    position: absolute;
-    box-sizing: border-box;
-
     $max-width: custom-properties.create(
       --mdc-menu-max-width,
       calc(100vw - #{variables.$min-distance-from-edge})
@@ -133,13 +184,6 @@
       calc(100vh - #{variables.$min-distance-from-edge})
     );
     @include theme.property(max-height, $max-height);
-    margin: 0;
-    padding: 0;
-    transform: scale(1);
-    transform-origin: top left;
-    opacity: 0;
-    overflow: auto;
-    will-change: transform, opacity;
     z-index: variables.$z-index;
   }
 
@@ -150,36 +194,7 @@
       height 250ms animation-variables.$deceleration-curve-timing-function;
   }
 
-  &:focus {
-    @include feature-targeting.targets($feat-structure) {
-      outline: none;
-    }
-  }
-
-  &--animating-open {
-    @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
-      transform: scale(0.8);
-      opacity: 0;
-    }
-  }
-
-  // Render this after `--animating-open` to override `opacity` & `transform`
-  // CSS properties.
-  &--open {
-    @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
   &--animating-closed {
-    @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
-      opacity: 0;
-    }
-
     @include feature-targeting.targets($feat-animation) {
       transition: opacity variables.$fade-out-duration linear;
     }
