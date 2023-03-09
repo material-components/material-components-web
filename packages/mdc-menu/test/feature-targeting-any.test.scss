@@ -3,7 +3,7 @@
 
 @mixin test($query) {
   .test {
-    @include menu.core-styles($query: $query);
+    @include menu.static-styles($query: $query);
     @include menu.width(0, $query: $query);
   }
 }

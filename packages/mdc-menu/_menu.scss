@@ -37,7 +37,12 @@
 @use './menu-custom-properties';
 @use './variables';
 
+/// @deprecated Use static-styles() instead.
 @mixin core-styles($query: feature-targeting.all()) {
+  @include static-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
 

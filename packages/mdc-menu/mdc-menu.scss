@@ -21,4 +21,4 @@
 //
 
 @use './menu';
-@include menu.core-styles;
+@include menu.static-styles();
