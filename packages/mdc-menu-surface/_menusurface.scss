@@ -1,0 +1,187 @@
+//
+// Copyright 2023 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/theme/custom-properties';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/animation/variables' as animation-variables;
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/rtl/rtl';
+@use './variables';
+
+//
+// Public
+//
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  // postcss-bem-linter: define menu-surface
+  .mdc-menu-surface {
+    @include _base($query);
+    @include elevation-mixins.elevation($z-value: 8, $query: $query);
+    @include fill-color(surface, $query);
+    @include ink-color(on-surface, $query);
+    @include shape-radius(variables.$shape-radius, false, $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-property(transform-origin, top left, top right);
+    }
+  }
+
+  .mdc-menu-surface--anchor {
+    @include feature-targeting.targets($feat-structure) {
+      position: relative;
+      overflow: visible;
+    }
+  }
+
+  .mdc-menu-surface--fixed {
+    @include feature-targeting.targets($feat-structure) {
+      position: fixed;
+    }
+  }
+
+  .mdc-menu-surface--fullwidth {
+    @include feature-targeting.targets($feat-structure) {
+      width: 100%;
+    }
+  }
+  // postcss-bem-linter: end
+}
+
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(background-color, $color);
+  }
+}
+
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+}
+
+// Used by filled variants of GM components to conditionally flatten the top
+// corners of the menu.
+@mixin flatten-top-when-opened-below($query: feature-targeting.all()) {
+  .mdc-menu-surface--is-open-below {
+    $feat-structure: feature-targeting.create-target($query, structure);
+
+    @include feature-targeting.targets($feat-structure) {
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+    }
+  }
+}
+
+//
+// Private
+//
+
+@mixin _base($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-structure) {
+    display: none;
+    position: absolute;
+    box-sizing: border-box;
+
+    $max-width: custom-properties.create(
+      --mdc-menu-max-width,
+      calc(100vw - #{variables.$min-distance-from-edge})
+    );
+    @include theme.property(max-width, $max-width);
+    $max-height: custom-properties.create(
+      --mdc-menu-max-height,
+      calc(100vh - #{variables.$min-distance-from-edge})
+    );
+    @include theme.property(max-height, $max-height);
+    margin: 0;
+    padding: 0;
+    transform: scale(1);
+    transform-origin: top left;
+    opacity: 0;
+    overflow: auto;
+    will-change: transform, opacity;
+    z-index: variables.$z-index;
+  }
+
+  @include feature-targeting.targets($feat-animation) {
+    transition: opacity variables.$fade-in-duration linear,
+      transform variables.$scale-duration
+        animation-variables.$deceleration-curve-timing-function,
+      height 250ms animation-variables.$deceleration-curve-timing-function;
+  }
+
+  &:focus {
+    @include feature-targeting.targets($feat-structure) {
+      outline: none;
+    }
+  }
+
+  &--animating-open {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      transform: scale(0.8);
+      opacity: 0;
+    }
+  }
+
+  // Render this after `--animating-open` to override `opacity` & `transform`
+  // CSS properties.
+  &--open {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  &--animating-closed {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      opacity: 0;
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: opacity variables.$fade-out-duration linear;
+    }
+  }
+}
