@@ -130,7 +130,7 @@ $_density-config: map.merge(
     @include _filled($query);
 
     &.mdc-text-field--no-label {
-      @include _filled-no-label($query);
+      @include filled-no-label($query);
     }
   }
 
@@ -664,7 +664,7 @@ $_density-config: map.merge(
   // That's not the case when $height is a custom property.
   @if not custom-properties.is-custom-prop($height) {
     @if $height < $minimum-height-for-filled-label {
-      @include _filled-no-label($query: $query);
+      @include filled-no-label($query: $query);
     }
   }
 }
@@ -1578,7 +1578,7 @@ $_density-config: map.merge(
 // Filled variant with no label. This variant centers the text elements and
 // hides the label and is used with there is explicitly no label provided or
 // when the height of the text field is too small for a label to be allowed.
-@mixin _filled-no-label($query: feature-targeting.all()) {
+@mixin filled-no-label($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include _baseline-center-aligned($query);
