@@ -67,7 +67,7 @@ export enum CloseReason {
 /**
  * Payload of actionClicked events to signify which action emitted the event.
  */
-export const enum Action {
+export enum Action {
   PRIMARY,
   SECONDARY,
   UNKNOWN
