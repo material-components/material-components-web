@@ -60,13 +60,18 @@ $_density-config: map.merge(
 
 @mixin core-styles($query: feature-targeting.all()) {
   @include ripple($query);
-  @include without-ripple($query);
+  @include static-styles($query);
   @include helper-text-mixins.helper-text-core-styles($query);
   @include character-counter-mixins.character-counter-core-styles($query);
   @include icon-mixins.icon-core-styles($query);
 }
 
+/// @deprecated Use static-styles() instead.
 @mixin without-ripple($query: feature-targeting.all()) {
+  @include static-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   // Baseline
