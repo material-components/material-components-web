@@ -32,23 +32,21 @@
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
+@use './notched-outline';
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-notched-outline {
-    @include base_($query);
+  @include notched-outline.static-styles($query);
 
+  .mdc-notched-outline {
     &__leading,
     &__notch,
     &__trailing {
       @include feature-targeting.targets($feat-structure) {
-        box-sizing: border-box;
-        height: 100%;
         border-top: variables.$border-width solid;
         border-bottom: variables.$border-width solid;
-        pointer-events: none;
       }
     }
 
@@ -71,54 +69,12 @@
           none,
           variables.$border-width solid
         );
-
-        flex-grow: 1;
       }
     }
 
     &__notch {
       @include feature-targeting.targets($feat-structure) {
-        flex: 0 0 auto;
-        width: auto;
         max-width: calc(100% - #{variables.$leading-width} * 2);
-      }
-    }
-
-    .mdc-floating-label {
-      @include feature-targeting.targets($feat-structure) {
-        display: inline-block;
-        position: relative;
-        max-width: 100%;
-      }
-    }
-
-    .mdc-floating-label--float-above {
-      @include feature-targeting.targets($feat-structure) {
-        text-overflow: clip;
-      }
-    }
-
-    &--upgraded .mdc-floating-label--float-above {
-      @include feature-targeting.targets($feat-structure) {
-        max-width: calc(100% / 0.75);
-      }
-    }
-  }
-
-  .mdc-notched-outline--notched {
-    .mdc-notched-outline__notch {
-      @include feature-targeting.targets($feat-structure) {
-        @include rtl.reflexive-box(padding, right, 8px);
-
-        border-top: none;
-      }
-    }
-  }
-
-  .mdc-notched-outline--no-label {
-    .mdc-notched-outline__notch {
-      @include feature-targeting.targets($feat-structure) {
-        display: none;
       }
     }
   }
@@ -361,33 +317,6 @@
   :not(.mdc-notched-outline--notched) .mdc-notched-outline__notch {
     @include feature-targeting.targets($feat-structure) {
       max-width: $max-width;
-    }
-  }
-}
-
-//
-// Private
-//
-@mixin base_($query) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    display: flex;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    @include rtl.ignore-next-line();
-    text-align: left;
-    pointer-events: none;
-
-    @include rtl.rtl {
-      @include rtl.ignore-next-line();
-      text-align: right;
     }
   }
 }
