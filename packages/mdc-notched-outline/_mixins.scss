@@ -38,7 +38,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline {
-    @include base_($query);
+    @include _base($query);
 
     &__leading,
     &__notch,
@@ -368,7 +368,7 @@
 //
 // Private
 //
-@mixin base_($query) {
+@mixin _base($query) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
