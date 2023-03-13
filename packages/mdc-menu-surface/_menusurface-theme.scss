@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2023 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,30 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import `_menusurface.scss` or `_menusurface-theme.scss` instead.
-@forward './menusurface' show core-styles, flatten-top-when-opened-below;
-@forward './menusurface-theme' show ink-color, fill-color, shape-radius;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/shape/mixins' as shape-mixins;
+
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(background-color, $color);
+  }
+}
+
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+}

@@ -26,10 +26,10 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
 @use '@material/theme/custom-properties';
-@use '@material/shape/mixins' as shape-mixins;
 @use '@material/animation/variables' as animation-variables;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/rtl/rtl';
+@use './menusurface-theme';
 @use './variables';
 
 //
@@ -44,9 +44,13 @@
   // postcss-bem-linter: define menu-surface
   .mdc-menu-surface {
     @include _base($query);
-    @include fill-color(surface, $query);
-    @include ink-color(on-surface, $query);
-    @include shape-radius(variables.$shape-radius, false, $query);
+    @include menusurface-theme.fill-color(surface, $query);
+    @include menusurface-theme.ink-color(on-surface, $query);
+    @include menusurface-theme.shape-radius(
+      variables.$shape-radius,
+      false,
+      $query
+    );
   }
   // postcss-bem-linter: end
 }
@@ -126,30 +130,6 @@
     }
   }
   // postcss-bem-linter: end
-}
-
-@mixin ink-color($color, $query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
-
-  @include feature-targeting.targets($feat-color) {
-    @include theme.property(color, $color);
-  }
-}
-
-@mixin fill-color($color, $query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
-
-  @include feature-targeting.targets($feat-color) {
-    @include theme.property(background-color, $color);
-  }
-}
-
-@mixin shape-radius(
-  $radius,
-  $rtl-reflexive: false,
-  $query: feature-targeting.all()
-) {
-  @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
 }
 
 // Used by filled variants of GM components to conditionally flatten the top
