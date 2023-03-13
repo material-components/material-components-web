@@ -94,12 +94,25 @@
 
   .mdc-floating-label--required:not(.mdc-floating-label--hide-required-marker) {
     &::after {
-      @include _required-content($query);
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.ignore-next-line();
+        margin-left: 1px;
+        @include rtl.ignore-next-line();
+        margin-right: 0px;
+        content: '*';
+      }
     }
 
     @include rtl.rtl {
       &::after {
-        @include _required-content-rtl($query);
+        // Need to specify LTR/RTL manually since rtl mixins will add ::after[dir=rtl]
+        // selector and that breaks some browsers
+        @include feature-targeting.targets($feat-structure) {
+          @include rtl.ignore-next-line();
+          margin-left: 0;
+          @include rtl.ignore-next-line();
+          margin-right: 1px;
+        }
       }
     }
   }
@@ -241,30 +254,5 @@
   @include feature-targeting.targets($feat-animation) {
     transition: color $duration-ms $timing-function,
       transform $duration-ms $timing-function;
-  }
-}
-
-@mixin _required-content($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    @include rtl.ignore-next-line();
-    margin-left: 1px;
-    @include rtl.ignore-next-line();
-    margin-right: 0px;
-    content: '*';
-  }
-}
-
-// Need to specify LTR/RTL manually since rtl mixins will add ::after[dir=rtl]
-// selector and that breaks some browsers
-@mixin _required-content-rtl($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    @include rtl.ignore-next-line();
-    margin-left: 0;
-    @include rtl.ignore-next-line();
-    margin-right: 1px;
   }
 }
