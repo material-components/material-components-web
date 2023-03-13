@@ -76,6 +76,7 @@ $light-theme: (
   headline-size: null,
   headline-tracking: null,
   headline-weight: null,
+  z-index: null,
 );
 
 $custom-property-prefix: 'dialog';
@@ -128,6 +129,7 @@ $custom-property-prefix: 'dialog';
     )
   );
   @include _supporting-text-color(map.get($theme, supporting-text-color));
+  @include _z-index(map.get($theme, z-index));
 
   .mdc-dialog__actions .mdc-button {
     @include button-text-theme.theme-styles-internal(
@@ -244,6 +246,12 @@ $custom-property-prefix: 'dialog';
 @mixin _supporting-text-color($color) {
   .mdc-dialog__content {
     @include theme.property(color, $color);
+  }
+}
+
+@mixin _z-index($z-index) {
+  &.mdc-dialog {
+    @include theme.property(z-index, $z-index);
   }
 }
 
