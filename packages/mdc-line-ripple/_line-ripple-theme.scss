@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2023 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,50 +26,55 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
 @use './functions';
-@use './line-ripple-theme';
 
-// Public
-
-@mixin core-styles($query: feature-targeting.all()) {
+@mixin theme-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define line-ripple
   .mdc-line-ripple {
     @include feature-targeting.targets($feat-structure) {
-      &::before,
+      @include height(1px);
+      @include active-height(2px);
+    }
+
+    @include feature-targeting.targets($feat-animation) {
       &::after {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        border-bottom-style: solid;
-        content: '';
-      }
-
-      &::before {
-        z-index: 1;
-      }
-
-      &::after {
-        transform: scaleX(0);
-        opacity: 0;
-        z-index: 2;
+        transition: functions.transition-value(transform),
+          functions.transition-value(opacity);
       }
     }
   }
+}
 
-  .mdc-line-ripple--active::after {
-    @include feature-targeting.targets($feat-structure) {
-      transform: scaleX(1);
-      opacity: 1;
+@mixin height($height) {
+  &::before {
+    @include theme.property(border-bottom-width, $height);
+  }
+}
+
+@mixin active-height($height) {
+  &::after {
+    @include theme.property(border-bottom-width, $height);
+  }
+}
+
+@mixin active-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    &::after {
+      @include theme.property(border-bottom-color, $color);
     }
   }
+}
 
-  .mdc-line-ripple--deactivating::after {
-    @include feature-targeting.targets($feat-structure) {
-      opacity: 0;
+@mixin inactive-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    &::before {
+      @include theme.property(border-bottom-color, $color);
     }
   }
-
-  @include line-ripple-theme.theme-styles($query);
 }

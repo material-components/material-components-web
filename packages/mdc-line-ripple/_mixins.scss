@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import `_line-ripple.scss` instead.
-@forward './line-ripple' show core-styles, height, active-height, active-color,
+/// @deprecated Import `_line-ripple.scss` or `_line-ripple-theme.scss` instead.
+@forward './line-ripple' show core-styles;
+@forward './line-ripple-theme' show height, active-height, active-color,
   inactive-color;
