@@ -31,6 +31,11 @@
 // Public
 
 @mixin core-styles($query: feature-targeting.all()) {
+  @include static-styles($query);
+  @include line-ripple-theme.theme-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   // postcss-bem-linter: define line-ripple
@@ -70,6 +75,4 @@
       opacity: 0;
     }
   }
-
-  @include line-ripple-theme.theme-styles($query);
 }
