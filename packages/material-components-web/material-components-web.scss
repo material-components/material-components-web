@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
-@use '@material/banner/styles' as banner-styles;
+@use '@material/banner/styles_gss_gss' as banner-styles;
 @use '@material/button/mdc-button';
-@use '@material/card/mdc-card';
-@use '@material/checkbox/mdc-checkbox';
+@use '@material/card/card_gss_gss';
+@use '@material/checkbox/checkbox_gss_gss';
 @use '@material/chips/deprecated/mdc-chips';
 @use '@material/circular-progress/mdc-circular-progress';
 // Select's styles must be emitted before datatable's due to equal specificity.

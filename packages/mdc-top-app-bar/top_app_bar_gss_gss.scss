@@ -1,0 +1,237 @@
+// NOTE: This file is a duplicate of mdc-top-app-bar.scss.
+// This duplicate is required to make the Sass file compatible with MSS.
+// MSS Sass uses @require and @provide, these are invalid at-rules outside google3.
+
+// stylelint-disable at-rule-disallowed-list, mss/style-rule-component-prefix --
+// This file was converted from legacy GSS which had fewer restrictions than
+// modern Sass. The owner should eventually fix the violations and remove this.
+//
+// The magic seal <[(wnOqje)]> allows this file to disable even strict lints.
+// This seal will break if the file is moved or renamed, in which case the
+// owner *must* fix the lint violations.
+
+// Copyright 2018 Google Inc.
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/animation/variables' as animation-variables;
+@use '@material/rtl/rtl';
+@use '@material/typography/typography';
+@use './mixins';
+@use './variables';
+
+@provide 'mdc.topappbar';
+
+// postcss-bem-linter: define top-app-bar
+.mdc-top-app-bar {
+  @include mixins.fill-color-accessible(primary);
+  @include mixins.icon-ink-color(on-primary);
+
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  z-index: 4;
+
+  &__row {
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: variables.$row-height;
+  }
+
+  &__section {
+    display: inline-flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+    padding: variables.$section-vertical-padding
+      variables.$section-horizontal-padding;
+    z-index: 1;
+
+    &--align-start {
+      justify-content: flex-start;
+      order: -1;
+    }
+
+    &--align-end {
+      justify-content: flex-end;
+      order: 1;
+    }
+  }
+
+  &__title {
+    @include typography.typography(headline6);
+    @include rtl.reflexive-box(padding, left, variables.$title-left-padding);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 1;
+  }
+}
+
+@at-root {
+  @include mixins.short-shape-radius(24px);
+}
+
+.mdc-top-app-bar--short {
+  top: 0;
+  @include rtl.ignore-next-line();
+  right: auto;
+  @include rtl.ignore-next-line();
+  left: 0;
+  width: 100%;
+  transition: width 250ms animation-variables.$standard-curve-timing-function;
+
+  @include rtl.rtl {
+    @include rtl.ignore-next-line();
+    right: 0;
+    @include rtl.ignore-next-line();
+    left: auto;
+  }
+
+  .mdc-top-app-bar__row {
+    height: variables.$mobile-row-height;
+  }
+
+  .mdc-top-app-bar__section {
+    padding: variables.$mobile-section-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    transition: opacity 200ms
+      animation-variables.$standard-curve-timing-function;
+    opacity: 1;
+  }
+}
+
+.mdc-top-app-bar--short-collapsed {
+  @include elevation-mixins.elevation(4);
+
+  width: variables.$short-collapsed-width;
+  transition: width 300ms animation-variables.$standard-curve-timing-function;
+
+  .mdc-top-app-bar__title {
+    display: none;
+  }
+
+  .mdc-top-app-bar__action-item {
+    transition: padding 150ms
+      animation-variables.$standard-curve-timing-function;
+  }
+}
+
+.mdc-top-app-bar--short-collapsed.mdc-top-app-bar--short-has-action-item {
+  width: variables.$short-collapsed-width * 2;
+
+  .mdc-top-app-bar__section--align-end {
+    @include rtl.reflexive-box(padding, right, 12px);
+  }
+}
+
+.mdc-top-app-bar--dense {
+  .mdc-top-app-bar__row {
+    height: variables.$dense-row-height;
+  }
+
+  .mdc-top-app-bar__section {
+    padding: 0 variables.$dense-section-horizontal-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    @include rtl.reflexive-box(
+      padding,
+      left,
+      variables.$dense-title-left-padding
+    );
+  }
+}
+
+.mdc-top-app-bar--prominent {
+  .mdc-top-app-bar__row {
+    height: variables.$prominent-row-height;
+  }
+
+  .mdc-top-app-bar__title {
+    align-self: flex-end;
+    padding-bottom: variables.$prominent-title-bottom-padding;
+  }
+
+  .mdc-top-app-bar__action-item,
+  .mdc-top-app-bar__navigation-icon {
+    align-self: flex-start;
+  }
+}
+
+.mdc-top-app-bar--fixed {
+  transition: box-shadow 200ms linear;
+}
+
+.mdc-top-app-bar--fixed-scrolled {
+  @include elevation-mixins.elevation(4);
+
+  transition: box-shadow 200ms linear;
+}
+
+// Specific styles for dense and prominent styled top app bar
+.mdc-top-app-bar--dense.mdc-top-app-bar--prominent {
+  .mdc-top-app-bar__row {
+    height: variables.$dense-row-height * 2;
+  }
+
+  .mdc-top-app-bar__section {
+    padding: 0 variables.$section-horizontal-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    @include rtl.reflexive-box(padding, left, variables.$title-left-padding);
+
+    padding-bottom: variables.$dense-prominent-title-bottom-padding;
+  }
+}
+
+.mdc-top-app-bar--fixed-adjust {
+  padding-top: variables.$row-height;
+}
+
+.mdc-top-app-bar--dense-fixed-adjust {
+  padding-top: variables.$dense-row-height;
+}
+
+.mdc-top-app-bar--short-fixed-adjust {
+  padding-top: variables.$mobile-row-height;
+}
+
+.mdc-top-app-bar--prominent-fixed-adjust {
+  padding-top: variables.$prominent-row-height;
+}
+
+.mdc-top-app-bar--dense-prominent-fixed-adjust {
+  padding-top: variables.$dense-row-height * 2;
+}
+
+// Mobile Styles
+@include mixins.mobile-breakpoint_;

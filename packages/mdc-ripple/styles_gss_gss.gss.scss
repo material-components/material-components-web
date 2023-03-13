@@ -1,0 +1,8 @@
+@use './ripple';
+
+@provide 'mdc.ripple';
+
+@require './custom_properties_mss';
+
+@include ripple.common;
+@include ripple.core-styles;
