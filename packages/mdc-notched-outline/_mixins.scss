@@ -20,7 +20,8 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import `_notched-outline.scss` instead.
-@forward './notched-outline' show core-styles, color, stroke-width, notch-offset,
+/// @deprecated Import `_notched-outline.scss` or `_notched-outline-theme.scss` instead.
+@forward './notched-outline' show core-styles, base_;
+@forward './notched-outline-theme' show color, stroke-width, notch-offset,
   shape-radius, floating-label-float-position,
-  floating-label-float-position-absolute, notch-max-width, base_;
+  floating-label-float-position-absolute, notch-max-width;
