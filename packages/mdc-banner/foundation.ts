@@ -70,9 +70,9 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
 
   open() {
     this.isOpened = true;
-    this.adapter.notifyOpening();
     this.adapter.removeClass(CLOSING);
     this.adapter.addClass(OPENING);
+    this.adapter.notifyOpening();
 
     const contentHeight = this.adapter.getContentHeight();
     this.animationFrame = requestAnimationFrame(() => {
