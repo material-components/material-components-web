@@ -24,35 +24,17 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/theme/theme';
-@use '@material/theme/custom-properties';
-@use '@material/animation/variables' as animation-variables;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/rtl/rtl';
 @use './menusurface-theme';
-@use './variables';
 
 //
 // Public
 //
 
 @mixin core-styles($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
   @include static-styles($query);
-
-  // postcss-bem-linter: define menu-surface
-  .mdc-menu-surface {
-    @include _base($query);
-    @include menusurface-theme.fill-color(surface, $query);
-    @include menusurface-theme.ink-color(on-surface, $query);
-    @include menusurface-theme.shape-radius(
-      variables.$shape-radius,
-      false,
-      $query
-    );
-  }
-  // postcss-bem-linter: end
+  @include menusurface-theme.theme-styles($query);
 }
 
 @mixin static-styles($query: feature-targeting.all()) {
@@ -141,42 +123,6 @@
     @include feature-targeting.targets($feat-structure) {
       border-top-left-radius: 0px;
       border-top-right-radius: 0px;
-    }
-  }
-}
-
-//
-// Private
-//
-
-@mixin _base($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-  $feat-animation: feature-targeting.create-target($query, animation);
-
-  @include feature-targeting.targets($feat-structure) {
-    $max-width: custom-properties.create(
-      --mdc-menu-max-width,
-      calc(100vw - #{variables.$min-distance-from-edge})
-    );
-    @include theme.property(max-width, $max-width);
-    $max-height: custom-properties.create(
-      --mdc-menu-max-height,
-      calc(100vh - #{variables.$min-distance-from-edge})
-    );
-    @include theme.property(max-height, $max-height);
-    z-index: variables.$z-index;
-  }
-
-  @include feature-targeting.targets($feat-animation) {
-    transition: opacity variables.$fade-in-duration linear,
-      transform variables.$scale-duration
-        animation-variables.$deceleration-curve-timing-function,
-      height 250ms animation-variables.$deceleration-curve-timing-function;
-  }
-
-  &--animating-closed {
-    @include feature-targeting.targets($feat-animation) {
-      transition: opacity variables.$fade-out-duration linear;
     }
   }
 }
