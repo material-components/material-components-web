@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import `_floating-label.scss` instead.
-@forward './floating-label' show core-styles, ink-color, fill-color,
-  shake-keyframes, float-position, shake-animation, max-width, float-transition;
+/// @deprecated Import `_floating-label.scss` or `_floating-label-theme` instead.
+@forward './floating-label' show core-styles;
+@forward './floating-label-theme' show ink-color, fill-color, shake-keyframes,
+  float-position, shake-animation, max-width, float-transition;

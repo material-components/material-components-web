@@ -20,6 +20,17 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:meta';
+@use '@material/animation/variables' as animation-variables;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/typography/typography';
+
 ///
 /// Y-axis position of label when it is afloat.
 /// 100% of the length of label and additional 6% for scaledown.
@@ -27,3 +38,163 @@
 $position-y: 106% !default;
 $transition-duration: 150ms !default;
 $float-scale: 0.75 !default;
+
+@mixin theme-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  // postcss-bem-linter: define floating-label
+  .mdc-floating-label {
+    @include typography.typography(
+      subtitle1,
+      $exclude-props: (line-height),
+      $query: $query
+    );
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: transform $transition-duration
+          animation-variables.$standard-curve-timing-function,
+        color $transition-duration
+          animation-variables.$standard-curve-timing-function;
+    }
+  }
+
+  @at-root {
+    @include float-position($position-y, $query: $query);
+    @include shake-animation(standard, $query: $query);
+  }
+
+  @include shake-keyframes(standard, $position-y, $query: $query);
+}
+
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(color, $color);
+  }
+}
+
+// Used for textarea in case of scrolling
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(background-color, $color);
+  }
+}
+
+@mixin shake-keyframes(
+  $modifier,
+  $positionY,
+  $positionX: 0%,
+  $scale: $float-scale,
+  $query: feature-targeting.all()
+) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
+      0% {
+        @include rtl.ignore-next-line();
+        transform: translateX(calc(0% - #{$positionX}))
+          translateY(calc(0% - #{$positionY})) scale(#{$scale});
+      }
+
+      33% {
+        animation-timing-function: cubic-bezier(0.5, 0, 0.701732, 0.495819);
+        @include rtl.ignore-next-line();
+        transform: translateX(calc(4% - #{$positionX}))
+          translateY(calc(0% - #{$positionY})) scale(#{$scale});
+      }
+
+      66% {
+        animation-timing-function: cubic-bezier(
+          0.302435,
+          0.381352,
+          0.55,
+          0.956352
+        );
+        @include rtl.ignore-next-line();
+        transform: translateX(calc(-4% - #{$positionX}))
+          translateY(calc(0% - #{$positionY})) scale(#{$scale});
+      }
+
+      100% {
+        @include rtl.ignore-next-line();
+        transform: translateX(calc(0% - #{$positionX}))
+          translateY(calc(0% - #{$positionY})) scale(#{$scale});
+      }
+    }
+  }
+}
+
+@mixin float-position(
+  $positionY,
+  $positionX: 0%,
+  $scale: $float-scale,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $translateY: if(
+    meta.type-of($positionY) == 'calculation',
+    calc(-1 * $positionY),
+    -1 * $positionY
+  );
+
+  .mdc-floating-label--float-above {
+    @include feature-targeting.targets($feat-structure) {
+      @if $positionX > 0 or $positionX < 0 {
+        @include rtl.ignore-next-line();
+        transform: translateY($translateY)
+          translateX(-1 * $positionX)
+          scale($scale);
+
+        @include rtl.rtl {
+          @include rtl.ignore-next-line();
+          transform: translateY($translateY) translateX($positionX)
+            scale($scale);
+        }
+      } @else {
+        transform: translateY($translateY) scale($scale);
+      }
+    }
+  }
+}
+
+@mixin shake-animation($modifier, $query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  .mdc-floating-label--shake {
+    @include feature-targeting.targets($feat-animation) {
+      animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
+    }
+  }
+}
+
+@mixin max-width($max-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    max-width: $max-width;
+  }
+}
+
+///
+/// Sets the CSS transition for the floating animation.
+///
+/// @param {Number} $duration-ms - Duration (in ms) of the animation.
+/// @param {String} $timing-function - Optionally overrides the default animation timing function.
+///
+@mixin float-transition(
+  $duration-ms,
+  $timing-function: animation-variables.$standard-curve-timing-function,
+  $query: feature-targeting.all()
+) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    transition: color $duration-ms $timing-function,
+      transform $duration-ms $timing-function;
+  }
+}
