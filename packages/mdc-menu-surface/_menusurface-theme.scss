@@ -24,6 +24,13 @@
 @use '@material/theme/theme';
 @use '@material/shape/mixins' as shape-mixins;
 
+$fade-in-duration: 0.03s !default;
+$fade-out-duration: 0.075s !default;
+$scale-duration: 0.12s !default;
+$min-distance-from-edge: 32px !default;
+$z-index: 8 !default; // One above mdc-dialog
+$shape-radius: medium !default;
+
 @mixin ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
