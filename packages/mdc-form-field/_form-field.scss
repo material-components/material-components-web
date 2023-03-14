@@ -31,7 +31,8 @@
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
-  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include static-styles($query);
 
   .mdc-form-field {
     @include typography.typography(body2, $query);
@@ -39,7 +40,13 @@
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, text-primary-on-background);
     }
+  }
+}
 
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-form-field {
     @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
       &[hidden] {
