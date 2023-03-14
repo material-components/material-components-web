@@ -340,6 +340,9 @@ export class MDCMenuSurfaceFoundation extends
     const isEscape = key === 'Escape' || keyCode === 27;
     if (isEscape) {
       this.close();
+      // Prevents event from bubbling up.
+      evt.stopPropagation();
+      evt.preventDefault();
     }
   }
 

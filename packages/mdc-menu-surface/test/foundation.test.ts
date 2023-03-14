@@ -1195,7 +1195,12 @@ describe('MDCMenuSurfaceFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const target = {};
-       const event = {target, key: 'Escape'} as KeyboardEvent;
+       const preventDefault =
+           jasmine.createSpy('event.preventDefault') as Function;
+       const stopPropagation =
+           jasmine.createSpy('event.stopPropagation') as Function;
+       const event = {target, key: 'Escape', stopPropagation, preventDefault} as
+           KeyboardEvent;
 
        (foundation as unknown as WithIsSurfaceOpen).isSurfaceOpen = true;
        foundation.init();
@@ -1206,19 +1211,40 @@ describe('MDCMenuSurfaceFoundation', () => {
        expect(mockAdapter.notifyClose).toHaveBeenCalled();
      });
 
-  it('#handleKeydown on any other key, do not prevent default on the event',
+  it('#handleKeydown with Escape key, stops propagation of the event', () => {
+    const {foundation} = setupTest();
+    const target = {};
+    const preventDefault =
+        jasmine.createSpy('event.preventDefault') as Function;
+    const stopPropagation =
+        jasmine.createSpy('event.stopPropagation') as Function;
+    const event = {target, key: 'Escape', stopPropagation, preventDefault} as
+        KeyboardEvent;
+
+    foundation.init();
+    foundation.handleKeydown(event);
+    jasmine.clock().tick(1);  // Run to frame.
+    expect(stopPropagation).toHaveBeenCalledTimes(1);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+  });
+
+  it('#handleKeydown on any other key, do not stop propagation and not prevent default on the event',
      () => {
        const {foundation} = setupTest();
        const target = {};
+       const stopPropagation =
+           jasmine.createSpy('event.stopPropagation') as Function;
        const preventDefault =
            jasmine.createSpy('event.preventDefault') as Function;
-       const event = {target, key: 'Foo', preventDefault} as KeyboardEvent;
+       const event = {target, key: 'Foo', preventDefault, stopPropagation} as
+           KeyboardEvent;
 
        foundation.init();
        foundation.handleKeydown(event);
        // jasmine.clock().tick(numbers.SELECTED_TRIGGER_DELAY);
        jasmine.clock().tick(1);  // Run to frame.
        expect(preventDefault).not.toHaveBeenCalled();
+       expect(stopPropagation).not.toHaveBeenCalled();
      });
 
   it('#handleBodyClick event closes the menu surface', () => {
