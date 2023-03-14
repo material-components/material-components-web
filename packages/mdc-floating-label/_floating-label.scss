@@ -28,6 +28,11 @@
 @use './floating-label-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
+  @include static-styles($query);
+  @include floating-label-theme.theme-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   // postcss-bem-linter: define floating-label
@@ -97,6 +102,4 @@
       }
     }
   }
-
-  @include floating-label-theme.theme-styles($query);
 }
