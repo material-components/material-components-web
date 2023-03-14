@@ -25,22 +25,12 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
-@use '@material/theme/theme';
-@use '@material/typography/typography';
+@use './form-field-theme';
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
-
   @include static-styles($query);
-
-  .mdc-form-field {
-    @include typography.typography(body2, $query);
-
-    @include feature-targeting.targets($feat-color) {
-      @include theme.property(color, text-primary-on-background);
-    }
-  }
+  @include form-field-theme.theme-styles($query);
 }
 
 @mixin static-styles($query: feature-targeting.all()) {

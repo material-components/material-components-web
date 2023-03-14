@@ -20,4 +20,23 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/typography/typography';
+
 $item-spacing: 4px !default;
+
+@mixin theme-styles($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-form-field {
+    @include typography.typography(body2, $query);
+
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, text-primary-on-background);
+    }
+  }
+}
