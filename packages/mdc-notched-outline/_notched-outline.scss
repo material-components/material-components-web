@@ -28,10 +28,33 @@
 @use './notched-outline-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
+  @include static-styles($query);
+  @include notched-outline-theme.theme-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline {
-    @include base_($query);
+    @include feature-targeting.targets($feat-structure) {
+      display: flex;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      @include rtl.ignore-next-line();
+      text-align: left;
+      pointer-events: none;
+
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
+        text-align: right;
+      }
+    }
 
     &__leading,
     &__notch,
@@ -92,35 +115,6 @@
       @include feature-targeting.targets($feat-structure) {
         display: none;
       }
-    }
-  }
-
-  @include notched-outline-theme.theme-styles($query);
-}
-
-//
-// Private
-//
-@mixin base_($query) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    display: flex;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    @include rtl.ignore-next-line();
-    text-align: left;
-    pointer-events: none;
-
-    @include rtl.rtl {
-      @include rtl.ignore-next-line();
-      text-align: right;
     }
   }
 }
