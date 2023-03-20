@@ -417,6 +417,12 @@ $light-theme: (
       @include theme.property('width', $size);
       @include theme.property('height', $size);
     }
+    .mdc-list-item__start .mdc-list-item__icon,
+    .mdc-list-item__start
+      .mdc-list-item__icon
+      > .materialdesignWizIconSvgsSvgIcon {
+      display: block;
+    }
   }
 }
 
@@ -520,6 +526,12 @@ $light-theme: (
       @include theme.property('font-size', $size);
       @include theme.property('width', $size);
       @include theme.property('height', $size);
+    }
+    .mdc-list-item__end .mdc-list-item__icon,
+    .mdc-list-item__end
+      .mdc-list-item__icon
+      > .materialdesignWizIconSvgsSvgIcon {
+      display: block;
     }
   }
 }
