@@ -23,20 +23,48 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use 'sass:map';
+@use 'sass:string';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
+@use '@material/theme/validate';
 @use '@material/typography/typography';
 
 $item-spacing: 4px !default;
 
-@mixin theme-styles($query: feature-targeting.all()) {
+$_custom-property-prefix: 'form-field';
+
+$light-theme: (
+  'label-text-color': 'text-primary-on-background',
+  'label-text-font': string.unquote('Roboto, sans-serif'),
+  'label-text-line-height': typography.px-to-rem(20px),
+  'label-text-size': typography.px-to-rem(14px),
+  'label-text-tracking': typography.get-letter-spacing_(0.25, 0.875),
+  'label-text-weight': 400,
+);
+
+@mixin theme-styles($theme, $query: feature-targeting.all()) {
+  $theme: validate.theme-styles($light-theme, $theme);
+  $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
+
   $feat-color: feature-targeting.create-target($query, color);
+  $feat-typography: feature-targeting.create-target($query, typography);
 
   .mdc-form-field {
-    @include typography.typography(body2, $query);
-
+    @include feature-targeting.targets($feat-typography) {
+      @include typography.theme-styles(
+        (
+          'font': map.get($theme, 'label-text-font'),
+          'line-height': map.get($theme, 'label-text-line-height'),
+          'size': map.get($theme, 'label-text-size'),
+          'tracking': map.get($theme, 'label-text-tracking'),
+          'weight': map.get($theme, 'label-text-weight'),
+        )
+      );
+    }
     @include feature-targeting.targets($feat-color) {
-      @include theme.property(color, text-primary-on-background);
+      @include theme.property(color, map.get($theme, 'label-text-color'));
     }
   }
 }

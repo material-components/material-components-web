@@ -20,5 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use './mixins';
-@include mixins.core-styles;
+@use './form-field';
+@use './form-field-theme';
+
+@include form-field.static-styles();
+@include form-field-theme.theme-styles(form-field-theme.$light-theme);
