@@ -45,7 +45,7 @@ $mini-height: 40px !default;
 $shape-radius: 50% !default;
 $ripple-target: '.mdc-fab__ripple';
 
-$_light-theme: (
+$light-theme: (
   container-color: secondary,
   container-elevation: 6,
   container-height: 56px,
@@ -83,7 +83,7 @@ $custom-property-prefix: 'fab';
 /// Applies the given theme as custom properties without any selectors.
 ///
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   $resolved-theme: resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
     $resolved-theme,
@@ -92,7 +92,7 @@ $custom-property-prefix: 'fab';
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
 
   $theme: keys.create-theme-properties(
     $theme,
