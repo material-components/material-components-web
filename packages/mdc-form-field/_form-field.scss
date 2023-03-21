@@ -25,12 +25,24 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
+@use '@material/theme/theme';
+@use '@material/typography/typography';
 @use './form-field-theme';
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
   @include static-styles($query);
-  @include form-field-theme.theme-styles($query);
+
+  // TODO: Replace with call to theme-styles after Angular moves to Theming API
+  .mdc-form-field {
+    @include typography.typography(body2, $query);
+
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, text-primary-on-background);
+    }
+  }
 }
 
 @mixin static-styles($query: feature-targeting.all()) {
