@@ -44,6 +44,15 @@ $light-theme: (
   'label-text-weight': 400,
 );
 
+@mixin theme($theme) {
+  $theme: validate.theme($light-theme, $theme);
+
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+}
+
 @mixin theme-styles($theme, $query: feature-targeting.all()) {
   $theme: validate.theme-styles($light-theme, $theme);
   $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
