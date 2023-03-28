@@ -65,13 +65,23 @@ $light-theme: (
       @include typography.theme-styles(
         (
           'font': map.get($theme, 'label-text-font'),
-          'line-height': map.get($theme, 'label-text-line-height'),
           'size': map.get($theme, 'label-text-size'),
           'tracking': map.get($theme, 'label-text-tracking'),
           'weight': map.get($theme, 'label-text-weight'),
         )
       );
     }
+
+    > .mdc-label {
+      @include feature-targeting.targets($feat-typography) {
+        @include typography.theme-styles(
+          (
+            'line-height': map.get($theme, 'label-text-line-height'),
+          )
+        );
+      }
+    }
+
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, map.get($theme, 'label-text-color'));
     }
