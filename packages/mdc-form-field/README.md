@@ -37,7 +37,7 @@ Use the `mdc-form-field` element to wrap any combination of adjacent _input_ and
       ...
     </div>
   </div>
-  <label for="my-checkbox">This is my checkbox</label>
+  <label class="mdc-label" for="my-checkbox">This is my checkbox</label>
 </div>
 ```
 
@@ -72,7 +72,7 @@ By default, the input will be positioned before the label. You can position the 
       ...
     </div>
   </div>
-  <label for="my-checkbox">This is my checkbox</label>
+  <label class="mdc-label" for="my-checkbox">This is my checkbox</label>
 </div>
 ```
 
@@ -88,7 +88,7 @@ If the label text is too long for a single line, it will wrap the text by defaul
       ...
     </div>
   </div>
-  <label for="my-checkbox">This some really really really long text</label>
+  <label class="mdc-label" for="my-checkbox">This some really really really long text</label>
 </div>
 ```
 
@@ -96,7 +96,7 @@ If the label text is too long for a single line, it will wrap the text by defaul
 
 Property | Value Type | Description
 --- | --- | ---
-`input` | String | Gets and sets the form field input. 
+`input` | String | Gets and sets the form field input.
 
 In order for the label ripple integration to work correctly, the `input` property needs to be set to a valid instance of an MDC Web input element which exposes a `ripple` getter. No action is taken if the `input` property is not set or the input instance doesn't expose a `ripple` getter.
 

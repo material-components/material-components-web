@@ -29,7 +29,7 @@ function getFixture() {
   return createFixture(html`
     <div class="mdc-form-field">
       <input type="radio" id="radio" checked name="radio">
-      <label for="radio">Foo</label>
+      <label class="mdc-label" for="radio">Foo</label>
     </div>
   `);
 }
