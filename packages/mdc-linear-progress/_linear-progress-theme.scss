@@ -26,6 +26,7 @@
 @use 'sass:map';
 @use 'sass:string';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/theme/keys';
@@ -58,6 +59,7 @@ $light-theme: (
     $prefix: $custom-property-prefix
   );
 
+  @include _buffering-keyframes(map.get($theme, track-height));
   @include bar-color(map.get($theme, active-indicator-color));
   @include buffer-color(map.get($theme, track-color));
   @include track-height(map.get($theme, track-height));
@@ -78,31 +80,13 @@ $light-theme: (
 }
 
 @mixin buffer-color($color, $query: feature-targeting.all()) {
-  // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
-  $color-value-for-css: theme-color.prop-value($color);
-  $color-value-for-svg: str-replace_(
-    string.unquote('#{$color-value-for-css}'),
-    '#',
-    '%23'
-  );
+  $color: theme-color.prop-value($color);
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-linear-progress__buffer-dots {
-    @include feature-targeting.targets($feat-color) {
-      // stylelint-disable function-url-quotes -- SVG data URI
-      // SVG is optimized for data URI (https://codepen.io/tigt/post/optimizing-svgs-in-data-uris)
-      @include theme.property(
-        background-image,
-        url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='color-value-for-svg'/%3E%3C/svg%3E"),
-        $replace: (color-value-for-svg: $color-value-for-svg)
-      );
-      // stylelint-enable function-url-quotes
-    }
-  }
-
+  .mdc-linear-progress__buffer-dots,
   .mdc-linear-progress__buffer-bar {
     @include feature-targeting.targets($feat-color) {
-      @include theme.property(background-color, $color-value-for-css);
+      @include theme.property(background-color, $color);
     }
   }
 }
@@ -119,15 +103,21 @@ $light-theme: (
         @include theme.property(border-top-width, $height);
       }
     }
+  }
+}
 
-    &__buffer-dots {
-      @include feature-targeting.targets($feat-structure) {
-        @include theme.property(
-          background-size,
-          10px height,
-          $replace: (height: $height)
-        );
-      }
+@mixin _buffering-keyframes($track-height) {
+  @keyframes mdc-linear-progress-buffering {
+    from {
+      // Normally the buffer dots start from the left and overflow to the right.
+      // We rotate by 180deg so that the buffer dots start on the right when
+      // in non-reversed mode and overflow to the left.
+      @include rtl.ignore-next-line();
+      @include theme.property(
+        transform,
+        'rotate(180deg) translateX(calc(track-height * -2.5))',
+        $replace: (track-height: $track-height)
+      );
     }
   }
 }
