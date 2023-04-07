@@ -88,7 +88,7 @@ $filter-selected-container-color: color.mix(
   8%
 );
 
-$_light-theme: (
+$light-theme: (
   container-elevation: null,
   container-height: null,
   container-shadow-color: null,
@@ -210,7 +210,7 @@ $_custom-property-prefix: 'chip';
 // TODO(b/259513131): Move theme resolution to variant theme
 // and remove custom property declaration when all customers are ready to be migrated
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   $theme: resolve-theme($theme, $resolvers: $resolvers);
   @include keys.declare-custom-properties(
     $theme,
@@ -221,7 +221,7 @@ $_custom-property-prefix: 'chip';
 // TODO(b/259513131): Move theme resolution to variant theme
 // and remove custom property declaration when all customers are ready to be migrated
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme-styles($_light-theme, $theme);
+  @include theme.validate-theme-styles($light-theme, $theme);
   $theme: resolve-theme($theme, $resolvers: $resolvers);
   $theme: keys.create-theme-properties(
     $theme,
