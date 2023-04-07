@@ -56,7 +56,6 @@
     @include primary-indeterminate-scale-keyframes_;
     @include secondary-indeterminate-translate-keyframes_;
     @include secondary-indeterminate-scale-keyframes_;
-    @include buffering-keyframes_;
     @include primary-indeterminate-translate-reverse-keyframes_;
     @include secondary-indeterminate-translate-reverse-keyframes_;
     @include buffering-reverse-keyframes_;
@@ -125,6 +124,8 @@
       }
 
       @include feature-targeting.targets($feat-animation) {
+        // stylelint-disable-next-line no-unknown-animations --
+        // animation is in _linear-progress-theme.scss
         animation: mdc-linear-progress-buffering 250ms infinite linear;
       }
     }
@@ -434,19 +435,6 @@
 
     100% {
       transform: scaleX(0.08);
-    }
-  }
-}
-
-@mixin buffering-keyframes_ {
-  @keyframes mdc-linear-progress-buffering {
-    from {
-      // Normally the buffer dots start from the left and overflow to the right.
-      // We rotate by 180deg so that the buffer dots start on the right when
-      // in non-reversed mode and overflow to the left.
-      // TODO(b/254896788): Remove hardcoded translateX.
-      @include rtl.ignore-next-line();
-      transform: rotate(180deg) translateX(-10px);
     }
   }
 }

@@ -26,6 +26,7 @@
 @use 'sass:map';
 @use 'sass:string';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/theme/keys';
@@ -58,6 +59,7 @@ $light-theme: (
     $prefix: $custom-property-prefix
   );
 
+  @include _buffering-keyframes(map.get($theme, track-height));
   @include bar-color(map.get($theme, active-indicator-color));
   @include buffer-color(map.get($theme, track-color));
   @include track-height(map.get($theme, track-height));
@@ -128,6 +130,22 @@ $light-theme: (
           $replace: (height: $height)
         );
       }
+    }
+  }
+}
+
+@mixin _buffering-keyframes($track-height) {
+  @keyframes mdc-linear-progress-buffering {
+    from {
+      // Normally the buffer dots start from the left and overflow to the right.
+      // We rotate by 180deg so that the buffer dots start on the right when
+      // in non-reversed mode and overflow to the left.
+      @include rtl.ignore-next-line();
+      @include theme.property(
+        transform,
+        'rotate(180deg) translateX(calc(track-height * -2.5))',
+        $replace: (track-height: $track-height)
+      );
     }
   }
 }
