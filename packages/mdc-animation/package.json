@@ -1,7 +1,7 @@
 {
   "name": "@material/animation",
   "description": "Animation Variables and Mixins used by Material Components for the web",
-  "version": "8.0.0",
+  "version": "14.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -11,13 +11,12 @@
   "main": "dist/mdc.animation.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.animation.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-animation"
   },
   "dependencies": {
-    "tslib": "^1.9.3"
+    "tslib": "^2.1.0"
   }
 }

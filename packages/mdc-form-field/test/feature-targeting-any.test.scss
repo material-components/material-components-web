@@ -1,9 +1,14 @@
-@use '../mixins' as form-field;
+@use '../form-field';
+@use '../form-field-theme';
 @use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
-    @include form-field.core-styles($query: $query);
+    @include form-field.static-styles($query: $query);
+    @include form-field-theme.theme-styles(
+      form-field-theme.$light-theme,
+      $query
+    );
   }
 }
 

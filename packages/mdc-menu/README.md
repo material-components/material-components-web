@@ -9,15 +9,16 @@ path: /catalog/menus/
 
 # Menus
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/menu">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="178" alt="Menus screenshot">
-  </a>
-</div>-->
-
 A menu displays a list of choices on a temporary surface. They appear when users interact with a button, action,
 or other control.
+
+## Important Changes
+
+Menu is currently being updated to use the new List implementation. For now,
+please continue to use the old implementation (`mdc-deprecated-list` and
+associated DOM/classes) instead of the new one (`mdc-list`).
+
+See the [List documentation](../mdc-list/README.md) for more information.
 
 ## Design & API Documentation
 
@@ -42,14 +43,14 @@ npm install @material/menu
 
 ```html
 <div class="mdc-menu mdc-menu-surface">
-  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-    <li class="mdc-list-item" role="menuitem">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">A Menu Item</span>
+  <ul class="mdc-deprecated-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+    <li class="mdc-deprecated-list-item" role="menuitem">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">A Menu Item</span>
     </li>
-    <li class="mdc-list-item" role="menuitem">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">Another Menu Item</span>
+    <li class="mdc-deprecated-list-item" role="menuitem">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">Another Menu Item</span>
     </li>
   </ul>
 </div>
@@ -82,29 +83,29 @@ Menus can contain a group of list items that can represent the selection state o
 
 ```html
 <div class="mdc-menu mdc-menu-surface" id="demo-menu">
-  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+  <ul class="mdc-deprecated-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
     <li>
       <ul class="mdc-menu__selection-group">
-        <li class="mdc-list-item" role="menuitem">
-          <span class="mdc-list-item__ripple"></span>
-          <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
+        <li class="mdc-deprecated-list-item" role="menuitem">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <span class="mdc-deprecated-list-item__graphic mdc-menu__selection-group-icon">
             ...
           </span>
-          <span class="mdc-list-item__text">Single</span>
+          <span class="mdc-deprecated-list-item__text">Single</span>
         </li>
-        <li class="mdc-list-item" role="menuitem">
-          <span class="mdc-list-item__ripple"></span>
-          <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
+        <li class="mdc-deprecated-list-item" role="menuitem">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <span class="mdc-deprecated-list-item__graphic mdc-menu__selection-group-icon">
            ...
           </span>
-          <span class="mdc-list-item__text">1.15</span>
+          <span class="mdc-deprecated-list-item__text">1.15</span>
         </li>
       </ul>
     </li>
-    <li class="mdc-list-divider" role="separator"></li>
-    <li class="mdc-list-item" role="menuitem">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">Add space before paragraph</span>
+    <li class="mdc-deprecated-list-divider" role="separator"></li>
+    <li class="mdc-deprecated-list-item" role="menuitem">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">Add space before paragraph</span>
     </li>
     ...
   </ul>
@@ -113,7 +114,7 @@ Menus can contain a group of list items that can represent the selection state o
 
 ### Disabled Menu Items
 
-Menu items can be disabled by adding the `mdc-list-item--disabled` modifier class (from [MDC List](../mdc-list)).
+Menu items can be disabled by adding the `mdc-deprecated-list-item--disabled` modifier class (from [MDC List](../mdc-list)).
 Disabled menu items will be excluded from keyboard navigation.
 
 ### Anchors and Positioning
@@ -181,8 +182,8 @@ CSS Class | Description
 --- | ---
 `mdc-menu` | Required on the root element
 `mdc-menu-surface` | Required on the root element. See [`mdc-menu-surface` documentation](../mdc-menu-surface) for other `mdc-menu-surface` classes.
-`mdc-list` | Required on the nested `ul` element. See [`mdc-list` documentation](../mdc-list) for other `mdc-list` classes.
-`mdc-menu__selection-group` | Used to wrap a group of `mdc-list-item` elements that will represent a selection group.
+`mdc-deprecated-list` | Required on the nested `ul` element. See [`mdc-list` documentation](../mdc-list) for other `mdc-deprecated-list` classes.
+`mdc-menu__selection-group` | Used to wrap a group of `mdc-deprecated-list-item` elements that will represent a selection group.
 `mdc-menu__selection-group-icon` | Required when using a selection group to indicate which item is selected. Should contain an icon or svg that indicates the selected state of the list item.
 `mdc-menu-item--selected` | Used to indicate which element in a selection group is selected.
 
@@ -221,7 +222,7 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 Property | Value Type | Description
 --- | --- | ---
 `open` | Boolean | Proxies to the menu surface's `open` property.
-`items` | `Array<Element>` | Proxies to the list to query for all `.mdc-list-item` elements.
+`items` | `Array<Element>` | Proxies to the list to query for all `.mdc-deprecated-list-item` elements.
 `quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
 `wrapFocus` | Boolean | Proxies to list's `wrapFocus` property.
 `hasTypeahead` | Boolean | Proxies to the list's `hasTypeahead` property.

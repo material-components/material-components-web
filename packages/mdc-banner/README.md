@@ -13,7 +13,7 @@ A banner displays a prominent message and related optional actions.
 
 ![Banner example](images/banner.png)
 
-## Content
+**Contents**
 
 * [Using banners](#using-banners)
 * [Banners](#banners)
@@ -54,7 +54,7 @@ const banner = new MDCBanner(document.querySelector('.mdc-banner'));
 ```html
 <div class="mdc-banner" role="banner">
   <div class="mdc-banner__content"
-       role="status"
+       role="alertdialog"
        aria-live="assertive">
     <div class="mdc-banner__graphic-text-wrapper">
       <div class="mdc-banner__text">
@@ -93,7 +93,7 @@ Alternatively, you can call the `position-centered` mixin from Sass:
 }
 ```
 
-#### Fixed Banner
+#### Fixed banner
 
 When used below top app bars, banners should remain fixed at the top of the screen. This can be done by adding the `mdc-banner__fixed` wrapper element around the content element:
 
@@ -101,7 +101,7 @@ When used below top app bars, banners should remain fixed at the top of the scre
 <div class="mdc-banner" role="banner">
   <div class="mdc-banner__fixed">
     <div class="mdc-banner__content"
-         role="status"
+         role="alertdialog"
          aria-live="assertive">
       <div class="mdc-banner__graphic-text-wrapper">
         <div class="mdc-banner__text">
@@ -126,7 +126,7 @@ Images can help communicate a banner’s message.
 ```html
 <div class="mdc-banner" role="banner">
   <div class="mdc-banner__content"
-       role="status"
+       role="alertdialog"
        aria-live="assertive">
     <div class="mdc-banner__graphic-text-wrapper">
       <div class="mdc-banner__graphic" role="img" alt=""><i class="material-icons mdc-banner__icon">error_outline</i></div>
@@ -151,7 +151,7 @@ Banners may have one or two low-emphasis text buttons.
 ```html
 <div class="mdc-banner" role="banner">
   <div class="mdc-banner__content"
-       role="status"
+       role="alertdialog"
        aria-live="assertive">
     <div class="mdc-banner__graphic-text-wrapper">
       <div class="mdc-banner__text">
@@ -173,7 +173,7 @@ Banners may have one or two low-emphasis text buttons.
 ```
 
 
-#### Mobile Stacked
+#### Mobile stacked
 
 On mobile view, banners with long text should have their action(s) be positioned _below_ the text instead of alongside it. This can be accomplished by adding the `mdc-banner--mobile-stacked` modifier class to the root element:
 
@@ -183,11 +183,11 @@ On mobile view, banners with long text should have their action(s) be positioned
 </div>
 ```
 
-Alternatively, you can call the `mobile-stacked` mixin from Sass:
+Alternatively, banner can be in stacked layout regardless of mobile-breakpoint, with the `layout-stacked` mixin from Sass:
 
 ```scss
 .my-banner {
-  @include banner.mobile-stacked;
+  @include banner-theme.layout-stacked;
 }
 ```
 
@@ -220,22 +220,25 @@ Event name | `event.detail` | Description
 `MDCBanner:opening` | `{}` | Indicates when the banner begins its opening animation.
 `MDCBanner:opened` | `{}` | Indicates when the banner finishes its opening animation.
 
-### `MDCBanner` Methods
+### `MDCBanner` properties and methods
+
+Property | Value Type | Description
+--- | --- | ---
+`isOpen` | `boolean` (read-only) | Returns whether the banner is open.
 
 Method Signature | Description
 --- | ---
 `open() => void` | Opens the banner.
 `close(reason: CloseReason) => void` | Closes the banner, with the specified action indicating why it was closed.
-`isOpen() => boolean` | Returns whether the banner is open.
 `getText() => string` | Gets the text of the banner.
 `setText(text: string) => void` | Sets the text of the banner.
 `getPrimaryActionText() => string` | Gets the banner's primary action text.
 `setPrimaryActionText(actionButtonText: string) => void` | Sets the banner's primary action text.
-`getSecondaryActionText() => string|null` | Gets the banner's secondary action text. Returns null if the banner has no secondary action.
+`getSecondaryActionText() => string \| null` | Gets the banner's secondary action text. Returns null if the banner has no secondary action.
 `setSecondaryActionText(actionButtonText: string) => void` | Sets the banner's secondary action text.
 `layout() => void` | Recalculates layout. With height being calculated dynamically recommended to call on window `resize` events.
 
-### Usage Within Frameworks
+### Usage within frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a banner for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 

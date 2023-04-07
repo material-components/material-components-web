@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-indicator",
   "description": "The Material Components for the web tab indicator component",
-  "version": "8.0.0",
+  "version": "14.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -12,18 +12,17 @@
   "main": "dist/mdc.tabIndicator.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.tabIndicator.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-tab-indicator"
   },
   "dependencies": {
-    "@material/animation": "^8.0.0",
-    "@material/base": "^8.0.0",
-    "@material/feature-targeting": "^8.0.0",
-    "@material/theme": "^8.0.0",
-    "tslib": "^1.9.3"
+    "@material/animation": "^14.0.0",
+    "@material/base": "^14.0.0",
+    "@material/feature-targeting": "^14.0.0",
+    "@material/theme": "^14.0.0",
+    "tslib": "^2.1.0"
   },
   "publishConfig": {
     "access": "public"

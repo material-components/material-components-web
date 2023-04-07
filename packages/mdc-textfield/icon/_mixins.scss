@@ -20,10 +20,11 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
-@use '@material/rtl/mixins' as rtl-mixins;
+@use 'sass:math';
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use '@material/feature-targeting/feature-targeting';
 @use './variables';
@@ -69,14 +70,32 @@
 }
 
 ///
+/// Customizes the color for the leading icons in a disabled text-field.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin disabled-leading-icon-color($color, $query: feature-targeting.all()) {
+  &.mdc-text-field--disabled {
+    @include leading-icon-color_($color, $query);
+  }
+}
+
+///
+/// Customizes the color for the trailing icons in a disabled text-field.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin disabled-trailing-icon-color($color, $query: feature-targeting.all()) {
+  &.mdc-text-field--disabled {
+    @include trailing-icon-color_($color, $query);
+  }
+}
+
+///
 /// Customizes the color for the leading/trailing icons in a disabled text-field.
 /// @param {Color} $color - The desired icon color.
 ///
 @mixin disabled-icon-color($color, $query: feature-targeting.all()) {
-  &.mdc-text-field--disabled {
-    @include leading-icon-color_($color, $query);
-    @include trailing-icon-color_($color, $query);
-  }
+  @include disabled-leading-icon-color($color, $query);
+  @include disabled-trailing-icon-color($color, $query);
 }
 
 /// Sets the size of the leading and trailing icons.
@@ -127,7 +146,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(
+    @include rtl.reflexive-property(
       margin,
       variables.$leading-icon-padding-left,
       variables.$leading-icon-padding-right
@@ -139,12 +158,12 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    $padding: (variables.$touch-target-size - variables.$icon-size) / 2;
+    $padding: math.div(variables.$touch-target-size - variables.$icon-size, 2);
     $left-margin: variables.$trailing-icon-padding-left - $padding;
     $right-margin: variables.$trailing-icon-padding-right - $padding;
 
     padding: $padding;
-    @include rtl-mixins.reflexive-property(margin, $left-margin, $right-margin);
+    @include rtl.reflexive-property(margin, $left-margin, $right-margin);
   }
 }
 
@@ -153,7 +172,7 @@
 
   .mdc-text-field__icon--leading {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -163,7 +182,7 @@
 
   .mdc-text-field__icon--trailing {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }

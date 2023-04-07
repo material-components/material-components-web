@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener, SpecificWindowEventListener, WindowEventType} from '@material/base/types';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -34,11 +36,11 @@ export interface MDCDialogAdapter {
   hasClass(className: string): boolean;
   addBodyClass(className: string): void;
   removeBodyClass(className: string): void;
-  eventTargetMatches(target: EventTarget | null, selector: string): boolean;
+  eventTargetMatches(target: EventTarget|null, selector: string): boolean;
 
   isContentScrollable(): boolean;
   areButtonsStacked(): boolean;
-  getActionFromEvent(evt: Event): string | null;
+  getActionFromEvent(evt: Event): string|null;
 
   trapFocus(focusElement: HTMLElement|null): void;
   releaseFocus(): void;
@@ -51,4 +53,45 @@ export interface MDCDialogAdapter {
   notifyOpened(): void;
   notifyClosing(action: string): void;
   notifyClosed(action: string): void;
+
+  /**
+   * Registers an event listener on the dialog's content element (indicated
+   * with the 'mdc-dialog__content' class).
+   */
+  registerContentEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener on the dialog's content element.
+   */
+  deregisterContentEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * @return true if the content has been scrolled (that is, for
+   *     scrollable content, if it is at the "top"). This is used in full-screen
+   *     dialogs, where the scroll divider is expected only to appear once the
+   *     content has been scrolled "underneath" the header bar.
+   */
+  isScrollableContentAtTop(): boolean;
+
+  /**
+   * @return true if the content has been scrolled all
+   *     the way to the bottom. This is used in full-screen dialogs, where the
+   *     footer scroll divider is expected only to appear when the content is
+   *     "cut-off" by the footer bar.
+   */
+  isScrollableContentAtBottom(): boolean;
+
+  /**
+   * Registers an event listener to the window.
+   */
+  registerWindowEventHandler<K extends WindowEventType>(
+      evtType: K, handler: SpecificWindowEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener to the window.
+   */
+  deregisterWindowEventHandler<K extends WindowEventType>(
+      evtType: K, handler: SpecificWindowEventListener<K>): void;
 }

@@ -24,7 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 
 import {MDCBannerAdapter} from './adapter';
-import {CloseReason, cssClasses, numbers} from './constants';
+import {Action, CloseReason, cssClasses, numbers} from './constants';
 
 const {OPENING, OPEN, CLOSING} = cssClasses;
 
@@ -33,7 +33,7 @@ const {OPENING, OPEN, CLOSING} = cssClasses;
  * banner.
  */
 export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
-  static get defaultAdapter(): MDCBannerAdapter {
+  static override get defaultAdapter(): MDCBannerAdapter {
     return {
       addClass: () => undefined,
       getContentHeight: () => 0,
@@ -41,8 +41,11 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
       notifyClosing: () => undefined,
       notifyOpened: () => undefined,
       notifyOpening: () => undefined,
+      notifyActionClicked: () => undefined,
+      releaseFocus: () => undefined,
       removeClass: () => undefined,
       setStyleProperty: () => undefined,
+      trapFocus: () => undefined,
     };
   }
 
@@ -58,7 +61,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
     super({...MDCBannerFoundation.defaultAdapter, ...adapter});
   }
 
-  destroy() {
+  override destroy() {
     cancelAnimationFrame(this.animationFrame);
     this.animationFrame = 0;
     clearTimeout(this.animationTimer);
@@ -67,9 +70,9 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
 
   open() {
     this.isOpened = true;
-    this.adapter.notifyOpening();
     this.adapter.removeClass(CLOSING);
     this.adapter.addClass(OPENING);
+    this.adapter.notifyOpening();
 
     const contentHeight = this.adapter.getContentHeight();
     this.animationFrame = requestAnimationFrame(() => {
@@ -78,6 +81,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
 
       this.animationTimer = setTimeout(() => {
         this.handleAnimationTimerEnd();
+        this.adapter.trapFocus();
         this.adapter.notifyOpened();
       }, numbers.BANNER_ANIMATION_OPEN_TIME_MS);
     });
@@ -109,6 +113,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
 
     clearTimeout(this.animationTimer);
     this.animationTimer = setTimeout(() => {
+      this.adapter.releaseFocus();
       this.handleAnimationTimerEnd();
       this.adapter.notifyClosed(reason);
     }, numbers.BANNER_ANIMATION_CLOSE_TIME_MS);
@@ -118,12 +123,21 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
     return this.isOpened;
   }
 
-  handlePrimaryActionClick() {
-    this.close(CloseReason.PRIMARY);
+  handlePrimaryActionClick(disableAutoClose: boolean = false) {
+    if (disableAutoClose) {
+      this.adapter.notifyActionClicked(Action.PRIMARY);
+    } else {
+      this.close(CloseReason.PRIMARY);
+    }
   }
 
-  handleSecondaryActionClick() {
-    this.close(CloseReason.SECONDARY);
+  handleSecondaryActionClick(disableAutoClose: boolean = false) {
+    if (disableAutoClose) {
+      this.adapter.notifyActionClicked(Action.SECONDARY);
+
+    } else {
+      this.close(CloseReason.SECONDARY);
+    }
   }
 
   layout() {

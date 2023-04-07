@@ -1,6 +1,6 @@
 {
   "name": "@material/layout-grid",
-  "version": "8.0.0",
+  "version": "14.0.0",
   "description": "The Material Components for the web layout grid component",
   "license": "MIT",
   "keywords": [
@@ -14,6 +14,9 @@
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-layout-grid"
+  },
+  "dependencies": {
+    "tslib": "^2.1.0"
   },
   "publishConfig": {
     "access": "public"

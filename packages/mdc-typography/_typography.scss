@@ -20,22 +20,48 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use 'sass:list';
 @use 'sass:map';
+@use 'sass:meta';
 @use 'sass:string';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/custom-properties';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 
+/// @deprecated Avoid calling this function directly. Instead, configure the
+/// `$styles-<style>` variable Maps.
 @function set-styles_($base-styles, $scale-styles, $override-styles) {
+  $options: (
+    custom-property-prefix: typography,
+  );
+
+  $base-styles: keys.set-values($base-styles, $options: $options);
+
   @each $style, $style-props in $scale-styles {
+    @each $base-key in map.keys($base-styles) {
+      // Ignore the return result, it's not needed
+      $unused: keys.add-link(keys.combine($style, $base-key), $base-key);
+    }
+
     // Merge base properties for all styles.
     $style-props: map.merge($base-styles, $style-props);
 
     // Merge overrides onto each style.
     $style-props: map.merge($style-props, map.get($override-styles, $style));
+
+    // Register keys for this style
+    @each $property, $value in $style-props {
+      $unused: keys.set-value(
+        keys.combine($style, $property),
+        $value,
+        $options: $options
+      );
+    }
 
     // Override original styles with new styles.
     $scale-styles: map.merge($scale-styles, (#{$style}: $style-props));
@@ -45,11 +71,24 @@
 }
 
 @function get-letter-spacing_($tracking, $font-size) {
-  @return $tracking / ($font-size * 16) * 1em;
+  @return math.div($tracking, $font-size * 16) * 1em;
 }
 
-@function pxToRem($px) {
-  @return $px / 16px * 1rem;
+@function px-to-rem($px) {
+  @if custom-properties.is-custom-prop($px) {
+    @return custom-properties.set-fallback(
+      $px,
+      _px-to-rem(custom-properties.get-fallback($px))
+    );
+  }
+  @return _px-to-rem($px);
+}
+
+@function _px-to-rem($px) {
+  @if $px == null {
+    @return null;
+  }
+  @return math.div($px, 16px) * 1rem;
 }
 
 $font-family: string.unquote('Roboto, sans-serif') !default;
@@ -69,6 +108,8 @@ $styles-caption: () !default;
 $styles-button: () !default;
 $styles-overline: () !default;
 
+/// @deprecated Do not override this variable. Use the $styles-<style> override
+/// Map variables instead, or $font-family to set the base font family.
 $base: (
   font-family: $font-family,
 ) !default;
@@ -82,108 +123,110 @@ $font-weight-values: (
   black: 900,
 ) !default;
 
+/// @deprecated Do not override this variable. Use the $styles-<style> override
+/// Map variables instead.
 $styles: set-styles_(
   $base,
   (
     headline1: (
-      font-size: pxToRem(96px),
-      line-height: pxToRem(96px),
+      font-size: px-to-rem(96px),
+      line-height: px-to-rem(96px),
       font-weight: map.get($font-weight-values, light),
       letter-spacing: get-letter-spacing_(-1.5, 6),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     headline2: (
-      font-size: pxToRem(60px),
-      line-height: pxToRem(60px),
+      font-size: px-to-rem(60px),
+      line-height: px-to-rem(60px),
       font-weight: map.get($font-weight-values, light),
       letter-spacing: get-letter-spacing_(-0.5, 3.75),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     headline3: (
-      font-size: pxToRem(48px),
-      line-height: pxToRem(50px),
+      font-size: px-to-rem(48px),
+      line-height: px-to-rem(50px),
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: normal,
       text-decoration: inherit,
       text-transform: inherit,
     ),
     headline4: (
-      font-size: pxToRem(34px),
-      line-height: pxToRem(40px),
+      font-size: px-to-rem(34px),
+      line-height: px-to-rem(40px),
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: get-letter-spacing_(0.25, 2.125),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     headline5: (
-      font-size: pxToRem(24px),
-      line-height: pxToRem(32px),
+      font-size: px-to-rem(24px),
+      line-height: px-to-rem(32px),
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: normal,
       text-decoration: inherit,
       text-transform: inherit,
     ),
     headline6: (
-      font-size: pxToRem(20px),
-      line-height: pxToRem(32px),
+      font-size: px-to-rem(20px),
+      line-height: px-to-rem(32px),
       font-weight: map.get($font-weight-values, medium),
       letter-spacing: get-letter-spacing_(0.25, 1.25),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     subtitle1: (
-      font-size: pxToRem(16px),
-      line-height: pxToRem(28px),
+      font-size: px-to-rem(16px),
+      line-height: px-to-rem(28px),
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: get-letter-spacing_(0.15, 1),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     subtitle2: (
-      font-size: pxToRem(14px),
-      line-height: pxToRem(22px),
+      font-size: px-to-rem(14px),
+      line-height: px-to-rem(22px),
       font-weight: map.get($font-weight-values, medium),
       letter-spacing: get-letter-spacing_(0.1, 0.875),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     body1: (
-      font-size: pxToRem(16px),
-      line-height: pxToRem(24px),
+      font-size: px-to-rem(16px),
+      line-height: px-to-rem(24px),
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: get-letter-spacing_(0.5, 1),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     body2: (
-      font-size: pxToRem(14px),
-      line-height: pxToRem(20px),
+      font-size: px-to-rem(14px),
+      line-height: px-to-rem(20px),
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: get-letter-spacing_(0.25, 0.875),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     caption: (
-      font-size: pxToRem(12px),
-      line-height: pxToRem(20px),
+      font-size: px-to-rem(12px),
+      line-height: px-to-rem(20px),
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: get-letter-spacing_(0.4, 0.75),
       text-decoration: inherit,
       text-transform: inherit,
     ),
     button: (
-      font-size: pxToRem(14px),
-      line-height: pxToRem(36px),
+      font-size: px-to-rem(14px),
+      line-height: px-to-rem(36px),
       font-weight: map.get($font-weight-values, medium),
       letter-spacing: get-letter-spacing_(1.25, 0.875),
       text-decoration: none,
       text-transform: uppercase,
     ),
     overline: (
-      font-size: pxToRem(12px),
-      line-height: pxToRem(32px),
+      font-size: px-to-rem(12px),
+      line-height: px-to-rem(32px),
       font-weight: map.get($font-weight-values, medium),
       letter-spacing: get-letter-spacing_(2, 0.75),
       text-decoration: none,
@@ -207,12 +250,24 @@ $styles: set-styles_(
   )
 ) !default;
 
+// A copy of the styles Map that is used to detect compile-time changes for
+// Angular support.
+$_styles-copy: $styles;
+
+@function is-typography-style($style) {
+  @return map.has-key($styles, $style);
+}
+
+@function get-typography-styles() {
+  @return map.keys($styles);
+}
+
 @mixin core-styles($query: feature-targeting.all()) {
   .mdc-typography {
     @include base($query: $query);
   }
 
-  @each $style in map.keys($styles) {
+  @each $style in get-typography-styles() {
     .mdc-typography--#{$style} {
       @include typography($style, $query: $query);
     }
@@ -224,46 +279,44 @@ $styles: set-styles_(
 
   @include smooth-font($query: $query);
   @include feature-targeting.targets($feat-typography) {
-    @include theme.prop(
-      font-family,
-      (
-        varname: --mdc-typography-font-family,
-        fallback: map.get($base, 'font-family'),
-      )
-    );
+    @include theme.property(font-family, font-family);
   }
 }
 
 @mixin typography($style, $query: feature-targeting.all(), $exclude-props: ()) {
   $feat-typography: feature-targeting.create-target($query, typography);
-  $style-props: map.get($styles, $style);
 
-  @if not map.has-key($styles, $style) {
-    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map.keys($styles)}";
+  @if not is-typography-style($style) {
+    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{get-typography-styles()}";
   }
 
   @include smooth-font($query: $query);
   @include feature-targeting.targets($feat-typography) {
-    @each $key, $value in $style-props {
-      @if list.index($exclude-props, $key) == null {
-        $fallback: $value;
-        @if $key == 'font-family' {
-          // Each style has its own font-family custom property, but should
-          // fallback to a generic font-family property. This allows
-          // customizing the font-family for all styles or only specific ones.
-          $fallback: (
-            varname: --mdc-typography-font-family,
-            fallback: $fallback,
-          );
+    @each $key in keys.get-keys($style) {
+      // <style>-<property>: headline1-font-size
+      // Slice the string past the first key separator to retrieve the
+      // property name
+      $property: string.slice($key, string.index($key, '-') + 1);
+      @if list.index($exclude-props, $property) == null {
+        $current-global-value: map.get($styles, $style, $property);
+        $configured-global-value: map.get($_styles-copy, $style, $property);
+        @if $current-global-value != $configured-global-value {
+          // A compile time change was made to $mdc-typography-styles. To
+          // support Angular, use this value instead of the key's value.
+          @if $current-global-value {
+            // Only emit if the overridden value exists
+            $custom-prop: keys.create-custom-property($key);
+            $custom-prop: custom-properties.set-fallback(
+              $custom-prop,
+              $current-global-value
+            );
+            @include theme.property($property, $custom-prop);
+          }
+        } @else {
+          // Otherwise, use the key, which may be different from the original
+          // configured global value.
+          @include theme.property($property, $key);
         }
-
-        @include theme.prop(
-          $key,
-          (
-            varname: --mdc-typography-#{$style}-#{$key},
-            fallback: $fallback,
-          )
-        );
       }
     }
   }
@@ -445,4 +498,88 @@ $styles: set-styles_(
   width: 0;
   height: $distance;
   content: '';
+}
+
+@function get-font($typography) {
+  @return map.get($styles, $typography, font-family);
+}
+
+@function get-line-height($typography) {
+  @return map.get($styles, $typography, line-height);
+}
+
+@function get-size($typography) {
+  @return map.get($styles, $typography, font-size);
+}
+
+@function get-weight($typography) {
+  @return map.get($styles, $typography, font-weight);
+}
+
+@function get-tracking($typography) {
+  @return map.get($styles, $typography, letter-spacing);
+}
+
+$_typography-theme: (
+  font: null,
+  line-height: null,
+  size: null,
+  weight: null,
+  tracking: null,
+);
+
+@mixin theme-styles($theme) {
+  @include theme.validate-theme-styles($_typography-theme, $theme);
+
+  @include theme.property(font-family, map.get($theme, font));
+  @include theme.property(line-height, map.get($theme, line-height));
+  @include theme.property(font-size, map.get($theme, size));
+  @include theme.property(font-weight, map.get($theme, weight));
+  @include theme.property(letter-spacing, map.get($theme, tracking));
+}
+
+/// Resolves a theme's typography tokens for the given prefix.
+///
+/// @example - scss
+///   // $theme has the following tokens:
+///   // - label-text-font
+///   // - label-text-line-height
+///   // - label-text-size
+///   // - label-text-tracking
+///   // - label-text-weight
+///   $theme: resolve-theme($theme, map.get($resolvers, typography), label-text);
+///
+/// @param {Map} $theme - The theme to resolve tokens for.
+/// @param {Function} $resolver - The typography resolver to use.
+/// @param {String...} $token-prefixes - The prefix(es) of a typography token
+///     set.
+/// @return {Map} The theme with resolved typography tokens.
+@function resolve-theme($theme, $resolver, $token-prefixes...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $token-prefix in $token-prefixes {
+    $typography-theme: meta.call(
+      $resolver,
+      $font: map.get($theme, '#{$token-prefix}-font'),
+      $line-height: map.get($theme, '#{$token-prefix}-line-height'),
+      $size: map.get($theme, '#{$token-prefix}-size'),
+      $tracking: map.get($theme, '#{$token-prefix}-tracking'),
+      $weight: map.get($theme, '#{$token-prefix}-weight')
+    );
+
+    $theme: map.merge(
+      $theme,
+      (
+        '#{$token-prefix}-font': map.get($typography-theme, font),
+        '#{$token-prefix}-line-height': map.get($typography-theme, line-height),
+        '#{$token-prefix}-size': map.get($typography-theme, size),
+        '#{$token-prefix}-tracking': map.get($typography-theme, tracking),
+        '#{$token-prefix}-weight': map.get($typography-theme, weight),
+      )
+    );
+  }
+
+  @return $theme;
 }

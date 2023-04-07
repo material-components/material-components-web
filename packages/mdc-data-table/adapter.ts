@@ -23,7 +23,7 @@
 
 
 import {SortValue} from './constants';
-import {MDCDataTableRowSelectionChangedEventDetail, ProgressIndicatorStyles, SortActionEventDetail} from './types';
+import {MDCDataTableRowSelectionChangedEventDetail, ProgressIndicatorStyles, RowClickEventData, SortActionEventDetail} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -63,19 +63,21 @@ export interface MDCDataTableAdapter {
   /**
    * @return Array of row elements excluding header row.
    */
-  getRowElements(): Element[];
+  getRowElements(): HTMLElement[];
 
   /**
-   * Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.
+   * Returns row id of row element at given row index based on `data-row-id`
+   * attribute on row element `tr`.
    *
    * @param rowIndex Index of row element.
-   * @return Row id of row element, returns `null` in absence of `data-row-id` attribute on row element.
+   * @return Row id of row element, returns `null` in absence of `data-row-id`
+   *     attribute on row element.
    */
-  getRowIdAtIndex(rowIndex: number): string | null;
+  getRowIdAtIndex(rowIndex: number): string|null;
 
   /**
-   * Returns index of row element that contains give child element. Returns -1 if element is not child of any row
-   * element.
+   * Returns index of row element that contains give child element. Returns -1
+   * if element is not child of any row element.
    *
    * @param el Child element of row element.
    * @return Index of row element.
@@ -108,7 +110,8 @@ export interface MDCDataTableAdapter {
    *
    * @param data Event detail data for row selection changed event.
    */
-  notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail): void;
+  notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail):
+      void;
 
   /**
    * Notifies when header row is checked.
@@ -121,17 +124,24 @@ export interface MDCDataTableAdapter {
   notifyUnselectedAll(): void;
 
   /**
-   * Initializes header row checkbox. Destroys previous header row checkbox instance if any.
-   * @return Can return Promise only if registering checkbox is asynchronous.
+   * Notifies when data row is clicked.
    */
-  registerHeaderRowCheckbox(): Promise<void> | void;
+  notifyRowClick(detail: RowClickEventData): void;
 
   /**
-   * Initializes all row checkboxes. Destroys previous row checkbox instances if any. This is usually called when row
-   * checkboxes are added or removed from table.
+   * Initializes header row checkbox. Destroys previous header row checkbox
+   * instance if any.
    * @return Can return Promise only if registering checkbox is asynchronous.
    */
-  registerRowCheckboxes(): Promise<void> | void;
+  registerHeaderRowCheckbox(): Promise<void>|void;
+
+  /**
+   * Initializes all row checkboxes. Destroys previous row checkbox instances if
+   * any. This is usually called when row checkboxes are added or removed from
+   * table.
+   * @return Can return Promise only if registering checkbox is asynchronous.
+   */
+  registerRowCheckboxes(): Promise<void>|void;
 
   /**
    * Removes class name from row element at give row index.
@@ -180,7 +190,7 @@ export interface MDCDataTableAdapter {
   /**
    * @return Array of header cell elements.
    */
-  getHeaderCellElements(): Element[];
+  getHeaderCellElements(): HTMLElement[];
 
   /**
    * @return Attribute value for given header cell index.

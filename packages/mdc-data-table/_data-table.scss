@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
 // NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
 // selectors.
 
@@ -31,8 +31,7 @@
 @use '@material/dom/mixins' as dom;
 @use '@material/elevation/mixins';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/icon-button/mixins' as icon-button-mixins;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -44,6 +43,71 @@
 @use './data-table-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
+  @include table-styles($query: $query);
+  @include data-table-theme.sort-icon-color(
+    data-table-theme.$sort-icon-color,
+    $query: $query
+  );
+  @include data-table-theme.sort-icon-active-color(
+    data-table-theme.$sort-icon-active-color,
+    $query: $query
+  );
+
+  @include data-table-progress-indicator.static-styles($query: $query);
+  @include data-table-pagination.core-styles($query: $query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-data-table {
+    @include feature-targeting.targets($feat-structure) {
+      // Makes the table scroll smoothly in iOS.
+      // NOTE: Root element should not be scrollable, added this for backward
+      // compatibility.
+      -webkit-overflow-scrolling: touch;
+      display: inline-flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      position: relative;
+    }
+  }
+
+  .mdc-data-table__table-container {
+    @include feature-targeting.targets($feat-structure) {
+      // Makes the table scroll smoothly in iOS.
+      -webkit-overflow-scrolling: touch;
+      overflow-x: auto;
+      width: 100%;
+    }
+  }
+
+  .mdc-data-table__table {
+    @include feature-targeting.targets($feat-structure) {
+      min-width: 100%; // Makes table full-width of its container (Firefox / IE11)
+      border: 0;
+      white-space: nowrap;
+      border-spacing: 0;
+      /**
+       * With table-layout:fixed, table and column widths are defined by the width
+       * of the first row of cells. Cells in subsequent rows do not affect column
+       * widths. This results in a predictable table layout and may also speed up
+       * rendering.
+       */
+      table-layout: fixed;
+    }
+  }
+
+  @include data-table-header-cell.static-styles($query);
+  @include data-table-cell.static-styles($query);
+  @include data-table-pagination.static-styles($query);
+  @include data-table-progress-indicator.static-styles($query);
+}
+
+// This API includes only the table styles without the sorting, pagination and
+// loading styles. It is intended to be used by frameworks that only need the
+// table styles.
+@mixin table-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
   $feat-animation: feature-targeting.create-target($query, animation);
@@ -71,17 +135,6 @@
       data-table-theme.$stroke-color,
       $query: $query
     );
-
-    @include feature-targeting.targets($feat-structure) {
-      // Makes the table scroll smoothly in iOS.
-      // NOTE: Root element should not be scrollable, added this for backward
-      // compatibility.
-      -webkit-overflow-scrolling: touch;
-      display: inline-flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      position: relative;
-    }
   }
 
   // Note that we don't output the color styles inside the `@at-root`,
@@ -128,49 +181,15 @@
     $trailing-padding: data-table-theme.$cell-trailing-padding,
     $query: $query
   );
-  @include data-table-theme.sort-icon-color(
-    data-table-theme.$sort-icon-color,
-    $query: $query
-  );
-  @include data-table-theme.sort-icon-active-color(
-    data-table-theme.$sort-icon-active-color,
-    $query: $query
-  );
-
-  .mdc-data-table__table-container {
-    @include feature-targeting.targets($feat-structure) {
-      // Makes the table scroll smoothly in iOS.
-      -webkit-overflow-scrolling: touch;
-      overflow-x: auto;
-      width: 100%;
-    }
-  }
-
-  .mdc-data-table__table {
-    @include feature-targeting.targets($feat-structure) {
-      min-width: 100%; // Makes table full-width of its container (Firefox / IE11)
-      border: 0;
-      white-space: nowrap;
-      border-collapse: collapse;
-      /**
-       * With table-layout:fixed, table and column widths are defined by the width
-       * of the first row of cells. Cells in subsequent rows do not affect column
-       * widths. This results in a predictable table layout and may also speed up
-       * rendering.
-       */
-      table-layout: fixed;
-    }
-  }
 
   @include data-table-cell.core-styles($query: $query);
   @include data-table-header-cell.core-styles($query: $query);
-  @include data-table-progress-indicator.core-styles($query: $query);
 
   .mdc-data-table--sticky-header {
-    @include _sticky-header($query: $query);
+    @include data-table-header-cell.header-cell-sticky($query: $query);
   }
 
-  @include data-table-pagination.core-styles($query: $query);
+  @include static-styles($query);
 }
 
 @mixin theme-baseline($query: feature-targeting.all()) {
@@ -178,17 +197,4 @@
     data-table-theme.$checked-icon-color,
     $query: $query
   );
-}
-
-/// Sets styles required to support sticky header row.
-@mixin _sticky-header($query: $query) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include data-table-header-cell.header-cell-sticky($query: $query);
-
-  .mdc-data-table__row:first-child {
-    @include feature-targeting.targets($feat-structure) {
-      border-top: 0;
-    }
-  }
 }

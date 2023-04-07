@@ -44,7 +44,7 @@ export interface MDCTabIndicatorAdapter {
   /**
    * Returns the client rect of the content element.
    */
-  computeContentClientRect(): ClientRect;
+  computeContentClientRect(): DOMRect;
 
   /**
    * Sets a style property of the content element to the passed value

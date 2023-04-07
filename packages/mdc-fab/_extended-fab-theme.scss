@@ -1,0 +1,271 @@
+// Copyright 2016 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/animation/functions' as animation-functions;
+@use '@material/elevation/elevation-theme';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/rtl';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions' as shape-functions;
+@use '@material/theme/css';
+@use '@material/theme/custom-properties';
+@use '@material/theme/keys';
+@use '@material/theme/replace';
+@use '@material/theme/state';
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
+@use '@material/tokens/resolvers';
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use '@material/typography/typography';
+@use './fab-theme';
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:list';
+
+$extended-icon-padding: 12px !default;
+$extended-label-padding: 20px !default;
+$extended-height: 48px !default;
+
+$_extended-light-theme: (
+  container-color: theme-color.$surface,
+  container-elevation: 3,
+  container-height: 56px,
+  container-shadow-color: black,
+  container-shape: 50%,
+  container-surface-tint-layer-color: null,
+  focus-container-elevation: null,
+  focus-icon-color: null,
+  focus-label-text-color: null,
+  focus-outline-color: null,
+  focus-outline-width: null,
+  focus-state-layer-color: theme-color.$primary,
+  focus-state-layer-opacity: null,
+  hover-container-elevation: null,
+  hover-icon-color: null,
+  hover-label-text-color: null,
+  hover-state-layer-color: theme-color.$primary,
+  hover-state-layer-opacity: null,
+  icon-color: null,
+  icon-size: 36px,
+  label-text-color: theme-color.$on-surface,
+  label-text-font: typography.get-font(button),
+  label-text-size: typography.get-size(button),
+  label-text-tracking: typography.get-tracking(button),
+  label-text-weight: typography.get-weight(button),
+  lowered-container-elevation: null,
+  lowered-focus-container-elevation: null,
+  lowered-hover-container-elevation: null,
+  lowered-pressed-container-elevation: null,
+  pressed-container-elevation: null,
+  pressed-icon-color: null,
+  pressed-label-text-color: null,
+  pressed-ripple-color: null,
+  pressed-ripple-opacity: null,
+  pressed-state-layer-color: theme-color.$primary,
+  pressed-state-layer-opacity: null,
+);
+
+$custom-property-prefix: 'extended-fab';
+
+///
+/// Applies the given theme as custom properties without any selectors.
+///
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_extended-light-theme, $theme);
+  $resolved-theme: fab-theme.resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties(
+    $resolved-theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_extended-light-theme, $theme);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include fab-theme.base-theme-styles($theme, $resolvers: $resolvers);
+  $container-shape: map.get($theme, container-shape);
+  @if $container-shape {
+    @include extended-shape-radius($container-shape);
+  }
+  @include _label-color(
+    (
+      default: map.get($theme, label-text-color),
+      hover: map.get($theme, hover-label-text-color),
+      focus: map.get($theme, focus-label-text-color),
+      pressed: map.get($theme, pressed-label-text-color),
+    )
+  );
+  @include _label-typography(
+    (
+      font: map.get($theme, label-text-font),
+      size: map.get($theme, label-text-size),
+      weight: map.get($theme, label-text-weight),
+      tracking: map.get($theme, label-text-tracking),
+    )
+  );
+}
+
+@mixin extended-fluid($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    width: 100%;
+  }
+}
+
+@mixin extended-padding(
+  $icon-padding,
+  $label-padding,
+  $focus-outline-width: null,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include extended-label-padding($label-padding, $query: $query);
+
+  // Offsets the outer label padding by deducting it from icon padding.
+  .mdc-fab__icon {
+    @include feature-targeting.targets($feat-structure) {
+      @include extended-icon-padding($icon-padding, $label-padding);
+    }
+  }
+
+  // For Extended FAB with text label followed by icon.
+  .mdc-fab__label + .mdc-fab__icon {
+    @include feature-targeting.targets($feat-structure) {
+      @include extended-icon-padding(
+        $icon-padding,
+        $label-padding,
+        $is-icon-at-end: true
+      );
+    }
+  }
+
+  @if $focus-outline-width {
+    @include fab-theme.focus-outline-width(
+      $focus-outline-width,
+      $padding: 0 $label-padding
+    );
+  }
+}
+
+@mixin extended-icon-padding(
+  $icon-padding,
+  $label-padding,
+  $is-icon-at-end: false
+) {
+  $start: 'calc(icon - label)';
+  $end: $icon-padding;
+
+  @if $is-icon-at-end {
+    $start: $icon-padding;
+    $end: 'calc(icon - label)';
+  }
+
+  @include rtl.reflexive-property(
+    margin,
+    $start,
+    $end,
+    $replace: (icon: $icon-padding, label: $label-padding)
+  );
+}
+
+@mixin extended-label-padding($label-padding, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    @include theme.property(padding-left, $label-padding, $gss: (noflip: true));
+    @include theme.property(
+      padding-right,
+      $label-padding,
+      $gss: (noflip: true)
+    );
+  }
+}
+
+@mixin extended-shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  // Extended FABs _do_ need a $component-height since they are not circular.
+  // Percentage radii must be resolved.
+  @include shape-mixins.radius(
+    $radius,
+    $rtl-reflexive,
+    $component-height: $extended-height,
+    $query: $query
+  );
+
+  #{fab-theme.$ripple-target} {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $extended-height,
+      $query: $query
+    );
+  }
+}
+
+@mixin _label-color($color-or-map) {
+  &:not(:disabled) {
+    @include _set-label-color(state.get-default-state($color-or-map));
+
+    &:hover {
+      @include _set-label-color(state.get-hover-state($color-or-map));
+    }
+
+    &:focus {
+      @include _set-label-color(state.get-focus-state($color-or-map));
+    }
+
+    &:active {
+      @include _set-label-color(state.get-pressed-state($color-or-map));
+    }
+  }
+
+  &:disabled {
+    @include _set-label-color(state.get-disabled-state($color-or-map));
+  }
+}
+
+@mixin _set-label-color($color) {
+  .mdc-fab__label {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _label-typography($typography-map) {
+  @include theme.property(font-family, map.get($typography-map, font));
+  @include theme.property(font-size, map.get($typography-map, size));
+  @include theme.property(font-weight, map.get($typography-map, weight));
+  @include theme.property(letter-spacing, map.get($typography-map, tracking));
+}

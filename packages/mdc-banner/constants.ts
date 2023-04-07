@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {FocusOptions, FocusTrap} from '@material/dom/focus-trap';
+
 /** Banner element classes. */
 export const cssClasses = {
   CLOSING: 'mdc-banner--closing',
@@ -40,6 +42,7 @@ export const events = {
   CLOSING: 'MDCBanner:closing',
   OPENED: 'MDCBanner:opened',
   OPENING: 'MDCBanner:opening',
+  ACTION_CLICKED: 'MDCBanner:actionClicked',
 };
 
 /** Banner selectors. */
@@ -61,7 +64,27 @@ export enum CloseReason {
   UNSPECIFIED,
 }
 
+/**
+ * Payload of actionClicked events to signify which action emitted the event.
+ */
+export enum Action {
+  PRIMARY,
+  SECONDARY,
+  UNKNOWN
+}
+
 /** Interface for the detail of the closing and closed events emitted. */
 export interface MDCBannerCloseEventDetail {
   reason: CloseReason;
 }
+
+/** Interface for the detail of the closing and closed events emitted. */
+export interface MDCBannerActionEventDetail {
+  action: Action;
+}
+
+/**  */
+export type MDCBannerFocusTrapFactory = (
+    element: HTMLElement,
+    options: FocusOptions,
+    ) => FocusTrap;

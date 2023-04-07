@@ -22,16 +22,17 @@
  */
 
 /**
- * @fileoverview A "ponyfill" is a polyfill that doesn't modify the global prototype chain.
- * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
+ * @fileoverview A "ponyfill" is a polyfill that doesn't modify the global
+ * prototype chain. This makes ponyfills safer than traditional polyfills,
+ * especially for libraries like MDC.
  */
 
-export function closest(element: Element, selector: string): Element | null {
+export function closest(element: Element, selector: string): Element|null {
   if (element.closest) {
     return element.closest(selector);
   }
 
-  let el: Element | null = element;
+  let el: Element|null = element;
   while (el) {
     if (matches(el, selector)) {
       return el;
@@ -41,10 +42,10 @@ export function closest(element: Element, selector: string): Element | null {
   return null;
 }
 
+/** Element.matches with support for webkit and IE. */
 export function matches(element: Element, selector: string): boolean {
-  const nativeMatches = element.matches
-      || element.webkitMatchesSelector
-      || (element as any).msMatchesSelector;
+  const nativeMatches = element.matches || element.webkitMatchesSelector ||
+      (element as any).msMatchesSelector;
   return nativeMatches.call(element, selector);
 }
 

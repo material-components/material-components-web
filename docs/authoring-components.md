@@ -112,22 +112,22 @@ class RedblueTogglePrototype {
 
   constructor(root) {
     this.root = root;
-    this.clickHandler_ = () => this.toggle();
+    this.clickHandler = () => this.toggle();
     this.initialize();
   }
 
   initialize() {
-    this.root.addEventListener('click', this.clickHandler_);
+    this.root.addEventListener('click', this.clickHandler);
   }
 
   destroy() {
-    this.root.removeEventListener('click', this.clickHandler_);
+    this.root.removeEventListener('click', this.clickHandler);
   }
 
   toggle(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
     const toggled = wasToggledExplicitlySet ? isToggled : !this.toggled;
-    const toggleColorEl = this.root.querySelector('.redblue-toggle__color');
+    const toggleColorEl = this.root.querySelector<HTMLElement>('.redblue-toggle__color');
     let toggleColor;
 
     this.root.setAttribute('aria-pressed', String(toggled));
@@ -142,7 +142,7 @@ class RedblueTogglePrototype {
   }
 }
 
-new RedblueTogglePrototype(document.querySelector('.redblue-toggle'));
+new RedblueTogglePrototype(document.querySelector<HTMLElement>('.redblue-toggle'));
 ```
 
 Note how the JS Component does not reference MDC Web in any way, nor does it have any notion
@@ -191,16 +191,16 @@ class RedblueTogglePrototype {
 
   constructor(root) {
     this.root = root;
-    this.clickHandler_ = () => this.toggle();
+    this.clickHandler = () => this.toggle();
     this.initialize();
   }
 
   initialize() {
-    this.root.addEventListener('click', this.clickHandler_);
+    this.root.addEventListener('click', this.clickHandler);
   }
 
   destroy() {
-    this.root.removeEventListener('click', this.clickHandler_);
+    this.root.removeEventListener('click', this.clickHandler);
   }
 
   toggle(isToggled = undefined) {
@@ -262,35 +262,35 @@ class RedblueToggleFoundation extends MDCFoundation {
     };
   }
 
-  private toggled_ = false;
+  private toggled = false;
 
   constructor(adapter) {
     super({...RedblueToggleFoundation.defaultAdapter, ...adapter});
   }
 
   handleClick() {
-    this.toggle_();
+    this.toggle();
   }
 
   isToggled() {
-    return this.adapter_.getAttr('aria-pressed') === 'true';
+    return this.adapter.getAttr('aria-pressed') === 'true';
   }
 
-  private toggle_(isToggled = undefined) {
+  private toggle(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
-    this.toggled_ = wasToggledExplicitlySet ? isToggled : !this.toggled_;
+    this.toggled = wasToggledExplicitlySet ? isToggled : !this.toggled;
 
     let toggleColor;
 
-    this.adapter_.setAttr('aria-pressed', String(this.toggled_));
-    if (this.toggled_) {
+    this.adapter.setAttr('aria-pressed', String(this.toggled));
+    if (this.toggled) {
       toggleColor = 'Red';
-      this.adapter_.addClass('redblue-toggle--toggled');
+      this.adapter.addClass('redblue-toggle--toggled');
     } else {
       toggleColor = 'Blue';
-      this.adapter_.removeClass('redblue-toggle--toggled');
+      this.adapter.removeClass('redblue-toggle--toggled');
     }
-    this.adapter_.setToggleColorTextContent(toggleColor);
+    this.adapter.setToggleColorTextContent(toggleColor);
   }
 }
 ```
@@ -313,29 +313,29 @@ adapter is extremely straightforward as we can simply repurpose the methods we s
 ```ts
 class RedblueToggle extends MDCComponent {
   initialize() {
-    this.listen('click', this.foundation_.handleClick);
+    this.listen('click', this.foundation.handleClick);
   }
 
   destroy() {
-    this.unlisten('click', this.foundation_.handleClick);
+    this.unlisten('click', this.foundation.handleClick);
   }
 
   get toggled() {
-    return this.foundation_.isToggled();
+    return this.foundation.isToggled();
   }
 
   set toggled(toggled) {
-    this.foundation_.toggle(toggled);
+    this.foundation.toggle(toggled);
   }
 
   getDefaultFoundation() {
     return new RedblueToggleFoundation({
-      getAttr: attr => this.root_.getAttribute(attr),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      addClass: className => this.root_.classList.add(className),
-      removeClass: className => this.root_.classList.remove(className),
+      getAttr: attr => this.root.getAttribute(attr),
+      setAttr: (attr, value) => this.root.setAttribute(attr, value),
+      addClass: className => this.root.classList.add(className),
+      removeClass: className => this.root.classList.remove(className),
       setToggleColorTextContent: textContent => {
-        this.root_.querySelector('.redblue-toggle__color').textContent = textContent;
+        this.root.querySelector<HTMLElement>('.redblue-toggle__color').textContent = textContent;
       },
     });
   }

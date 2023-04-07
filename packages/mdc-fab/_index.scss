@@ -1,2 +1,3 @@
-@forward "./variables";
-@forward "./mixins";
+@forward "./fab" hide theme, theme-styles;
+@forward "./extended-fab-theme" hide theme, theme-styles, $custom-property-prefix;
+@forward "./fab-theme";

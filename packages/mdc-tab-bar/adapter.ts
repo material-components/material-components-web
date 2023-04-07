@@ -74,7 +74,7 @@ export interface MDCTabBarAdapter {
    * @param index The index of the tab to activate
    * @param clientRect The client rect of the previously active Tab Indicator
    */
-  activateTabAtIndex(index: number, clientRect?: ClientRect): void;
+  activateTabAtIndex(index: number, clientRect?: DOMRect): void;
 
   /**
    * Deactivates the tab at the given index
@@ -92,7 +92,7 @@ export interface MDCTabBarAdapter {
    * Returns the client rect of the tab's indicator
    * @param index The index of the tab
    */
-  getTabIndicatorClientRectAtIndex(index: number): ClientRect;
+  getTabIndicatorClientRectAtIndex(index: number): DOMRect;
 
   /**
    * Returns the tab dimensions of the tab at the given index

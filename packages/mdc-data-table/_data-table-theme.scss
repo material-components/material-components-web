@@ -20,25 +20,29 @@
 // THE SOFTWARE.
 //
 
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
 // NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
 // selectors.
 
+@use 'sass:map';
+@use 'sass:math';
 @use 'sass:list';
 @use 'sass:meta';
 @use '@material/animation/functions';
 @use '@material/checkbox/checkbox-theme';
-@use '@material/density/functions' as density-functions;
-@use '@material/density/variables' as density-variables;
+@use '@material/density/density';
 @use '@material/elevation/mixins';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/icon-button/mixins' as icon-button-mixins;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/icon-button/icon-button-theme';
+@use '@material/list/evolution-mixins' as list-theme;
+@use '@material/rtl/rtl';
 @use '@material/select/select-theme';
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/tokens/v0_132' as tokens;
 @use '@material/touch-target/touch-target';
 @use '@material/typography/typography';
 
@@ -65,24 +69,219 @@ $shape-radius: medium !default;
 $stroke-size: 1px !default;
 $stroke-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
-$cell-height: 52px !default;
-$header-cell-height: get-header-cell-height($cell-height) !default;
+$row-height: 52px !default;
+$header-row-height: get-header-row-height($row-height) !default;
 $cell-leading-padding: 16px !default;
 $cell-trailing-padding: 16px !default;
 
-$minimum-cell-height: 36px !default;
-$maximum-cell-height: $cell-height !default;
-$default-density-scale: density-variables.$default-scale !default;
+$minimum-row-height: 36px !default;
+$maximum-row-height: $row-height !default;
+$default-density-scale: density.$default-scale !default;
 $density-config: (
   height: (
-    maximum: $cell-height,
-    default: $cell-height,
-    minimum: $minimum-cell-height,
+    maximum: $row-height,
+    default: $row-height,
+    minimum: $minimum-row-height,
   ),
 );
 $pagination-rows-per-page-select-height: 36px;
 
-@function get-header-cell-height($height) {
+$light-theme: tokens.md-comp-data-table-values();
+
+@function remove-unsupported-keys($theme) {
+  $theme: map.remove(
+    $theme,
+    (
+      // TODO(b/254356584): We don't set pagination background-color.
+      'footer-container-color',
+      // TODO(b/254356584): Select doesn't have Theming API support yet.
+      'footer-outlined-select-text-field-container-height',
+      // TODO(b/254356584): We don't add hover styles on header.
+      'header-hover-headline-color',
+      // TODO(b/254356584): We don't add hover styles on header.
+      'header-hover-sorting-icon-button-color',
+      // TODO(b/254356584): We don't support disabled rows.
+      'row-item-disabled-label-text-color',
+      // TODO(b/254356584): We don't support disabled rows.
+      'row-item-disabled-label-text-opacity',
+      // TODO(b/254356584): We don't add hover styles on selected rows.
+      'row-item-selected-hover-state-layer-color',
+      // TODO(b/254356584): We don't add hover styles on selected rows.
+      'row-item-selected-hover-state-layer-opacity',
+      // TODO(b/254356584): We don't have state layers on rows.
+      'row-item-unselected-hover-state-layer-color'
+        // TODO(b/254356584): We don't have state layers on rows.
+      'row-item-unselected-hover-state-layer-opacity'
+    )
+  );
+  @return $theme;
+}
+
+$_validation-theme: remove-unsupported-keys($light-theme);
+
+$custom-property-prefix: 'data-table';
+
+@mixin theme($theme) {
+  @include theme.validate-theme($_validation-theme, $theme);
+  @include keys.declare-custom-properties($theme, $custom-property-prefix);
+}
+
+@mixin theme-styles($theme, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  @include theme.validate-theme-styles($_validation-theme, $theme);
+  $theme: keys.create-theme-properties($theme, $custom-property-prefix);
+
+  ///////////
+  // Table //
+  ///////////
+
+  @include shape-radius(map.get($theme, 'container-shape'), $query: $query);
+  @include stroke-color(map.get($theme, 'outline-color'), $query: $query);
+  @include stroke-size(map.get($theme, 'outline-width'), $query: $query);
+
+  ////////////
+  // Header //
+  ////////////
+
+  @include header-row-fill-color(
+    map.get($theme, 'header-container-color'),
+    $query: $query
+  );
+  @include header-row-height(
+    map.get($theme, 'header-container-height'),
+    $query: $query
+  );
+  @include header-row-text-color(
+    map.get($theme, 'header-headline-color'),
+    $query: $query
+  );
+  .mdc-data-table__header-cell {
+    @include feature-targeting.targets($feat-typography) {
+      $font: map.get($theme, 'header-headline-font');
+      $line-height: map.get($theme, 'header-headline-line-height');
+      $size: map.get($theme, 'header-headline-size');
+      $tracking: map.get($theme, 'header-headline-tracking');
+      $weight: map.get($theme, 'header-headline-weight');
+
+      @include theme.property('font-family', $font);
+      @include theme.property('line-height', $line-height);
+      @include theme.property('font-size', $size);
+      @include theme.property('letter-spacing', $tracking);
+      @include theme.property('font-weight', $weight);
+    }
+  }
+
+  //////////
+  // Rows //
+  //////////
+
+  // Separated because row-height() sets min-height on pagination
+  .mdc-data-table__row {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(
+        'height',
+        map.get($theme, 'row-item-container-height')
+      );
+    }
+  }
+  .mdc-data-table__cell {
+    @include feature-targeting.targets($feat-typography) {
+      $font: map.get($theme, 'row-item-label-text-font');
+      $line-height: map.get($theme, 'row-item-label-text-line-height');
+      $size: map.get($theme, 'row-item-label-text-size');
+      $tracking: map.get($theme, 'row-item-label-text-tracking');
+      $weight: map.get($theme, 'row-item-label-text-weight');
+
+      @include theme.property('font-family', $font);
+      @include theme.property('line-height', $line-height);
+      @include theme.property('font-size', $size);
+      @include theme.property('letter-spacing', $tracking);
+      @include theme.property('font-weight', $weight);
+    }
+
+    @include feature-targeting.targets($feat-color) {
+      // Separated because row-text-color() also sets color on pagination text
+      @include theme.property(
+        'color',
+        map.get($theme, 'row-item-label-text-color')
+      );
+    }
+  }
+  .mdc-data-table__cell,
+  .mdc-data-table__header-cell {
+    @include feature-targeting.targets($feat-color) {
+      // Separated because divider-color() also sets color on pagination select
+      @include theme.property(
+        'border-bottom-color',
+        map.get($theme, 'row-item-outline-color')
+      );
+    }
+  }
+  .mdc-data-table__pagination {
+    @include feature-targeting.targets($feat-color) {
+      // Separated because divider-color() also sets color on pagination select
+      @include theme.property(
+        'border-top-color',
+        map.get($theme, 'row-item-outline-color')
+      );
+    }
+  }
+  @include divider-size(
+    map.get($theme, 'row-item-outline-width'),
+    $query: $query
+  );
+  @include row-fill-color(
+    map.get($theme, 'row-item-unselected-container-color'),
+    $query: $query
+  );
+  @include selected-row-fill-color(
+    map.get($theme, 'row-item-selected-container-color'),
+    $query: $query
+  );
+
+  ////////////
+  // Footer //
+  ////////////
+
+  .mdc-data-table__pagination {
+    @include feature-targeting.targets($feat-typography) {
+      $font: map.get($theme, 'footer-supporting-text-font');
+      $line-height: map.get($theme, 'footer-supporting-text-line-height');
+      $size: map.get($theme, 'footer-supporting-text-size');
+      $tracking: map.get($theme, 'footer-supporting-text-tracking');
+      $weight: map.get($theme, 'footer-supporting-text-weight');
+
+      @include theme.property('font-family', $font);
+      @include theme.property('line-height', $line-height);
+      @include theme.property('font-size', $size);
+      @include theme.property('letter-spacing', $tracking);
+      @include theme.property('font-weight', $weight);
+    }
+
+    @include feature-targeting.targets($feat-structure) {
+      // Separated because row-height() also sets height on row
+      @include theme.property(
+        'min-height',
+        map.get($theme, 'footer-container-height')
+      );
+    }
+  }
+  .mdc-data-table__pagination-total,
+  .mdc-data-table__pagination-rows-per-page-label {
+    @include feature-targeting.targets($feat-color) {
+      // Separated because row-text-color() also sets color on row text
+      @include theme.property(
+        'color',
+        map.get($theme, 'footer-supporting-text-color')
+      );
+    }
+  }
+}
+
+@function get-header-row-height($height) {
   @return $height + 4px;
 }
 
@@ -93,7 +292,7 @@ $pagination-rows-per-page-select-height: 36px;
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__sort-icon-button {
-    @include icon-button-mixins.ink-color($color, $query: $query);
+    @include icon-button-theme.ink-color($color, $query: $query);
   }
 }
 
@@ -103,7 +302,7 @@ $pagination-rows-per-page-select-height: 36px;
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__header-cell--sorted .mdc-data-table__sort-icon-button {
-    @include icon-button-mixins.ink-color($color, $query: $query);
+    @include icon-button-theme.ink-color($color, $query: $query);
   }
 }
 
@@ -111,7 +310,7 @@ $pagination-rows-per-page-select-height: 36px;
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme.prop('background-color', $color);
+    @include theme.property('background-color', $color);
   }
 }
 
@@ -121,7 +320,7 @@ $pagination-rows-per-page-select-height: 36px;
   // Set background color to cell instead of row to support sticky header.
   .mdc-data-table__header-cell {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('background-color', $color);
+      @include theme.property('background-color', $color);
     }
   }
 }
@@ -131,7 +330,7 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__row {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('background-color', $color);
+      @include theme.property('background-color', $color);
     }
   }
 }
@@ -141,7 +340,7 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__row--selected {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('background-color', $color);
+      @include theme.property('background-color', $color);
     }
   }
 }
@@ -166,19 +365,20 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin divider-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-data-table__header-cell:after {
-    @include feature-targeting.targets($feat-color) {
-      border-bottom-color: $color;
-    }
-  }
-  .mdc-data-table__pagination-rows-per-page-select {
+  .mdc-data-table__pagination-rows-per-page-select--outlined {
     @include select-theme.outline-color($color, $query: $query);
   }
 
-  .mdc-data-table__row,
+  .mdc-data-table__cell,
+  .mdc-data-table__header-cell {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property('border-bottom-color', $color);
+    }
+  }
+
   .mdc-data-table__pagination {
     @include feature-targeting.targets($feat-color) {
-      border-top-color: $color;
+      @include theme.property('border-top-color', $color);
     }
   }
 }
@@ -186,18 +386,24 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin divider-size($size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-data-table__header-cell:after {
+  .mdc-data-table__cell,
+  .mdc-data-table__header-cell {
     @include feature-targeting.targets($feat-structure) {
+      @include theme.property('border-bottom-width', $size);
       border-bottom-style: solid;
-      border-bottom-width: $size;
     }
   }
 
-  .mdc-data-table__row,
   .mdc-data-table__pagination {
     @include feature-targeting.targets($feat-structure) {
-      border-top-width: $size;
+      @include theme.property('border-top-width', $size);
       border-top-style: solid;
+    }
+  }
+
+  .mdc-data-table__row:last-child .mdc-data-table__cell {
+    @include feature-targeting.targets($feat-structure) {
+      border-bottom: none;
     }
   }
 }
@@ -207,7 +413,7 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__row:not(.mdc-data-table__row--selected):hover {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('background-color', $color);
+      @include theme.property('background-color', $color);
     }
   }
 }
@@ -217,7 +423,7 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__header-cell {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('color', $color);
+      @include theme.property('color', $color);
     }
   }
 }
@@ -233,7 +439,7 @@ $pagination-rows-per-page-select-height: 36px;
   .mdc-data-table__pagination-rows-per-page-label,
   .mdc-data-table__cell {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('color', $color);
+      @include theme.property('color', $color);
     }
   }
 }
@@ -253,20 +459,27 @@ $pagination-rows-per-page-select-height: 36px;
 
   @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
 
-  // Apply same border radius as parent to leading & trailing header cells.
-  // Header cells have explicite background color applied which requires border
-  // radius to take its parent rounded shape.
+  // Apply same border radius as parent to leading/trailing header cells,
+  // and leading/trailing cells of last row.
+  // Cells that have explicit background color applied require border
+  // radius to take the parents' rounded shape.
   $border-radius: shape-functions.unpack-radius($radius);
   $top-left-radius: shape-functions.resolve-radius(list.nth($border-radius, 1));
   $top-right-radius: shape-functions.resolve-radius(
     list.nth($border-radius, 2)
+  );
+  $bottom-right-radius: shape-functions.resolve-radius(
+    list.nth($border-radius, 3)
+  );
+  $bottom-left-radius: shape-functions.resolve-radius(
+    list.nth($border-radius, 4)
   );
 
   .mdc-data-table__header-cell:first-child {
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(border-top-left-radius, $top-left-radius);
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         @include theme.property(
           border-top-right-radius,
           if($rtl-reflexive, $top-left-radius, $top-right-radius)
@@ -281,7 +494,7 @@ $pagination-rows-per-page-select-height: 36px;
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(border-top-right-radius, $top-right-radius);
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         @include theme.property(
           border-top-left-radius,
           if($rtl-reflexive, $top-right-radius, $top-left-radius)
@@ -291,13 +504,47 @@ $pagination-rows-per-page-select-height: 36px;
       }
     }
   }
+
+  &.mdc-data-table--without-footer
+    .mdc-data-table__row:last-child
+    .mdc-data-table__cell:first-child {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-bottom-left-radius, $bottom-left-radius);
+
+      @include rtl.rtl {
+        @include theme.property(
+          border-bottom-right-radius,
+          if($rtl-reflexive, $bottom-left-radius, $bottom-right-radius)
+        );
+
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+
+  &.mdc-data-table--without-footer
+    .mdc-data-table__row:last-child
+    .mdc-data-table__cell:last-child {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-bottom-right-radius, $bottom-right-radius);
+
+      @include rtl.rtl {
+        @include theme.property(
+          border-bottom-left-radius,
+          if($rtl-reflexive, $bottom-right-radius, $bottom-left-radius)
+        );
+
+        border-bottom-right-radius: 0;
+      }
+    }
+  }
 }
 
 @mixin stroke-size($size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    border-width: $size;
+    @include theme.property('border-width', $size);
     border-style: solid;
   }
 }
@@ -306,32 +553,32 @@ $pagination-rows-per-page-select-height: 36px;
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    border-color: $color;
+    @include theme.property('border-color', $color);
   }
 }
 
-@mixin header-cell-height($height, $query: feature-targeting.all()) {
+@mixin header-row-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-data-table__header-cell {
+  .mdc-data-table__header-row {
     @include feature-targeting.targets($feat-structure) {
-      height: $height;
+      @include theme.property('height', $height);
     }
   }
 }
 
-@mixin cell-height($height, $query: feature-targeting.all()) {
+@mixin row-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-data-table__cell {
+  .mdc-data-table__row {
     @include feature-targeting.targets($feat-structure) {
-      height: $height;
+      @include theme.property('height', $height);
     }
   }
 
   .mdc-data-table__pagination {
     @include feature-targeting.targets($feat-structure) {
-      min-height: $height;
+      @include theme.property('min-height', $height);
     }
   }
 }
@@ -360,8 +607,7 @@ $pagination-rows-per-page-select-height: 36px;
   .mdc-data-table__cell,
   .mdc-data-table__header-cell {
     @include feature-targeting.targets($feat-structure) {
-      padding-right: $trailing-padding;
-      padding-left: $leading-padding;
+      padding: 0 $trailing-padding 0 $leading-padding;
     }
   }
 
@@ -405,8 +651,8 @@ $pagination-rows-per-page-select-height: 36px;
         );
       }
       $leading-padding: $leading-padding -
-        ($checkbox-touch-size - $checkbox-icon-size) / 2;
-      @include rtl-mixins.reflexive-property(padding, $leading-padding, 0);
+        math.div($checkbox-touch-size - $checkbox-icon-size, 2);
+      @include rtl.reflexive-property(padding, $leading-padding, 0);
     }
   }
 }
@@ -437,16 +683,17 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin density(
   $density-scale,
   $row-checkbox-density-scale: null,
+  $pagination-select-density-scale: null,
   $query: feature-targeting.all()
 ) {
-  $height: density-functions.prop-value(
+  $height: density.prop-value(
     $density-config: $density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include cell-height($height, $query: $query);
-  @include header-cell-height(get-header-cell-height($height), $query: $query);
+  @include row-height($height, $query: $query);
+  @include header-row-height(get-header-row-height($height), $query: $query);
 
   @if $row-checkbox-density-scale {
     @include checkbox-cell-padding(
@@ -460,6 +707,24 @@ $pagination-rows-per-page-select-height: 36px;
       @include checkbox-theme.density($row-checkbox-density-scale);
     }
   }
+
+  @if $pagination-select-density-scale {
+    @include select-density($pagination-select-density-scale);
+  }
+}
+
+@mixin select-density($density-scale) {
+  @include select-theme.outlined-height(
+    select-theme.$height + density.$interval * $density-scale
+  );
+  .mdc-list-item {
+    @include list-theme.one-line-item-density(
+      $density-scale + 2,
+      $exclude-variants: true
+    );
+  }
+
+  margin: 0;
 }
 
 ///

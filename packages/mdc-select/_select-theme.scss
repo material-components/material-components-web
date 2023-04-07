@@ -20,34 +20,49 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
+@use 'sass:math';
 @use 'sass:color';
 @use 'sass:list';
+@use 'sass:map';
 @use 'sass:meta';
+@use '@material/tokens/resolvers';
 @use '@material/density/functions' as density-functions;
 @use '@material/density/variables' as density-variables;
+@use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/line-ripple/mixins' as line-ripple-mixins;
 @use '@material/list/mixins' as list-mixins;
+@use '@material/list/evolution-mixins' as list-evolution-mixins;
+@use '@material/menu-surface/mixins' as menu-surface-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/rtl';
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/custom-properties';
 @use '@material/theme/gss';
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/keys';
 @use '@material/theme/state';
+@use '@material/theme/theme';
 @use '@material/theme/variables' as theme-variables;
 @use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
+@use './select-helper-text-theme';
 @use './select-icon-theme';
+@use './select-shared-theme';
 
 $ripple-target: '.mdc-select__ripple';
 
 @function get-outlined-label-position-y($select-anchor-height) {
-  @return $select-anchor-height / 2 +
-    notched-outline-variables.$label-box-height / 2;
+  @return math.div($select-anchor-height, 2) +
+    math.div(notched-outline-variables.$label-box-height, 2);
 }
 
 $arrow-padding: 52px !default;
@@ -153,6 +168,460 @@ $icon-inactive-fade-in-duration: 0.5 * $dropdown-transition-duration !default;
 // Error colors
 $error-color: error !default;
 
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include container-fill-color(
+    (
+      default: map.get($theme, text-field-container-color),
+      disabled: map.get($theme, text-field-disabled-container-color),
+    )
+  );
+  @include outline-color(
+    (
+      default: map.get($theme, text-field-outline-color),
+      hover: map.get($theme, text-field-hover-outline-color),
+      focus: map.get($theme, text-field-focus-outline-color),
+      disabled: map.get($theme, text-field-disabled-outline-color),
+    )
+  );
+  @include _error-outline-color(
+    (
+      default: map.get($theme, text-field-error-outline-color),
+      hover: map.get($theme, text-field-error-hover-outline-color),
+      focus: map.get($theme, text-field-error-focus-outline-color),
+    )
+  );
+  @include outline-width(
+    (
+      default: map.get($theme, text-field-outline-width),
+      hover: map.get($theme, text-field-hover-outline-width),
+      focus: map.get($theme, text-field-focus-outline-width),
+    )
+  );
+  @include _menu-container-color(map.get($theme, menu-container-color));
+  @include _menu-container-elevation(map.get($theme, menu-container-elevation));
+  @include _menu-container-shape(map.get($theme, menu-container-shape));
+  @include _menu-container-surface-tint-layer-color(
+    map.get($theme, menu-container-surface-tint-layer-color)
+  );
+  @include _menu-divider-color(map.get($theme, menu-divider-color));
+  @include _menu-divider-height(map.get($theme, menu-divider-height));
+  @include _menu-list-item-container-height(
+    map.get($theme, menu-list-item-container-height)
+  );
+  @include _menu-list-item-label-text-color(
+    map.get($theme, menu-list-item-label-text-color)
+  );
+  @include _menu-list-item-label-text-typography(
+    (
+      font: map.get($theme, menu-list-item-label-text-font),
+      line-height: map.get($theme, menu-list-item-label-text-line-height),
+      size: map.get($theme, menu-list-item-label-text-size),
+      tracking: map.get($theme, menu-list-item-label-text-tracking),
+      weight: map.get($theme, menu-list-item-label-text-weight),
+    )
+  );
+  @include _menu-list-item-state-layer(
+    (
+      focus-state-layer-color:
+        map.get($theme, menu-list-item-focus-state-layer-color),
+      focus-state-layer-opacity:
+        map.get($theme, menu-list-item-focus-state-layer-opacity),
+      hover-state-layer-color:
+        map.get($theme, menu-list-item-hover-state-layer-color),
+      hover-state-layer-opacity:
+        map.get($theme, menu-list-item-hover-state-layer-opacity),
+      pressed-state-layer-color:
+        map.get($theme, menu-list-item-pressed-state-layer-color),
+      pressed-state-layer-opacity:
+        map.get($theme, menu-list-item-pressed-state-layer-opacity),
+    )
+  );
+  @include _menu-list-item-selected-container-color(
+    map.get($theme, menu-list-item-selected-container-color)
+  );
+  @include _menu-list-item-with-leading-icon-leading-icon-color(
+    map.get($theme, menu-list-item-with-leading-icon-leading-icon-color)
+  );
+  @include _menu-list-item-with-leading-icon-leading-icon-size(
+    map.get($theme, menu-list-item-with-leading-icon-leading-icon-size)
+  );
+  // TODO: Create new mixin for trailing icon theming when select supports it.
+  @include _menu-list-item-with-leading-icon-leading-icon-color(
+    map.get($theme, menu-list-item-with-trailing-icon-trailing-icon-color)
+  );
+  @include _menu-list-item-with-leading-icon-leading-icon-size(
+    map.get($theme, menu-list-item-with-trailing-icon-trailing-icon-size)
+  );
+  @include bottom-line-color(
+    (
+      default: map.get($theme, text-field-active-indicator-color),
+      hover: map.get($theme, text-field-hover-active-indicator-color),
+      focus: map.get($theme, text-field-focus-active-indicator-color),
+      disabled: map.get($theme, text-field-disabled-active-indicator-color),
+    )
+  );
+  @include dropdown-icon-size(map.get($theme, text-field-trailing-icon-size));
+  @include select-icon-theme.size(
+    map.get($theme, text-field-leading-icon-size)
+  );
+  @include _text-field-error-active-indicator-color(
+    (
+      default: map.get($theme, text-field-error-active-indicator-color),
+      hover: map.get($theme, text-field-error-hover-active-indicator-color),
+      focus: map.get($theme, text-field-error-focus-active-indicator-color),
+    )
+  );
+  @include _text-field-active-indicator-height(
+    (
+      default: map.get($theme, text-field-active-indicator-height),
+      focus: map.get($theme, text-field-focus-active-indicator-height),
+    )
+  );
+  // TODO(b/259951357): Cleanup branch after fix and tokens upgrade.
+  @if map.has-key($theme, text-field-caret-color) or
+    map.has-key($theme, text-field-error-caret-color)
+  {
+    @include _text-field-trailing-icon-color(
+      (
+        default: map.get($theme, text-field-caret-color),
+        hover: map.get($theme, text-field-hover-caret-color),
+        focus: map.get($theme, text-field-focus-caret-color),
+      )
+    );
+    @include _text-field-error-trailing-icon-color(
+      (
+        default: map.get($theme, text-field-error-caret-color),
+        hover: map.get($theme, text-field-error-hover-caret-color),
+        focus: map.get($theme, text-field-error-focus-caret-color),
+      )
+    );
+  } @else {
+    @include _text-field-trailing-icon-color(
+      (
+        default: map.get($theme, text-field-trailing-icon-color),
+        hover: map.get($theme, text-field-hover-trailing-icon-color),
+        focus: map.get($theme, text-field-focus-trailing-icon-color),
+        disabled: map.get($theme, text-field-disabled-trailing-icon-color),
+      )
+    );
+    @include _text-field-error-trailing-icon-color(
+      (
+        default: map.get($theme, text-field-error-trailing-icon-color),
+        hover: map.get($theme, text-field-error-hover-trailing-icon-color),
+        focus: map.get($theme, text-field-error-focus-trailing-icon-color),
+      )
+    );
+  }
+  @include ink-color(
+    (
+      default: map.get($theme, text-field-input-text-color),
+      hover: map.get($theme, text-field-hover-input-text-color),
+      focus: map.get($theme, text-field-focus-input-text-color),
+      disabled: map.get($theme, text-field-disabled-input-text-color),
+    )
+  );
+  @include _error-input-text-color(
+    (
+      default: map.get($theme, text-field-error-input-text-color),
+      hover: map.get($theme, text-field-error-hover-input-text-color),
+      focus: map.get($theme, text-field-error-focus-input-text-color),
+    )
+  );
+  @include label-color(
+    (
+      default: map.get($theme, text-field-label-text-color),
+      hover: map.get($theme, text-field-hover-label-text-color),
+      focus: map.get($theme, text-field-focus-label-text-color),
+      disabled: map.get($theme, text-field-disabled-label-text-color),
+    )
+  );
+  @include label-floating-color(
+    (
+      default: map.get($theme, text-field-label-text-color),
+      hover: map.get($theme, text-field-hover-label-text-color),
+      focus: map.get($theme, text-field-focus-label-text-color),
+      disabled: map.get($theme, text-field-disabled-label-text-color),
+    )
+  );
+  @include _error-label-text-color(
+    (
+      default: map.get($theme, text-field-error-label-text-color),
+      hover: map.get($theme, text-field-error-hover-label-text-color),
+      focus: map.get($theme, text-field-error-focus-label-text-color),
+    )
+  );
+  @include _text-field-leading-icon-color(
+    (
+      default: map.get($theme, text-field-leading-icon-color),
+      hover: map.get($theme, text-field-hover-leading-icon-color),
+      focus: map.get($theme, text-field-focus-leading-icon-color),
+      disabled: map.get($theme, text-field-disabled-leading-icon-color),
+    )
+  );
+  @include _error-text-field-leading-icon-color(
+    (
+      default: map.get($theme, text-field-error-leading-icon-color),
+      hover: map.get($theme, text-field-error-hover-leading-icon-color),
+      focus: map.get($theme, text-field-error-focus-leading-icon-color),
+    )
+  );
+  @include select-helper-text-theme.helper-text-color(
+    (
+      default: map.get($theme, text-field-supporting-text-color),
+      disabled: map.get($theme, text-field-disabled-supporting-text-color),
+      hover: map.get($theme, text-field-hover-supporting-text-color),
+      focus: map.get($theme, text-field-focus-supporting-text-color),
+    )
+  );
+  @include select-helper-text-theme.helper-text-validation-color(
+    (
+      default: map.get($theme, text-field-error-supporting-text-color),
+      hover: map.get($theme, text-field-error-hover-supporting-text-color),
+      focus: map.get($theme, text-field-error-focus-supporting-text-color),
+    )
+  );
+  @include _text-field-input-text-typography(
+    (
+      font: map.get($theme, text-field-input-text-font),
+      line-height: map.get($theme, text-field-input-text-line-height),
+      size: map.get($theme, text-field-input-text-size),
+      tracking: map.get($theme, text-field-input-text-tracking),
+      weight: map.get($theme, text-field-input-text-weight),
+    )
+  );
+  @include _text-field-label-text-typography(
+    (
+      font: map.get($theme, text-field-label-text-font),
+      line-height: map.get($theme, text-field-label-text-line-height),
+      size: map.get($theme, text-field-label-text-size),
+      tracking: map.get($theme, text-field-label-text-tracking),
+      weight: map.get($theme, text-field-label-text-weight),
+    )
+  );
+  @include _text-field-label-text-populated-typography(
+    (
+      line-height: map.get($theme, text-field-label-text-populated-line-height),
+      size: map.get($theme, text-field-label-text-populated-size),
+    )
+  );
+  @include _text-field-supporting-text-typography(
+    (
+      font: map.get($theme, text-field-supporting-text-font),
+      line-height: map.get($theme, text-field-supporting-text-line-height),
+      size: map.get($theme, text-field-supporting-text-size),
+      tracking: map.get($theme, text-field-supporting-text-tracking),
+      weight: map.get($theme, text-field-supporting-text-weight),
+    )
+  );
+}
+
+@mixin _text-field-supporting-text-typography($typography-theme) {
+  & + .mdc-select-helper-text {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _text-field-input-text-typography($typography-theme) {
+  .mdc-select__selected-text {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _text-field-label-text-populated-typography($typography-theme) {
+  .mdc-floating-label--float-above,
+  // Used for CSS specificity to match with selector used in `outlined-height()`.
+  &.mdc-select--with-leading-icon .mdc-select__anchor .mdc-notched-outline .mdc-floating-label.mdc-floating-label--float-above {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _text-field-label-text-typography($typography-theme) {
+  .mdc-floating-label {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _error-outline-color($color) {
+  &.mdc-select--invalid {
+    @include outline-color($color);
+  }
+}
+
+@mixin _error-text-field-leading-icon-color($color) {
+  &.mdc-select--invalid {
+    @include _text-field-leading-icon-color($color);
+  }
+}
+
+@mixin _text-field-leading-icon-color($color) {
+  @include _if-enabled {
+    @include _set-text-field-leading-icon-color(
+      state.get-default-state($color)
+    );
+
+    &:not(.mdc-select--focused):hover {
+      @include _set-text-field-leading-icon-color(
+        state.get-hover-state($color)
+      );
+    }
+
+    @include _if-focused {
+      @include _set-text-field-leading-icon-color(
+        state.get-focus-state($color)
+      );
+    }
+  }
+
+  @include _if-disabled {
+    @include _set-text-field-leading-icon-color(
+      state.get-disabled-state($color)
+    );
+  }
+}
+
+@mixin _set-text-field-leading-icon-color($color) {
+  .mdc-select__anchor .mdc-select__icon {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _error-label-text-color($color) {
+  &.mdc-select--invalid {
+    @include label-color($color);
+  }
+}
+
+@mixin _error-input-text-color($color) {
+  &.mdc-select--invalid {
+    @include ink-color($color);
+  }
+}
+
+@mixin _text-field-trailing-icon-color($color) {
+  @include dropdown-icon-color($color);
+}
+
+@mixin _text-field-error-trailing-icon-color($color) {
+  &.mdc-select--invalid {
+    @include dropdown-icon-color($color);
+  }
+}
+
+@mixin _text-field-error-active-indicator-color($color) {
+  &.mdc-select--invalid {
+    @include bottom-line-color($color);
+  }
+}
+
+@mixin _text-field-active-indicator-height($height) {
+  .mdc-line-ripple {
+    @include line-ripple-mixins.height(state.get-default-state($height));
+    @include line-ripple-mixins.active-height(state.get-focus-state($height));
+  }
+}
+
+@mixin _menu-list-item-with-leading-icon-leading-icon-color($color) {
+  &:not(.mdc-select--disabled) .mdc-select__option .mdc-select__icon {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _menu-list-item-with-leading-icon-leading-icon-size($size) {
+  &:not(.mdc-select--disabled) .mdc-select__option .mdc-select__icon {
+    @include theme.property(font-size, $size);
+  }
+}
+
+@mixin _menu-list-item-selected-container-color($color) {
+  .mdc-select__option {
+    @include list-evolution-mixins.list-item-selected-container-color($color);
+  }
+}
+
+@mixin _menu-list-item-label-text-typography($typography-theme) {
+  .mdc-select__option {
+    @include list-evolution-mixins.list-primary-text-typography(
+      $typography-theme
+    );
+  }
+}
+
+@mixin _menu-list-item-label-text-color($color) {
+  .mdc-select__option {
+    @include list-evolution-mixins.list-primary-text-ink-color($color);
+  }
+}
+
+@mixin _menu-list-item-container-height($height) {
+  .mdc-select__option {
+    @include list-evolution-mixins.list-item-height($height);
+  }
+}
+
+@mixin _menu-list-item-state-layer($ripple-theme) {
+  .mdc-list-item:not(.mdc-list-item--disabled) {
+    @include ripple-theme.theme-styles(
+      $ripple-theme,
+      $ripple-target: list-evolution-mixins.$ripple-target
+    );
+  }
+}
+
+@mixin _menu-divider-color($color) {
+  .mdc-select__list {
+    @include list-evolution-mixins.divider-color($color);
+  }
+}
+
+@mixin _menu-divider-height($height) {
+  .mdc-select__list {
+    @include list-evolution-mixins.divider-height($height);
+  }
+}
+
+@mixin _menu-container-color($color) {
+  .mdc-select__menu {
+    @include menu-surface-mixins.fill-color($color);
+  }
+}
+
+@mixin _menu-container-elevation($elevation) {
+  @if $elevation {
+    .mdc-select__menu {
+      @include elevation-theme.shadow(map.get($elevation, shadow));
+      @include elevation-theme.overlay-opacity(
+        map.get($elevation, overlay-opacity)
+      );
+    }
+  }
+}
+
+@mixin _menu-container-shape($shape) {
+  .mdc-select__menu {
+    @include menu-surface-mixins.shape-radius($shape);
+  }
+}
+
+@mixin _menu-container-surface-tint-layer-color($color) {
+  .mdc-select__menu {
+    @include elevation-theme.overlay-container-color($color);
+  }
+}
+
+@mixin menu-list-item-secondary-label-text-color($color) {
+  .mdc-select__list {
+    @include list-evolution-mixins.list-secondary-text-ink-color($color);
+  }
+}
+
+@mixin menu-list-item-secondary-label-text-typography($typography-theme) {
+  .mdc-select__list {
+    @include list-evolution-mixins.list-secondary-text-typography(
+      $typography-theme
+    );
+  }
+}
+
 /// Sets the min-width of the select.
 /// @param {Number} $min-width - The desired min-width.
 /// @deprecated using this mixin is no longer required, and clients may set
@@ -162,6 +631,20 @@ $error-color: error !default;
 
   @include feature-targeting.targets($feat-structure) {
     min-width: $min-width;
+  }
+}
+
+/// Sets the select behavior to change width dynamically based on content.
+/// @param {Number} $min-width - The min-width of the select, which should be
+///     large enough to allow the label (if exists) to display in full.
+@mixin variable-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__anchor {
+    @include feature-targeting.targets($feat-structure) {
+      width: 100%;
+      min-width: $min-width;
+    }
   }
 }
 
@@ -307,7 +790,6 @@ $error-color: error !default;
       $query: $query
     );
 
-    // stylelint-disable-next-line selector-combinator-space-after
     &:not(.mdc-select--focused) .mdc-select__anchor:hover {
       @include _hover-outline-color(
         state.get-hover-state($color-or-map),
@@ -331,6 +813,28 @@ $error-color: error !default;
   }
 }
 
+@mixin outline-width($width, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _outline-width(state.get-default-state($width), $query: $query);
+
+    &:not(.mdc-select--focused) .mdc-select__anchor:hover {
+      @include _outline-width(state.get-hover-state($width), $query: $query);
+    }
+
+    @include _if-focused {
+      .mdc-notched-outline {
+        @include _outline-width(state.get-focus-state($width), $query: $query);
+      }
+    }
+  }
+}
+
+@mixin _outline-width($width, $query: feature-targeting.all()) {
+  @if $width {
+    @include notched-outline-mixins.stroke-width($width, $query: $query);
+  }
+}
+
 ///
 /// Sets the dropdown icon to the specified size.
 ///
@@ -339,8 +843,8 @@ $error-color: error !default;
 
   .mdc-select__dropdown-icon {
     @include feature-targeting.targets($feat-structure) {
-      width: $size;
-      height: $size;
+      @include theme.property(width, $size);
+      @include theme.property(height, $size);
     }
   }
 }
@@ -351,7 +855,12 @@ $error-color: error !default;
   $rtl-reflexive: false,
   $query: feature-targeting.all()
 ) {
-  @if meta.type-of($radius) == 'list' and list.length($radius) > 2 {
+  @if (meta.type-of($radius) == 'list' and list.length($radius) > 2) and
+    (
+      (list.nth($radius, 3) != 0 and list.nth($radius, 3) != 0px) or
+        (list.nth($radius, 4) != 0 and list.nth($radius, 4) != 0px)
+    )
+  {
     @error "mdc-select: Invalid radius #{$radius}. Only top-left and top-right corners may be customized.";
   }
 
@@ -377,15 +886,18 @@ $error-color: error !default;
   $radius,
   $density-scale: $density-scale,
   $rtl-reflexive: false,
-  $query: feature-targeting.all()
+  $query: feature-targeting.all(),
+  $height: null
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  $height: density-functions.prop-value(
-    $density-config: $density-config,
-    $density-scale: $density-scale,
-    $property-name: height,
-  );
+  @if not $height {
+    $height: density-functions.prop-value(
+      $density-config: $density-config,
+      $density-scale: $density-scale,
+      $property-name: height,
+    );
+  }
 
   .mdc-notched-outline {
     @include notched-outline-mixins.shape-radius(
@@ -421,9 +933,9 @@ $error-color: error !default;
         $query: $query
       );
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         @include feature-targeting.targets($feat-structure) {
-          /* @noflip */
+          @include rtl.ignore-next-line();
           padding-left: 0;
         }
         @include _apply-outline-shape-padding(
@@ -443,9 +955,9 @@ $error-color: error !default;
         $query: $query
       );
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         @include feature-targeting.targets($feat-structure) {
-          /* @noflip */
+          @include rtl.ignore-next-line();
           margin-left: 0;
         }
         @include _apply-outline-shape-padding(
@@ -489,7 +1001,7 @@ $error-color: error !default;
     $minimum-height-for-filled-label: $minimum-height-for-filled-label,
     $query: $query
   );
-  @include list-mixins.single-line-density($density-scale, $query: $query);
+  @include _list-density($density-scale, $query: $query);
 }
 
 ///
@@ -516,7 +1028,7 @@ $error-color: error !default;
     $minimum-height-for-filled-label: $minimum-height-for-filled-label,
     $query: $query
   );
-  @include list-mixins.single-line-density($density-scale, $query: $query);
+  @include _list-density($density-scale, $query: $query);
 }
 
 ///
@@ -533,7 +1045,7 @@ $error-color: error !default;
   );
 
   @include outlined-height($height, $query: $query);
-  @include list-mixins.single-line-density($density-scale, $query: $query);
+  @include _list-density($density-scale, $query: $query);
 }
 
 ///
@@ -553,7 +1065,27 @@ $error-color: error !default;
   );
 
   @include outlined-with-leading-icon-height($height, $query: $query);
-  @include list-mixins.single-line-density($density-scale, $query: $query);
+  @include _list-density($density-scale, $query: $query);
+}
+
+@mixin _list-density($density-scale, $query) {
+  @include list-mixins.deprecated-single-line-density(
+    $density-scale,
+    $query: $query
+  );
+  .mdc-select__one-line-option {
+    @include list-evolution-mixins.one-line-item-density(
+      $density-scale,
+      $exclude-variants: true,
+      $query: $query
+    );
+  }
+  .mdc-select__two-line-option {
+    @include list-evolution-mixins.two-line-item-density(
+      $density-scale,
+      $query: $query
+    );
+  }
 }
 
 ///
@@ -657,10 +1189,16 @@ $error-color: error !default;
       );
     }
 
-    .mdc-list-item__graphic {
+    .mdc-deprecated-list-item__graphic {
       width: select-icon-theme.$dense-icon-size;
       height: select-icon-theme.$dense-icon-size;
     }
+
+    @include list-evolution-mixins.item-start-size(
+      $width: select-icon-theme.$dense-icon-size + 12px,
+      $height: select-icon-theme.$dense-icon-size,
+      $query: $query
+    );
 
     .mdc-select__anchor {
       @include leading-icon-floating-label-position(
@@ -768,10 +1306,16 @@ $error-color: error !default;
   }
 
   @if $new-height < $height {
-    .mdc-list-item__graphic {
+    .mdc-deprecated-list-item__graphic {
       width: select-icon-theme.$dense-icon-size;
       height: select-icon-theme.$dense-icon-size;
     }
+
+    @include list-evolution-mixins.item-start-size(
+      $width: select-icon-theme.$dense-icon-size + 12px,
+      $height: select-icon-theme.$dense-icon-size,
+      $query: $query
+    );
 
     @include select-icon-theme.size(
       select-icon-theme.$dense-icon-size,
@@ -818,7 +1362,7 @@ $error-color: error !default;
         $value: $padding-px + notched-outline-variables.$padding;
       }
 
-      /* @noflip */
+      @include rtl.ignore-next-line();
       #{$property}: $value;
       @include gss.annotate(
         (
@@ -835,11 +1379,12 @@ $error-color: error !default;
         $value: calc(#{$value} + #{notched-outline-variables.$padding});
       }
 
-      @supports (top: max(0%)) {
+      // Interpolation is a workaround for sass/sass#3259.
+      @supports (top: max(#{0%})) {
         // A max() function makes this runtime dynamic. The padding will be
         // whichever is greater: the default horizontal padding, or the
         // calculated custom property plus extra padding.
-        /* @noflip */
+        @include rtl.ignore-next-line();
         #{$property}: max(#{$anchor-padding-left}, #{$value});
       }
     }
@@ -905,7 +1450,7 @@ $error-color: error !default;
 
   .mdc-floating-label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, $icon-total-width);
+      @include rtl.reflexive-position(left, $icon-total-width);
     }
   }
 }
@@ -934,7 +1479,7 @@ $error-color: error !default;
   // Resting label position
   .mdc-floating-label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, $resting-position-x);
+      @include rtl.reflexive-position(left, $resting-position-x);
     }
   }
 
@@ -960,7 +1505,7 @@ $error-color: error !default;
   }
 
   $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
-  @include rtl-mixins.rtl {
+  @include rtl.rtl {
     @include floating-label-mixins.shake-animation(
       $keyframe-suffix,
       $query: $query
@@ -1074,7 +1619,7 @@ $error-color: error !default;
   @if $color {
     .mdc-select__selected-text {
       @include feature-targeting.targets($feat-color) {
-        @include theme-mixins.property(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
@@ -1086,7 +1631,7 @@ $error-color: error !default;
   @if $color {
     .mdc-select__anchor {
       @include feature-targeting.targets($feat-color) {
-        @include theme-mixins.property(background-color, $color);
+        @include theme.property(background-color, $color);
       }
     }
   }
@@ -1125,10 +1670,6 @@ $error-color: error !default;
 @mixin _focused-outline-color($color, $query: feature-targeting.all()) {
   @if $color {
     .mdc-notched-outline {
-      @include notched-outline-mixins.stroke-width(
-        $outlined-stroke-width,
-        $query: $query
-      );
       @include notched-outline-mixins.color($color, $query: $query);
     }
   }
@@ -1160,7 +1701,7 @@ $error-color: error !default;
   @if $color {
     @include feature-targeting.targets($feat-color) {
       .mdc-select__dropdown-icon {
-        @include theme-mixins.property(fill, $color);
+        @include theme.property(fill, $color);
       }
     }
   }

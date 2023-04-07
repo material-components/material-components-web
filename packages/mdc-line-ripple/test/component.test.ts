@@ -22,17 +22,14 @@
  */
 
 import {MDCLineRipple, MDCLineRippleFoundation} from '../../mdc-line-ripple/index';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <span class="mdc-line-ripple"></span>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 describe('MDCLineRipple', () => {
@@ -71,8 +68,7 @@ describe('MDCLineRipple', () => {
 
   it('#adapter.setStyle adds a given style property to the element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any)
-        .adapter.setStyle('color', 'blue');
+    (component.getDefaultFoundation() as any).adapter.setStyle('color', 'blue');
     expect(root.getAttribute('style')).toEqual('color: blue;');
   });
 

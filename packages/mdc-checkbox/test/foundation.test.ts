@@ -82,7 +82,7 @@ function setupChangeHandlerTest() {
 function testChangeHandler(
     desc: string, changes: CheckboxState|CheckboxState[],
     expectedClass: string) {
-  changes = Array.isArray(changes) ? changes : [changes]
+  changes = Array.isArray(changes) ? changes : [changes];
   it(`changeHandler: ${desc}`, () => {
     const {mockAdapter, change} = setupChangeHandlerTest();
 
@@ -134,10 +134,10 @@ describe('MDCCheckboxFoundation', () => {
 
   /*
    * Shims Object.getOwnPropertyDescriptor for the checkbox's WebIDL attributes.
-   * Used to test the behavior of overridding WebIDL properties in different
+   * Used to test the behavior of overriding WebIDL properties in different
    * browser environments. For example, in Safari WebIDL attributes don't
    * return get/set in descriptors.
-  */
+   */
   function withMockCheckboxDescriptorReturning(
       descriptor: undefined|typeof DESC_UNDEFINED, runTests: () => void) {
     const mockGetOwnPropertyDescriptor =
@@ -150,11 +150,10 @@ describe('MDCCheckboxFoundation', () => {
 
     const originalDesc =
         Object.getOwnPropertyDescriptor(Object, 'getOwnPropertyDescriptor');
-    Object.defineProperty(
-        Object, 'getOwnPropertyDescriptor', {
-          ...originalDesc,
-          value: mockGetOwnPropertyDescriptor,
-        });
+    Object.defineProperty(Object, 'getOwnPropertyDescriptor', {
+      ...originalDesc,
+      value: mockGetOwnPropertyDescriptor,
+    });
     runTests();
 
     // After running tests, restore original property.
@@ -352,22 +351,22 @@ describe('MDCCheckboxFoundation', () => {
     const {ANIM_UNCHECKED_CHECKED} = cssClasses;
     const {mockAdapter, foundation} = setupTest();
 
-    foundation.enableAnimationEndHandler_ = true;
-    foundation.currentAnimationClass_ = ANIM_UNCHECKED_CHECKED;
+    (foundation as any).enableAnimationEndHandler = true;
+    (foundation as any).currentAnimationClass = ANIM_UNCHECKED_CHECKED;
     expect(mockAdapter.removeClass).not.toHaveBeenCalled();
 
     foundation.handleAnimationEnd();
 
     jasmine.clock().tick(numbers.ANIM_END_LATCH_MS);
     expect(mockAdapter.removeClass).toHaveBeenCalledTimes(1);
-    expect(foundation.enableAnimationEndHandler_).toBe(false);
+    expect((foundation as any).enableAnimationEndHandler).toBe(false);
   });
 
   it('animation end is debounced if event is called twice', () => {
     const {ANIM_UNCHECKED_CHECKED} = cssClasses;
     const {mockAdapter, foundation} = setupChangeHandlerTest();
-    foundation.enableAnimationEndHandler_ = true;
-    foundation.currentAnimationClass_ = ANIM_UNCHECKED_CHECKED;
+    (foundation as any).enableAnimationEndHandler = true;
+    (foundation as any).currentAnimationClass = ANIM_UNCHECKED_CHECKED;
 
     foundation.handleAnimationEnd();
 

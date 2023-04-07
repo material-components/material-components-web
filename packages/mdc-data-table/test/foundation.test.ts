@@ -23,7 +23,7 @@
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
-import {attributes, cssClasses, SortValue, strings} from '../constants';
+import {attributes, cssClasses, SortValue} from '../constants';
 import {MDCDataTableFoundation} from '../foundation';
 
 describe('MDCDataTableFoundation', () => {
@@ -44,6 +44,7 @@ describe('MDCDataTableFoundation', () => {
       'isCheckboxAtRowIndexChecked',
       'isHeaderRowCheckboxChecked',
       'isRowsSelectable',
+      'notifyRowClick',
       'notifyRowSelectionChanged',
       'notifySelectedAll',
       'notifySortAction',
@@ -288,13 +289,35 @@ describe('MDCDataTableFoundation', () => {
        expect(mockAdapter.notifyUnselectedAll).toHaveBeenCalledTimes(1);
      });
 
+  it('#handleRowClick should notify', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    const mockDataRowEl = document.createElement('tr');
+    foundation.handleRowClick({
+      rowId: '1231',
+      row: mockDataRowEl,
+      altKey: true,
+      ctrlKey: false,
+      metaKey: true,
+      shiftKey: false
+    });
+    expect(mockAdapter.notifyRowClick).toHaveBeenCalledWith({
+      rowId: '1231',
+      row: mockDataRowEl,
+      altKey: true,
+      ctrlKey: false,
+      metaKey: true,
+      shiftKey: false
+    });
+  });
+
   it('#handleRowCheckboxChange does not do anything when target row is not found',
      () => {
        const {foundation, mockAdapter} = setupTest();
 
        mockAdapter.getRowIndexByChildElement.withArgs(jasmine.anything())
            .and.returnValue(-1);
-       foundation.handleRowCheckboxChange({});
+       foundation.handleRowCheckboxChange({} as Event);
 
        expect(mockAdapter.notifyRowSelectionChanged).not.toHaveBeenCalledWith();
      });
@@ -307,7 +330,7 @@ describe('MDCDataTableFoundation', () => {
            .withArgs(jasmine.any(HTMLInputElement))
            .and.returnValue(2);
 
-       foundation.handleRowCheckboxChange({});
+       foundation.handleRowCheckboxChange({} as Event);
 
        expect(mockAdapter.notifyRowSelectionChanged).not.toHaveBeenCalledWith();
      });
@@ -322,12 +345,13 @@ describe('MDCDataTableFoundation', () => {
            true);
        mockAdapter.getRowIdAtIndex.withArgs(2).and.returnValue('testRowId-u2');
 
-       foundation.handleRowCheckboxChange({target: {checked: true}});
+       foundation.handleRowCheckboxChange(
+           {target: {checked: true}} as unknown as Event);
 
        expect(mockAdapter.addClassAtRowIndex)
            .toHaveBeenCalledWith(2, cssClasses.ROW_SELECTED);
        expect(mockAdapter.setAttributeAtRowIndex)
-           .toHaveBeenCalledWith(2, strings.ARIA_SELECTED, 'true');
+           .toHaveBeenCalledWith(2, attributes.ARIA_SELECTED, 'true');
 
        expect(mockAdapter.notifyRowSelectionChanged).toHaveBeenCalledWith({
          rowId: 'testRowId-u2',
@@ -346,12 +370,13 @@ describe('MDCDataTableFoundation', () => {
            false);
        mockAdapter.getRowIdAtIndex.withArgs(2).and.returnValue('testRowId-u2');
 
-       foundation.handleRowCheckboxChange({target: {checked: false}});
+       foundation.handleRowCheckboxChange(
+           {target: {checked: false}} as unknown as Event);
 
        expect(mockAdapter.removeClassAtRowIndex)
            .toHaveBeenCalledWith(2, cssClasses.ROW_SELECTED);
        expect(mockAdapter.setAttributeAtRowIndex)
-           .toHaveBeenCalledWith(2, strings.ARIA_SELECTED, 'false');
+           .toHaveBeenCalledWith(2, attributes.ARIA_SELECTED, 'false');
 
        expect(mockAdapter.notifyRowSelectionChanged).toHaveBeenCalledWith({
          rowId: 'testRowId-u2',

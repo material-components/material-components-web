@@ -34,9 +34,7 @@ npm install @material/button
 ### Styles
 
 ```scss
-@use "@material/button";
-
-@include button.core-styles;
+@use "@material/button/styles";
 ```
 
 ### JavaScript instantiation
@@ -59,13 +57,16 @@ To meet this requirement, add the following to your button:
 ```html
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-button mdc-button--touch">
-    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__ripple"></span>
+    <span class="mdc-button__touch"></span>
+    <span class="mdc-button__focus-ring"></span>
     <span class="mdc-button__label">My Accessible Button</span>
-    <div class="mdc-button__touch"></div>
   </button>
 </div>
 ```
 **Note: The outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).**
+
+The `mdc-button__focus-ring` element ensures that a focus indicator is displayed in high contrast mode around the active/focused button.
 
 ## Text button
 
@@ -77,7 +78,8 @@ To meet this requirement, add the following to your button:
 
 ```html
  <button class="mdc-button">
-   <div class="mdc-button__ripple"></div>
+   <span class="mdc-button__ripple"></span>
+   <span class="mdc-button__focus-ring"></span>
    <span class="mdc-button__label">Text Button</span>
 </button>
 ```
@@ -87,8 +89,9 @@ To meet this requirement, add the following to your button:
 <img src="images/text-icon-button.png" alt="Text button with bookmark icon example">
 
 ```html
-<button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+<button class="mdc-button mdc-button--icon-leading">
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
   >
@@ -107,7 +110,8 @@ To meet this requirement, add the following to your button:
 
 ```html
 <button class="mdc-button mdc-button--outlined">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <span class="mdc-button__label">Outlined Button</span>
 </button>
 ```
@@ -117,8 +121,9 @@ To meet this requirement, add the following to your button:
 <img src="images/outlined-icon-button.png" alt="Outlined button with bookmark icon">
 
 ```html
-<button class="mdc-button mdc-button--outlined">
-  <div class="mdc-button__ripple"></div>
+<button class="mdc-button mdc-button--outlined mdc-button--icon-leading">
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">bookmark</i>
   <span class="mdc-button__label">Outlined Button plus Icon</span>
 </button>
@@ -128,12 +133,14 @@ To meet this requirement, add the following to your button:
 
 [Contained buttons](https://material.io/components/buttons/#contained-button) are high-emphasis, distinguished by their use of elevation and fill. They contain actions that are primary to your app.
 
-#### Contained button example
+### Contained button example
 
 <img src="images/contained-button.png" alt="Contained button example">
 
 ```html
 <button class="mdc-button mdc-button--raised">
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <span class="mdc-button__label">Contained Button</span>
 </button>
 ```
@@ -146,8 +153,9 @@ and `mdc-button--unelevated` is applied for a contained button flush with the su
 <img src="images/contained-icon-button.png" alt="Contained button with a bookmark icon">
 
 ```html
-<button class="mdc-button mdc-button--raised">
-  <div class="mdc-button__ripple"></div>
+<button class="mdc-button mdc-button--raised mdc-button--icon-leading">
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
   >
@@ -192,7 +200,8 @@ To add an icon, add an element with the `mdc-button__icon` class inside the butt
 
 ```html
 <button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
   <span class="mdc-button__label">Button</span>
 </button>
@@ -202,7 +211,8 @@ It's also possible to use an SVG icon:
 
 ```html
 <button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <svg class="mdc-button__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
@@ -216,8 +226,9 @@ Certain icons make more sense to appear after the button's text label rather tha
 putting the icon markup _after_ the `mdc-button__label` element.
 
 ```html
-<button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+<button class="mdc-button mdc-button--icon-trailing">
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <span class="mdc-button__label">Button</span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
 </button>
@@ -232,7 +243,8 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 
 ```html
 <button class="mdc-button" disabled>
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <span class="mdc-button__label">Button</span>
 </button>
 ```
@@ -261,8 +273,6 @@ the `custom-text-button` and `custom-outlined-button` classes to your buttons:
 ```scss
 @use "@material/button";
 
-@include button.core-styles;
-
 .custom-text-button,
 .custom-outlined-button {
   @include button.ink-color(#84565E);
@@ -276,8 +286,6 @@ across the app, you can also use CSS custom properties:
 
 ```scss
 @use "@material/button";
-
-@include button.core-styles;
 
 .custom-text-button,
 .custom-outlined-button {
@@ -302,14 +310,16 @@ CSS Class | Description
 `mdc-button--raised` | Optional. Styles a contained button that is elevated above the surface.
 `mdc-button--unelevated` | Optional. Styles a contained button that is flush with the surface.
 `mdc-button--outlined` | Optional. Styles an outlined button that is flush with the surface.
+`mdc-button--icon-leading` | Optional. Styles a button with a leading icon.
+`mdc-button--icon-trailing` | Optional. Styles a button with a trailing icon.
 `mdc-button__label` | Recommended.\* Indicates the element containing the button's text label.
 `mdc-button__icon` | Optional. Indicates the element containing the button's icon.
+`mdc-button__focus-ring` | Recommended. Indicates the element which shows the high contrast mode focus ring styling.
 
 **Note: The `mdc-button__label` element is required for buttons with a trailing icon, but it is currently optional for
  buttons with no icon or a leading icon. In the latter cases, it is acceptable for the text label to simply exist
  directly within the `mdc-button` element.<br>
- However, the `mdc-button__label` class may become mandatory for all cases in the future so we recommended to
- always include it.**
+ However, the `mdc-button__label` class may become mandatory for all cases in the future so we recommend always including it.**
 
 ### Sass mixins
 
@@ -329,16 +339,12 @@ These mixins will override the color of the container, ink, outline or ripple. I
 
 Mixin | Description
 --- | ---
-`container-fill-color($color)` | Sets the container fill color to the given color for an enabled button.
-`disabled-container-fill-color($color)` | Sets the container fill color to the given color for a disabled button.
-`icon-color($color)` | Sets the icon color to the given color for an enabled button.
-`disabled-icon-color($color)` | Sets the icon color to the given color for a disabled button.
-`ink-color($color)` | Sets the ink color to the given color for an enabled button, and sets the icon color to the given color unless `icon-color` is also used.
-`disabled-ink-color($color)` | Sets the ink color to the given color for a disabled button, and sets the icon color to the given color unless `icon-color` is also used.
+`container-fill-color($color-or-map)` | If a color is passed, sets the default container fill color to the given color. If a map is passed whose keys are in the set {default, hover, focus, pressed, disabled}, sets the color in each specified state to its corresponding value.
+`icon-color($color-or-map)` | If a color is passed, sets the default icon color to the given color. If a map is passed whose keys are in the set {default, hover, focus, pressed, disabled}, sets the color in each specified state to its corresponding value.
+`ink-color($color-or-map)` | If a color is passed, sets the default ink color to the given color, and sets the icon color to the given color unless `icon-color` is also used. If a map is passed whose keys are in the set {default, hover, focus, pressed, disabled}, sets the color in each specified state to its corresponding value.
 `density($density-scale)` | Sets density scale for button. Supported density scale values (`-3`, `-2`, `-1`, `0`).
 `height($height)` | Sets custom height for button.
 `shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets rounded shape to button with given radius size. `$density-scale` is only required when `$radius` value is in percentage unit, defaults to `$density-default-scale`. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `horizontal-padding($padding)` | Sets horizontal padding to the given number.
-`outline-color($color)` | Sets the outline color to the given color for an enabled button.
-`disabled-outline-color($color)` | Sets the outline color to the given color for a disabled button.
+`outline-color($color-or-map)` | If a color is passed, sets the default outline color to the given color. If a map is passed whose keys are in the set {default, hover, focus, pressed, disabled}, sets the color in each specified state to its corresponding value.
 `outline-width($width, $padding)` | Sets the outline width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `$horizontal-padding` is also included with a custom value.

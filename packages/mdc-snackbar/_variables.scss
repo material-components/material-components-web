@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2022 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,37 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use 'sass:color';
-@use '@material/theme/theme-color';
-
-$fill-color: color.mix(
-  theme-color.prop-value(on-surface),
-  theme-color.prop-value(surface),
-  80%
-) !default;
-$label-ink-color: rgba(
-  theme-color.prop-value(surface),
-  theme-color.text-emphasis(high)
-) !default;
-$action-ink-color: #bb86fc !default;
-$dismiss-ink-color: rgba(
-  theme-color.prop-value(surface),
-  theme-color.text-emphasis(high)
-) !default;
-
-$label-type-scale: body2 !default;
-$dismiss-icon-size: 18px !default;
-$min-width: 344px !default;
-$max-width: 672px !default;
-$mobile-breakpoint: 480px !default;
-$viewport-margin-narrow: 8px !default;
-$viewport-margin-wide: 24px !default;
-$padding: 8px !default;
-
-$elevation: 6 !default;
-$shape-radius: small !default; // Key from shape.$category-keywords or CSS length value (e.g., 4px)
-$z-index: 8 !default; // One above mdc-dialog
-
-// These variables need to be kept in sync with the values in constants.js.
-$enter-duration: 150ms !default;
-$exit-duration: 75ms !default;
+/// @deprecated Import './snackbar-theme' module instead.
+@forward './snackbar-theme' show $fill-color, $label-ink-color, $action-ink-color, $dismiss-ink-color, $label-type-scale, $dismiss-icon-size, $dismiss-button-size, $min-width, $max-width, $mobile-breakpoint, $viewport-margin-narrow, $viewport-margin-wide, $padding, $elevation, $shape-radius, $z-index, $enter-duration, $exit-duration;

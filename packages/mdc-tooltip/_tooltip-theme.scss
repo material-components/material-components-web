@@ -21,8 +21,10 @@
 //
 
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
+// Internal styling for Tooltip MDC component.
 
+@use '@material/animation/functions' as animation-functions;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
@@ -33,6 +35,16 @@
 $background-color: rgba(black, theme-color.text-emphasis(medium));
 $border-radius: small;
 $label-color: text-primary-on-dark;
+
+$enter-duration: 150ms;
+$exit-duration: 75ms;
+
+// Rich Tooltip variables
+$rich-background-color: theme-color.prop-value(surface);
+$rich-title-text-color: text-primary-on-light;
+$rich-content-text-color: rgba(black, theme-color.text-emphasis(medium));
+$rich-content-link-color: primary;
+
 // Use a custom property so IE11 does not use "normal" and instead uses provided
 // fall-back value.
 $word-break-custom-prop: custom-properties.create(
@@ -41,15 +53,36 @@ $word-break-custom-prop: custom-properties.create(
 );
 $word-break-default: custom-properties.create-var($word-break-custom-prop);
 $word-break-ie11-fallback: break-all;
-$z-index: 2;
+$z-index: 9;
 
-// Sets the border-radius for the tooltip element.
+// Sets the border-radius for the tooltip surface and tooltip caret element.
 // @param {Number | String} $radius Desired border radius value, accepts either
 //   a shape category or number value. $radius can be a singel value, or a
 //   list of up to 4 values.
 // @param {Boolean} $rtl-reflexive [false] If a rule should be created for a
 //    flipped $radius for a RTL layout.
 @mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  .mdc-tooltip__surface {
+    @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+  }
+
+  .mdc-tooltip__caret-surface-top,
+  .mdc-tooltip__caret-surface-bottom {
+    @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+  }
+}
+
+// Sets the border-radius for the tooltip surface element only.
+// @param {Number | String} $radius Desired border radius value, accepts either
+//   a shape category or number value. $radius can be a singel value, or a
+//   list of up to 4 values.
+// @param {Boolean} $rtl-reflexive [false] If a rule should be created for a
+//    flipped $radius for a RTL layout.
+@mixin surface-shape-radius(
   $radius,
   $rtl-reflexive: false,
   $query: feature-targeting.all()
@@ -91,7 +124,42 @@ $z-index: 2;
   $feat-color: feature-targeting.create-target($query, color);
   @include feature-targeting.targets($feat-color) {
     .mdc-tooltip__surface {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+// Sets the color of the text for the content inside a rich tooltip.
+// @param {Color | String} $title-color The color for the title of rich
+//   tooltips.
+// @param {Color | String} $content-color The color for the text in the content
+//   of rich tooltips.
+// @param {Color | String} $content-link-color The color for a link in the
+//   content of rich tooltips.
+@mixin rich-text-ink-color(
+  $title-color: null,
+  $content-color: null,
+  $content-link-color: null,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+  @include feature-targeting.targets($feat-color) {
+    @if $title-color {
+      .mdc-tooltip__title {
+        @include theme.property(color, $title-color);
+      }
+    }
+
+    @if $content-color {
+      .mdc-tooltip__content {
+        @include theme.property(color, $content-color);
+      }
+    }
+
+    @if $content-link-color {
+      .mdc-tooltip__content-link {
+        @include theme.property(color, $content-link-color);
+      }
     }
   }
 }
@@ -102,7 +170,41 @@ $z-index: 2;
   $feat-color: feature-targeting.create-target($query, color);
   .mdc-tooltip__surface {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
+    }
+  }
+}
+
+// Sets the fill/surface color of the rich tooltip.
+// @param {Color | String} $color
+@mixin rich-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  &.mdc-tooltip--rich {
+    .mdc-tooltip__surface {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(background-color, $color);
+      }
+    }
+
+    .mdc-tooltip__caret-surface-top,
+    .mdc-tooltip__caret-surface-bottom {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(background-color, $color);
+      }
+    }
+  }
+}
+
+// Sets the max-height of the rich tooltip.
+// @param {Number} $max-height
+@mixin rich-max-height($max-height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  &.mdc-tooltip--rich {
+    .mdc-tooltip__surface {
+      @include feature-targeting.targets($feat-structure) {
+        @include theme.property(max-height, $max-height);
+      }
     }
   }
 }
@@ -113,8 +215,44 @@ $z-index: 2;
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    .mdc-tooltip {
+    &.mdc-tooltip {
       z-index: $z-index;
     }
+  }
+}
+
+// Sets the duration for the animation that shows the tooltip.
+// @param {Number} $enter-duration
+@mixin show-transition($enter-duration, $query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    .mdc-tooltip--showing-transition .mdc-tooltip__surface-animation {
+      transition: animation-functions.enter(opacity, $enter-duration),
+        animation-functions.enter(transform, $enter-duration);
+    }
+  }
+}
+
+// Sets the duration for the animation that hides the tooltip.
+// @param {Number} $exit-duration
+@mixin hide-transition($exit-duration, $query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    .mdc-tooltip--hide-transition .mdc-tooltip__surface-animation {
+      transition: animation-functions.exit-permanent(opacity, $exit-duration);
+    }
+  }
+}
+
+// Set the number of lines visible on a plain tooltip before being truncated.
+// @param {Number} $num-line-clamp
+@mixin line-clamp($num-line-clamp, $tooltip-surface-color: $background-color) {
+  .mdc-tooltip__label {
+    display: -webkit-box;
+    -webkit-line-clamp: $num-line-clamp;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }

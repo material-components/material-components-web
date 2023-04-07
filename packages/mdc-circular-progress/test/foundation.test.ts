@@ -145,20 +145,24 @@ describe('MDCCircularProgressFoundation', () => {
     expect(mockAdapter.setAttribute).not.toHaveBeenCalled();
   });
 
-  it('#open removes class', () => {
+  it('#open removes class and aria-hidden', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.init();
     foundation.open();
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
+    expect(mockAdapter.removeAttribute)
+        .toHaveBeenCalledWith(strings.ARIA_HIDDEN);
     expect(foundation.isClosed()).toBe(false);
   });
 
-  it('#close adds class', () => {
+  it('#close adds class and aria-hidden', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.init();
     foundation.close();
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
+    expect(mockAdapter.setAttribute)
+        .toHaveBeenCalledWith(strings.ARIA_HIDDEN, 'true');
     expect(foundation.isClosed()).toBe(true);
   });
 });

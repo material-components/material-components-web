@@ -23,12 +23,15 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCProgressIndicator} from '@material/progress-indicator/component';
+
 import {MDCLinearProgressAdapter} from './adapter';
 import {MDCLinearProgressFoundation} from './foundation';
+import {WithMDCResizeObserver} from './types';
 
+/** MDC Linear Progress */
 export class MDCLinearProgress extends
     MDCComponent<MDCLinearProgressFoundation> implements MDCProgressIndicator {
-  static attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCLinearProgress(root);
   }
 
@@ -44,10 +47,6 @@ export class MDCLinearProgress extends
     this.foundation.setBuffer(value);
   }
 
-  set reverse(value: boolean) {
-    this.foundation.setReverse(value);
-  }
-
   open() {
     this.foundation.open();
   }
@@ -56,13 +55,13 @@ export class MDCLinearProgress extends
     this.foundation.close();
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.root.addEventListener('transitionend', () => {
       this.foundation.handleTransitionEnd();
     });
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
@@ -95,21 +94,22 @@ export class MDCLinearProgress extends
         this.root.classList.remove(className);
       },
       setAttribute: (attributeName: string, value: string) => {
-        this.root.setAttribute(attributeName, value);
+        this.safeSetAttribute(this.root, attributeName, value);
       },
       setStyle: (name: string, value: string) => {
-        (this.root as HTMLElement).style.setProperty(name, value);
+        this.root.style.setProperty(name, value);
       },
-      attachResizeObserver: (callback: ResizeObserverCallback) => {
-        if (window.ResizeObserver) {
-          const ro = new ResizeObserver(callback);
+      attachResizeObserver: (callback) => {
+        const RO = (window as unknown as WithMDCResizeObserver).ResizeObserver;
+        if (RO) {
+          const ro = new RO(callback);
           ro.observe(this.root);
           return ro;
         }
 
         return null;
       },
-      getWidth: () => (this.root as HTMLElement).offsetWidth,
+      getWidth: () => this.root.offsetWidth,
     };
     return new MDCLinearProgressFoundation(adapter);
   }

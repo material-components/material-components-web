@@ -18,11 +18,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
 @use 'sass:list';
 @use 'sass:map';
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom-mixins;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
@@ -34,46 +37,58 @@
 @use '@material/theme/theme-color';
 @use './evolution-mixins';
 
-//
-// Public
-//
-
-@mixin core-styles($query: feature-targeting.all()) {
-  @include without-ripple($query);
-  @include ripple($query);
+@mixin deprecated-core-styles($query: feature-targeting.all()) {
+  @include deprecated-without-ripple($query);
+  @include deprecated-ripple($query);
 }
 
-// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
-// list styles. It is recommended that most users use `mdc-list-core-styles` instead.
-@mixin without-ripple($query: feature-targeting.all()) {
+// This API is intended for use by frameworks that may want to separate the
+// ripple-related styles from the other list styles. It is recommended that most
+// users use `mdc-deprecated-list-core-styles` instead.
+@mixin deprecated-without-ripple($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
 
   $divider-color: if(
     theme-color.tone(theme-color.$background) == 'dark',
-    variables.$divider-color-on-dark-bg,
-    variables.$divider-color-on-light-bg
+    variables.$deprecated-divider-color-on-dark-bg,
+    variables.$deprecated-divider-color-on-light-bg
   );
 
-  .mdc-list {
-    @include base_($query);
+  .mdc-deprecated-list {
+    @include deprecated-base_($query);
   }
 
-  @include single-line-density(
-    variables.$single-line-density-scale,
+  @include deprecated-single-line-density(
+    variables.$deprecated-single-line-density-scale,
     $query: $query
   );
-  @include item-secondary-text-ink-color(text-secondary-on-background, $query);
-  @include item-graphic-fill-color(transparent, $query);
-  @include item-graphic-ink-color(text-icon-on-background, $query);
-  @include item-meta-ink-color(text-hint-on-background, $query);
-  @include group-subheader-ink-color(text-primary-on-background, $query);
-  @include item-disabled-text-opacity(variables.$text-disabled-opacity, $query);
-  @include item-disabled-text-color(variables.$text-disabled-color, $query);
-  @include item-selected-text-color(variables.$text-selected-color, $query);
+  @include deprecated-item-secondary-text-ink-color(
+    text-secondary-on-background,
+    $query
+  );
+  @include deprecated-item-graphic-fill-color(transparent, $query);
+  @include deprecated-item-graphic-ink-color(text-icon-on-background, $query);
+  @include deprecated-item-meta-ink-color(text-hint-on-background, $query);
+  @include deprecated-group-subheader-ink-color(
+    text-primary-on-background,
+    $query
+  );
+  @include deprecated-item-disabled-text-opacity(
+    variables.$deprecated-text-disabled-opacity,
+    $query
+  );
+  @include deprecated-item-disabled-text-color(
+    variables.$deprecated-text-disabled-color,
+    $query
+  );
+  @include deprecated-item-selected-text-color(
+    variables.$deprecated-text-selected-color,
+    $query
+  );
 
-  .mdc-list--dense {
+  .mdc-deprecated-list--dense {
     @include feature-targeting.targets($feat-structure) {
       padding-top: 4px;
       padding-bottom: 4px;
@@ -81,19 +96,25 @@
     }
   }
 
-  .mdc-list-item {
+  .mdc-deprecated-list-item__wrapper {
     @include feature-targeting.targets($feat-structure) {
-      @include item-base_;
+      display: block;
+    }
+  }
+
+  .mdc-deprecated-list-item {
+    @include feature-targeting.targets($feat-structure) {
+      @include deprecated-item-base_;
     }
 
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
-    &:not(.mdc-list-item--selected):focus::before,
+    &:not(.mdc-deprecated-list-item--selected):focus::before,
     &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
 
-    &.mdc-list-item--selected::before {
+    &.mdc-deprecated-list-item--selected::before {
       @include dom-mixins.transparent-border(
         $border-width: 3px,
         $border-style: double,
@@ -101,63 +122,66 @@
       );
     }
 
-    @include list-item-padding-variant(
-      variables.$textual-variant-config,
+    @include deprecated-list-item-padding-variant(
+      variables.$deprecated-textual-variant-config,
       $query
     );
-    @include list-item-height-variant(
-      variables.$textual-variant-config,
+    @include deprecated-list-item-height-variant(
+      variables.$deprecated-textual-variant-config,
       $query
     );
 
-    .mdc-list--icon-list & {
-      @include list-item-padding-variant(
-        variables.$icon-variant-config,
+    .mdc-deprecated-list--icon-list & {
+      @include deprecated-list-item-padding-variant(
+        variables.$deprecated-icon-variant-config,
         $query
       );
-      @include list-item-height-variant(variables.$icon-variant-config, $query);
-    }
-
-    .mdc-list--avatar-list & {
-      @include list-item-padding-variant(
-        variables.$avatar-variant-config,
-        $query
-      );
-      @include list-item-height-variant(
-        variables.$avatar-variant-config,
+      @include deprecated-list-item-height-variant(
+        variables.$deprecated-icon-variant-config,
         $query
       );
     }
 
-    .mdc-list--thumbnail-list & {
-      @include list-item-padding-variant(
-        variables.$thumbnail-variant-config,
+    .mdc-deprecated-list--avatar-list & {
+      @include deprecated-list-item-padding-variant(
+        variables.$deprecated-avatar-variant-config,
         $query
       );
-      @include list-item-height-variant(
-        variables.$thumbnail-variant-config,
-        $query
-      );
-    }
-
-    .mdc-list--image-list & {
-      @include list-item-padding-variant(
-        variables.$image-variant-config,
-        $query
-      );
-      @include list-item-height-variant(
-        variables.$image-variant-config,
+      @include deprecated-list-item-height-variant(
+        variables.$deprecated-avatar-variant-config,
         $query
       );
     }
 
-    .mdc-list--video-list & {
-      @include list-item-padding-variant(
-        variables.$video-variant-config,
+    .mdc-deprecated-list--thumbnail-list & {
+      @include deprecated-list-item-padding-variant(
+        variables.$deprecated-thumbnail-variant-config,
         $query
       );
-      @include list-item-height-variant(
-        variables.$video-variant-config,
+      @include deprecated-list-item-height-variant(
+        variables.$deprecated-thumbnail-variant-config,
+        $query
+      );
+    }
+
+    .mdc-deprecated-list--image-list & {
+      @include deprecated-list-item-padding-variant(
+        variables.$deprecated-image-variant-config,
+        $query
+      );
+      @include deprecated-list-item-height-variant(
+        variables.$deprecated-image-variant-config,
+        $query
+      );
+    }
+
+    .mdc-deprecated-list--video-list & {
+      @include deprecated-list-item-padding-variant(
+        variables.$deprecated-video-variant-config,
+        $query
+      );
+      @include deprecated-list-item-height-variant(
+        variables.$deprecated-video-variant-config,
         $query
       );
     }
@@ -166,11 +190,11 @@
   // This is included here to preserve expected specificity behavior (avatar
   // graphic styles must take priority).
   // TODO(b/157038316): regroup this with density styles when nesting is fixed.
-  .mdc-list--dense .mdc-list-item__graphic {
-    @include graphic-size-dense_(20px, $query);
+  .mdc-deprecated-list--dense .mdc-deprecated-list-item__graphic {
+    @include deprecated-graphic-size-dense_(20px, $query);
   }
 
-  .mdc-list-item__graphic {
+  .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-structure) {
       flex-shrink: 0;
       align-items: center;
@@ -180,187 +204,210 @@
     }
 
     // TODO(b/156624966): this retains legacy spacing but should be updated.
-    @include graphic-size-variant(variables.$deprecated-graphic-config, $query);
+    @include deprecated-graphic-size-variant(
+      variables.$deprecated-deprecated-graphic-config,
+      $query
+    );
 
-    .mdc-list--icon-list & {
-      @include graphic-size-variant(variables.$icon-variant-config, $query);
+    .mdc-deprecated-list--icon-list & {
+      @include deprecated-graphic-size-variant(
+        variables.$deprecated-icon-variant-config,
+        $query
+      );
     }
 
-    .mdc-list--avatar-list & {
-      @include graphic-size-variant(variables.$avatar-variant-config, $query);
+    .mdc-deprecated-list--avatar-list & {
+      @include deprecated-graphic-size-variant(
+        variables.$deprecated-avatar-variant-config,
+        $query
+      );
       @include feature-targeting.targets($feat-structure) {
         border-radius: 50%;
       }
     }
 
-    .mdc-list--thumbnail-list & {
-      @include graphic-size-variant(
-        variables.$thumbnail-variant-config,
+    .mdc-deprecated-list--thumbnail-list & {
+      @include deprecated-graphic-size-variant(
+        variables.$deprecated-thumbnail-variant-config,
         $query
       );
     }
 
-    .mdc-list--image-list & {
-      @include graphic-size-variant(variables.$image-variant-config, $query);
+    .mdc-deprecated-list--image-list & {
+      @include deprecated-graphic-size-variant(
+        variables.$deprecated-image-variant-config,
+        $query
+      );
     }
 
-    .mdc-list--video-list & {
-      @include graphic-size-variant(variables.$video-variant-config, $query);
+    .mdc-deprecated-list--video-list & {
+      @include deprecated-graphic-size-variant(
+        variables.$deprecated-video-variant-config,
+        $query
+      );
     }
   }
 
   // Extra specificity is to override .material-icons display style if used in
-  // conjunction with mdc-list-item__graphic
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list .mdc-list-item__graphic {
+  // conjunction with mdc-deprecated-list-item__graphic
+  .mdc-deprecated-list .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
     }
   }
-  // stylelint-enable plugin/selector-bem-pattern
 
-  .mdc-list-item__meta {
-    // stylelint-disable selector-class-pattern
+  .mdc-deprecated-list-item__meta {
     &:not(.material-icons) {
       @include typography.typography(caption, $query);
     }
-    // stylelint-enable selector-class-pattern
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, auto, 0, '.mdc-list-item');
+      @include rtl.ignore-next-line();
+      margin-left: auto;
+      @include rtl.ignore-next-line();
+      margin-right: 0;
+
+      @at-root {
+        .mdc-deprecated-list-item[dir='rtl'] &,
+        [dir='rtl'] .mdc-deprecated-list-item & {
+          @include rtl.ignore-next-line();
+          margin-left: 0;
+          @include rtl.ignore-next-line();
+          margin-right: auto;
+        }
+      }
     }
   }
 
-  .mdc-list-item__text {
+  .mdc-deprecated-list-item__text {
     @include typography.overflow-ellipsis($query);
   }
 
   // Disable interaction on label elements that may automatically
   // toggle corresponding checkbox / radio input.
-  .mdc-list-item__text[for] {
+  .mdc-deprecated-list-item__text[for] {
     @include feature-targeting.targets($feat-structure) {
       pointer-events: none;
     }
   }
 
-  .mdc-list-item__primary-text {
+  .mdc-deprecated-list-item__primary-text {
     @include typography.overflow-ellipsis($query);
     @include typography.text-baseline(
-      $top: variables.$item-primary-text-baseline-height,
-      $bottom: variables.$item-secondary-text-baseline-height,
+      $top: variables.$deprecated-item-primary-text-baseline-height,
+      $bottom: variables.$deprecated-item-secondary-text-baseline-height,
       $display: block,
       $query: $query
     );
 
-    .mdc-list--video-list &,
-    .mdc-list--image-list &,
-    .mdc-list--thumbnail-list &,
-    .mdc-list--avatar-list &,
-    .mdc-list--icon-list & {
+    .mdc-deprecated-list--video-list &,
+    .mdc-deprecated-list--image-list &,
+    .mdc-deprecated-list--thumbnail-list &,
+    .mdc-deprecated-list--avatar-list &,
+    .mdc-deprecated-list--icon-list & {
       @include typography.text-baseline(
-        $top: variables.$item-primary-text-baseline-height-with-graphic,
-        $bottom: variables.$item-secondary-text-baseline-height,
+        $top:
+          variables.$deprecated-item-primary-text-baseline-height-with-graphic,
+        $bottom: variables.$deprecated-item-secondary-text-baseline-height,
         $query: $query
       );
     }
 
-    // stylelint-disable plugin/selector-bem-pattern
-    .mdc-list--dense & {
+    .mdc-deprecated-list--dense & {
       @include typography.text-baseline(
-        $top: variables.$dense-item-primary-text-baseline-height,
-        $bottom: variables.$item-secondary-text-baseline-height,
+        $top: variables.$deprecated-dense-item-primary-text-baseline-height,
+        $bottom: variables.$deprecated-item-secondary-text-baseline-height,
         $query: $query
       );
     }
-    // stylelint-enable plugin/selector-bem-pattern
   }
 
-  .mdc-list-item__secondary-text {
+  .mdc-deprecated-list-item__secondary-text {
     @include typography.typography(body2, $query);
     @include typography.overflow-ellipsis($query);
     @include typography.text-baseline(
-      $top: variables.$item-secondary-text-baseline-height,
+      $top: variables.$deprecated-item-secondary-text-baseline-height,
       $display: block,
       $query: $query
     );
 
-    // stylelint-disable plugin/selector-bem-pattern
-    .mdc-list--dense & {
+    .mdc-deprecated-list--dense & {
       @include feature-targeting.targets($feat-structure) {
         font-size: inherit;
       }
     }
-    // stylelint-enable plugin/selector-bem-pattern
   }
 
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list--dense .mdc-list-item {
+  .mdc-deprecated-list--dense .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       height: 40px;
     }
   }
 
-  .mdc-list--two-line .mdc-list-item__text {
+  .mdc-deprecated-list--two-line .mdc-deprecated-list-item__text {
     @include feature-targeting.targets($feat-structure) {
       align-self: flex-start;
     }
   }
 
-  .mdc-list--two-line {
-    .mdc-list-item {
+  .mdc-deprecated-list--two-line {
+    .mdc-deprecated-list-item {
       @include feature-targeting.targets($feat-structure) {
-        height: variables.$two-line-height;
+        height: variables.$deprecated-two-line-height;
       }
     }
 
-    &.mdc-list--video-list .mdc-list-item,
-    &.mdc-list--image-list .mdc-list-item,
-    &.mdc-list--thumbnail-list .mdc-list-item,
-    &.mdc-list--avatar-list .mdc-list-item,
-    &.mdc-list--icon-list .mdc-list-item {
+    &.mdc-deprecated-list--video-list .mdc-deprecated-list-item,
+    &.mdc-deprecated-list--image-list .mdc-deprecated-list-item,
+    &.mdc-deprecated-list--thumbnail-list .mdc-deprecated-list-item,
+    &.mdc-deprecated-list--avatar-list .mdc-deprecated-list-item,
+    &.mdc-deprecated-list--icon-list .mdc-deprecated-list-item {
       @include feature-targeting.targets($feat-structure) {
-        height: variables.$two-line-graphic-height;
+        height: variables.$deprecated-two-line-graphic-height;
       }
     }
 
     // Icons in multiline lists are the only graphic that isn't centered.
-    &.mdc-list--icon-list .mdc-list-item__graphic {
+    &.mdc-deprecated-list--icon-list .mdc-deprecated-list-item__graphic {
       @include feature-targeting.targets($feat-structure) {
         align-self: flex-start;
-        margin-top: variables.$two-line-icon-top-margin;
+        margin-top: variables.$deprecated-two-line-icon-top-margin;
       }
     }
   }
 
-  .mdc-list--two-line.mdc-list--dense .mdc-list-item,
-  .mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
+  .mdc-deprecated-list--two-line.mdc-deprecated-list--dense
+    .mdc-deprecated-list-item,
+  .mdc-deprecated-list--avatar-list.mdc-deprecated-list--dense
+    .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       height: 60px;
     }
   }
 
-  .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
-    @include graphic-size-dense_(36px, $query);
+  .mdc-deprecated-list--avatar-list.mdc-deprecated-list--dense
+    .mdc-deprecated-list-item__graphic {
+    @include deprecated-graphic-size-dense_(36px, $query);
   }
 
   // Only change mouse cursor for list items which are not disabled.
-  :not(.mdc-list-item--disabled).mdc-list-item {
+  :not(.mdc-deprecated-list-item--disabled).mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
     }
   }
 
+  // stylelint-disable selector-max-type --
   // Override anchor tag styles for the use-case of a list being used for navigation
-  // stylelint-disable selector-max-type,selector-no-qualifying-type
-  a.mdc-list-item {
+  a.mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       color: inherit;
       text-decoration: none;
     }
   }
-  // stylelint-enable selector-max-type,selector-no-qualifying-type
+  // stylelint-enable selector-max-type
 
-  .mdc-list-divider {
+  .mdc-deprecated-list-divider {
     @include feature-targeting.targets($feat-structure) {
       height: 0;
       margin: 0;
@@ -370,15 +417,16 @@
     }
   }
 
-  // Note: ideally we'd be able to hoist this to the top-level `$feat-color`, but doing so
-  // will cause the `border` declaration on `.mdc-list-divider` above to override it.
-  @include divider-color($divider-color, $query);
+  // Note: ideally we'd be able to hoist this to the top-level `$feat-color`,
+  // but doing so will cause the `border` declaration on
+  // `.mdc-deprecated-list-divider` above to override it.
+  @include deprecated-divider-color($divider-color, $query);
 
   // Deprecated. Use the specialized inset classes instead.
   // Items are fully inset using padding.
-  .mdc-list-divider--padded {
-    @include divider-inset-variant(
-      variables.$textual-variant-config,
+  .mdc-deprecated-list-divider--padded {
+    @include deprecated-divider-inset-variant(
+      variables.$deprecated-textual-variant-config,
       $use-padding: true,
       $query: $query
     );
@@ -387,9 +435,9 @@
   // Deprecated. Use the specialized inset classes instead.
   // Items's leading, but not trailing, edge is inset to account for *avatar*
   // width.
-  .mdc-list-divider--inset {
-    @include divider-inset-variant(
-      variables.$avatar-variant-config,
+  .mdc-deprecated-list-divider--inset {
+    @include deprecated-divider-inset-variant(
+      variables.$deprecated-avatar-variant-config,
       $trailing: false,
       $query: $query
     );
@@ -397,79 +445,78 @@
 
   // Deprecated. Use the specialized inset classes instead.
   // Item's leading and trailing edges are inset to account for *avatar* width.
-  .mdc-list-divider--inset.mdc-list-divider--padded {
-    @include divider-inset-variant(
-      variables.$avatar-variant-config,
+  .mdc-deprecated-list-divider--inset.mdc-deprecated-list-divider--padded {
+    @include deprecated-divider-inset-variant(
+      variables.$deprecated-avatar-variant-config,
       $query: $query
     );
   }
 
-  .mdc-list {
-    @include divider-insets-variant(
-      variables.$textual-variant-config,
+  .mdc-deprecated-list {
+    @include deprecated-divider-insets-variant(
+      variables.$deprecated-textual-variant-config,
       $query: $query
     );
   }
 
-  .mdc-list--icon-list {
-    @include divider-insets-variant(
-      variables.$icon-variant-config,
+  .mdc-deprecated-list--icon-list {
+    @include deprecated-divider-insets-variant(
+      variables.$deprecated-icon-variant-config,
       $query: $query
     );
   }
 
-  .mdc-list--avatar-list {
-    @include divider-insets-variant(
-      variables.$avatar-variant-config,
+  .mdc-deprecated-list--avatar-list {
+    @include deprecated-divider-insets-variant(
+      variables.$deprecated-avatar-variant-config,
       $query: $query
     );
   }
 
-  .mdc-list--thumbnail-list {
-    @include divider-insets-variant(
-      variables.$thumbnail-variant-config,
+  .mdc-deprecated-list--thumbnail-list {
+    @include deprecated-divider-insets-variant(
+      variables.$deprecated-thumbnail-variant-config,
       $query: $query
     );
   }
 
-  .mdc-list--image-list {
-    @include divider-insets-variant(
-      variables.$image-variant-config,
+  .mdc-deprecated-list--image-list {
+    @include deprecated-divider-insets-variant(
+      variables.$deprecated-image-variant-config,
       $query: $query
     );
   }
 
-  .mdc-list--video-list {
-    @include divider-insets-variant(
-      variables.$video-variant-config,
+  .mdc-deprecated-list--video-list {
+    @include deprecated-divider-insets-variant(
+      variables.$deprecated-video-variant-config,
       $query: $query
     );
   }
 
-  .mdc-list-group {
+  .mdc-deprecated-list-group {
     @include feature-targeting.targets($feat-structure) {
       // Cancel top/bottom padding on individual lists within group
-      .mdc-list {
+      .mdc-deprecated-list {
         padding: 0;
       }
     }
   }
 
-  .mdc-list-group__subheader {
-    $mdc-list-subheader-virtual-height: 3rem;
-    $mdc-list-subheader-leading: map.get(
+  .mdc-deprecated-list-group__subheader {
+    $list-subheader-virtual-height: 3rem;
+    $list-subheader-leading: map.get(
       map.get(typography.$styles, body1),
       line-height
     );
-    $mdc-list-subheader-margin: calc(
-      (#{$mdc-list-subheader-virtual-height} - #{$mdc-list-subheader-leading}) /
-        2
+    $list-subheader-margin: calc(
+      (#{$list-subheader-virtual-height} - #{$list-subheader-leading}) / 2
     );
 
     @include typography.typography(subtitle1, $query);
 
     @include feature-targeting.targets($feat-structure) {
-      margin: $mdc-list-subheader-margin variables.$side-padding;
+      margin: $list-subheader-margin variables.$deprecated-side-padding;
     }
   }
 
@@ -477,37 +524,56 @@
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
-// list styles. It is recommended that most users use `mdc-list-core-styles` instead.
-@mixin ripple($query: feature-targeting.all()) {
+// list styles. It is recommended that most users use `mdc-deprecated-list-core-styles` instead.
+@mixin deprecated-ripple($query: feature-targeting.all()) {
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
-  :not(.mdc-list-item--disabled).mdc-list-item {
-    @include item-interactive-ripple_($query);
+  :not(.mdc-deprecated-list-item--disabled).mdc-deprecated-list-item {
+    @include deprecated-item-interactive-ripple_($query);
   }
 
   // Set styles only for focus state on disabled list item.
-  .mdc-list-item--disabled {
+  .mdc-deprecated-list-item--disabled {
     @include ripple.surface(
-      $ripple-target: variables.$ripple-target,
+      $ripple-target: variables.$deprecated-ripple-target,
+      $query: $query
+    );
+    @include ripple.surface(
+      $ripple-target: variables.$deprecated-temporary-ripple-target,
       $query: $query
     );
     @include ripple.radius-bounded(
-      $ripple-target: variables.$ripple-target,
+      $ripple-target: variables.$deprecated-ripple-target,
+      $query: $query
+    );
+    @include ripple.radius-bounded(
+      $ripple-target: variables.$deprecated-temporary-ripple-target,
       $query: $query
     );
     @include ripple-theme.states-base-color(
       theme-color.prop-value(on-surface),
-      $ripple-target: variables.$ripple-target,
+      $ripple-target: variables.$deprecated-ripple-target,
+      $query: $query
+    );
+    @include ripple-theme.states-base-color(
+      theme-color.prop-value(on-surface),
+      $ripple-target: variables.$deprecated-temporary-ripple-target,
       $query: $query
     );
     @include ripple-theme.states-focus-opacity(
       ripple-theme.states-opacity(primary, focus),
-      $ripple-target: variables.$ripple-target,
+      $ripple-target: variables.$deprecated-ripple-target,
+      $query: $query
+    );
+    @include ripple-theme.states-focus-opacity(
+      ripple-theme.states-opacity(primary, focus),
+      $ripple-target: variables.$deprecated-temporary-ripple-target,
       $query: $query
     );
 
-    #{variables.$ripple-target} {
+    #{variables.$deprecated-ripple-target},
+    #{variables.$deprecated-temporary-ripple-target} {
       @include ripple.target-common($query: $query);
     }
   }
@@ -518,70 +584,90 @@
 ///
 /// Sets ripple color for a list item.
 ///
-@mixin ripple-states($color, $query: feature-targeting.all()) {
+@mixin deprecated-ripple-states($color, $query: feature-targeting.all()) {
   @include ripple-theme.states(
     $color: $color,
     $query: $query,
-    $ripple-target: variables.$ripple-target
+    $ripple-target: variables.$deprecated-ripple-target
+  );
+  @include ripple-theme.states(
+    $color: $color,
+    $query: $query,
+    $ripple-target: variables.$deprecated-temporary-ripple-target
   );
 }
 
 /// Sets the text color of the list item in selected or activated state.
 /// @param {color} $color - The desired text color.
-@mixin item-selected-text-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-selected-text-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
-  .mdc-list-item--selected,
-  .mdc-list-item--activated {
-    @include item-primary-text-ink-color($color, $query: $query);
-    @include item-graphic-ink-color($color, $query: $query);
+  .mdc-deprecated-list-item--selected,
+  .mdc-deprecated-list-item--activated {
+    @include deprecated-item-primary-text-ink-color($color, $query: $query);
+    @include deprecated-item-graphic-ink-color($color, $query: $query);
   }
 }
 
-@mixin item-primary-text-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-primary-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme.prop(color, $color);
+    @include theme.property(color, $color);
   }
 }
 
-@mixin item-secondary-text-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-secondary-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item__secondary-text {
+  .mdc-deprecated-list-item__secondary-text {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
 
-@mixin item-graphic-fill-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-graphic-fill-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item__graphic {
+  .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }
 
-@mixin item-graphic-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-graphic-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item__graphic {
+  .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
 
-@mixin item-meta-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-meta-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item__meta {
+  .mdc-deprecated-list-item__meta {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -593,23 +679,23 @@
 ///     Set to `50%` for rounded shape.
 /// @param {Boolean} $rtl-reflexive Set to true to flip border radius in RTL context. Defaults to `false`.
 /// @param {Number} $density-scale Density scale of single line list. Set this only when custom density is applied.
-///     Defaults to `$mdc-list-single-line-density-scale`.
+///     Defaults to `$mdc-deprecated-list-single-line-density-scale`.
 ///
 /// @access public
 ///
-@mixin single-line-shape-radius(
+@mixin deprecated-single-line-shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $density-scale: variables.$single-line-density-scale,
+  $density-scale: variables.$deprecated-single-line-density-scale,
   $query: feature-targeting.all()
 ) {
   $height: density-functions.prop-value(
-    $density-config: variables.$single-line-density-config,
+    $density-config: variables.$deprecated-single-line-density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  .mdc-list-item {
+  .mdc-deprecated-list-item {
     @include shape-mixins.radius(
       $radius,
       $rtl-reflexive,
@@ -619,45 +705,54 @@
   }
 }
 
-@mixin divider-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-divider-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-divider {
+  .mdc-deprecated-list-divider {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-bottom-color, $color);
+      @include theme.property(border-bottom-color, $color);
     }
   }
 }
 
-@mixin group-subheader-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-group-subheader-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-group__subheader {
+  .mdc-deprecated-list-group__subheader {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
 
-@mixin item-disabled-text-opacity($opacity, $query: feature-targeting.all()) {
+@mixin deprecated-item-disabled-text-opacity(
+  $opacity,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item--disabled .mdc-list-item__text {
+  .mdc-deprecated-list-item--disabled .mdc-deprecated-list-item__text {
     @include feature-targeting.targets($feat-color) {
       opacity: $opacity;
     }
   }
 }
 
-@mixin item-disabled-text-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-disabled-text-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item--disabled {
-    .mdc-list-item__text,
-    .mdc-list-item__primary-text,
-    .mdc-list-item__secondary-text {
+  .mdc-deprecated-list-item--disabled {
+    .mdc-deprecated-list-item__text,
+    .mdc-deprecated-list-item__primary-text,
+    .mdc-deprecated-list-item__secondary-text {
       @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
@@ -670,12 +765,12 @@
 ///
 /// @access public
 ///
-@mixin list-item-padding-variant(
+@mixin deprecated-list-item-padding-variant(
   $variant-config,
   $query: feature-targeting.all()
 ) {
   $leading-padding: map.get($variant-config, leading-padding);
-  @include list-item-padding($leading-padding, $query);
+  @include deprecated-list-item-padding($leading-padding, $query);
 }
 
 ///
@@ -685,14 +780,17 @@
 ///
 /// @access public
 ///
-@mixin list-item-padding($leading-padding, $query: feature-targeting.all()) {
+@mixin deprecated-list-item-padding(
+  $leading-padding,
+  $query: feature-targeting.all()
+) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(
+    @include rtl.reflexive-property(
       padding,
       $leading-padding,
-      variables.$trailing-padding
+      variables.$deprecated-trailing-padding
     );
   }
 }
@@ -704,12 +802,12 @@
 ///
 /// @access public
 ///
-@mixin list-item-height-variant(
+@mixin deprecated-list-item-height-variant(
   $variant-config,
   $query: feature-targeting.all()
 ) {
   $single-line-height: map.get($variant-config, single-line-height);
-  @include list-item-height($single-line-height, $query);
+  @include deprecated-list-item-height($single-line-height, $query);
 }
 
 ///
@@ -719,7 +817,7 @@
 ///
 /// @access public
 ///
-@mixin list-item-height($height, $query: feature-targeting.all()) {
+@mixin deprecated-list-item-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
@@ -734,12 +832,12 @@
 ///
 /// @access public
 ///
-@mixin icon-margin($margin, $query: feature-targeting.all()) {
+@mixin deprecated-icon-margin($margin, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    .mdc-list-item__graphic {
-      @include rtl-mixins.reflexive-box(margin, right, $margin);
+    .mdc-deprecated-list-item__graphic {
+      @include rtl.reflexive-box(margin, right, $margin);
     }
   }
 }
@@ -751,13 +849,13 @@
 ///
 /// @access public
 ///
-@mixin divider-insets-variant(
+@mixin deprecated-divider-insets-variant(
   $variant-config,
   $query: feature-targeting.all()
 ) {
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
-  @include divider-insets($leading-padding, $text-offset, $query);
+  @include deprecated-divider-insets($leading-padding, $text-offset, $query);
 }
 
 ///
@@ -768,13 +866,13 @@
 ///
 /// @access public
 ///
-@mixin divider-insets(
+@mixin deprecated-divider-insets(
   $leading-padding,
   $text-offset,
   $query: feature-targeting.all()
 ) {
-  .mdc-list-divider--inset-leading {
-    @include divider-inset(
+  .mdc-deprecated-list-divider--inset-leading {
+    @include deprecated-divider-inset(
       $leading-padding,
       $text-offset,
       $trailing: false,
@@ -782,8 +880,8 @@
     );
   }
 
-  .mdc-list-divider--inset-trailing {
-    @include divider-inset(
+  .mdc-deprecated-list-divider--inset-trailing {
+    @include deprecated-divider-inset(
       $leading-padding,
       $text-offset,
       $leading: false,
@@ -791,12 +889,16 @@
     );
   }
 
-  .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing {
-    @include divider-inset($leading-padding, $text-offset, $query: $query);
+  .mdc-deprecated-list-divider--inset-leading.mdc-deprecated-list-divider--inset-trailing {
+    @include deprecated-divider-inset(
+      $leading-padding,
+      $text-offset,
+      $query: $query
+    );
   }
 
-  .mdc-list-divider--inset-leading.mdc-list-divider--padding {
-    @include divider-inset(
+  .mdc-deprecated-list-divider--inset-leading.mdc-deprecated-list-divider--padding {
+    @include deprecated-divider-inset(
       $leading-padding,
       $text-offset,
       $trailing: false,
@@ -805,8 +907,8 @@
     );
   }
 
-  .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing.mdc-list-divider--inset-padding {
-    @include divider-inset(
+  .mdc-deprecated-list-divider--inset-leading.mdc-deprecated-list-divider--inset-trailing.mdc-deprecated-list-divider--inset-padding {
+    @include deprecated-divider-inset(
       $leading-padding,
       $text-offset,
       $use-padding: true,
@@ -816,13 +918,16 @@
 }
 
 // Sets the width and height of the graphic element using a variant config.
-@mixin graphic-size-variant($variant-config, $query: feature-targeting.all()) {
+@mixin deprecated-graphic-size-variant(
+  $variant-config,
+  $query: feature-targeting.all()
+) {
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
   $width: map.get(map.get($variant-config, graphic-size), width);
   $height: map.get(map.get($variant-config, graphic-size), height);
 
-  @include graphic-size(
+  @include deprecated-graphic-size(
     $leading-padding,
     $text-offset,
     $width,
@@ -836,7 +941,7 @@
 // from the item's leading edge by 72px, which is defined within the spec. If
 // height isn't specified, the graphic is assumed to be square.
 // TODO(b/155397992): restructure to use symmetric margins.
-@mixin graphic-size(
+@mixin deprecated-graphic-size(
   $leading-padding,
   $text-offset,
   $width,
@@ -849,15 +954,15 @@
     $leading-padding
   );
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(margin, right, $margin-value);
+    @include rtl.reflexive-box(margin, right, $margin-value);
     width: $width;
     height: $height;
   }
 }
 
 // Deprecated. Supports legacy density styles.
-@mixin graphic-size-dense_($size, $query: feature-targeting.all()) {
-  @include graphic-size(
+@mixin deprecated-graphic-size-dense_($size, $query: feature-targeting.all()) {
+  @include deprecated-graphic-size(
     $leading-padding: 16px,
     $text-offset: 16px,
     $width: $size,
@@ -876,7 +981,7 @@
 ///
 /// @access private
 ///
-@mixin divider-inset-variant(
+@mixin deprecated-divider-inset-variant(
   $variant-config,
   $leading: true,
   $trailing: true,
@@ -886,7 +991,7 @@
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
 
-  @include divider-inset(
+  @include deprecated-divider-inset(
     $leading-padding,
     $text-offset,
     $leading,
@@ -896,7 +1001,7 @@
   );
 }
 
-@mixin divider-inset(
+@mixin deprecated-divider-inset(
   $leading-padding,
   $text-offset,
   $leading: true,
@@ -905,7 +1010,7 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $trailing-inset: if($trailing, variables.$trailing-padding, 0);
+  $trailing-inset: if($trailing, variables.$deprecated-trailing-padding, 0);
   $leading-inset: if(
     $leading,
     if($use-padding, $leading-padding, $text-offset),
@@ -914,7 +1019,7 @@
 
   @include feature-targeting.targets($feat-structure) {
     @if $leading {
-      @include rtl-mixins.reflexive-box(margin, left, $leading-inset);
+      @include rtl.reflexive-box(margin, left, $leading-inset);
     }
     width: calc(100% - #{$leading-inset + $trailing-inset});
   }
@@ -927,15 +1032,18 @@
 ///
 /// @access public
 ///
-@mixin single-line-density($density-scale, $query: feature-targeting.all()) {
+@mixin deprecated-single-line-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
   $height: density-functions.prop-value(
-    $density-config: variables.$single-line-density-config,
+    $density-config: variables.$deprecated-single-line-density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  .mdc-list-item {
-    @include single-line-height($height, $query: $query);
+  .mdc-deprecated-list-item {
+    @include deprecated-single-line-height($height, $query: $query);
   }
 }
 
@@ -946,7 +1054,7 @@
 ///
 /// @access public
 ///
-@mixin single-line-height($height, $query: feature-targeting.all()) {
+@mixin deprecated-single-line-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
@@ -958,7 +1066,7 @@
 // Private
 //
 
-@mixin base_($query: feature-targeting.all()) {
+@mixin deprecated-base_($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -982,10 +1090,13 @@
     }
   }
 
-  @include item-primary-text-ink-color(text-primary-on-background, $query);
+  @include deprecated-item-primary-text-ink-color(
+    text-primary-on-background,
+    $query
+  );
 }
 
-@mixin item-base_ {
+@mixin deprecated-item-base_ {
   display: flex;
   position: relative;
   align-items: center;
@@ -999,35 +1110,62 @@
 }
 
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
-@mixin item-interactive-ripple_($query: feature-targeting.all()) {
+@mixin deprecated-item-interactive-ripple_($query: feature-targeting.all()) {
   @include ripple.surface(
-    $ripple-target: variables.$ripple-target,
+    $ripple-target: variables.$deprecated-ripple-target,
+    $query: $query
+  );
+  @include ripple.surface(
+    $ripple-target: variables.$deprecated-temporary-ripple-target,
     $query: $query
   );
   @include ripple.radius-bounded(
-    $ripple-target: variables.$ripple-target,
+    $ripple-target: variables.$deprecated-ripple-target,
+    $query: $query
+  );
+  @include ripple.radius-bounded(
+    $ripple-target: variables.$deprecated-temporary-ripple-target,
     $query: $query
   );
   @include ripple-theme.states(
     theme-color.prop-value(on-surface),
     false,
-    $ripple-target: variables.$ripple-target,
+    $ripple-target: variables.$deprecated-ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states(
+    theme-color.prop-value(on-surface),
+    false,
+    $ripple-target: variables.$deprecated-temporary-ripple-target,
     $query: $query
   );
   @include ripple-theme.states-activated(
     primary,
     false,
-    $ripple-target: variables.$ripple-target,
+    $ripple-target: variables.$deprecated-ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states-activated(
+    primary,
+    false,
+    $ripple-target: variables.$deprecated-temporary-ripple-target,
     $query: $query
   );
   @include ripple-theme.states-selected(
     primary,
     false,
-    $ripple-target: variables.$ripple-target,
+    $ripple-target: variables.$deprecated-ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states-selected(
+    primary,
+    false,
+    $ripple-target: variables.$deprecated-temporary-ripple-target,
     $query: $query
   );
 
-  #{variables.$ripple-target} {
+  #{variables.$deprecated-ripple-target},
+  #{variables.$deprecated-temporary-ripple-target} {
     @include ripple.target-common($query: $query);
   }
 }

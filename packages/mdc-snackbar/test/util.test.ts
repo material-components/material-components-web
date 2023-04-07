@@ -21,31 +21,28 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {numbers, strings} from '../constants';
 import * as util from '../util';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 
 const {ARIA_LIVE_DELAY_MS} = numbers;
-const {ARIA_LIVE_LABEL_TEXT_ATTR} = strings;
+const {DATA_LIVE_LABEL_TEXT} = strings;
 
 describe('MDCSnackbar - util', () => {
   setUpMdcTestEnvironment();
 
   it('#announce temporarily disables ARIA attributes and then restores them',
      () => {
-       const wrapper = document.createElement('div');
-       wrapper.innerHTML = `
+       const fixture = createFixture(html`
         <div>
           <div class="aria" role="status" aria-live="polite">
             <div class="label"></div>
           </div>
-        </div>`;
-       const el = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(el);
-       const fixture = el;
+        </div>`);
 
-       const ariaEl = fixture.querySelector('.aria')!;
-       const labelEl = fixture.querySelector('.label')!;
+       const ariaEl = fixture.querySelector<HTMLElement>('.aria')!;
+       const labelEl = fixture.querySelector<HTMLElement>('.label')!;
 
        const labelText = 'Foo';
        labelEl.textContent = labelText;
@@ -64,44 +61,36 @@ describe('MDCSnackbar - util', () => {
 
   it('#announce prevents flicker by displaying label text on ::before pseudo-element and then removing it',
      () => {
-       const wrapper = document.createElement('div');
-       wrapper.innerHTML = `
+       const fixture = createFixture(`
         <div>
           <div class="aria" role="status" aria-live="polite">
             <div class="label"></div>
           </div>
-        </div>`;
-       const el = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(el);
-       const fixture = el;
+        </div>`);
 
-       const ariaEl = fixture.querySelector('.aria')!;
-       const labelEl = fixture.querySelector('.label')!;
+       const ariaEl = fixture.querySelector<HTMLElement>('.aria')!;
+       const labelEl = fixture.querySelector<HTMLElement>('.label')!;
 
        const labelText = 'Foo';
        labelEl.textContent = labelText;
 
        util.announce(ariaEl, labelEl);
 
-       expect(labelEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR))
+       expect(labelEl.dataset[DATA_LIVE_LABEL_TEXT])
            .toEqual(labelText);
 
        jasmine.clock().tick(ARIA_LIVE_DELAY_MS);
 
-       expect(labelEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR)).toEqual(null);
+       expect(labelEl.dataset[DATA_LIVE_LABEL_TEXT]).toBeUndefined();
      });
 
   it('#announce second argument is optional', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const fixture = createFixture(html`
       <div>
         <div class="aria label" role="status" aria-live="polite"></div>
-      </div>`;
-    const el = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(el);
-    const fixture = el;
+      </div>`);
 
-    const ariaEl = fixture.querySelector('.aria')!;
+    const ariaEl = fixture.querySelector<HTMLElement>('.aria')!;
 
     const labelText = 'Foo';
     ariaEl.textContent = labelText;
@@ -110,57 +99,49 @@ describe('MDCSnackbar - util', () => {
 
     // Trim to remove `&nbsp;` (see comment in util.ts)
     expect(ariaEl.textContent.trim()).toEqual('');
-    expect(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR)).toEqual(labelText);
+    expect(ariaEl.dataset[DATA_LIVE_LABEL_TEXT]).toEqual(labelText);
     expect(ariaEl.getAttribute('aria-live')).toEqual('off');
 
     jasmine.clock().tick(ARIA_LIVE_DELAY_MS);
 
     expect(ariaEl.textContent).toEqual(labelText);
-    expect(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR)).toBeNull();
+    expect(ariaEl.dataset[DATA_LIVE_LABEL_TEXT]).toBeUndefined();
     expect(ariaEl.getAttribute('aria-live')).toEqual('polite');
   });
 
   it('#announce does nothing if textContent is empty', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const fixture = createFixture(html`
       <div>
         <div class="aria" role="status" aria-live="polite">
           <div class="label"></div>
         </div>
-      </div>`;
-    const el = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(el);
-    const fixture = el;
+      </div>`);
 
-    const ariaEl = fixture.querySelector('.aria')!;
-    const labelEl = fixture.querySelector('.label')!;
+    const ariaEl = fixture.querySelector<HTMLElement>('.aria')!;
+    const labelEl = fixture.querySelector<HTMLElement>('.label')!;
 
     util.announce(ariaEl, labelEl);
 
     expect(labelEl.textContent!.trim()).toEqual('');
-    expect(labelEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR)).toBeNull();
+    expect(labelEl.dataset[DATA_LIVE_LABEL_TEXT]).toBeUndefined();
     expect(ariaEl.getAttribute('aria-live')).toEqual('polite');
   });
 
   it('#announce does nothing if aria-live was not present', () => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    const fixture = createFixture(html`
       <div>
         <div class="aria label" role="status">Foo</div>
-      </div>`;
-    const el = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(el);
-    const fixture = el;
-    const ariaEl = fixture.querySelector('.aria')!;
+      </div>`);
+    const ariaEl = fixture.querySelector<HTMLElement>('.aria')!;
 
     util.announce(ariaEl);
 
     expect(ariaEl.getAttribute('aria-live')).toBeNull();
-    expect(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR)).toBeNull();
+    expect(ariaEl.dataset[DATA_LIVE_LABEL_TEXT]).toBeUndefined();
 
     jasmine.clock().tick(ARIA_LIVE_DELAY_MS);
 
     expect(ariaEl.getAttribute('aria-live')).toBeNull();
-    expect(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR)).toBeNull();
+    expect(ariaEl.dataset[DATA_LIVE_LABEL_TEXT]).toBeUndefined();
   });
 });

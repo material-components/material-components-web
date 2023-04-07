@@ -42,7 +42,7 @@ Then include MDC markup...
 ...and instantiate JavaScript:
 
 ```js
-mdc.ripple.MDCRipple.attachTo(document.querySelector('.foo-button'));
+mdc.ripple.MDCRipple.attachTo(document.querySelector<HTMLElement>('.foo-button'));
 ```
 
 However, it is highly recommended to install Material Components for the web via npm and consume its ES Modules and Sass directly. This is outlined in the steps below.
@@ -105,7 +105,7 @@ However, it is highly recommended to install Material Components for the web via
 
     ```js
     import {MDCRipple} from '@material/ripple';
-    const ripple = new MDCRipple(document.querySelector('.foo-button'));
+    const ripple = new MDCRipple(document.querySelector<HTMLElement>('.foo-button'));
     ```
 
     This will produce a Material Design ripple on the button when it is pressed!

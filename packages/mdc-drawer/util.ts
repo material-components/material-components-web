@@ -23,17 +23,18 @@
 
 import {FocusOptions, FocusTrap} from '@material/dom/focus-trap';
 
+/** MDC Drawer Focus Trap Factory */
 export type MDCDrawerFocusTrapFactory = (
     element: HTMLElement,
     options: FocusOptions,
-) => FocusTrap;
+    ) => FocusTrap;
 
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
     focusTrapFactory: MDCDrawerFocusTrapFactory,
-): FocusTrap {
+    ): FocusTrap {
   return focusTrapFactory(surfaceEl, {
     // Component handles focusing on active nav item.
-    skipInitialFocus: true, 
+    skipInitialFocus: true,
   });
 }

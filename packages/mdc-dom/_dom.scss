@@ -19,6 +19,8 @@
 // THE SOFTWARE.
 
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
+
 ///
 /// Emits necessary layout styles to set a transparent border around an element
 /// without interfering with the rest of its component layout. The border is
@@ -41,10 +43,19 @@
     width: 100%;
     height: 100%;
     top: 0;
+    @include rtl.ignore-next-line();
     left: 0;
     border: $border-width $border-style transparent;
     border-radius: inherit;
     content: '';
+    pointer-events: none;
+  }
+
+  // Used to satisfy Firefox v94 which does not render transparent borders in HCM (b/206440838).
+  @include forced-colors-mode($exclude-ie11: true) {
+    @include feature-targeting.targets($feat-structure) {
+      border-color: CanvasText;
+    }
   }
 }
 
@@ -66,12 +77,30 @@
   }
 }
 
+/// Selects for IE11 support.
 ///
-/// Selects for high-contrast mode. Currently this only detects high-contrast
-/// mode in IE and Edge.
-///
-@mixin ie-high-contrast-mode {
-  @media screen and (-ms-high-contrast: active) {
+/// @content styles to emit for IE11 support
+@mixin ie11-support {
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     @content;
+  }
+}
+
+/// Selects for `forced-colors` high contrast mode.
+///
+/// While in `forced-colors` mode, only system colors should be used.
+///
+/// @link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#system_colors
+/// @link https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
+/// @content styles to emit in `forced-colors` mode
+@mixin forced-colors-mode($exclude-ie11: false) {
+  @if $exclude-ie11 {
+    @media screen and (forced-colors: active) {
+      @content;
+    }
+  } @else {
+    @media screen and (forced-colors: active), (-ms-high-contrast: active) {
+      @content;
+    }
   }
 }

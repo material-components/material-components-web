@@ -1,0 +1,125 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+@use './mixins' as card;
+@use 'sass:map';
+@use '@material/elevation/elevation-theme';
+@use '@material/tokens/resolvers';
+@use '@material/theme/state';
+@use '@material/theme/theme';
+@use '@material/theme/keys';
+@use '@material/ripple/ripple-theme';
+@use './card-shared-theme';
+
+$custom-property-prefix: 'outlined-card';
+
+$light-theme: (
+  container-color: null,
+  container-elevation: null,
+  container-shadow-color: null,
+  container-shape: null,
+  container-surface-tint-layer-color: null,
+  disabled-container-elevation: null,
+  disabled-outline-color: null,
+  disabled-outline-opacity: null,
+  dragged-container-elevation: null,
+  dragged-outline-color: null,
+  dragged-state-layer-color: null,
+  dragged-state-layer-opacity: null,
+  focus-container-elevation: null,
+  focus-outline-color: null,
+  focus-state-layer-color: null,
+  focus-state-layer-opacity: null,
+  hover-container-elevation: null,
+  hover-outline-color: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  icon-color: null,
+  icon-size: null,
+  outline-color: null,
+  outline-width: null,
+  pressed-container-elevation: null,
+  pressed-outline-color: null,
+  pressed-state-layer-color: null,
+  pressed-state-layer-opacity: null,
+);
+
+@mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $resolver: resolvers.$material) {
+  @include theme.validate-theme-styles($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+  @include _outline(
+    $outline-width: map.get($theme, outline-width),
+    $map: (
+      default: map.get($theme, outline-color),
+      hover: map.get($theme, hover-outline-color),
+      focus: map.get($theme, focus-outline-color),
+      pressed: map.get($theme, pressed-outline-color),
+    )
+  );
+  @include card-shared-theme.theme($theme, $resolver);
+}
+
+@mixin _outline($outline-width, $map) {
+  @if state.get-default-state($map) {
+    @include card.outline(
+      $color: state.get-default-state($map),
+      $thickness: $outline-width
+    );
+  }
+
+  @include ripple-theme.hover() {
+    @if state.get-hover-state($map) {
+      @include card.outline(
+        $color: state.get-hover-state($map),
+        $thickness: $outline-width
+      );
+    }
+  }
+
+  @include ripple-theme.focus() {
+    @if state.get-focus-state($map) {
+      @include card.outline(
+        $color: state.get-focus-state($map),
+        $thickness: $outline-width
+      );
+    }
+  }
+
+  @include ripple-theme.pressed() {
+    @if state.get-pressed-state($map) {
+      @include card.outline(
+        $color: state.get-pressed-state($map),
+        $thickness: $outline-width
+      );
+    }
+  }
+}

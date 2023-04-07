@@ -1,0 +1,252 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:map';
+@use '@material/elevation/elevation-theme';
+@use '@material/tab/tab-theme';
+@use '@material/theme/map-ext';
+@use '@material/tab-indicator/tab-indicator-theme';
+@use '@material/theme/theme-color';
+@use '@material/typography/typography';
+@use '@material/tokens/resolvers';
+@use '@material/theme/theme';
+@use '@material/theme/keys';
+@use '@material/theme/validate';
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+$custom-property-prefix: 'tab-bar';
+
+// Complete tokens set for primary tabs component
+// tab bar should validate all tokens as it is the entry point
+$primary-navigation-tabs-light-theme: (
+  active-focus-state-layer-color: theme-color.$primary,
+  active-focus-state-layer-opacity: 0.12,
+  active-hover-state-layer-color: theme-color.$primary,
+  active-hover-state-layer-opacity: 0.04,
+  active-indicator-color: theme-color.$primary,
+  active-indicator-height: 3px,
+  active-indicator-shape: (
+    3px,
+    3px,
+    0,
+    0,
+  ),
+  active-pressed-state-layer-color: theme-color.$primary,
+  active-pressed-state-layer-opacity: 0.1,
+  container-color: theme-color.$surface,
+  container-elevation: elevation-theme.get-elevation(0),
+  container-height: 48px,
+  container-shape: 0,
+  divider-color: null,
+  divider-height: null,
+  inactive-focus-state-layer-color: theme-color.$on-surface,
+  inactive-focus-state-layer-opacity: 0.12,
+  inactive-hover-state-layer-color: theme-color.$on-surface,
+  inactive-hover-state-layer-opacity: 0.04,
+  inactive-pressed-state-layer-color: theme-color.$on-surface,
+  inactive-pressed-state-layer-opacity: 0.1,
+  with-icon-active-focus-icon-color: theme-color.$primary,
+  with-icon-active-hover-icon-color: theme-color.$primary,
+  with-icon-active-icon-color: theme-color.$primary,
+  with-icon-active-pressed-icon-color: theme-color.$primary,
+  with-icon-and-label-text-container-height: 64px,
+  with-icon-icon-size: 24px,
+  with-icon-inactive-focus-icon-color: theme-color.$on-surface,
+  with-icon-inactive-hover-icon-color: theme-color.$on-surface,
+  with-icon-inactive-icon-color: theme-color.$on-surface,
+  with-icon-inactive-pressed-icon-color: theme-color.$on-surface,
+  with-label-text-active-focus-label-text-color: theme-color.$primary,
+  with-label-text-active-hover-label-text-color: theme-color.$primary,
+  with-label-text-active-label-text-color: theme-color.$primary,
+  with-label-text-active-pressed-label-text-color: theme-color.$primary,
+  with-label-text-inactive-focus-label-text-color: theme-color.$on-surface,
+  with-label-text-inactive-hover-label-text-color: theme-color.$on-surface,
+  with-label-text-inactive-label-text-color: theme-color.$on-surface,
+  with-label-text-inactive-pressed-label-text-color: theme-color.$on-surface,
+  with-label-text-label-text-font-family: typography.get-font(subhead2),
+  with-label-text-label-text-font-size: typography.get-size(subhead2),
+  with-label-text-label-text-letter-spacing: typography.get-tracking(subhead2),
+  with-label-text-label-text-font: typography.get-font(subhead2),
+  with-label-text-label-text-size: typography.get-size(subhead2),
+  with-label-text-label-text-tracking: typography.get-tracking(subhead2),
+  with-label-text-label-text-line-height: typography.get-line-height(subhead2),
+  with-label-text-label-text-weight: typography.get-weight(subhead2),
+);
+
+// Complete tokens set for secondary tabs component
+// tab bar should validate all tokens as it is the entry point
+$secondary-navigation-tabs-light-theme: (
+  active-indicator-color: null,
+  active-indicator-height: null,
+  active-label-text-color: null,
+  container-color: null,
+  container-elevation: null,
+  container-height: null,
+  container-shadow-color: null,
+  container-shape: null,
+  divider-color: null,
+  divider-height: null,
+  focus-label-text-color: null,
+  focus-state-layer-color: null,
+  focus-state-layer-opacity: null,
+  hover-label-text-color: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  inactive-label-text-color: null,
+  label-text-font-family: null,
+  label-text-font-size: null,
+  label-text-letter-spacing: null,
+  label-text-font: null,
+  label-text-size: null,
+  label-text-tracking: null,
+  label-text-line-height: null,
+  label-text-weight: null,
+  pressed-label-text-color: null,
+  pressed-state-layer-color: null,
+  pressed-state-layer-opacity: null,
+  with-icon-active-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-hover-icon-color: null,
+  with-icon-inactive-icon-color: null,
+  with-icon-pressed-icon-color: null,
+  with-icon-icon-size: null,
+);
+
+// Tab bar related tokens to create custom properties
+$light-theme: (
+  divider-color: null,
+  divider-height: null,
+);
+
+@mixin primary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
+  $theme: validate.theme($primary-navigation-tabs-light-theme, $theme);
+  $tab-bar-theme: map-ext.pick($theme, map.keys($light-theme)...);
+  @include keys.declare-custom-properties(
+    $tab-bar-theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include tab-theme.primary-navigation-tab-theme(
+    map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
+    $resolvers
+  );
+  @include tab-indicator-theme.theme(
+    map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+  );
+}
+
+@mixin secondary-navigation-tab-theme($theme, $resolvers: resolvers.$material) {
+  $theme: validate.theme($secondary-navigation-tabs-light-theme, $theme);
+  $tab-bar-theme: map-ext.pick($theme, map.keys($light-theme)...);
+  @include keys.declare-custom-properties(
+    $tab-bar-theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include tab-theme.secondary-navigation-tab-theme(
+    map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
+    $resolvers
+  );
+  @include tab-indicator-theme.theme(
+    map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+  );
+}
+
+@mixin primary-navigation-tab-theme-styles(
+  $theme,
+  $resolvers: resolvers.$material
+) {
+  // TODO(b/251881053): Use theme-styles mixin from validate module
+  // when all customers are migrated
+  @include theme.validate-theme-styles(
+    $primary-navigation-tabs-light-theme,
+    $theme
+  );
+  $tab-bar-theme: map-ext.pick($theme, map.keys($light-theme)...);
+  $tab-bar-theme: keys.create-theme-properties(
+    $tab-bar-theme,
+    $prefix: $custom-property-prefix
+  );
+
+  &.mdc-tab-bar {
+    @include _divider-color(map.get($tab-bar-theme, divider-color));
+    @include _divider-height(map.get($tab-bar-theme, divider-height));
+  }
+
+  .mdc-tab {
+    @include tab-theme.primary-navigation-tab-theme-styles(
+      map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
+      $resolvers
+    );
+  }
+
+  .mdc-tab-indicator {
+    @include tab-indicator-theme.theme-styles(
+      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+    );
+  }
+}
+
+@mixin secondary-navigation-tab-theme-styles(
+  $theme,
+  $resolvers: resolvers.$material
+) {
+  // TODO(b/251881053): Use theme-styles mixin from validate module
+  // when all customers are migrated
+  @include theme.validate-theme-styles(
+    $secondary-navigation-tabs-light-theme,
+    $theme
+  );
+  $tab-bar-theme: map-ext.pick($theme, map.keys($light-theme)...);
+  $tab-bar-theme: keys.create-theme-properties(
+    $tab-bar-theme,
+    $prefix: $custom-property-prefix
+  );
+
+  &.mdc-tab-bar {
+    @include _divider-color(map.get($tab-bar-theme, divider-color));
+    @include _divider-height(map.get($tab-bar-theme, divider-height));
+  }
+
+  .mdc-tab {
+    @include tab-theme.secondary-navigation-tab-theme-styles(
+      map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
+      $resolvers
+    );
+  }
+
+  .mdc-tab-indicator {
+    @include tab-indicator-theme.theme-styles(
+      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+    );
+  }
+}
+
+@mixin _divider-color($color) {
+  @include theme.property('border-bottom-color', $color);
+}
+
+@mixin _divider-height($height) {
+  @include theme.property('border-bottom-width', $height);
+}

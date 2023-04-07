@@ -18,6 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:math';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
@@ -82,7 +86,7 @@
 
   .mdc-image-list__supporting {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, text-primary-on-background);
+      @include theme.property(color, text-primary-on-background);
     }
 
     @include feature-targeting.targets($feat-structure) {
@@ -191,9 +195,9 @@
     @include feature-targeting.targets($feat-structure) {
       // Subtract extra fraction from each item's width to ensure correct wrapping in IE/Edge which round differently
       width: calc(
-        100% / #{$column-count} - #{$gutter-size + 1 / $column-count}
+        100% / #{$column-count} - #{$gutter-size + math.div(1, $column-count)}
       );
-      margin: $gutter-size / 2;
+      margin: math.div($gutter-size, 2);
     }
   }
 }

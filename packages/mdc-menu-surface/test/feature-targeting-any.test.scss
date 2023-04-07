@@ -1,12 +1,13 @@
-@use '../mixins' as menu-surface;
+@use '../menusurface';
+@use '../menusurface-theme';
 @use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
-    @include menu-surface.core-styles($query: $query);
-    @include menu-surface.fill-color(surface, $query: $query);
-    @include menu-surface.ink-color(on-surface, $query: $query);
-    @include menu-surface.shape-radius(medium, $query: $query);
+    @include menusurface.core-styles($query: $query);
+    @include menusurface-theme.fill-color(surface, $query: $query);
+    @include menusurface-theme.ink-color(on-surface, $query: $query);
+    @include menusurface-theme.shape-radius(medium, $query: $query);
   }
 }
 

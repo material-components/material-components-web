@@ -36,11 +36,11 @@ describe('theme.test.scss', () => {
 }`);
      });
 
-  it('host-aware test produces expected output',
-     () => {
-       const filePath = path.join(__dirname, 'shadow-dom.test.css');
-       const css = fs.readFileSync(filePath, 'utf8').trim();
-       expect(css).toEqual(`:host([lowered]), :host(:not(.hidden)[outlined][lowered]), :host .my-class[lowered], gm-fab[lowered] {
+  it('host-aware test produces expected output', () => {
+    const filePath = path.join(__dirname, 'shadow-dom.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toEqual(
+        `:host([lowered]), :host(:not(.hidden)[outlined][lowered]), :host .my-class[lowered], gm-fab[lowered] {
   color: blue;
 }
 :host([lowered]:hover), :host(:not(.hidden)[outlined][lowered]:hover), :host .my-class[lowered]:hover, gm-fab[lowered]:hover {
@@ -49,8 +49,26 @@ describe('theme.test.scss', () => {
 
 :host(:focus), :host(:not(.hidden)[outlined]:focus), :host .my-class:focus, gm-fab:focus, :host, :host(:not(.hidden)[outlined]), :host .my-class, gm-fab {
   border-color: green;
+}
+
+/* Test replacement for deprecated shadow-dom.host-aware() */
+:host([lowered]), :host(:not(.hidden)[outlined][lowered]), :host .my-class[lowered], gm-fab[lowered] {
+  color: blue;
+}
+:host([lowered]:hover), :host(:not(.hidden)[outlined][lowered]:hover), :host .my-class[lowered]:hover, gm-fab[lowered]:hover {
+  background-color: red;
+}
+
+:host(:focus), :host(:not(.hidden)[outlined]:focus), :host .my-class:focus, gm-fab:focus, :host,
+:host(:not(.hidden)[outlined]),
+:host .my-class,
+gm-fab {
+  border-color: green;
 }`);
-     });
+    // Sass' organization of selectors with newlines can be iffy when using
+    // the `selector` module and expanded mode, but all selectors are
+    // correct.
+  });
 
   it('should replace values provided to $replace for theme.property()', () => {
     const filePath = path.join(__dirname, 'replace.test.css');
@@ -63,10 +81,17 @@ describe('theme.test.scss', () => {
   width: calc(16px + 8px);
   /* @alternate */
   width: calc(var(--m-foo, 16px) + var(--m-bar, 8px));
+  height: calc(16px + 8px + 16px + 8px);
+  /* @alternate */
+  height: calc(var(--m-foo, 16px) + var(--m-bar, 8px) + var(--m-foo, 16px) + var(--m-bar, 8px));
 }
 
 .multiple {
   width: calc(8px + 8px + 8px);
+}
+
+.list {
+  padding: 0 16px;
 }`);
   });
 
@@ -76,4 +101,19 @@ describe('theme.test.scss', () => {
     expect(css).toContain('--mdc-theme-primary: teal');
     expect(css).toContain('--mdc-theme-secondary: crimson');
   });
+
+  it('validate-keys Should throw error when unsupported key is provided',
+     () => {
+       const filePath = path.join(__dirname, 'theme-validate-keys.test.css');
+       const css = fs.readFileSync(filePath, 'utf8').trim();
+       expect(css).toContain('Unsupported keys found: foobar.');
+     });
+
+  it('validate-keys Should throw error when custom properties are provided',
+     () => {
+       const filePath = path.join(__dirname, 'theme-validate-keys.test.css');
+       const css = fs.readFileSync(filePath, 'utf8').trim();
+       expect(css).toContain(
+           'Custom properties are not supported for theme map keys: three');
+     });
 });

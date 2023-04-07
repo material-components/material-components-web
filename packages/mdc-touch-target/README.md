@@ -52,8 +52,8 @@ You would add an increased touch target as follows:
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-button mdc-button--touch">
     <div class="mdc-button__ripple"></div>
-    <span class="mdc-button__label">My Accessible Button</span>
     <div class="mdc-button__touch"></div>
+    <span class="mdc-button__label">My Accessible Button</span>
   </button>
 </div>
 ```

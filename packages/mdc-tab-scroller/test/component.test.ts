@@ -21,34 +21,29 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
-import {MDCTabScroller, MDCTabScrollerFoundation, util,} from '../index';
+import {MDCTabScroller, MDCTabScrollerFoundation, util} from '../index';
 import {MDCTabScrollerRTL} from '../rtl-scroller';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-tab-scroller">
       <div class="mdc-tab-scroller__scroll-area">
         <div class="mdc-tab-scroller__scroll-content"></div>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {
   const root = getFixture();
   const component = new MDCTabScroller(root);
-  const area =
-      root.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR) as
-      HTMLElement;
-  const content =
-      root.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR) as
-      HTMLElement;
+  const area = root.querySelector<HTMLElement>(
+      MDCTabScrollerFoundation.strings.AREA_SELECTOR)!;
+  const content = root.querySelector<HTMLElement>(
+      MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
   return {root, component, content, area};
 }
 
@@ -90,8 +85,7 @@ describe('MDCTabScroller', () => {
 
   it('#adapter.addScrollAreaClass adds a class to the area element', () => {
     const {component, area} = setupTest();
-    (component.getDefaultFoundation() as any)
-        .adapter.addScrollAreaClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addScrollAreaClass('foo');
     expect(area.classList.contains('foo')).toBe(true);
   });
 
@@ -234,10 +228,8 @@ describe('MDCTabScroller', () => {
   it('#getScrollContentWidth() returns the offsetWidth of the content element',
      () => {
        const {component, root} = setupMockFoundationTest();
-       const contentElement =
-           root.querySelector(
-               MDCTabScrollerFoundation.strings.CONTENT_SELECTOR) as
-           HTMLElement;
+       const contentElement = root.querySelector<HTMLElement>(
+           MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
        expect(component.getScrollContentWidth())
            .toEqual(contentElement.offsetWidth);
      });
@@ -264,9 +256,8 @@ describe('MDCTabScroller', () => {
 
   it('on interaction in the area element, call #handleInteraction()', () => {
     const {root, mockFoundation} = setupMockFoundationTest();
-    const area =
-        root.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR) as
-        HTMLElement;
+    const area = root.querySelector<HTMLElement>(
+        MDCTabScrollerFoundation.strings.AREA_SELECTOR)!;
     emitEvent(area, 'touchstart', {bubbles: true});
     expect(mockFoundation.handleInteraction).toHaveBeenCalled();
   });
@@ -274,9 +265,8 @@ describe('MDCTabScroller', () => {
   it('on transitionend of the content element, call #handleTransitionEnd()',
      () => {
        const {root, mockFoundation} = setupMockFoundationTest();
-       const content = root.querySelector(
-                           MDCTabScrollerFoundation.strings.CONTENT_SELECTOR) as
-           HTMLElement;
+       const content = root.querySelector<HTMLElement>(
+           MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
        emitEvent(content, 'transitionend', {bubbles: true});
        expect(mockFoundation.handleTransitionEnd)
            .toHaveBeenCalledWith(jasmine.anything());

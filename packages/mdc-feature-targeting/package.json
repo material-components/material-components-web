@@ -1,7 +1,7 @@
 {
   "name": "@material/feature-targeting",
   "description": "Material Components for the web Feature Targeting Scss helpers",
-  "version": "8.0.0",
+  "version": "14.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -13,6 +13,9 @@
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-feature-targeting"
+  },
+  "dependencies": {
+    "tslib": "^2.1.0"
   },
   "publishConfig": {
     "access": "public"

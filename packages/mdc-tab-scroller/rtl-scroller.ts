@@ -24,6 +24,7 @@
 import {MDCTabScrollerAdapter} from './adapter';
 import {MDCTabScrollerAnimation} from './types';
 
+/** MDC Tab Scroller RTL */
 export abstract class MDCTabScrollerRTL {
   constructor(protected readonly adapter: MDCTabScrollerAdapter) {}
 
@@ -37,7 +38,8 @@ export abstract class MDCTabScrollerRTL {
    * @param scrollX The current scrollX position
    * @param translateX The current translateX position
    */
-  abstract getAnimatingScrollPosition(scrollX: number, translateX: number): number;
+  abstract getAnimatingScrollPosition(scrollX: number, translateX: number):
+      number;
 }
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.

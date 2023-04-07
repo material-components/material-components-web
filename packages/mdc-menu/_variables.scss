@@ -22,6 +22,7 @@
 
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/ripple/ripple-theme';
 
 $ink-color: rgba(
   theme-color.prop-value(on-surface),
@@ -30,3 +31,5 @@ $ink-color: rgba(
 
 $width-base: 56px !default;
 $min-width: 2 * $width-base !default;
+
+$open-item-opacity: ripple-theme.states-opacity($ink-color, hover);

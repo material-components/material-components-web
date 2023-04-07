@@ -22,7 +22,7 @@
  */
 
 
-import {getFixture} from '../../../../testing/dom';
+import {createFixture, html} from '../../../../testing/dom';
 import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {cssClasses, strings} from '../../constants';
@@ -194,7 +194,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('#handleKeydown does nothing when event key is not the escape key', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.OPEN).and.returnValue(true);
-    foundation.handleKeydown({key: 'Shift'});
+    foundation.handleKeydown({key: 'Shift'} as KeyboardEvent);
 
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.CLOSING);
   });
@@ -202,7 +202,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('#handleKeydown does nothing when event keyCode is not 27', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.OPEN).and.returnValue(true);
-    foundation.handleKeydown({keyCode: 11});
+    foundation.handleKeydown({keyCode: 11} as KeyboardEvent);
 
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.CLOSING);
   });
@@ -210,7 +210,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('#handleKeydown calls close when event key is the escape key', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.OPEN).and.returnValue(true);
-    foundation.handleKeydown({key: 'Escape'});
+    foundation.handleKeydown({key: 'Escape'} as KeyboardEvent);
 
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSING);
   });
@@ -218,17 +218,18 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('#handleKeydown calls close when event keyCode is 27', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.OPEN).and.returnValue(true);
-    foundation.handleKeydown({keyCode: 27});
+    foundation.handleKeydown({keyCode: 27} as KeyboardEvent);
 
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSING);
   });
 
   it('#handleTransitionEnd removes all animating classes', () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEventTarget = getFixture(`<div class="foo">bar</div>`);
+    const mockEventTarget = createFixture(html`<div class="foo">bar</div>`);
     mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
         .and.returnValue(true);
-    foundation.handleTransitionEnd({target: mockEventTarget});
+    foundation.handleTransitionEnd(
+        {target: mockEventTarget} as unknown as TransitionEvent);
     expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.ANIMATE);
     expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.OPENING);
     expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.CLOSING);
@@ -237,27 +238,29 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('#handleTransitionEnd removes open class after closing, restores the focus and calls notifyClose',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEventTarget = getFixture(`<div>root</div>`);
+       const mockEventTarget = createFixture(html`<div>root</div>`);
        mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
            .and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.CLOSING).and.returnValue(true);
 
-       foundation.handleTransitionEnd({target: mockEventTarget});
+       foundation.handleTransitionEnd(
+           {target: mockEventTarget} as unknown as TransitionEvent);
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.OPEN);
        expect(mockAdapter.restoreFocus).toHaveBeenCalledTimes(1);
        expect(mockAdapter.notifyClose).toHaveBeenCalledTimes(1);
      });
 
-  it(`#handleTransitionEnd doesn\'t remove open class after opening,
+  it(`#handleTransitionEnd doesn't remove open class after opening,
     focuses on active navigation item and calls notifyOpen`,
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEventTarget = getFixture(`<div>root</div>`);
+       const mockEventTarget = createFixture(html`<div>root</div>`);
        mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
            .and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.CLOSING).and.returnValue(false);
 
-       foundation.handleTransitionEnd({target: mockEventTarget});
+       foundation.handleTransitionEnd(
+           {target: mockEventTarget} as unknown as TransitionEvent);
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(cssClasses.OPEN);
        expect(mockAdapter.focusActiveNavigationItem).toHaveBeenCalledTimes(1);
@@ -267,11 +270,12 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('#handleTransitionEnd doesn\'t do anything if event is not triggered by root element',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEventTarget = getFixture(`<div>child</div>`);
+       const mockEventTarget = createFixture(html`<div>child</div>`);
        mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
            .and.returnValue(false);
 
-       foundation.handleTransitionEnd({target: mockEventTarget});
+       foundation.handleTransitionEnd(
+           {target: mockEventTarget} as unknown as TransitionEvent);
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(cssClasses.OPEN);
        expect(mockAdapter.removeClass)
@@ -284,7 +288,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
 
-       foundation.handleTransitionEnd({target: {}});
+       foundation.handleTransitionEnd({target: {}} as TransitionEvent);
        expect(mockAdapter.elementHasClass)
            .not.toHaveBeenCalledWith(jasmine.anything(), jasmine.any(String));
        expect(mockAdapter.removeClass)
@@ -297,12 +301,13 @@ describe('MDCDismissibleDrawerFoundation', () => {
 
   it('#handleTransitionEnd restores the focus.', () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEventTarget = getFixture(`<div class="foo">bar</div>`);
+    const mockEventTarget = createFixture(html`<div class="foo">bar</div>`);
 
     mockAdapter.elementHasClass.withArgs(mockEventTarget, cssClasses.ROOT)
         .and.returnValue(true);
     mockAdapter.hasClass.withArgs(cssClasses.CLOSING).and.returnValue(true);
-    foundation.handleTransitionEnd({target: mockEventTarget});
+    foundation.handleTransitionEnd(
+        {target: mockEventTarget} as unknown as TransitionEvent);
 
     expect(mockAdapter.restoreFocus).toHaveBeenCalled();
   });

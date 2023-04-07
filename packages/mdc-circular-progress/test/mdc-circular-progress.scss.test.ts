@@ -22,7 +22,9 @@
  */
 
 import 'jasmine';
+
 import * as path from 'path';
+
 import {expectStylesWithNoFeaturesToBeEmpty} from '../../../testing/featuretargeting';
 
 

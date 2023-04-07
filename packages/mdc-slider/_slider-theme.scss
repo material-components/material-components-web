@@ -20,17 +20,27 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
+@use 'sass:color';
+@use 'sass:map';
+@use '@material/elevation/elevation-theme';
+@use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
+@use '@material/theme/keys';
+@use '@material/theme/map-ext';
 @use '@material/theme/state';
 @use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/tokens/resolvers';
+@use '@material/typography/typography';
 
 /// Default color for slider (track, thumb, ripple).
 $color: primary;
 $disabled-color: on-surface;
+$disabled-slider-opacity: 0.38;
 
 // Thumb variables.
 $value-indicator-color: #000;
@@ -42,6 +52,194 @@ $track-inactive-opacity: 0.24;
 $tick-mark-active-color: on-primary;
 $tick-mark-inactive-color: primary;
 $tick-mark-opacity: 0.6;
+
+$_custom-property-prefix: 'slider';
+
+$light-theme: (
+  active-track-color: $color,
+  active-track-height: 6px,
+  active-track-shape: 9999px,
+  disabled-active-track-color: $disabled-color,
+  disabled-handle-color: $disabled-color,
+  disabled-handle-elevation: null,
+  disabled-inactive-track-color: $disabled-color,
+  focus-handle-color: $color,
+  handle-color: $color,
+  handle-elevation: 1,
+  handle-height: 20px,
+  handle-shadow-color: black,
+  handle-shape: 50%,
+  handle-width: 20px,
+  hover-handle-color: $color,
+  inactive-track-color: $color,
+  inactive-track-height: 4px,
+  inactive-track-shape: 9999px,
+  label-container-color:
+    color.mix(
+      $value-indicator-color,
+      theme-color.prop-value(on-primary),
+      $value-indicator-opacity * 100%
+    ),
+  label-container-elevation: null,
+  label-container-height: null,
+  label-label-text-color: $value-indicator-text-color,
+  label-label-text-font: typography.get-font(subtitle2),
+  label-label-text-size: typography.get-size(subtitle2),
+  label-label-text-line-height: typography.get-line-height(subtitle2),
+  label-label-text-tracking: typography.get-tracking(subtitle2),
+  label-label-text-weight: typography.get-weight(subtitle2),
+  pressed-handle-color: null,
+  track-elevation: null,
+  with-overlap-handle-outline-color: #fff,
+  with-overlap-handle-outline-width: 1px,
+  with-tick-marks-active-container-color: $tick-mark-active-color,
+  with-tick-marks-active-container-opacity: $tick-mark-opacity,
+  with-tick-marks-container-shape: 50%,
+  with-tick-marks-container-size: 2px,
+  with-tick-marks-disabled-container-color: $disabled-color,
+  with-tick-marks-inactive-container-color: $tick-mark-inactive-color,
+  with-tick-marks-inactive-container-opacity: $tick-mark-opacity,
+  focus-state-layer-opacity: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  pressed-state-layer-opacity: null,
+);
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: _resolve-theme-elevation-keys($theme, $resolvers: $resolvers);
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+}
+
+@mixin theme-styles(
+  $theme,
+  $query: feature-targeting.all(),
+  $resolvers: resolvers.$material
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  @include theme.validate-theme-styles($light-theme, $theme);
+  $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
+
+  @include thumb-color(
+    $color-or-map: (
+      default: map.get($theme, 'handle-color'),
+      disabled: map.get($theme, 'disabled-handle-color'),
+    ),
+    $query: $query
+  );
+
+  @include thumb-ripple-color(
+    $color: map.get($theme, 'handle-color'),
+    $query: $query
+  );
+
+  @include track-active-color(
+    $color-or-map: (
+      default: map.get($theme, 'active-track-color'),
+      disabled: map.get($theme, 'disabled-active-track-color'),
+    ),
+    $query: $query
+  );
+
+  @include track-inactive-color(
+    $color-or-map: (
+      default: map.get($theme, 'inactive-track-color'),
+      disabled: map.get($theme, 'disabled-inactive-track-color'),
+    ),
+    $query: $query
+  );
+
+  @include tick-mark-active-color(
+    $color-or-map: (
+      default: map.get($theme, 'with-tick-marks-active-container-color'),
+      disabled: map.get($theme, 'with-tick-marks-active-container-color'),
+    ),
+    $opacity: map.get($theme, 'with-tick-marks-active-container-opacity'),
+    $query: $query
+  );
+
+  @include tick-mark-inactive-color(
+    $color-or-map: (
+      default: map.get($theme, 'with-tick-marks-inactive-container-color'),
+      disabled: map.get($theme, 'with-tick-marks-disabled-container-color'),
+    ),
+    $opacity: map.get($theme, 'with-tick-marks-inactive-container-opacity'),
+    $query: $query
+  );
+
+  @include value-indicator-color(
+    $color: map.get($theme, 'label-container-color'),
+    $opacity: 1,
+    $query: $query
+  );
+
+  @include value-indicator-text-color(
+    $color: map.get($theme, 'label-label-text-color'),
+    $query: $query
+  );
+
+  .mdc-slider__track {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, map.get($theme, 'inactive-track-height'));
+    }
+  }
+
+  .mdc-slider__track--active {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, map.get($theme, 'active-track-height'));
+      @include theme.property(
+        top,
+        // Using 'xactive' because string replace finds 'active' in 'inactive'
+        'calc((inactive-track-height - xactive-track-height) / 2)',
+        $replace: (
+          'inactive-track-height': map.get($theme, 'inactive-track-height'),
+          'xactive-track-height': map.get($theme, 'active-track-height')
+        )
+      );
+    }
+  }
+
+  .mdc-slider__track--active_fill {
+    @include feature-targeting.targets($feat-structure) {
+      // Use border rather than background-color to fill track, for HCM.
+      @include theme.property(
+        border-top-width,
+        map.get($theme, 'active-track-height')
+      );
+    }
+  }
+
+  .mdc-slider__track--inactive {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, map.get($theme, 'inactive-track-height'));
+    }
+  }
+
+  .mdc-slider__tick-mark--active,
+  .mdc-slider__tick-mark--inactive {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(
+        height,
+        map.get($theme, 'with-tick-marks-container-size')
+      );
+      @include theme.property(
+        width,
+        map.get($theme, 'with-tick-marks-container-size')
+      );
+    }
+  }
+
+  @include disabled-slider-opacity($disabled-slider-opacity, $query);
+  @include _value-indicator-typography($theme, $feat-typography);
+  @include _slider-shape($theme, $feat-structure);
+  @include _slider-elevation($theme, $resolvers, $query);
+  @include _thumb-activated-theme-color($theme, $query);
+  @include _thumb-overlap($theme, $query);
+  @include _thumb-state-layer($theme);
+}
 
 /// Customizes active track color, using a Color or state Map.
 /// - To set only the default color, provide a single Color.
@@ -142,10 +340,18 @@ $tick-mark-opacity: 0.6;
 @mixin _set-thumb-color($color, $query) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-slider__thumb-knob {
-    @include feature-targeting.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
+    .mdc-slider__thumb-knob {
       @include theme.property(background-color, $color);
       @include theme.property(border-color, $color);
+    }
+
+    .mdc-slider__thumb--top {
+      .mdc-slider__thumb-knob,
+      &.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
+      &.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
+        border-color: #fff;
+      }
     }
   }
 }
@@ -158,6 +364,19 @@ $tick-mark-opacity: 0.6;
 @mixin thumb-ripple-color($color, $query: feature-targeting.all()) {
   .mdc-slider__thumb {
     @include ripple-theme.states($color: $color, $query: $query);
+  }
+}
+
+/// Customizes thumb color when thumb is activated (hover, focused, or pressed
+/// state).
+///
+/// @param {Color} $color - The thumb's color
+@mixin thumb-activated-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-slider__thumb:hover,
+  .mdc-slider__thumb--focused {
+    @include _set-thumb-color($color, $query);
   }
 }
 
@@ -196,8 +415,7 @@ $tick-mark-opacity: 0.6;
   .mdc-slider__tick-mark--active {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
-
-      opacity: $opacity;
+      @include theme.property(opacity, $opacity);
     }
   }
 }
@@ -241,8 +459,7 @@ $tick-mark-opacity: 0.6;
   .mdc-slider__tick-mark--inactive {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
-
-      opacity: $opacity;
+      @include theme.property(opacity, $opacity);
     }
   }
 }
@@ -288,5 +505,190 @@ $tick-mark-opacity: 0.6;
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
+  }
+}
+
+@mixin disabled-slider-opacity($opacity, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  &.mdc-slider--disabled {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(opacity, $opacity);
+    }
+  }
+}
+
+@mixin _value-indicator-typography($theme, $query: feature-targeting.all()) {
+  $font: map.get($theme, 'label-label-text-font');
+  $size: map.get($theme, 'label-label-text-size');
+  $tracking: map.get($theme, 'label-label-text-tracking');
+  $weight: map.get($theme, 'label-label-text-weight');
+  $line-height: map.get($theme, 'label-label-text-line-height');
+
+  .mdc-slider__value-indicator-text {
+    @include feature-targeting.targets($query) {
+      @include theme.property(letter-spacing, $tracking);
+      @include theme.property(font-size, $size);
+      @include theme.property(font-family, $font);
+      @include theme.property(font-weight, $weight);
+      @include theme.property(line-height, $line-height);
+    }
+  }
+}
+
+@mixin _slider-shape($theme, $query: feature-targeting.all()) {
+  $active-track-radius: map.get($theme, 'active-track-shape');
+  $inactive-track-radius: map.get($theme, 'inactive-track-shape');
+  $thumb-radius: map.get($theme, 'handle-shape');
+  $thumb-width: map.get($theme, 'handle-width');
+  $thumb-height: map.get($theme, 'handle-height');
+  $with-tick-marks-radius: map.get($theme, 'with-tick-marks-container-shape');
+
+  .mdc-slider__track--active {
+    @include feature-targeting.targets($query) {
+      // Set border-radius on the outer `track--active` element, and apply
+      // transform: scale(...) to the inner `track--active_fill` element,
+      // such that the track grows/shrinks as needed, but the border-radius
+      // is not affected by the scaling.
+      @include theme.property(border-radius, $active-track-radius);
+    }
+  }
+
+  .mdc-slider__track--inactive {
+    @include feature-targeting.targets($query) {
+      @include theme.property(border-radius, $inactive-track-radius);
+    }
+  }
+
+  .mdc-slider__thumb-knob {
+    @include feature-targeting.targets($query) {
+      @include theme.property(border-radius, $thumb-radius);
+      @include theme.property(width, $thumb-width);
+      @include theme.property(height, $thumb-height);
+      @include theme.property(border-style, solid);
+      // Use border rather than background-color to fill thumb, for HCM.
+      @include theme.property(
+        border-width,
+        'calc(thumb-height / 2) calc(thumb-width / 2)',
+        $replace: (thumb-height: $thumb-height, thumb-width: $thumb-width)
+      );
+    }
+  }
+
+  .mdc-slider__tick-mark--active,
+  .mdc-slider__tick-mark--inactive {
+    @include feature-targeting.targets($query) {
+      @include theme.property(border-radius, $with-tick-marks-radius);
+    }
+  }
+}
+
+@mixin _slider-elevation($theme, $resolver, $query: feature-targeting.all()) {
+  $thumb-elevation: map.get($theme, 'handle-elevation');
+  $thumb-shadow-color: map.get($theme, 'handle-shadow-color');
+  $value-indicator-elevation: keys.resolve(
+    map.get($theme, 'label-container-elevation')
+  );
+  $track-elevation: keys.resolve(map.get($theme, 'track-elevation'));
+  $disabled-thumb-elevation: keys.resolve(
+    map.get($theme, 'disabled-handle-elevation')
+  );
+
+  .mdc-slider__thumb-knob {
+    @include elevation-theme.with-resolver(
+      map.get($resolver, elevation),
+      $query,
+      $elevation: $thumb-elevation,
+      $shadow-color: $thumb-shadow-color
+    );
+  }
+  .mdc-slider__value-indicator {
+    @include elevation-mixins.elevation(
+      $z-value: $value-indicator-elevation,
+      $query: $query
+    );
+  }
+  .mdc-slider__track {
+    @include elevation-mixins.elevation(
+      $z-value: $track-elevation,
+      $query: $query
+    );
+  }
+
+  &.mdc-slider--disabled .mdc-slider__thumb-knob {
+    @include elevation-mixins.elevation(
+      $z-value: $disabled-thumb-elevation,
+      $query: $query
+    );
+  }
+}
+
+@mixin _thumb-activated-theme-color($theme, $query: feature-targeting.all()) {
+  $hover-color: map.get($theme, 'hover-handle-color');
+  $focus-color: map.get($theme, 'focus-handle-color');
+  $pressed-color: map.get($theme, 'pressed-handle-color');
+
+  .mdc-slider__thumb {
+    &:hover {
+      @include _set-thumb-color($hover-color, $query);
+    }
+
+    &--focused {
+      @include _set-thumb-color($focus-color, $query);
+    }
+
+    @include ripple-theme.pressed() {
+      @include _set-thumb-color($pressed-color, $query);
+    }
+  }
+}
+
+@mixin _thumb-overlap($theme, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $overlap-outline-color: map.get($theme, 'with-overlap-handle-outline-color');
+  $overlap-outline-width: map.get($theme, 'with-overlap-handle-outline-width');
+
+  @include feature-targeting.targets($feat-color) {
+    .mdc-slider__thumb--top {
+      .mdc-slider__thumb-knob,
+      &.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
+      &.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
+        @include theme.property(border-color, $overlap-outline-color);
+        @include theme.property(border-width, $overlap-outline-width);
+      }
+    }
+  }
+}
+
+@function _resolve-theme-elevation-keys($theme, $resolvers) {
+  $elevation-resolver: map.get($resolvers, elevation);
+  $elevation: map.get($theme, handle-elevation);
+  $shadow-color: map.get($theme, thumb-shadow-color);
+
+  @if $elevation-resolver == null or $elevation == null or $shadow-color == null
+  {
+    @return $theme;
+  }
+
+  $resolved-value: meta.call(
+    $resolver,
+    $elevation: $elevation,
+    $shadow-color: $shadow-color
+  );
+
+  @return map.set($theme, $key, $resolved-value);
+}
+
+@mixin _thumb-state-layer($theme) {
+  .mdc-slider__thumb {
+    @include ripple-theme.theme-styles(
+      (
+        focus-state-layer-opacity: map.get($theme, 'focus-state-layer-opacity'),
+        hover-state-layer-color: map.get($theme, 'hover-state-layer-color'),
+        hover-state-layer-opacity: map.get($theme, 'hover-state-layer-opacity'),
+        pressed-state-layer-opacity:
+          map.get($theme, 'pressed-state-layer-opacity'),
+      )
+    );
   }
 }

@@ -80,14 +80,15 @@
     @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
-  $percent: math.percentage($span / map.get(variables.$columns, $size));
+  $percent: math.percentage(
+    math.div($span, map.get(variables.$columns, $size))
+  );
 
   @if $percent > 100% {
     $percent: 100%;
   }
 
   width: calc(#{$percent} - #{$gutter});
-  // stylelint-disable-next-line declaration-block-no-duplicate-properties
   width: calc(#{$percent} - var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}));
 
   @supports (display: grid) {
@@ -105,7 +106,6 @@
   box-sizing: border-box;
   margin: 0 auto;
   padding: $margin;
-  // stylelint-disable-next-line declaration-block-no-duplicate-properties
   padding: var(--mdc-layout-grid-margin-#{$size}, #{$margin});
 
   @if $max-width {
@@ -121,15 +121,13 @@
   display: flex;
   flex-flow: row wrap;
   align-items: stretch;
-  margin: -$gutter / 2;
-  // stylelint-disable-next-line declaration-block-no-duplicate-properties
+  margin: math.div(-$gutter, 2);
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2 * -1);
 
   @supports (display: grid) {
     display: grid;
     margin: 0;
     grid-gap: $gutter;
-    // stylelint-disable-next-line declaration-block-no-duplicate-properties
     grid-gap: var(--mdc-layout-grid-gutter-#{$size}, $gutter);
     grid-template-columns: repeat(
       map.get(variables.$columns, $size),
@@ -146,8 +144,7 @@
   @include cell-span_($size, $default-span, $gutter);
 
   box-sizing: border-box;
-  margin: $gutter / 2;
-  // stylelint-disable-next-line declaration-block-no-duplicate-properties
+  margin: math.div($gutter, 2);
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2);
 
   @supports (display: grid) {
@@ -196,7 +193,6 @@
 
   width: $column-width * $columnCount + $gutter * $gutter-number + $margin *
     $margin-number;
-  // stylelint-disable-next-line declaration-block-no-duplicate-properties
   width: calc(
     var(--mdc-layout-grid-column-width-#{$size}, #{$column-width}) * #{$columnCount} +
       var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) * #{$gutter-number} +

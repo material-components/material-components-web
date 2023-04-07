@@ -22,7 +22,7 @@
  */
 
 
-import {getCorrectEventName, getCorrectPropertyName,} from '../../mdc-animation/index';
+import {getCorrectEventName, getCorrectPropertyName} from '../../mdc-animation/index';
 
 // Has no properties without a prefix
 const legacyWindowObj = {

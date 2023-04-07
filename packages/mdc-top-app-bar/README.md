@@ -70,6 +70,9 @@ The top app bar provides content and actions related to the current screen. Itâ€
     </section>
   </div>
 </header>
+<main class="mdc-top-app-bar--fixed-adjust">
+  App content
+</main>
 ```
 
 #### Menu icons
@@ -108,6 +111,9 @@ The following example shows a contextual action bar with a contextual title, a c
     </section>
   </div>
 </header>
+<main class="mdc-top-app-bar--fixed-adjust">
+  App content
+</main>
 ````
 
 ## Other Variants
@@ -128,6 +134,9 @@ Short top app bars are top app bars that can collapse to the navigation icon sid
     </section>
   </div>
 </header>
+<main class="mdc-top-app-bar--short-fixed-adjust">
+  App content
+</main>
 ```
 
 **Note: Short top app bars should be used with no more than 1 action item.**
@@ -140,6 +149,9 @@ Short top app bars can be configured to always appear collapsed by applying the 
 <header class="mdc-top-app-bar mdc-top-app-bar--short mdc-top-app-bar--short-collapsed">
   ...
 </header>
+<main class="mdc-top-app-bar--short-fixed-adjust">
+  App content
+</main>
 ```
 
 ### Fixed
@@ -150,6 +162,9 @@ Fixed top app bars stay at the top of the page and elevate above the content whe
 <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
   ...
 </header>
+<main class="mdc-top-app-bar--fixed-adjust">
+  App content
+</main>
 ```
 
 ### Prominent
@@ -160,6 +175,9 @@ The prominent top app bar is taller.
 <header class="mdc-top-app-bar mdc-top-app-bar--prominent">
   ...
 </header>
+<main class="mdc-top-app-bar--prominent-fixed-adjust">
+  App content
+</main>
 ```
 
 ### Dense
@@ -170,6 +188,9 @@ The dense top app bar is shorter.
 <header class="mdc-top-app-bar mdc-top-app-bar--dense">
   ...
 </header>
+<main class="mdc-top-app-bar--dense-fixed-adjust">
+  App content
+</main>
 ```
 
 ## Style customization
@@ -180,7 +201,7 @@ Class | Description
 --- | ---
 `mdc-top-app-bar` | Mandatory.
 `mdc-top-app-bar--fixed` | Class used to style the top app bar as a fixed top app bar.
-`mdc-top-app-bar--fixed-adjust` | Class used to style the content below the standard and fixed top app bar to prevent the top app bar from covering it.
+`mdc-top-app-bar--fixed-adjust` | Class used to style the content below the top app bar to prevent the top app bar from covering it.
 `mdc-top-app-bar--prominent` | Class used to style the top app bar as a prominent top app bar.
 `mdc-top-app-bar--prominent-fixed-adjust` | Class used to style the content below the prominent top app bar to prevent the top app bar from covering it.
 `mdc-top-app-bar--dense` | Class used to style the top app bar as a dense top app bar.

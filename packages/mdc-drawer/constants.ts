@@ -36,6 +36,9 @@ const strings = {
   CLOSE_EVENT: 'MDCDrawer:closed',
   OPEN_EVENT: 'MDCDrawer:opened',
   SCRIM_SELECTOR: '.mdc-drawer-scrim',
+  LIST_SELECTOR: '.mdc-list,.mdc-deprecated-list',
+  LIST_ITEM_ACTIVATED_SELECTOR:
+      '.mdc-list-item--activated,.mdc-deprecated-list-item--activated',
 };
 
 export {cssClasses, strings};

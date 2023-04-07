@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
 // NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
 // selectors.
 
@@ -29,30 +29,36 @@
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/icon-button/mixins' as icon-button-mixins;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/icon-button/icon-button-theme';
+@use '@material/rtl/rtl';
 @use '@material/typography/typography';
 @use './data-table-theme';
 @use './data-table-cell';
 
 @mixin core-styles($query: feature-targeting.all()) {
+  .mdc-data-table__header-cell {
+    @include typography.typography(subtitle2, $query: $query);
+  }
+
+  @include static-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-data-table__header-cell {
-    @include typography.typography(subtitle2, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       box-sizing: border-box;
       text-overflow: ellipsis;
       overflow: hidden;
       outline: none;
 
-      /* @noflip */
+      @include rtl.ignore-next-line();
       text-align: left;
 
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: right;
       }
     }
@@ -68,31 +74,32 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: left;
       }
     }
   }
 
   .mdc-data-table__sort-icon-button {
-    @include icon-button-mixins.density(
+    @include icon-button-theme.density(
       $density-scale: data-table-theme.$sort-icon-density-scale,
       $query: $query
     );
 
     @include feature-targeting.targets($feat-structure) {
       // Apply dummy `transform` to avoid pixel shift on sort down animation.
+      @include rtl.ignore-next-line();
       transform: rotate(0.0001deg);
     }
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, 4px);
+      @include rtl.reflexive-box(margin, left, 4px);
     }
 
     .mdc-data-table__header-cell--numeric & {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-box(margin, right, 4px);
+        @include rtl.reflexive-box(margin, right, 4px);
       }
     }
 
@@ -102,6 +109,7 @@
 
     .mdc-data-table__header-cell--sorted-descending & {
       @include feature-targeting.targets($feat-structure) {
+        @include rtl.ignore-next-line();
         transform: rotate(-180deg);
       }
     }
@@ -147,20 +155,6 @@
       position: sticky;
       top: 0;
       z-index: 1;
-    }
-  }
-
-  // Use pseudo element to set border to bottom side of header cell.
-  // Applying `border-bottom` to header cell element does not work on vertical
-  // scroll for header row is sticky and table is set to
-  // `border-collapse: collapse`.
-  .mdc-data-table__header-cell:after {
-    @include feature-targeting.targets($feat-structure) {
-      bottom: 0;
-      content: '';
-      left: 0;
-      position: absolute;
-      width: 100%;
     }
   }
 }

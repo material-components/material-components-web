@@ -21,8 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {KEY} from '../../mdc-dom/keyboard';
-import {createKeyboardEvent, createMouseEvent} from '../../../testing/dom/events';
+import {createMouseEvent} from '../../../testing/dom/events';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {attributes, cssClasses, numbers} from '../constants';
 import {MDCSliderFoundation} from '../foundation';
@@ -33,7 +32,8 @@ describe('MDCSliderFoundation', () => {
 
   describe('#init sets values based on DOM', () => {
     it('sets min, max, value based on aria attributes', () => {
-      const {foundation} = setUpAndInit({min: 0, max: 100, value: 50.5});
+      const {foundation} =
+          setUpAndInit({min: 0, max: 100, value: 50.5, step: 0.5});
       expect(foundation.getMin()).toBe(0);
       expect(foundation.getMax()).toBe(100);
       expect(foundation.getValue()).toBe(50.5);
@@ -49,60 +49,101 @@ describe('MDCSliderFoundation', () => {
          expect(foundation.getValueStart()).toBe(-10);
        });
 
-    it('sets step based on data-step attribute', () => {
-      const {foundation} =
-          setUpAndInit({value: 50.5, step: 5, isDiscrete: true});
+    it('sets step based on step attribute', () => {
+      const {foundation} = setUpAndInit({value: 50, step: 5, isDiscrete: true});
       foundation.init();
 
       expect(foundation.getStep()).toBe(5);
     });
 
-    it('sets bigStep based on data-big-step attribute', () => {
-      const {foundation} =
-          setUpAndInit({value: 50.5, step: 5, bigStep: 20, isDiscrete: true});
+    it('range slider: sets min range based on data-min-range attribute', () => {
+      const {foundation} = setUpAndInit({minRange: 10, isRange: true});
       foundation.init();
 
-      expect(foundation.getBigStep()).toBe(20);
+      expect(foundation.getMinRange()).toBe(10);
     });
 
-    it('sets bigStep to a multiple of step if no data-big-step attribute',
-       () => {
-         const step = 2;
-         const {foundation} =
-             setUpAndInit({value: 50.5, step, isDiscrete: true});
-         foundation.init();
+    it('min can be updated after initialization', () => {
+      const {foundation} = setUpAndInit({min: -20, max: 20, value: 0});
+      expect(foundation.getMin()).toBe(-20);
+      expect(foundation.getMax()).toBe(20);
 
-         expect(foundation.getBigStep()).toBe(step * numbers.BIG_STEP_FACTOR);
-       });
+      foundation.setMin(10);
+      expect(foundation.getMin()).toBe(10);
+    });
+
+    it('max can be updated after initialization', () => {
+      const {foundation} = setUpAndInit({min: -20, max: 20, value: 0});
+      expect(foundation.getMin()).toBe(-20);
+      expect(foundation.getMax()).toBe(20);
+
+      foundation.setMax(30);
+      expect(foundation.getMax()).toBe(30);
+    });
+
+    it('min range can be updated after initialization', () => {
+      const {foundation} = setUpAndInit({isRange: true});
+      expect(foundation.getMinRange()).toBe(0);
+
+      foundation.setMinRange(10);
+      expect(foundation.getMinRange()).toBe(10);
+    });
+
+    it('hasTickMarks can be updated after initialization', () => {
+      const {foundation} =
+          setUpAndInit({min: 0, max: 100, value: 50, hasTickMarks: false}) as
+          unknown as {foundation: WithHasTickMarksAndDiscrete};
+      expect(foundation.hasTickMarks).toBe(false);
+
+      foundation.setHasTickMarks(true);
+      expect(foundation.hasTickMarks).toBe(true);
+    });
+
+    it('step can be updated after initialization', () => {
+      const {foundation} = setUpAndInit(
+          {min: 0, max: 100, value: 50, step: 10, isDiscrete: true});
+      expect(foundation.getStep()).toBe(10);
+
+      foundation.setStep(20);
+      expect(foundation.getStep()).toBe(20);
+    });
+
+    it('isDiscrete can be updated after initialization', () => {
+      const {foundation} =
+          setUpAndInit({min: 0, max: 100, value: 50, isDiscrete: false}) as
+          unknown as {foundation: WithHasTickMarksAndDiscrete};
+      expect(foundation.isDiscrete).toBe(false);
+
+      foundation.setIsDiscrete(true);
+      expect(foundation.isDiscrete).toBe(true);
+    });
 
     it('throws error if attribute value is null', () => {
       const {foundation, mockAdapter} = setUpTest();
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUEMIN, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MIN, Thumb.END)
           .and.returnValue(null);
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUEMAX, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
           .and.returnValue('100');
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUENOW, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
           .and.returnValue('50.5');
 
-      expect(() => foundation.init()).toThrowError(/must be non-null/);
+      expect(() => {
+        foundation.init();
+      }).toThrowError(/must be non-null/);
     });
 
     it('throws error if attribute value is NaN', () => {
       const {foundation, mockAdapter} = setUpTest();
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUEMIN, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MIN, Thumb.END)
           .and.returnValue('0');
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUEMAX, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
           .and.returnValue('foo');
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUENOW, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
           .and.returnValue('50.5');
 
-      expect(() => foundation.init()).toThrowError(/must be a number/);
+      expect(() => {
+        foundation.init();
+      }).toThrowError(/must be a number/);
     });
 
     it('throws error if min > max', () => {
@@ -148,6 +189,39 @@ describe('MDCSliderFoundation', () => {
       expect(() => setUpAndInit({value: 10, valueStart: 25, isRange: true}))
           .toThrowError(/start value must be <= end value/);
     });
+
+    it('range slider: throws error if start value is not divisible by step',
+       () => {
+         expect(() => setUpAndInit({valueStart: 2, step: 5, isRange: true}))
+             .toThrowError(/values must be valid based on the step value/);
+       });
+
+    it('throws error if value is not divisible by step', () => {
+      expect(() => setUpAndInit({value: 12, step: 5}))
+          .toThrowError(/value must be valid based on the step value/);
+    });
+
+    it('throws error if minRange < 0', () => {
+      expect(() => setUpAndInit({minRange: -1, isRange: true}))
+          .toThrowError(/minimum range must be non-negative/);
+    });
+
+    it('throws error if valueStart + minRange > value', () => {
+      expect(
+          () => setUpAndInit(
+              {valueStart: 20, value: 30, minRange: 20, isRange: true}))
+          .toThrowError(/start value and end value must differ by at least 20/);
+    });
+
+    it('does not throw error with valid value and step < 1', () => {
+      expect(() => setUpAndInit({value: 12, step: 0.2})).not.toThrow();
+    });
+
+    it('does not throw error due to floating point rounding - related to issue #7404',
+       () => {
+         expect(() => setUpAndInit({value: 33.3, min: 0, max: 100, step: 0.1}))
+             .not.toThrow();
+       });
   });
 
   describe('#layout', () => {
@@ -176,11 +250,12 @@ describe('MDCSliderFoundation', () => {
              setUpAndInit({isRange: true, isDiscrete: true});
 
          expect(mockAdapter.setThumbStyleProperty)
-             .toHaveBeenCalledWith('transition', 'all 0s ease 0s', Thumb.END);
+             .toHaveBeenCalledWith('transition', 'none 0s ease 0s', Thumb.END);
          expect(mockAdapter.setThumbStyleProperty)
-             .toHaveBeenCalledWith('transition', 'all 0s ease 0s', Thumb.START);
+             .toHaveBeenCalledWith(
+                 'transition', 'none 0s ease 0s', Thumb.START);
          expect(mockAdapter.setTrackActiveStyleProperty)
-             .toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+             .toHaveBeenCalledWith('transition', 'none 0s ease 0s');
          jasmine.clock().tick(1);  // Tick for RAF.
          // Newly added inline styles should be removed in next frame.
          expect(mockAdapter.removeThumbStyleProperty)
@@ -197,12 +272,12 @@ describe('MDCSliderFoundation', () => {
          jasmine.clock().tick(1);  // Tick for RAF.
          expect(mockAdapter.setThumbStyleProperty)
              .not.toHaveBeenCalledWith(
-                 'transition', 'all 0s ease 0s', Thumb.END);
+                 'transition', 'none 0s ease 0s', Thumb.END);
          expect(mockAdapter.setThumbStyleProperty)
              .not.toHaveBeenCalledWith(
-                 'transition', 'all 0s ease 0s', Thumb.START);
+                 'transition', 'none 0s ease 0s', Thumb.START);
          expect(mockAdapter.setTrackActiveStyleProperty)
-             .not.toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+             .not.toHaveBeenCalledWith('transition', 'none 0s ease 0s');
        });
 
     it('initial layout does not reset thumb/track animations for continuous sliders',
@@ -210,12 +285,12 @@ describe('MDCSliderFoundation', () => {
          const {mockAdapter} = setUpAndInit({isRange: true, isDiscrete: false});
          expect(mockAdapter.setThumbStyleProperty)
              .not.toHaveBeenCalledWith(
-                 'transition', 'all 0s ease 0s', Thumb.END);
+                 'transition', 'none 0s ease 0s', Thumb.END);
          expect(mockAdapter.setThumbStyleProperty)
              .not.toHaveBeenCalledWith(
-                 'transition', 'all 0s ease 0s', Thumb.START);
+                 'transition', 'none 0s ease 0s', Thumb.START);
          expect(mockAdapter.setTrackActiveStyleProperty)
-             .not.toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+             .not.toHaveBeenCalledWith('transition', 'none 0s ease 0s');
        });
 
     it('RTL: initial layout removes thumb styles', () => {
@@ -236,6 +311,45 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
       expect(mockAdapter.setTrackActiveStyleProperty).not.toHaveBeenCalled();
     });
+
+    it('#layout with no thumbs updates both thumbs\' value indicators', () => {
+      const {foundation, mockAdapter} = setUpAndInit(
+          {isRange: true, isDiscrete: true, valueStart: 5, value: 10});
+
+      foundation.layout();
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(10, Thumb.END);
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(5, Thumb.START);
+    });
+
+    it('#layout with no thumbs updates both thumbs\' input attributes', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        isRange: true,
+        isDiscrete: true,
+        valueStart: 5,
+        value: 10,
+        minRange: 1
+      });
+      mockAdapter.getValueToAriaValueTextFn.and.returnValue(
+          (value: string) => `${value} value`);
+
+      foundation.layout();
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '5', Thumb.START);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '10', Thumb.END);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MAX, '9', Thumb.START);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MIN, '6', Thumb.END);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(
+              attributes.ARIA_VALUETEXT, '5 value', Thumb.START);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(
+              attributes.ARIA_VALUETEXT, '10 value', Thumb.END);
+    });
   });
 
   describe('#destroy', () => {
@@ -254,8 +368,7 @@ describe('MDCSliderFoundation', () => {
          expect(mockAdapter.deregisterEventHandler)
              .toHaveBeenCalledWith('pointerup', jasmine.any(Function));
 
-         const thumbEvents =
-             ['keydown', 'focus', 'mouseenter', 'blur', 'mouseleave'];
+         const thumbEvents = ['mouseenter', 'mouseleave'];
          for (const event of thumbEvents) {
            expect(mockAdapter.deregisterThumbEventHandler)
                .toHaveBeenCalledWith(Thumb.END, event, jasmine.any(Function));
@@ -285,12 +398,25 @@ describe('MDCSliderFoundation', () => {
        });
 
     it('Resize listener is deregistered when foundation is destroyed', () => {
-       const {foundation, mockAdapter} = setUpAndInit();
+      const {foundation, mockAdapter} = setUpAndInit();
 
-       foundation.destroy();
+      foundation.destroy();
 
-       expect(mockAdapter.deregisterWindowEventHandler)
-           .toHaveBeenCalledWith('resize', jasmine.any(Function));
+      expect(mockAdapter.deregisterWindowEventHandler)
+          .toHaveBeenCalledWith('resize', jasmine.any(Function));
+    });
+  });
+
+  describe('Focused thumb style', () => {
+    it('adds/removes focused style from thumb on input focus/blur', () => {
+      const {foundation, mockAdapter} = setUpAndInit();
+      foundation.handleInputFocus(Thumb.START);
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.START);
+
+      foundation.handleInputBlur(Thumb.START);
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.START);
     });
   });
 
@@ -395,31 +521,98 @@ describe('MDCSliderFoundation', () => {
           .toHaveBeenCalledWith('transform', `scaleX(${0.6})`);
     });
 
-    it('down event does not update value if value is inside the range', () => {
+    it('quantizes value based on step and min', () => {
       const {foundation, mockAdapter} = setUpAndInit({
-        valueStart: 10,
-        value: 50,
-        isRange: true,
+        min: -25,
+        max: 75,
+        value: 5,
+        isDiscrete: true,
+        step: 10,
       });
 
-      // Reset UI update calls from initialization, so we can test
-      // that the next #handleDown call invokes no UI updates.
-      mockAdapter.setThumbStyleProperty.calls.reset();
-      mockAdapter.setTrackActiveStyleProperty.calls.reset();
-
       foundation.handleDown(createMouseEvent('mousedown', {
-        clientX: 40,
+        clientX: 10,
       }));
-      jasmine.clock().tick(1);  // Tick for RAF.
-
-      expect(foundation.getValueStart()).toBe(10);
-      expect(foundation.getValue()).toBe(50);
-      expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
-      expect(mockAdapter.setTrackActiveStyleProperty).not.toHaveBeenCalled();
+      expect(foundation.getValue()).toBe(-15);  // -25 + 10
+      jasmine.clock().tick(1);                  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', `translateX(${10}px)`, Thumb.END);
+      expect(mockAdapter.setTrackActiveStyleProperty)
+          .toHaveBeenCalledWith('transform', `scaleX(${0.1})`);
     });
 
+    it('rounds values based on step decimal places', () => {
+      const {foundation} = setUpAndInit({
+        min: 0,
+        max: 1,
+        value: 0,
+        isDiscrete: true,
+        step: 0.1,
+      });
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 30,
+      }));
+      expect(foundation.getValue()).toBe(0.3);
+    });
+
+    it('rounds values (using scientific notation) based on step decimal places',
+       () => {
+         const {foundation} = setUpAndInit({
+           min: 0,
+           max: 1e-8,
+           value: 0,
+           isDiscrete: true,
+           step: 1e-9,
+         });
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 30,
+         }));
+         expect(foundation.getValue()).toBe(3e-9);
+       });
+
+    it('down event updates end value if value is inside the range and ' +
+           'closer to end thumb',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 10,
+           value: 50,
+           isRange: true,
+         });
+
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 40,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(10);
+         expect(foundation.getValue()).toBe(40);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transform', 'translateX(40px)', Thumb.END);
+       });
+
+    it('down event updates start value if value is inside the range and ' +
+           'closer to start thumb',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 10,
+           value: 50,
+           isRange: true,
+         });
+
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 25,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(25);
+         expect(foundation.getValue()).toBe(50);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 'transform', 'translateX(25px)', Thumb.START);
+       });
+
     it('move event after down event (on end thumb) updates end thumb value ' +
-       'inside the range',
+           'inside the range',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
            valueStart: 10,
@@ -531,6 +724,59 @@ describe('MDCSliderFoundation', () => {
              .toHaveBeenCalledWith('transform', `translateX(45px)`, Thumb.END);
        });
 
+    it('does not move the start thumb to be closer to the end thumb than minRange',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 45,
+           value: 53,
+           minRange: 5,
+           isRange: true,
+         });
+
+         // Down event on start thumb.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 45,
+         }));
+         // Move event to a clientX less than minRange from the end thumb.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 50,
+         }));
+
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(48);
+         expect(foundation.getValue()).toBe(53);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 'transform', `translateX(48px)`, Thumb.START);
+       });
+
+    it('does not move the end thumb to be closer to the start thumb than minRange',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 45,
+           value: 80,
+           minRange: 10,
+           isRange: true,
+         });
+
+         // Down event on end thumb.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 80,
+         }));
+         // Move event to a clientX less than minRange from the start thumb.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 50,
+         }));
+
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(45);
+         expect(foundation.getValue()).toBe(55);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transform', `translateX(55px)`, Thumb.END);
+       });
+
     it('does not update UI if start value is updated to the same value', () => {
       const {foundation, mockAdapter} = setUpAndInit({
         valueStart: 40,
@@ -577,23 +823,6 @@ describe('MDCSliderFoundation', () => {
 
       expect(foundation.getValue()).toBe(80);
       expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
-    });
-
-    it('focuses end thumb after updating end thumb value', () => {
-      const {foundation, mockAdapter} = setUpAndInit({
-        valueStart: 10,
-        value: 50,
-        isRange: true,
-      });
-
-      // Down event on end thumb.
-      foundation.handleDown(createMouseEvent('mousedown', {
-        clientX: 70,
-      }));
-      jasmine.clock().tick(1);  // Tick for RAF.
-
-      expect(foundation.getValue()).toBe(70);
-      expect(mockAdapter.focusThumb).toHaveBeenCalledWith(Thumb.END);
     });
 
     it('RTL, single point slider: updates track/thumb position with ' +
@@ -653,15 +882,25 @@ describe('MDCSliderFoundation', () => {
 
     it('throws error if #setValue/setValueStart is set to invalid number',
        () => {
-         const {foundation} =
-             setUpAndInit({isRange: true, valueStart: 10, value: 50});
+         const {foundation} = setUpAndInit(
+             {isRange: true, valueStart: 10, value: 50, minRange: 10});
 
          expect(() => {
            foundation.setValueStart(51);
          }).toThrowError(/must be <= end thumb value/);
          expect(() => {
+           foundation.setValueStart(45);
+         })
+             .toThrowError(
+                 /must be <= end thumb value \(50\) - min range \(10\)/);
+         expect(() => {
            foundation.setValue(9);
          }).toThrowError(/must be >= start thumb value/);
+         expect(() => {
+           foundation.setValue(15);
+         })
+             .toThrowError(
+                 /must be >= start thumb value \(10\) \+ min range \(10\)/);
        });
 
     it('single point slider: #setValue updates value and UI', () => {
@@ -700,6 +939,86 @@ describe('MDCSliderFoundation', () => {
       jasmine.clock().tick(1);  // Tick for RAF.
       expect(mockAdapter.setThumbStyleProperty)
           .toHaveBeenCalledWith('transform', 'translateX(3px)', Thumb.START);
+    });
+  });
+
+  describe('#get/setMinRange', () => {
+    it('throws error if #get/setMinRange is invoked on single point slider',
+       () => {
+         const {foundation} = setUpAndInit();
+
+         expect(() => {
+           foundation.getMinRange();
+         }).toThrowError(/only applicable for range sliders/);
+         expect(() => {
+           foundation.setMinRange(10);
+         }).toThrowError(/only applicable for range sliders/);
+       });
+
+    it('throws error if #setMinRange is set to invalid number', () => {
+      const {foundation} = setUpAndInit(
+          {isRange: true, valueStart: 10, value: 50, minRange: 10});
+
+      expect(() => {
+        foundation.setMinRange(-10);
+      }).toThrowError(/must be non-negative/);
+      expect(() => {
+        foundation.setMinRange(45);
+      }).toThrowError(/must differ by at least 45/);
+    });
+  });
+
+  describe('input synchronization: ', () => {
+    it('updates input value attribute and property on value update', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        isDiscrete: true,
+        valueStart: 10,
+        value: 40,
+        minRange: 10,
+        isRange: true
+      });
+
+      mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(10);
+      foundation.setValueStart(3);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '3', Thumb.START);
+      expect(mockAdapter.setInputValue).toHaveBeenCalledWith('3', Thumb.START);
+      // The min attribute for end input should also be updated.
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MIN, '13', Thumb.END);
+
+      mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(40);
+      foundation.setValue(30);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '30', Thumb.END);
+      expect(mockAdapter.setInputValue).toHaveBeenCalledWith('30', Thumb.END);
+      // The max attribute for start input should also be updated.
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MAX, '20', Thumb.START);
+    });
+
+    it('updates values on input change', () => {
+      const {foundation, mockAdapter} =
+          setUpAndInit({valueStart: 10, value: 40, isRange: true});
+
+      mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(5);
+      foundation.handleInputChange(Thumb.START);
+      expect(foundation.getValueStart()).toBe(5);
+
+      mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(45);
+      foundation.handleInputChange(Thumb.END);
+      expect(foundation.getValue()).toBe(45);
+    });
+
+    it('focuses input on thumb down event', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+      });
+
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+      expect(mockAdapter.focusInput).toHaveBeenCalledWith(Thumb.END);
     });
   });
 
@@ -754,64 +1073,34 @@ describe('MDCSliderFoundation', () => {
     });
 
     it('range slider: adds THUMB_WITH_INDICATOR class to both thumbs on ' +
-       'thumb focus and mouseenter',
+           'thumb mouseenter',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
            isDiscrete: true,
            isRange: true,
          });
 
-         foundation.handleThumbFocusOrMouseenter(
-             createMouseEvent('mouseenter'));
+         foundation.handleThumbMouseenter();
          expect(mockAdapter.addThumbClass)
              .toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
-         expect(mockAdapter.addThumbClass)
-             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-
-         mockAdapter.addThumbClass.calls.reset();
-         foundation.handleThumbFocusOrMouseenter({type: 'focus'});
-         expect(mockAdapter.addThumbClass)
-             .toHaveBeenCalledWith(
-                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
-         expect(mockAdapter.addThumbClass)
-             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-       });
-
-    it('adds THUMB_WITH_INDICATOR class to thumb on thumb focus, but not mouseenter',
-       () => {
-         const {foundation, mockAdapter} = setUpAndInit({
-           isDiscrete: true,
-         });
-
-         foundation.handleThumbFocusOrMouseenter(
-             createMouseEvent('mouseenter'));
-         expect(mockAdapter.addThumbClass)
-             .not.toHaveBeenCalledWith(
-                 cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-
-         foundation.handleThumbFocusOrMouseenter({type: 'focus'});
          expect(mockAdapter.addThumbClass)
              .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
        });
 
     it('range slider: removes THUMB_WITH_INDICATOR class from both thumbs ' +
-       'on thumb blur and mouseleave',
+           'on thumb mouseleave',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
            isDiscrete: true,
            isRange: true,
          });
 
-         foundation.handleThumbBlurOrMouseleave(createMouseEvent('mouseleave'));
-         expect(mockAdapter.removeThumbClass)
-             .toHaveBeenCalledWith(
-                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
-         expect(mockAdapter.removeThumbClass)
-             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+         mockAdapter.isInputFocused.withArgs(Thumb.START)
+             .and.returnValue(false);
+         mockAdapter.isInputFocused.withArgs(Thumb.END).and.returnValue(false);
 
-         mockAdapter.removeThumbClass.calls.reset();
-         foundation.handleThumbBlurOrMouseleave({type: 'blur'});
+         foundation.handleThumbMouseleave();
          expect(mockAdapter.removeThumbClass)
              .toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
@@ -819,22 +1108,150 @@ describe('MDCSliderFoundation', () => {
              .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
        });
 
-    it('removes THUMB_WITH_INDICATOR class from thumb on thumb blur but ' +
-       'not mouseleave',
+    it('range slider: does not remove THUMB_WITH_INDICATOR class on' +
+           'thumb mouseleave if an input is still focused',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
            isDiscrete: true,
+           isRange: true,
          });
 
-         foundation.handleThumbBlurOrMouseleave(createMouseEvent('mouseleave'));
+         mockAdapter.isInputFocused.withArgs(Thumb.END).and.returnValue(true);
+
+         foundation.handleThumbMouseleave();
+         expect(mockAdapter.removeThumbClass)
+             .not.toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
          expect(mockAdapter.removeThumbClass)
              .not.toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-
-         foundation.handleThumbBlurOrMouseleave({type: 'blur'});
-         expect(mockAdapter.removeThumbClass)
-             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
        });
+  });
+
+  describe('value indicator alignment', () => {
+    it('does not align value indicator for continuous slider', () => {
+      const {mockAdapter} = setUpAndInit({
+        value: 50,
+      });
+
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .not.toHaveBeenCalled();
+      expect(mockAdapter.setThumbStyleProperty)
+          .not.toHaveBeenCalledWith(
+              jasmine.stringMatching(/--slider-value-indicator.*/),
+              jasmine.any(String), jasmine.any(Number));
+    });
+
+    it('left aligns value indicator when close to the left edge', () => {
+      const {mockAdapter} = setUpAndInit({
+        value: 0,
+        isDiscrete: true,
+      });
+
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .toHaveBeenCalledWith(Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-left', '5px', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-right', 'auto', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-transform', 'translateX(-50%)',
+              Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-left', '0', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-right', 'auto', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-transform', 'none',
+              Thumb.END);
+    });
+
+    it('right aligns value indicator when close to the right edge', () => {
+      const {mockAdapter} = setUpAndInit({
+        value: 100,
+        isDiscrete: true,
+      });
+
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .toHaveBeenCalledWith(Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-left', 'auto', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-right', '5px', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-transform', 'translateX(50%)',
+              Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-left', 'auto', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-right', '0', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-transform', 'none',
+              Thumb.END);
+    });
+
+    it('centers value indicator over the knob when far enough from both edges',
+       () => {
+         const {mockAdapter} = setUpAndInit({
+           value: 50,
+           isDiscrete: true,
+         });
+
+         expect(mockAdapter.getValueIndicatorContainerWidth)
+             .toHaveBeenCalledWith(Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-caret-left', '50%', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-caret-right', 'auto', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-caret-transform', 'translateX(-50%)',
+                 Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-container-left', '50%', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-container-right', 'auto', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-container-transform',
+                 'translateX(-50%)', Thumb.END);
+       });
+
+    it('range slider: aligns both value indicators', () => {
+      const {mockAdapter} = setUpAndInit({
+        isRange: true,
+        isDiscrete: true,
+      });
+
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .toHaveBeenCalledWith(Thumb.START);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              jasmine.stringMatching(/--slider-value-indicator.*/),
+              jasmine.any(String), Thumb.START);
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .toHaveBeenCalledWith(Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              jasmine.stringMatching(/--slider-value-indicator.*/),
+              jasmine.any(String), Thumb.END);
+    });
   });
 
   describe('tick marks', () => {
@@ -1074,217 +1491,51 @@ describe('MDCSliderFoundation', () => {
          mockAdapter.getValueToAriaValueTextFn.and.returnValue(
              (value: string) => `${value} value`);
 
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_DOWN,
-             }),
-             Thumb.START);
-         expect(mockAdapter.setThumbAttribute)
+         foundation.setValueStart(11);
+         expect(mockAdapter.setInputAttribute)
              .toHaveBeenCalledWith(
                  attributes.ARIA_VALUETEXT, '11 value', Thumb.START);
 
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_UP,
-             }),
-             Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
+         foundation.setValue(16);
+         expect(mockAdapter.setInputAttribute)
              .toHaveBeenCalledWith(
                  attributes.ARIA_VALUETEXT, '16 value', Thumb.END);
        });
-
-    it('updates aria-valuenow on thumb value updates', () => {
-      const {foundation, mockAdapter} = setUpAndInit({
-        valueStart: 12,
-        value: 15,
-        isRange: true,
-      });
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_DOWN,
-          }),
-          Thumb.START);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith(attributes.ARIA_VALUENOW, '11', Thumb.START);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_UP,
-          }),
-          Thumb.END);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith(attributes.ARIA_VALUENOW, '16', Thumb.END);
-    });
-
-    it('increments value for ARROW_UP/ARROW_RIGHT/PAGE_UP keypresses', () => {
-      const {foundation} = setUpAndInit({
-        valueStart: 8,
-        value: 80,
-        isRange: true,
-        isDiscrete: true,
-        step: 2,
-        bigStep: 10,
-      });
-      expect(foundation.getValueStart()).toBe(8);
-      expect(foundation.getValue()).toBe(80);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_UP,
-          }),
-          Thumb.START);
-      expect(foundation.getValueStart()).toBe(10);
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_RIGHT,
-          }),
-          Thumb.START);
-      expect(foundation.getValueStart()).toBe(12);
-    });
-
-    it('decrements value for ARROW_DOWN/ARROW_LEFT/PAGE_DOWN keypresses',
-       () => {
-         const {foundation} = setUpAndInit({
-           value: 50,
-           isDiscrete: true,
-           step: 1,
-           bigStep: 3,
-         });
-         expect(foundation.getValue()).toBe(50);
-
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_DOWN,
-             }),
-             Thumb.END);
-         expect(foundation.getValue()).toBe(49);
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_LEFT,
-             }),
-             Thumb.END);
-         expect(foundation.getValue()).toBe(48);
-       });
-
-    it('RTL: increments/decrements value for ARROW_LEFT/ARROW_RIGHT keypresses',
-       () => {
-         const {foundation} = setUpAndInit({
-           value: 50,
-           isDiscrete: true,
-           step: 2,
-           isRTL: true,
-         });
-         expect(foundation.getValue()).toBe(50);
-
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_LEFT,
-             }),
-             Thumb.END);
-         expect(foundation.getValue()).toBe(52);
-
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_RIGHT,
-             }),
-             Thumb.END);
-         expect(foundation.getValue()).toBe(50);
-       });
-
-    it('changes value by bigStep for PAGE_UP/PAGE_DOWN keypresses', () => {
-      const {foundation} = setUpAndInit({
-        value: 50,
-        isDiscrete: true,
-        step: 1,
-        bigStep: 3,
-      });
-      expect(foundation.getValue()).toBe(50);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.PAGE_UP,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(53);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.PAGE_DOWN,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(50);
-    });
-
-    it('sets value to min/max for HOME/END keypresses', () => {
-      const {foundation} = setUpAndInit({
-        min: 100,
-        value: 138,
-        max: 1000,
-      });
-      expect(foundation.getValue()).toBe(138);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.HOME,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(100);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.END,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(1000);
-    });
   });
 
   describe('disabled state', () => {
-    it('updates class and thumb attributes according to disabled state', () => {
+    it('updates class and input attributes according to disabled state', () => {
       const {foundation, mockAdapter} = setUpAndInit();
       expect(foundation.getDisabled()).toBe(false);
 
       foundation.setDisabled(true);
       expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.DISABLED);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith('tabindex', '-1', Thumb.END);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.END);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
       expect(foundation.getDisabled()).toBe(true);
 
       foundation.setDisabled(false);
       expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.DISABLED);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith('tabindex', '0', Thumb.END);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.END);
+      expect(mockAdapter.removeInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
       expect(foundation.getDisabled()).toBe(false);
     });
 
-    it('range slider: updates both thumbs\' attrs according to disabled state',
+    it('range slider: updates inputs\' attrs according to disabled state',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({isRange: true});
 
          foundation.setDisabled(true);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '-1', Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '-1', Thumb.START);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.START);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.START);
 
          foundation.setDisabled(false);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '0', Thumb.START);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '0', Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.START);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.END);
+         expect(mockAdapter.removeInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.START);
+         expect(mockAdapter.removeInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
        });
 
     it('events do not update slider value when disabled', () => {
@@ -1299,17 +1550,134 @@ describe('MDCSliderFoundation', () => {
         clientX: 30,
       }));
       expect(foundation.getValue()).toBe(40);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_DOWN,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(40);
     });
   });
 
+  describe('hide focus setting', () => {
+    it('hides focus and value indicators after mouse interaction', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 0,
+        isDiscrete: true,
+        hideFocusStylesForPointerEvents: true,
+      });
+
+      // Mousedown on slider should focus the thumb and show the value
+      // indicator.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.END);
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+
+      // Mouseup should remove focus from the thumb and hide the value indicator
+      // that were added on mousedown.
+      foundation.handleUp();
+
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.END);
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+    });
+
+    it('keeps focus and value indicators on keyboard interaction', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 0,
+        isDiscrete: true,
+        hideFocusStylesForPointerEvents: true,
+      });
+
+      foundation.handleInputFocus(Thumb.END);
+
+      // Thumb should get visible focus and the value indicator should show up.
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.END);
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+    });
+
+    it('range slider: hides value indicators on mouse leave even when focused',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           value: 100,
+           valueStart: 0,
+           isDiscrete: true,
+           isRange: true,
+           hideFocusStylesForPointerEvents: true,
+         });
+
+         mockAdapter.isInputFocused.withArgs(Thumb.START).and.returnValue(true);
+
+         foundation.handleThumbMouseenter();
+
+         // Mouseenter should still show the value indicators.
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+
+         foundation.handleThumbMouseleave();
+
+         // Mouseleave should hide value indicators even though one of the
+         // thumbs is focused.
+         expect(mockAdapter.removeThumbClass)
+             .toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.removeThumbClass)
+             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+       });
+
+    it('range slider: keeps value indicators on mouse leave while dragging',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           value: 100,
+           valueStart: 0,
+           isDiscrete: true,
+           isRange: true,
+           hideFocusStylesForPointerEvents: true,
+         });
+
+         foundation.handleThumbMouseenter();
+
+         // Mouseenter should still show the value indicators.
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+
+         // Mouseleave should keep them while the thumb is being dragged.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 20,
+         }));
+         foundation.handleThumbMouseleave();
+
+         expect(mockAdapter.removeThumbClass)
+             .not.toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.removeThumbClass)
+             .not.toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+       });
+  });
+
   describe('events: ', () => {
+    it('does not handle secondary pointer events', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+      });
+      foundation.handlePointerdown(createMouseEvent('mouseEvent', {
+                                     button: 1,  // Non-primary
+                                     clientX: 20,
+                                   }) as PointerEvent);
+
+      expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
+      expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
+    });
+
     it('single point slider: fires `input` and `change` events for value changes',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
@@ -1336,9 +1704,7 @@ describe('MDCSliderFoundation', () => {
          expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
          mockAdapter.emitInputEvent.calls.reset();
-         foundation.handleUp(createMouseEvent('mouseup', {
-           clientX: 55,
-         }));
+         foundation.handleUp();
          expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
          // `change` event should only be fired when value has been committed
          // (on pointer up).
@@ -1363,7 +1729,7 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(14, Thumb.START);
       expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-      foundation.handleUp(createMouseEvent('mouseup'));
+      foundation.handleUp();
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(14, Thumb.START);
     });
 
@@ -1384,86 +1750,28 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(77, Thumb.END);
       expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-      foundation.handleUp(createMouseEvent('mouseup'));
+      foundation.handleUp();
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(77, Thumb.END);
     });
 
-    it('fires `input`/`change` events for key events', () => {
+    it('fires `change` and `input` events on input change', () => {
       const {foundation, mockAdapter} = setUpAndInit({
-        value: 15,
+        valueStart: 20,
+        value: 50,
+        isRange: true,
         isDiscrete: true,
       });
 
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_DOWN,
-          }),
-          Thumb.END);
-      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(14, Thumb.END);
-      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(14, Thumb.END);
+      mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(5);
+      foundation.handleInputChange(Thumb.START);
+      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(5, Thumb.START);
+      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(5, Thumb.START);
 
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_UP,
-          }),
-          Thumb.END);
-      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(15, Thumb.END);
-      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(15, Thumb.END);
+      mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(60);
+      foundation.handleInputChange(Thumb.END);
+      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(60, Thumb.END);
+      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(60, Thumb.END);
     });
-
-    it('does not fire `input`/`change` events for key events that do not ' +
-           'change value',
-       () => {
-         const {foundation, mockAdapter} = setUpAndInit({
-           min: 0,
-           value: 0,
-           isDiscrete: true,
-         });
-
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_DOWN,
-             }),
-             Thumb.END);
-
-         expect(foundation.getValue()).toBe(0);
-         expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
-         expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
-       });
-
-    it('does not fire `input`/`change` events for pointer events that do not ' +
-           'change value',
-       () => {
-         const {foundation, mockAdapter} = setUpAndInit({
-           value: 70,
-           isDiscrete: true,
-           step: 5,
-         });
-
-         foundation.handleDown(createMouseEvent('mousedown', {
-           clientX: 70,
-         }));
-         foundation.handleMove(createMouseEvent('mousemove', {
-           clientX: 72,
-         }));
-         expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
-
-         // Move thumb to value 80...
-         foundation.handleMove(createMouseEvent('mousemove', {
-           clientX: 80,
-         }));
-         expect(foundation.getValue()).toBe(80);
-         // Move thumb back to value 70 without releasing.
-         foundation.handleMove(createMouseEvent('mousemove', {
-           clientX: 71,
-         }));
-         expect(foundation.getValue()).toBe(70);
-
-         // `change` event should not have been called since the move to
-         // value 80 was not committed.
-         foundation.handleUp(createMouseEvent('mouseup'));
-         expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
-       });
 
     it('fires `dragStart`/`dragEnd` events across drag interaction', () => {
       const {foundation, mockAdapter} = setUpAndInit({
@@ -1479,7 +1787,7 @@ describe('MDCSliderFoundation', () => {
       foundation.handleMove(createMouseEvent('mousemove', {
         clientX: 5,
       }));
-      foundation.handleUp(createMouseEvent('mouseup'));
+      foundation.handleUp();
 
       expect(mockAdapter.emitDragStartEvent)
           .toHaveBeenCalledWith(20, Thumb.START);
@@ -1508,27 +1816,29 @@ function setUpAndInit({
   valueStart,
   min,
   max,
+  minRange,
   rect,
   isDiscrete,
   isDisabled,
   step,
-  bigStep,
   hasTickMarks,
   isRange,
   isRTL,
+  hideFocusStylesForPointerEvents,
 }: {
   value?: number,
   valueStart?: number,
   min?: number,
   max?: number,
+  minRange?: number,
   rect?: Partial<ClientRect>,
   isDiscrete?: boolean,
   isDisabled?: boolean,
   step?: number,
-  bigStep?: number,
   hasTickMarks?: boolean,
   isRange?: boolean,
   isRTL?: boolean,
+  hideFocusStylesForPointerEvents?: boolean,
 } = {}) {
   const {foundation, mockAdapter} = setUpFoundationTest(MDCSliderFoundation);
   mockAdapter.hasClass.withArgs(cssClasses.DISCRETE)
@@ -1540,34 +1850,34 @@ function setUpAndInit({
   mockAdapter.hasClass.withArgs(cssClasses.RANGE)
       .and.returnValue(Boolean(isRange));
 
-  mockAdapter.getThumbAttribute.withArgs(attributes.ARIA_VALUEMIN, Thumb.END)
+  mockAdapter.getInputAttribute
+      .withArgs(attributes.INPUT_MIN, isRange ? Thumb.START : Thumb.END)
       .and.returnValue(
           String(min !== undefined ? min : 0),
       );
-  mockAdapter.getThumbAttribute.withArgs(attributes.ARIA_VALUEMAX, Thumb.END)
+  mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
       .and.returnValue(String(max !== undefined ? max : 100));
+
+  mockAdapter.getAttribute.withArgs(attributes.DATA_MIN_RANGE)
+      .and.returnValue(minRange !== undefined ? String(minRange) : null);
 
   valueStart = valueStart !== undefined ? valueStart : 20;
   value = value !== undefined ? value : 50;
   if (isRange) {
-    mockAdapter.getThumbAttribute
-        .withArgs(attributes.ARIA_VALUENOW, Thumb.START)
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.START)
         .and.returnValue(String(valueStart));
-    mockAdapter.getThumbAttribute.withArgs(attributes.ARIA_VALUENOW, Thumb.END)
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
         .and.returnValue(String(value));
   } else {
-    mockAdapter.getThumbAttribute.withArgs(attributes.ARIA_VALUENOW, Thumb.END)
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
         .and.returnValue(String(value));
   }
 
-  if (isDiscrete) {
-    mockAdapter.getAttribute.withArgs(attributes.DATA_ATTR_STEP)
-        .and.returnValue(step || 1);
-  }
-  if (bigStep !== undefined) {
-    mockAdapter.getAttribute.withArgs(attributes.DATA_ATTR_BIG_STEP)
-        .and.returnValue(bigStep);
-  }
+  mockAdapter.getInputAttribute.withArgs(attributes.INPUT_STEP, Thumb.END)
+      .and.returnValue(step || numbers.STEP_SIZE);
+
+  (mockAdapter.shouldHideFocusStylesForPointerEvents as jasmine.Spy)
+      .and.returnValue(hideFocusStylesForPointerEvents ?? false);
 
   foundation.init();
 
@@ -1581,26 +1891,41 @@ function setUpAndInit({
   });
   if (isRTL) {
     mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.END).and.returnValue(
-        {left: 100 - value - 5, right: 100 - value + 5});
+        {left: 100 - value - 5, right: 100 - value + 5, width: 10});
   } else {
     mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.END).and.returnValue(
-        {left: value - 5, right: value + 5});
+        {left: value - 5, right: value + 5, width: 10});
   }
   if (isRange) {
     if (isRTL) {
       mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.START)
-          .and.returnValue(
-              {left: 100 - valueStart - 5, right: 100 - valueStart + 5});
+          .and.returnValue({
+            left: 100 - valueStart - 5,
+            right: 100 - valueStart + 5,
+            width: 10
+          });
     } else {
       mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.START)
-          .and.returnValue({left: valueStart - 5, right: valueStart + 5});
+          .and.returnValue(
+              {left: valueStart - 5, right: valueStart + 5, width: 10});
     }
     mockAdapter.getThumbKnobWidth.withArgs(Thumb.START).and.returnValue(10);
     mockAdapter.getThumbKnobWidth.withArgs(Thumb.END).and.returnValue(10);
+  }
+  if (isDiscrete) {
+    mockAdapter.getValueIndicatorContainerWidth.withArgs(Thumb.END)
+        .and.returnValue(30);
   }
 
   foundation.layout();
   jasmine.clock().tick(1);  // Tick for RAF from UI update.
 
   return {foundation, mockAdapter};
+}
+
+interface WithHasTickMarksAndDiscrete {
+  hasTickMarks: boolean;
+  setHasTickMarks(hasTickMarks: boolean): void;
+  isDiscrete: boolean;
+  setIsDiscrete(hasTickMarks: boolean): void;
 }

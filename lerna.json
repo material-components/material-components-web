@@ -1,5 +1,5 @@
 {
-  "version": "8.0.0",
+  "version": "14.0.0",
   "command": {
     "version": {
       "conventionalCommits": true
@@ -8,6 +8,12 @@
       "ignoreChanges": [
         "*.md",
         "*.test-increment3"
+      ]
+    },
+    "bootstrap": {
+      "hoist": true,
+      "npmClientArgs": [
+        "--no-package-lock"
       ]
     }
   },

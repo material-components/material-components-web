@@ -8,11 +8,11 @@ on:
     branches:
       - master
     paths:
-      - 'packages/**/*.ts'
-      - 'packages/**/*.scss'
-      - '**/package*.json'
-      - '**/.npmignore'
-      - '**/*.md'
+      - "packages/**/*.ts"
+      - "packages/**/*.scss"
+      - "**/package*.json"
+      - "**/.npmignore"
+      - "**/*.md"
 
 jobs:
   release-pull-request:
@@ -29,16 +29,24 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 14
           registry-url: https://registry.npmjs.org/
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
         run: |
-          npm install
+          npm ci --ignore-scripts
+          npm run bootstrap
       - name: Bump version
         run: |
           npx lerna version --conventional-commits --no-git-tag-version --no-push --yes
       - name: Create PR
-        uses: peter-evans/create-pull-request@v2
+        uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: Release"

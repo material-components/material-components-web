@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
 // NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
 // selectors.
 
@@ -28,7 +28,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
 
-@mixin core-styles($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__progress-indicator {
@@ -47,7 +47,7 @@
 
   .mdc-data-table__scrim {
     @include feature-targeting.targets($feat-structure) {
-      @include theme.prop('background-color', surface);
+      @include theme.property('background-color', surface);
 
       height: 100%;
       // TODO(b/151453287): Set appropriate opacity value once we've a UX

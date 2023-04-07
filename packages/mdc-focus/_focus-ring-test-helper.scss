@@ -1,0 +1,6 @@
+/// Stop the animation half way to see the maximum size of the focus ring.
+@mixin focus-ring-half-animation {
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-duration: 0s;
+}

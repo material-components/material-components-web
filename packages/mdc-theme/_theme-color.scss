@@ -26,15 +26,24 @@
 @use 'sass:math';
 @use 'sass:meta';
 @use 'sass:string';
-@use './constants';
 @use './custom-properties';
+@use './keys';
+
+@function _linear-channel-value($channel-value) {
+  $normalized-channel-value: math.div($channel-value, 255);
+  @if $normalized-channel-value < 0.03928 {
+    @return math.div($normalized-channel-value, 12.92);
+  }
+
+  @return math.pow(math.div($normalized-channel-value + 0.055, 1.055), 2.4);
+}
 
 // Calculate the luminance for a color.
 // See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
 @function luminance($color) {
-  $red: list.nth(constants.$linear-channel-values, color.red($color) + 1);
-  $green: list.nth(constants.$linear-channel-values, color.green($color) + 1);
-  $blue: list.nth(constants.$linear-channel-values, color.blue($color) + 1);
+  $red: _linear-channel-value(color.red($color));
+  $green: _linear-channel-value(color.green($color));
+  $blue: _linear-channel-value(color.blue($color));
 
   @return 0.2126 * $red + 0.7152 * $green + 0.0722 * $blue;
 }
@@ -45,13 +54,18 @@
   $backLum: luminance($back) + 0.05;
   $foreLum: luminance($front) + 0.05;
 
-  @return math.max($backLum, $foreLum) / math.min($backLum, $foreLum);
+  @return math.div(math.max($backLum, $foreLum), math.min($backLum, $foreLum));
 }
 
 // Determine whether the color is 'light' or 'dark'.
 @function tone($color) {
   @if $color == 'dark' or $color == 'light' {
     @return $color;
+  }
+
+  @if meta.type-of($color) != 'color' {
+    @warn '#{$color} is not a color. Falling back to "dark" tone.';
+    @return 'dark';
   }
 
   $minimumContrast: 3.1;
@@ -86,11 +100,20 @@
   @if custom-properties.is-custom-prop($color) {
     $color-value: custom-properties.get-fallback($color);
 
-    @if ($color-value) {
-      @return _get-hex-string($color-value);
-    } @else {
-      @return custom-properties.get-varname($color);
+    @if (custom-properties.is-custom-prop-string($color-value)) {
+      $varEndIndex: if(
+        string.index($color-value, ', '),
+        string.index($color-value, ', ') - 1,
+        -2
+      );
+      @return string.slice($color-value, 5, $varEndIndex);
     }
+
+    @if (meta.type-of($color-value) == 'color') {
+      @return _get-hex-string($color-value);
+    }
+
+    @return custom-properties.get-varname($color);
   }
 
   @if meta.type-of($color) == 'string' {
@@ -115,6 +138,7 @@ $on-primary: if(contrast-tone($primary) == 'dark', #000, #fff) !default;
 
 // The $mdc-theme-accent variable is DEPRECATED - it exists purely for backward compatibility.
 // The $mdc-theme-secondary* variables should be used for all new projects.
+/// @deprecated - use $secondary
 $accent: #018786 !default; // baseline teal, 600 tone
 $secondary: $accent !default;
 $on-secondary: if(contrast-tone($secondary) == 'dark', #000, #fff) !default;
@@ -163,6 +187,8 @@ $text-emphasis: (
 // Primary text colors for each of the theme colors.
 //
 
+/// @deprecated Use individual variables (`$primary`, `$secondary`). Do not
+/// override this Map of variables.
 $property-values: (
   primary: $primary,
   secondary: $secondary,
@@ -190,6 +216,40 @@ $property-values: (
   text-icon-on-dark: ink-color-for-fill_(icon, dark),
 ) !default;
 
+@include keys.set-values(
+  $property-values,
+  $options: (custom-property-prefix: theme)
+);
+
+// A copy of the property values Map that is used to detect compile-time changes
+// for Angular support.
+$_property-values-copy: $property-values;
+
+/// Checks if the global $mdc-theme-property-values was dynamically changed at
+/// compile time. Typically, $property-values is configured once, but a Sass
+/// hack allows the variable to be changed multiple times and effectively
+/// support dynamic values.
+///
+/// Angular uses this in their dynamic theming. This function checks if this
+/// scenario has occurred and returns the current global value that should be
+/// used instead of the key store value.
+///
+/// @deprecated The function should not be used externally. It will be removed
+///     when $mdc-theme-property-values is fully deprecated and removed.
+@function deprecated-get-global-theme-key-value-if-changed($key) {
+  // Determine if we need to use a compile-time updated value to support
+  // Angular.
+  $current-global-value: map.get($property-values, $key);
+  $configured-global-value: map.get($_property-values-copy, $key);
+  @if $current-global-value != $configured-global-value {
+    // $mdc-theme-property-values was changed at compile time. Return the new
+    // compile-time value.
+    @return (value: $current-global-value, changed: true);
+  }
+
+  @return (changed: false);
+}
+
 // @deprecated use theme.property(). If you need to ensure the value is not a
 // custom property, use custom-properties.is-custom-prop() to check if the value
 // is a custom prop, then custom-properties.get-fallback() to get its value.
@@ -214,11 +274,16 @@ $property-values: (
     @return $style;
   }
 
-  @if not map.has-key($property-values, $style) {
-    @error "Invalid theme property: '#{$style}'. Choose one of: #{map.keys($property-values)}";
+  @if is-theme-key($style) {
+    // Determine if we need to use a compile-time updated value to support
+    // Angular.
+    $result: deprecated-get-global-theme-key-value-if-changed($style);
+    @if map.get($result, changed) {
+      @return map.get($result, value);
+    }
   }
 
-  @return map.get($property-values, $style);
+  @return keys.resolve($style);
 }
 
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
@@ -235,6 +300,10 @@ $property-values: (
 
 // NOTE: This function is depended upon by mdc-theme-prop-value (above) and thus must be defined in this file.
 @function is-valid-theme-prop-value_($style) {
+  @if $style == null {
+    @return false;
+  }
+
   @return meta.type-of($style) == 'color' or $style == 'currentColor' or
     str_slice($style, 1, 4) == 'var(' or $style == 'inherit' or $style ==
     'transparent' or
@@ -245,6 +314,14 @@ $property-values: (
 
 @function text-emphasis($emphasis) {
   @return map.get($text-emphasis, $emphasis);
+}
+
+@function is-theme-key($style) {
+  @return map.has-key($property-values, $style);
+}
+
+@function get-theme-keys() {
+  @return map.keys($property-values);
 }
 
 ///
@@ -261,16 +338,28 @@ $property-values: (
 ///   => #fff
 ///
 @function get-custom-property($color) {
+  $is-tokens-custom-prop: meta.type-of($color) == 'string' and
+    string.index($color, '--') != null;
   @if custom-properties.is-custom-prop($color) or
+    $is-tokens-custom-prop or
     is-valid-theme-prop-value_($color)
   {
     @return $color;
-  } @else if map.has-key($property-values, $color) {
-    @return custom-properties.create(
-      --mdc-theme-#{$color},
-      map.get($property-values, $color)
-    );
+  } @else if is-theme-key($color) {
+    $custom-prop: keys.create-custom-property($color);
+
+    // Determine if we need to use a compile-time updated value to support
+    // Angular.
+    $result: deprecated-get-global-theme-key-value-if-changed($color);
+    @if map.get($result, changed) {
+      $custom-prop: custom-properties.set-fallback(
+        $custom-prop,
+        map.get($result, value)
+      );
+    }
+
+    @return $custom-prop;
   } @else {
-    @error "Invalid theme property: '#{$style}'. Choose one of: #{map.keys($property-values)}";
+    @error "Invalid theme property: '#{$color}'. Choose one of: #{get-theme-keys()}";
   }
 }

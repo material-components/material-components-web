@@ -24,21 +24,25 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {closest, matches} from '@material/dom/ponyfill';
+
 import {MDCListAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, deprecatedClassNameMap, evolutionAttribute, evolutionClassNameMap, numbers, strings} from './constants';
 import {MDCListFoundation} from './foundation';
-import {MDCListActionEventDetail, MDCListIndex} from './types';
+import {MDCListActionEventDetail, MDCListIndex, MDCListSelectionChangeDetail} from './types';
 
-export type MDCListFactory = (el: Element, foundation?: MDCListFoundation) => MDCList;
+/** MDC List Factory */
+export type MDCListFactory =
+    (el: HTMLElement, foundation?: MDCListFoundation) => MDCList;
 
+/** MDC List */
 export class MDCList extends MDCComponent<MDCListFoundation> {
   set vertical(value: boolean) {
     this.foundation.setVerticalOrientation(value);
   }
 
-  get listElements(): Element[] {
-    return [].slice.call(
-        this.root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`));
+  get listElements() {
+    return Array.from(this.root.querySelectorAll<HTMLElement>(
+        `.${this.classNameMap[cssClasses.LIST_ITEM_CLASS]}`));
   }
 
   set wrapFocus(value: boolean) {
@@ -64,6 +68,10 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation.setSingleSelection(isSingleSelectionList);
   }
 
+  set disabledItemsFocusable(areDisabledItemsFocusable: boolean) {
+    this.foundation.setDisabledItemsFocusable(areDisabledItemsFocusable);
+  }
+
   get selectedIndex(): MDCListIndex {
     return this.foundation.getSelectedIndex();
   }
@@ -72,49 +80,88 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation.setSelectedIndex(index);
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCList(root);
   }
 
-  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
-  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
-  private focusInEventListener_!: SpecificEventListener<'focus'>; // assigned in initialSyncWithDOM()
-  private focusOutEventListener_!: SpecificEventListener<'focus'>; // assigned in initialSyncWithDOM()
+  // The follow are assigned in initialSyncWithDOM().
+  private handleKeydown!: SpecificEventListener<'keydown'>;
+  private handleClick!: SpecificEventListener<'click'>;
+  private focusInEventListener!: SpecificEventListener<'focus'>;
+  private focusOutEventListener!: SpecificEventListener<'focus'>;
 
-  initialSyncWithDOM() {
-    this.handleClick_ = this.handleClickEvent_.bind(this);
-    this.handleKeydown_ = this.handleKeydownEvent_.bind(this);
-    this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
-    this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
-    this.listen('keydown', this.handleKeydown_);
-    this.listen('click', this.handleClick_);
-    this.listen('focusin', this.focusInEventListener_);
-    this.listen('focusout', this.focusOutEventListener_);
+  // This mapping provides a layer of indirection from legacy classes to
+  // evolution classes, since there are some inconsistencies between the
+  // two.
+  // TODO(b/176814973): remove this map when evolution is launched.
+  private classNameMap!: {[className: string]: string};
+  private isEvolutionEnabled!: boolean;
+  private isInteractive!: boolean;
+
+  override initialSyncWithDOM() {
+    this.isEvolutionEnabled = evolutionAttribute in this.root.dataset;
+
+    if (this.isEvolutionEnabled) {
+      this.classNameMap = evolutionClassNameMap;
+    } else if (matches(this.root, strings.DEPRECATED_SELECTOR)) {
+      this.classNameMap = deprecatedClassNameMap;
+    } else {
+      this.classNameMap =
+          Object.values(cssClasses)
+              .reduce((obj: {[className: string]: string}, className) => {
+                obj[className] = className;
+                return obj;
+              }, {});
+    }
+
+    this.handleClick = this.handleClickEvent.bind(this);
+    this.handleKeydown = this.handleKeydownEvent.bind(this);
+    this.focusInEventListener = this.handleFocusInEvent.bind(this);
+    this.focusOutEventListener = this.handleFocusOutEvent.bind(this);
+    this.listen('keydown', this.handleKeydown);
+    this.listen('click', this.handleClick);
+    this.listen('focusin', this.focusInEventListener);
+    this.listen('focusout', this.focusOutEventListener);
     this.layout();
     this.initializeListType();
+    this.ensureFocusable();
   }
 
-  destroy() {
-    this.unlisten('keydown', this.handleKeydown_);
-    this.unlisten('click', this.handleClick_);
-    this.unlisten('focusin', this.focusInEventListener_);
-    this.unlisten('focusout', this.focusOutEventListener_);
+  override destroy() {
+    this.unlisten('keydown', this.handleKeydown);
+    this.unlisten('click', this.handleClick);
+    this.unlisten('focusin', this.focusInEventListener);
+    this.unlisten('focusout', this.focusOutEventListener);
   }
 
   layout() {
     const direction = this.root.getAttribute(strings.ARIA_ORIENTATION);
     this.vertical = direction !== strings.ARIA_ORIENTATION_HORIZONTAL;
 
+    const itemSelector =
+        `.${this.classNameMap[cssClasses.LIST_ITEM_CLASS]}:not([tabindex])`;
+    const childSelector = strings.FOCUSABLE_CHILD_ELEMENTS;
+
     // List items need to have at least tabindex=-1 to be focusable.
-    [].slice.call(this.root.querySelectorAll('.mdc-list-item:not([tabindex])'))
-        .forEach((el: Element) => {
-          el.setAttribute('tabindex', '-1');
-        });
+    const itemEls = this.root.querySelectorAll<HTMLElement>(itemSelector);
+    if (itemEls.length) {
+      Array.prototype.forEach.call(itemEls, (el: Element) => {
+        el.setAttribute('tabindex', '-1');
+      });
+    }
 
     // Child button/a elements are not tabbable until the list item is focused.
-    [].slice.call(this.root.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
-        .forEach((el: Element) => el.setAttribute('tabindex', '-1'));
+    const focusableChildEls =
+        this.root.querySelectorAll<HTMLElement>(childSelector);
+    if (focusableChildEls.length) {
+      Array.prototype.forEach.call(focusableChildEls, (el: Element) => {
+        el.setAttribute('tabindex', '-1');
+      });
+    }
 
+    if (this.isEvolutionEnabled) {
+      this.foundation.setUseSelectedAttribute(true);
+    }
     this.foundation.layout();
   }
 
@@ -124,31 +171,48 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    * @return The primary text in the element.
    */
   getPrimaryText(item: Element): string {
-    const primaryText =
-        item.querySelector(`.${cssClasses.LIST_ITEM_PRIMARY_TEXT_CLASS}`);
-    if (primaryText) {
-      return primaryText.textContent || '';
+    const primaryText = item.querySelector<HTMLElement>(
+        `.${this.classNameMap[cssClasses.LIST_ITEM_PRIMARY_TEXT_CLASS]}`);
+    if (this.isEvolutionEnabled || primaryText) {
+      return primaryText?.textContent ?? '';
     }
 
-    const singleLineText =
-        item.querySelector(`.${cssClasses.LIST_ITEM_TEXT_CLASS}`);
+    const singleLineText = item.querySelector<HTMLElement>(
+        `.${this.classNameMap[cssClasses.LIST_ITEM_TEXT_CLASS]}`);
     return (singleLineText && singleLineText.textContent) || '';
   }
 
   /**
-   * Initialize selectedIndex value based on pre-selected checkbox list items, single selection or radio.
+   * Initialize selectedIndex value based on pre-selected list items.
    */
   initializeListType() {
-    const checkboxListItems =
-        this.root.querySelectorAll(strings.ARIA_ROLE_CHECKBOX_SELECTOR);
-    const radioSelectedListItem =
-        this.root.querySelector(strings.ARIA_CHECKED_RADIO_SELECTOR);
+    this.isInteractive =
+        matches(this.root, strings.ARIA_INTERACTIVE_ROLES_SELECTOR);
+
+    if (this.isEvolutionEnabled && this.isInteractive) {
+      const selection = Array.from(
+          this.root.querySelectorAll<HTMLElement>(
+              strings.SELECTED_ITEM_SELECTOR),
+          (listItem) => this.listElements.indexOf(listItem));
+
+      if (matches(this.root, strings.ARIA_MULTI_SELECTABLE_SELECTOR)) {
+        this.selectedIndex = selection;
+      } else if (selection.length > 0) {
+        this.selectedIndex = selection[0];
+      }
+      return;
+    }
+
+    const checkboxListItems = this.root.querySelectorAll<HTMLElement>(
+        strings.ARIA_ROLE_CHECKBOX_SELECTOR);
+    const radioSelectedListItem = this.root.querySelector<HTMLElement>(
+        strings.ARIA_CHECKED_RADIO_SELECTOR);
 
     if (checkboxListItems.length) {
-      const preselectedItems =
-          this.root.querySelectorAll(strings.ARIA_CHECKED_CHECKBOX_SELECTOR);
-      this.selectedIndex =
-          [].map.call(preselectedItems, (listItem: Element) => this.listElements.indexOf(listItem)) as number[];
+      const preselectedItems = this.root.querySelectorAll<HTMLElement>(
+          strings.ARIA_CHECKED_CHECKBOX_SELECTOR);
+      this.selectedIndex = Array.from(
+          preselectedItems, (listItem) => this.listElements.indexOf(listItem));
     } else if (radioSelectedListItem) {
       this.selectedIndex = this.listElements.indexOf(radioSelectedListItem);
     }
@@ -178,40 +242,39 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         nextChar, startingIndex, /** skipFocus */ true);
   }
 
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+  override getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCListAdapter = {
       addClassForElementIndex: (index, className) => {
         const element = this.listElements[index];
         if (element) {
-          element.classList.add(className);
+          element.classList.add(this.classNameMap[className]);
         }
       },
       focusItemAtIndex: (index) => {
-        const element = this.listElements[index] as HTMLElement | undefined;
-        if (element) {
-          element.focus();
-        }
+        this.listElements[index]?.focus();
       },
       getAttributeForElementIndex: (index, attr) =>
           this.listElements[index].getAttribute(attr),
       getFocusedElementIndex: () =>
-          this.listElements.indexOf(document.activeElement!),
+          this.listElements.indexOf(document.activeElement as HTMLElement),
       getListItemCount: () => this.listElements.length,
       getPrimaryTextAtIndex: (index) =>
           this.getPrimaryText(this.listElements[index]),
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
-        return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);
+        return !!listItem.querySelector<HTMLElement>(strings.CHECKBOX_SELECTOR);
       },
       hasRadioAtIndex: (index) => {
         const listItem = this.listElements[index];
-        return !!listItem.querySelector(strings.RADIO_SELECTOR);
+        return !!listItem.querySelector<HTMLElement>(strings.RADIO_SELECTOR);
       },
       isCheckboxCheckedAtIndex: (index) => {
         const listItem = this.listElements[index];
-        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_SELECTOR);
+        const toggleEl =
+            listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_SELECTOR);
         return toggleEl!.checked;
       },
       isFocusInsideList: () => {
@@ -220,25 +283,33 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       },
       isRootFocused: () => document.activeElement === this.root,
       listItemAtIndexHasClass: (index, className) =>
-          this.listElements[index].classList.contains(className),
+          this.listElements[index].classList.contains(
+              this.classNameMap[className]),
       notifyAction: (index) => {
-        this.emit<MDCListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
+        this.emit<MDCListActionEventDetail>(
+            strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
+      },
+      notifySelectionChange: (changedIndices: number[]) => {
+        this.emit<MDCListSelectionChangeDetail>(
+            strings.SELECTION_CHANGE_EVENT, {changedIndices},
+            /** shouldBubble */ true);
       },
       removeClassForElementIndex: (index, className) => {
         const element = this.listElements[index];
         if (element) {
-          element.classList.remove(className);
+          element.classList.remove(this.classNameMap[className]);
         }
       },
       setAttributeForElementIndex: (index, attr, value) => {
         const element = this.listElements[index];
         if (element) {
-          element.setAttribute(attr, value);
+          this.safeSetAttribute(element, attr, value);
         }
       },
       setCheckedCheckboxOrRadioAtIndex: (index, isChecked) => {
         const listItem = this.listElements[index];
-        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_RADIO_SELECTOR);
+        const toggleEl = listItem.querySelector<HTMLInputElement>(
+            strings.CHECKBOX_RADIO_SELECTOR);
         toggleEl!.checked = isChecked;
 
         const event = document.createEvent('Event');
@@ -247,66 +318,113 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const element = this.listElements[listItemIndex];
-        const listItemChildren: Element[] =
-            [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
-        listItemChildren.forEach((el) => el.setAttribute('tabindex', tabIndexValue));
+        const selector = strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX;
+        Array.prototype.forEach.call(
+            element.querySelectorAll<HTMLElement>(selector),
+            (el: HTMLElement) => {
+              el.tabIndex = Number(tabIndexValue);
+            });
       },
     };
     return new MDCListFoundation(adapter);
   }
 
   /**
-   * Used to figure out which list item this event is targetting. Or returns -1 if
-   * there is no list item
+   * Ensures that at least one item is focusable if the list is interactive and
+   * doesn't specify a suitable tabindex.
    */
-  private getListItemIndex_(evt: Event) {
-    const eventTarget = evt.target as Element;
-    const nearestParent = closest(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
+  private ensureFocusable() {
+    if (this.isEvolutionEnabled && this.isInteractive) {
+      if (!this.root.querySelector(`.${
+              this.classNameMap[cssClasses.LIST_ITEM_CLASS]}[tabindex="0"]`)) {
+        const index = this.initialFocusIndex();
+        if (index !== -1) {
+          this.listElements[index].tabIndex = 0;
+        }
+      }
+    }
+  }
+
+  private initialFocusIndex(): number {
+    if (this.selectedIndex instanceof Array && this.selectedIndex.length > 0) {
+      return this.selectedIndex[0];
+    }
+    if (typeof this.selectedIndex === 'number' &&
+        this.selectedIndex !== numbers.UNSET_INDEX) {
+      return this.selectedIndex;
+    }
+    const el = this.root.querySelector<HTMLElement>(
+        `.${this.classNameMap[cssClasses.LIST_ITEM_CLASS]}:not(.${
+            this.classNameMap[cssClasses.LIST_ITEM_DISABLED_CLASS]})`);
+    if (el === null) {
+      return -1;
+    }
+    return this.getListItemIndex(el);
+  }
+
+  /**
+   * Used to figure out which list item this event is targeting. Or returns -1
+   * if there is no list item
+   */
+  private getListItemIndex(el: Element) {
+    const nearestParent = closest(
+        el,
+        `.${this.classNameMap[cssClasses.LIST_ITEM_CLASS]}, .${
+            this.classNameMap[cssClasses.ROOT]}`);
 
     // Get the index of the element if it is a list item.
-    if (nearestParent && matches(nearestParent, `.${cssClasses.LIST_ITEM_CLASS}`)) {
-      return this.listElements.indexOf(nearestParent);
+    if (nearestParent &&
+        matches(
+            nearestParent,
+            `.${this.classNameMap[cssClasses.LIST_ITEM_CLASS]}`)) {
+      return this.listElements.indexOf(nearestParent as HTMLElement);
     }
 
     return -1;
   }
 
   /**
-   * Used to figure out which element was clicked before sending the event to the foundation.
+   * Used to figure out which element was clicked before sending the event to
+   * the foundation.
    */
-  private handleFocusInEvent_(evt: FocusEvent) {
-    const index = this.getListItemIndex_(evt);
-    this.foundation.handleFocusIn(evt, index);
+  private handleFocusInEvent(evt: FocusEvent) {
+    const index = this.getListItemIndex(evt.target as Element);
+    this.foundation.handleFocusIn(index);
   }
 
   /**
-   * Used to figure out which element was clicked before sending the event to the foundation.
+   * Used to figure out which element was clicked before sending the event to
+   * the foundation.
    */
-  private handleFocusOutEvent_(evt: FocusEvent) {
-    const index = this.getListItemIndex_(evt);
-    this.foundation.handleFocusOut(evt, index);
+  private handleFocusOutEvent(evt: FocusEvent) {
+    const index = this.getListItemIndex(evt.target as Element);
+    this.foundation.handleFocusOut(index);
   }
 
   /**
-   * Used to figure out which element was focused when keydown event occurred before sending the event to the
-   * foundation.
+   * Used to figure out which element was focused when keydown event occurred
+   * before sending the event to the foundation.
    */
-  private handleKeydownEvent_(evt: KeyboardEvent) {
-    const index = this.getListItemIndex_(evt);
+  private handleKeydownEvent(evt: KeyboardEvent) {
+    const index = this.getListItemIndex(evt.target as Element);
     const target = evt.target as Element;
     this.foundation.handleKeydown(
-        evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
+        evt,
+        target.classList.contains(
+            this.classNameMap[cssClasses.LIST_ITEM_CLASS]),
+        index);
   }
 
   /**
-   * Used to figure out which element was clicked before sending the event to the foundation.
+   * Used to figure out which element was clicked before sending the event to
+   * the foundation.
    */
-  private handleClickEvent_(evt: MouseEvent) {
-    const index = this.getListItemIndex_(evt);
+  private handleClickEvent(evt: MouseEvent) {
+    const index = this.getListItemIndex(evt.target as Element);
     const target = evt.target as Element;
-
-    // Toggle the checkbox only if it's not the target of the event, or the checkbox will have 2 change events.
+    // Toggle the checkbox only if it's not the target of the event, or the
+    // checkbox will have 2 change events.
     const toggleCheckbox = !matches(target, strings.CHECKBOX_RADIO_SELECTOR);
-    this.foundation.handleClick(index, toggleCheckbox);
+    this.foundation.handleClick(index, toggleCheckbox, evt);
   }
 }

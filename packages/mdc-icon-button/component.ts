@@ -24,14 +24,17 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple} from '@material/ripple/component';
+
 import {MDCIconButtonToggleAdapter} from './adapter';
 import {MDCIconButtonToggleFoundation} from './foundation';
 import {MDCIconButtonToggleEventDetail} from './types';
 
 const {strings} = MDCIconButtonToggleFoundation;
 
-export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
-  static attachTo(root: HTMLElement) {
+/** MDC Icon Button Toggle */
+export class MDCIconButtonToggle extends
+    MDCComponent<MDCIconButtonToggleFoundation> {
+  static override attachTo(root: HTMLElement) {
     return new MDCIconButtonToggle(root);
   }
 
@@ -39,33 +42,39 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
   private handleClick!:
       SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleClick = () => {
       this.foundation.handleClick();
     };
     this.listen('click', this.handleClick);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten('click', this.handleClick);
     this.ripple.destroy();
     super.destroy();
   }
 
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+  override getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCIconButtonToggleAdapter = {
-      addClass: (className) => this.root.classList.add(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
       hasClass: (className) => this.root.classList.contains(className),
       notifyChange: (evtData) => {
         this.emit<MDCIconButtonToggleEventDetail>(
             strings.CHANGE_EVENT, evtData);
       },
-      removeClass: (className) => this.root.classList.remove(className),
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       getAttr: (attrName) => this.root.getAttribute(attrName),
-      setAttr: (attrName, attrValue) =>
-          this.root.setAttribute(attrName, attrValue),
+      setAttr: (attrName, attrValue) => {
+        this.safeSetAttribute(this.root, attrName, attrValue);
+      },
     };
     return new MDCIconButtonToggleFoundation(adapter);
   }

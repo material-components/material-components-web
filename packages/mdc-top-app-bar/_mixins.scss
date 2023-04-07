@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:list';
 @use 'sass:meta';
@@ -32,18 +32,18 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions';
 @use './variables';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 
 //
 // Public
 //
 
 @mixin ink-color($color) {
-  @include theme.prop(color, $color);
+  @include theme.property(color, $color);
 }
 
 @mixin fill-color($color) {
-  @include theme.prop(background-color, $color);
+  @include theme.property(background-color, $color);
 }
 
 @mixin fill-color-accessible($color) {
@@ -54,7 +54,7 @@
 @mixin icon-ink-color($color) {
   .mdc-top-app-bar__action-item,
   .mdc-top-app-bar__navigation-icon {
-    @include theme.prop(color, $color);
+    @include theme.property(color, $color);
     @include ripple-theme.states($color);
   }
 }
@@ -105,7 +105,7 @@
         animation-variables.$standard-curve-timing-function;
 
       .mdc-top-app-bar__section--align-end {
-        @include rtl-mixins.reflexive-box(
+        @include rtl.reflexive-box(
           padding,
           right,
           variables.$short-collapsed-right-icon-padding

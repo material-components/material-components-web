@@ -1,0 +1,752 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use '@material/density/functions' as density-functions;
+@use '@material/density/variables' as density-variables;
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/elevation/elevation-theme';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/focus-ring/focus-ring';
+@use '@material/ripple/ripple-theme';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/custom-properties';
+@use '@material/theme/state';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/typography/typography';
+@use './button-ripple';
+
+$height: 36px !default;
+$horizontal-padding: 8px !default;
+$contained-horizontal-padding: 16px !default;
+// For a contained button with an icon, the padding on the side of the
+// button with the icon.
+$contained-horizontal-padding-icon: 12px !default;
+
+$minimum-height: 24px !default;
+$maximum-height: $height !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
+  height: (
+    default: $height,
+    maximum: $maximum-height,
+    minimum: $minimum-height,
+  ),
+) !default;
+
+$shape-radius: small !default;
+
+$disabled-ink-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
+$disabled-container-color: rgba(
+  theme-color.prop-value(on-surface),
+  0.12
+) !default;
+
+@mixin theme-styles($theme, $resolver, $query: feature-targeting.all()) {
+  @include _label-text-typography(
+    (
+      family: map.get($theme, label-text-font),
+      size: map.get($theme, label-text-size),
+      tracking: map.get($theme, label-text-tracking),
+      weight: map.get($theme, label-text-weight),
+      transform: map.get($theme, label-text-transform),
+    ),
+    $query: $query
+  );
+
+  @include container-fill-color(
+    (
+      default: map.get($theme, container-color),
+      disabled: map.get($theme, disabled-container-color),
+    ),
+    $query: $query
+  );
+
+  @include ink-color(
+    (
+      default: map.get($theme, label-text-color),
+      hover: map.get($theme, hover-label-text-color),
+      focus: map.get($theme, focus-label-text-color),
+      pressed: map.get($theme, pressed-label-text-color),
+      disabled: map.get($theme, disabled-label-text-color),
+    ),
+    $query: $query
+  );
+
+  @include icon-color(
+    (
+      default: map.get($theme, with-icon-icon-color),
+      hover: map.get($theme, with-icon-hover-icon-color),
+      focus: map.get($theme, with-icon-focus-icon-color),
+      pressed: map.get($theme, with-icon-pressed-icon-color),
+      disabled: map.get($theme, with-icon-disabled-icon-color),
+    ),
+    $query: $query
+  );
+
+  $icon-size: map.get($theme, with-icon-icon-size);
+  @include _icon-size($icon-size, $query: $query);
+
+  @include _states-colors(
+    (
+      focus: map.get($theme, focus-state-layer-color),
+      hover: map.get($theme, hover-state-layer-color),
+      pressed: map.get($theme, pressed-state-layer-color),
+    ),
+    $query: $query
+  );
+
+  $hover-state-layer-opacity: map.get($theme, hover-state-layer-opacity);
+  $focus-state-layer-opacity: map.get($theme, focus-state-layer-opacity);
+  $pressed-state-layer-opacity: map.get($theme, pressed-state-layer-opacity);
+  @include ripple-theme.states-opacities(
+    $opacity-map: (
+      focus: $focus-state-layer-opacity,
+      hover: $hover-state-layer-opacity,
+      press: $pressed-state-layer-opacity,
+    ),
+    $ripple-target: button-ripple.$ripple-target,
+    $query: $query
+  );
+
+  $container-height: map.get($theme, container-height);
+  @include height($container-height, $query: $query);
+
+  $container-height-value: if(
+    custom-properties.is-custom-prop($container-height),
+    custom-properties.get-fallback($container-height),
+    $container-height
+  );
+
+  /// Token "keep-touch-target":
+  /// Prevent the increased touch target from being reseted if the
+  /// container-height differs from the default (36px)
+  $keep-touch-target: map.get($theme, keep-touch-target);
+  @if (not $keep-touch-target) and
+    ($container-height-value != null) and
+    ($container-height-value != $height)
+  {
+    @include _touch-target-reset($query: $query);
+  }
+
+  $shape: map.get($theme, container-shape);
+  @if $shape {
+    $container-height: if(
+      $container-height != null,
+      $container-height,
+      $height
+    );
+    @include _shape-radius-with-height(
+      $shape,
+      $height: $container-height,
+      $query: $query
+    );
+  }
+
+  @include _elevation(
+    $resolver,
+    $elevation-map: (
+      default: map.get($theme, container-elevation),
+      disabled: map.get($theme, disabled-container-elevation),
+      focus: map.get($theme, focus-container-elevation),
+      hover: map.get($theme, hover-container-elevation),
+      pressed: map.get($theme, pressed-container-elevation)
+    ),
+    $shadow-color: map.get($theme, container-shadow-color),
+    $query: $query
+  );
+}
+
+@function resolve-theme-elevation-keys($theme, $resolver) {
+  $elevation-resolver: map.get($resolver, elevation);
+  $shadow-color: map.get($theme, container-shadow-color);
+  @if $elevation-resolver == null or $shadow-color == null {
+    @return $theme;
+  }
+
+  $elevation-keys: (
+    container-elevation,
+    hover-container-elevation,
+    focus-container-elevation,
+    pressed-container-elevation,
+    disabled-container-elevation
+  );
+
+  @each $key in $elevation-keys {
+    $elevation: map.get($theme, $key);
+    @if $elevation != null {
+      $resolved-value: meta.call(
+        $resolver,
+        $elevation: $elevation,
+        $shadow-color: $shadow-color
+      );
+      // Update the key with the resolved value.
+      $theme: map.set($theme, $key, $resolved-value);
+    }
+  }
+  @return $theme;
+}
+
+///
+/// Sets ripple color for button.
+///
+@mixin ripple-states(
+  $color,
+  $opacity-map: null,
+  $query: feature-targeting.all()
+) {
+  @include ripple-theme.states(
+    $color: $color,
+    $opacity-map: $opacity-map,
+    $query: $query,
+    $ripple-target: button-ripple.$ripple-target
+  );
+}
+
+@mixin filled-accessible(
+  $container-fill-color,
+  $query: feature-targeting.all()
+) {
+  $fill-tone: theme-color.tone($container-fill-color);
+
+  @include container-fill-color($container-fill-color, $query);
+
+  @if ($fill-tone == 'dark') {
+    @include ink-color(text-primary-on-dark, $query);
+    @include ripple-states($color: text-primary-on-dark, $query: $query);
+  } @else {
+    @include ink-color(text-primary-on-light, $query);
+    @include ripple-states($color: text-primary-on-light, $query: $query);
+  }
+}
+
+///
+/// Sets the container fill color to the given color for an enabled button.
+/// @param {Color|map} $color-or-map - The desired container fill color,
+///     specified either as a flat value or a map of colors with states
+///     {default, hover, focus, pressed, disabled} as keys.
+///
+@mixin container-fill-color($color-or-map, $query: feature-targeting.all()) {
+  // :not(:disabled) is used to support link styled as button
+  // as link does not support :enabled style
+  &:not(:disabled) {
+    @include _container-fill-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    &:hover {
+      @include _container-fill-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    @include ripple-theme.focus() {
+      @include _container-fill-color(
+        state.get-focus-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    @include ripple-theme.active {
+      @include _container-fill-color(
+        state.get-pressed-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  &:disabled {
+    @include _container-fill-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+///
+/// Sets the container fill color to the given color for a disabled button.
+/// @param {Color} $color - The desired container fill color.
+/// @deprecated - call `container-fill-color` instead with `disabled` as a map
+///     key.
+///
+@mixin disabled-container-fill-color($color, $query: feature-targeting.all()) {
+  @include container-fill-color(
+    (
+      disabled: $color,
+    ),
+    $query: $query
+  );
+}
+
+///
+/// Sets the icon color to the given color for an enabled button.
+/// @param {Color} $color-or-map - The desired icon color, specified either
+///     as a flat value or a map of colors with states
+///     {default, hover, focus, pressed, disabled} as keys.
+///
+@mixin icon-color($color-or-map, $query: feature-targeting.all()) {
+  &:not(:disabled) {
+    @include _icon-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    &:hover {
+      @include _icon-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    @include ripple-theme.focus() {
+      @include _icon-color(
+        state.get-focus-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    @include ripple-theme.active {
+      @include _icon-color(
+        state.get-pressed-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  &:disabled {
+    @include _icon-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+///
+/// Sets the icon color to the given color for a disabled button.
+/// @param {Color} $color - The desired icon color.
+/// @deprecated - call `icon-color` instead with `disabled` as a map key.
+///
+@mixin disabled-icon-color($color, $query: feature-targeting.all()) {
+  @include icon-color(
+    (
+      disabled: $color,
+    ),
+    $query: $query
+  );
+}
+
+///
+/// Sets the ink color to the given color for an enabled button,
+/// and sets the icon color to the given color unless `mdc-button-icon-color`
+/// is also used.
+/// @param {Color} $color-or-map - The desired ink color, specified either
+///     as a flat value or a map of colors with states
+///     {default, hover, focus, pressed, disabled} as keys.
+///
+@mixin ink-color($color-or-map, $query: feature-targeting.all()) {
+  &:not(:disabled) {
+    @include _ink-color(state.get-default-state($color-or-map), $query: $query);
+
+    &:hover {
+      @include _ink-color(state.get-hover-state($color-or-map), $query: $query);
+    }
+
+    @include ripple-theme.focus() {
+      @include _ink-color(state.get-focus-state($color-or-map), $query: $query);
+    }
+
+    @include ripple-theme.active {
+      @include _ink-color(
+        state.get-pressed-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  &:disabled {
+    @include _ink-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+///
+/// Sets the ink color to the given color for a disabled button,
+/// and sets the icon color to the given color unless `mdc-button-icon-color`
+/// is also used.
+/// @param {Color} $color - The desired ink color.
+/// @deprecated - call `ink-color` instead with `disabled` as a map key.
+///
+@mixin disabled-ink-color($color, $query: feature-targeting.all()) {
+  @include ink-color(
+    (
+      disabled: $color,
+    ),
+    $query: $query
+  );
+}
+
+///
+/// Sets density scale for button.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-3`,
+///     `-2`, `-1`, `0`.
+///
+@mixin density($density-scale, $query: feature-targeting.all()) {
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include height($height, $query: $query);
+
+  @if $density-scale != 0 {
+    @include _touch-target-reset($query: $query);
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin _touch-target-reset($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .mdc-button__touch {
+    @include feature-targeting.targets($feat-structure) {
+      // Do not set display: none in case the touch target is <a> element.
+      height: 100%;
+    }
+  }
+}
+
+///
+/// Sets custom height for button.
+/// @param {Number} $height - Height of button in `px`.
+///
+@mixin height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    @include theme.property(height, $height);
+  }
+}
+
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include _shape-radius-with-height($radius, $rtl-reflexive, $height, $query);
+}
+
+@mixin _shape-radius-with-height(
+  $radius,
+  $rtl-reflexive: false,
+  $height: $height,
+  $query: feature-targeting.all()
+) {
+  @include shape-mixins.radius(
+    $radius,
+    $rtl-reflexive,
+    $component-height: $height,
+    $query: $query
+  );
+
+  #{button-ripple.$ripple-target} {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
+  }
+}
+
+///
+/// Sets horizontal padding to the given number.
+/// @param {Number} $padding
+/// @param {Number} $padding-icon [null] For buttons with an icon, the
+///     horizontal padding on the side with the icon, if different from
+///     $padding.
+///
+@mixin horizontal-padding(
+  $padding,
+  $padding-icon: null,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    // $padding should be a single value; enforce it by specifying all 4 sides in the output
+    padding: 0 $padding 0 $padding;
+  }
+
+  @if $padding-icon != null {
+    &.mdc-button--icon-trailing {
+      @include feature-targeting.targets($feat-structure) {
+        // $padding should be a single value; enforce it by specifying all 4
+        // sides in the output.
+        padding: 0 $padding-icon 0 $padding;
+      }
+    }
+
+    &.mdc-button--icon-leading {
+      @include feature-targeting.targets($feat-structure) {
+        // $padding should be a single value; enforce it by specifying all 4
+        // sides in the output.
+        padding: 0 $padding 0 $padding-icon;
+      }
+    }
+  }
+}
+
+///
+/// Sets the button label to overflow as ellipsis
+///
+@mixin label-overflow-ellipsis($query: feature-targeting.all()) {
+  .mdc-button__label {
+    @include typography.overflow-ellipsis($query: $query);
+  }
+}
+
+///
+/// Add a visible outline to the button in high contrast mode.
+///
+@mixin outline-hcm-shim($query: feature-targeting.all()) {
+  &::before {
+    @include dom-mixins.transparent-border($query: $query);
+  }
+}
+
+///
+/// Includes ad-hoc high contrast mode support.
+/// @deprecated Use `outline-hcm-shim` for the outline button. The focus ring
+///     is provided by default.
+///
+@mixin high-contrast-mode-shim($query: feature-targeting.all()) {
+  @include outline-hcm-shim($query: $query);
+
+  // Link buttons apply focus to the contained link. Focus is indicated via the
+  // link since focus-within isn't supported by IE.
+  & .mdc-button__link:focus,
+  &:focus {
+    &::before {
+      @include focus-ring.focus-ring($query: $query);
+    }
+  }
+}
+
+///
+/// Sets the container fill color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin _container-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color);
+    }
+  }
+}
+
+///
+/// Sets the icon color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin _icon-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    .mdc-button__icon {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(color, $color);
+      }
+    }
+  }
+}
+
+@mixin _icon-size($size-px, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @if $size-px != null {
+    $size-rem: typography.px-to-rem($size-px);
+    .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        @include theme.property(font-size, $size-rem);
+        @include theme.property(width, $size-rem);
+        @include theme.property(height, $size-rem);
+      }
+    }
+  }
+}
+
+///
+/// Sets the ink color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin _ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin _states-colors($color-map, $query: feature-targeting.all()) {
+  $hover: map.get($color-map, hover);
+
+  $hover-value: if(
+    custom-properties.is-custom-prop($hover),
+    custom-properties.get-fallback($hover),
+    $hover
+  );
+  // TODO(b/191298796): support focused & pressed key colors.
+
+  @if $hover-value != null {
+    @include ripple-theme.states-base-color(
+      $color: $hover,
+      $ripple-target: button-ripple.$ripple-target,
+      $query: $query
+    );
+  }
+}
+
+@mixin _label-text-typography(
+  $typography-map,
+  $query: feature-targeting.all()
+) {
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  $family: map.get($typography-map, family);
+  $size: map.get($typography-map, size);
+  $tracking: map.get($typography-map, tracking);
+  $weight: map.get($typography-map, weight);
+  $transform: map.get($typography-map, transform);
+
+  @include feature-targeting.targets($feat-typography) {
+    @include theme.property(font-family, $family);
+    @include theme.property(font-size, $size);
+    @include theme.property(letter-spacing, $tracking);
+    @include theme.property(font-weight, $weight);
+    @include theme.property(text-transform, $transform);
+  }
+}
+
+@mixin _elevation(
+  $resolver,
+  $elevation-map,
+  $shadow-color,
+  $query: feature-targeting.all()
+) {
+  $elevation-resolver: map.get($resolver, elevation);
+
+  @if $shadow-color {
+    $default: state.get-default-state($elevation-map);
+    @if $default != null {
+      @include elevation-theme.with-resolver(
+        $elevation-resolver,
+        $elevation: $default,
+        $shadow-color: $shadow-color,
+        $query: $query
+      );
+    }
+
+    $focus: state.get-focus-state($elevation-map);
+    @if $focus != null {
+      @include ripple-theme.focus {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $focus,
+          $shadow-color: $shadow-color,
+          $query: $query
+        );
+      }
+    }
+
+    $hover: state.get-hover-state($elevation-map);
+    @if $hover != null {
+      &:hover {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $hover,
+          $shadow-color: $shadow-color,
+          $query: $query
+        );
+      }
+    }
+
+    $pressed: state.get-pressed-state($elevation-map);
+    @if $pressed != null {
+      @include ripple-theme.active {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $pressed,
+          $shadow-color: $shadow-color,
+          $query: $query
+        );
+      }
+    }
+
+    $disabled: state.get-disabled-state($elevation-map);
+    @if $disabled != null {
+      &:disabled {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $disabled,
+          $shadow-color: $shadow-color,
+          $query: $query
+        );
+      }
+    }
+  }
+}

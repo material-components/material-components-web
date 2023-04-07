@@ -26,9 +26,10 @@ import {MDCRipplePoint} from './types';
  * Stores result from supportsCssVariables to avoid redundant processing to
  * detect CSS custom variable support.
  */
-let supportsCssVariables_: boolean | undefined;
+let supportsCssVariables_: boolean|undefined;
 
-export function supportsCssVariables(windowObj: typeof globalThis, forceRefresh = false): boolean {
+export function supportsCssVariables(
+    windowObj: typeof globalThis, forceRefresh = false): boolean {
   const {CSS} = windowObj;
   let supportsCssVars = supportsCssVariables_;
   if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
@@ -43,10 +44,8 @@ export function supportsCssVariables(windowObj: typeof globalThis, forceRefresh 
   const explicitlySupportsCssVars = CSS.supports('--css-vars', 'yes');
   // See: https://bugs.webkit.org/show_bug.cgi?id=154669
   // See: README section on Safari
-  const weAreFeatureDetectingSafari10plus = (
-      CSS.supports('(--css-vars: yes)') &&
-      CSS.supports('color', '#00000000')
-  );
+  const weAreFeatureDetectingSafari10plus =
+      (CSS.supports('(--css-vars: yes)') && CSS.supports('color', '#00000000'));
 
   supportsCssVars =
       explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus;
@@ -57,8 +56,9 @@ export function supportsCssVariables(windowObj: typeof globalThis, forceRefresh 
   return supportsCssVars;
 }
 
-export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: MDCRipplePoint, clientRect: ClientRect):
-    MDCRipplePoint {
+export function getNormalizedEventCoords(
+    evt: Event|undefined, pageOffset: MDCRipplePoint,
+    clientRect: DOMRect): MDCRipplePoint {
   if (!evt) {
     return {x: 0, y: 0};
   }

@@ -25,6 +25,7 @@
 $icon-size: 24px !default;
 $height: 48px !default;
 $stacked-height: 72px !default;
+$min-width: 90px !default;
 $horizontal-padding: 24px !default;
 $text-label-opacity: 0.6 !default;
 $icon-opacity: 0.54 !default;
@@ -38,3 +39,4 @@ $icon-color-default: rgba(
 ) !default;
 $text-label-color-active: primary !default;
 $icon-color-active: primary !default;
+$ripple-target: '.mdc-tab__ripple';

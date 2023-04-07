@@ -1,7 +1,7 @@
 @use '@material/theme/theme-color';
 @use '@material/density/variables' as density-variables;
 
-$ripple-target: '.mdc-evolution-list-item__ripple';
+$ripple-target: '.mdc-list-item__ripple';
 $divider-color-on-light-bg: rgba(0, 0, 0, 0.12) !default;
 $divider-color-on-dark-bg: rgba(255, 255, 255, 0.2) !default;
 $content-disabled-opacity: theme-color.text-emphasis(disabled) !default;
@@ -45,6 +45,13 @@ $two-line-item-tall-density-config: (
     default: 72px,
     maximum: 72px,
     minimum: 56px,
+  ),
+) !default;
+$two-line-item-taller-density-config: (
+  height: (
+    default: 88px,
+    maximum: 88px,
+    minimum: 72px,
   ),
 ) !default;
 $three-line-item-density-config: (

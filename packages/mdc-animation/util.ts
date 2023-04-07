@@ -21,11 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {
-  CssVendorPropertyMap, JsVendorPropertyMap,
-  PrefixedCssPropertyName, PrefixedJsEventType,
-  StandardCssPropertyName, StandardJsEventType,
-} from './types';
+import {CssVendorPropertyMap, JsVendorPropertyMap, PrefixedCssPropertyName, PrefixedJsEventType, StandardCssPropertyName, StandardJsEventType} from './types';
 
 const cssPropertyNameMap: CssVendorPropertyMap = {
   animation: {
@@ -66,11 +62,13 @@ const jsEventTypeMap: JsVendorPropertyMap = {
 };
 
 function isWindow(windowObj: Window): boolean {
-  return Boolean(windowObj.document) && typeof windowObj.document.createElement === 'function';
+  return Boolean(windowObj.document) &&
+      typeof windowObj.document.createElement === 'function';
 }
 
-export function getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName):
-    StandardCssPropertyName | PrefixedCssPropertyName {
+export function getCorrectPropertyName(
+    windowObj: Window, cssProperty: StandardCssPropertyName):
+    StandardCssPropertyName|PrefixedCssPropertyName {
   if (isWindow(windowObj) && cssProperty in cssPropertyNameMap) {
     const el = windowObj.document.createElement('div');
     const {standard, prefixed} = cssPropertyNameMap[cssProperty];
@@ -80,8 +78,9 @@ export function getCorrectPropertyName(windowObj: Window, cssProperty: StandardC
   return cssProperty;
 }
 
-export function getCorrectEventName(windowObj: Window, eventType: StandardJsEventType):
-    StandardJsEventType | PrefixedJsEventType {
+export function getCorrectEventName(
+    windowObj: Window, eventType: StandardJsEventType): StandardJsEventType|
+    PrefixedJsEventType {
   if (isWindow(windowObj) && eventType in jsEventTypeMap) {
     const el = windowObj.document.createElement('div');
     const {standard, prefixed, cssProperty} = jsEventTypeMap[eventType];

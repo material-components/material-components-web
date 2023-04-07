@@ -21,9 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {KEY} from '../../mdc-dom/keyboard';
-import {getFixture} from '../../../testing/dom';
-import {createKeyboardEvent, createMouseEvent, emitEvent} from '../../../testing/dom/events';
+import {createFixture, html} from '../../../testing/dom';
+import {createMouseEvent, emitEvent} from '../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {attributes, cssClasses, events, MDCSlider, MDCSliderFoundation, Thumb} from '../index';
 
@@ -89,7 +88,7 @@ describe('MDCSlider', () => {
         root.dispatchEvent(event);
         jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
         expect(thumb.style.transform).toBe('translateX(50px)');
-        expect(trackActive!.style.transform).toBe('scaleX(0.5)');
+        expect(trackActive.style.transform).toBe('scaleX(0.5)');
       });
 
       it('move event after down event sets the slider value based on x coordinate',
@@ -98,14 +97,14 @@ describe('MDCSlider', () => {
            root.dispatchEvent(downEvent);
            jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
            expect(thumb.style.transform).toBe('translateX(0px)');
-           expect(trackActive!.style.transform).toBe('scaleX(0)');
+           expect(trackActive.style.transform).toBe('scaleX(0)');
 
            const moveEvent = createEventFrom(eventType, 'move', {clientX: 50});
            const el = eventType === 'pointer' ? root : document.body;
            el.dispatchEvent(moveEvent);
            jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
            expect(thumb.style.transform).toBe('translateX(50px)');
-           expect(trackActive!.style.transform).toBe('scaleX(0.5)');
+           expect(trackActive.style.transform).toBe('scaleX(0.5)');
          });
 
       it('move event after up event doesn\'t update slider value', () => {
@@ -113,7 +112,7 @@ describe('MDCSlider', () => {
         root.dispatchEvent(downEvent);
         jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
         expect(thumb.style.transform).toBe('translateX(0px)');
-        expect(trackActive!.style.transform).toBe('scaleX(0)');
+        expect(trackActive.style.transform).toBe('scaleX(0)');
 
         const upEvent = createEventFrom(eventType, 'up', {clientX: 0});
         const upEl = eventType === 'pointer' ? root : document.body;
@@ -124,7 +123,7 @@ describe('MDCSlider', () => {
         moveEl.dispatchEvent(moveEvent);
         jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
         expect(thumb.style.transform).toBe('translateX(0px)');
-        expect(trackActive!.style.transform).toBe('scaleX(0)');
+        expect(trackActive.style.transform).toBe('scaleX(0)');
       });
 
       it('Event listeners are destroyed when component is destroyed.', () => {
@@ -149,8 +148,7 @@ describe('MDCSlider', () => {
                   'touchstart', jasmine.any(Function), undefined);
         }
 
-        const thumbEvents =
-            ['keydown', 'focus', 'mouseenter', 'blur', 'mouseleave'];
+        const thumbEvents = ['mouseenter', 'mouseleave'];
         for (const event of thumbEvents) {
           expect(thumb.removeEventListener)
               .toHaveBeenCalledWith(event, jasmine.any(Function));
@@ -190,11 +188,9 @@ describe('MDCSlider', () => {
 
     it('press + move on start thumb updates start thumb value', () => {
       const downEvent =
-          createEventFrom('pointer', 'down', {clientX: initialValueStart + 2});
+          createEventFrom('pointer', 'down', {clientX: initialValueStart});
       root.dispatchEvent(downEvent);
       jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
-      // Start thumb value should be the same as initial value, since press
-      // was in the middle of the range.
       expect(startThumb.style.transform)
           .toBe(`translateX(${initialValueStart}px)`);
 
@@ -204,13 +200,11 @@ describe('MDCSlider', () => {
       expect(startThumb.style.transform).toBe('translateX(50px)');
     });
 
-    it('press + move on end thumb updates start thumb value', () => {
+    it('press + move on end thumb updates end thumb value', () => {
       const downEvent =
-          createEventFrom('pointer', 'down', {clientX: initialValueEnd - 2});
+          createEventFrom('pointer', 'down', {clientX: initialValueEnd});
       root.dispatchEvent(downEvent);
       jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
-      // End thumb value should be the same as initial value, since press
-      // was in the middle of the range.
       expect(endThumb.style.transform).toBe(`translateX(${initialValueEnd}px)`);
 
       const moveEvent = createEventFrom('pointer', 'move', {clientX: 40});
@@ -240,61 +234,6 @@ describe('MDCSlider', () => {
           .toBe(`translateX(${initialValueEnd + 10}px)`);
       expect(startThumb.style.transform)
           .toBe(`translateX(${initialValueStart}px)`);
-    });
-
-    it('Thumb event listeners are destroyed when component is destroyed.',
-       () => {
-         spyOn(startThumb, 'removeEventListener').and.callThrough();
-         spyOn(endThumb, 'removeEventListener').and.callThrough();
-
-         component.destroy();
-         expect(startThumb.removeEventListener)
-             .toHaveBeenCalledWith('keydown', jasmine.any(Function));
-         expect(endThumb.removeEventListener)
-             .toHaveBeenCalledWith('keydown', jasmine.any(Function));
-       });
-  });
-
-  describe('thumb states', () => {
-    it('single point slider: thumb is focused after value update', () => {
-      let thumb;
-      ({root, endThumb: thumb} =
-           setUpTest({isDiscrete: true, hasTickMarks: true}));
-
-      const downEvent = createEventFrom('pointer', 'down', {clientX: 65.3});
-      root.dispatchEvent(downEvent);
-      jasmine.clock().tick(1);  // Tick for RAF.
-      expect(document.activeElement).toBe(thumb);
-    });
-
-    it('range slider: thumb is focused after value update', () => {
-      let startThumb, endThumb;
-      const valueStart = 10;
-      const value = 40;
-      ({root, startThumb, endThumb} =
-           setUpTest({isDiscrete: true, isRange: true, valueStart, value}));
-
-      spyOn(startThumb as HTMLElement, 'getBoundingClientRect')
-          .and.returnValue({
-            left: valueStart - 3,
-            right: valueStart + 3,
-          } as DOMRect);
-      spyOn(endThumb, 'getBoundingClientRect').and.returnValue({
-        left: value - 3,
-        right: value + 3,
-      } as DOMRect);
-
-      // Update start thumb value.
-      const downEventStart = createEventFrom('pointer', 'down', {clientX: 3});
-      root.dispatchEvent(downEventStart);
-      jasmine.clock().tick(1);  // Tick for RAF.
-      expect(document.activeElement).toBe(startThumb);
-
-      // Update end thumb value.
-      const downEventEnd = createEventFrom('pointer', 'down', {clientX: 92});
-      root.dispatchEvent(downEventEnd);
-      jasmine.clock().tick(1);  // Tick for RAF.
-      expect(document.activeElement).toBe(endThumb);
     });
   });
 
@@ -350,7 +289,8 @@ describe('MDCSlider', () => {
 
     it('adds tick mark elements on component initialization', () => {
       const tickMarks =
-          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+          root.querySelector<HTMLElement>(
+                  `.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
       expect(tickMarks.length).toBe(11);
       for (let i = 0; i < tickMarks.length; i++) {
         const tickMarkClass = i === 0 ? cssClasses.TICK_MARK_ACTIVE :
@@ -361,8 +301,8 @@ describe('MDCSlider', () => {
 
     it('updates tick mark classes after slider update', () => {
       // Sanity check that tick mark classes are as we expect on component init.
-      let tickMarks =
-          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+      let tickMarks = root.querySelector<HTMLElement>(
+                              `.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
       expect(tickMarks.length).toBe(11);
       for (let i = 0; i < tickMarks.length; i++) {
         const tickMarkClass = i === 0 ? cssClasses.TICK_MARK_ACTIVE :
@@ -374,8 +314,8 @@ describe('MDCSlider', () => {
       root.dispatchEvent(downEvent);
       jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
 
-      tickMarks =
-          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+      tickMarks = root.querySelector<HTMLElement>(
+                          `.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
       expect(tickMarks.length).toBe(11);
       for (let i = 0; i < tickMarks.length; i++) {
         // 55.3 rounds up to 60, since step value is 10.
@@ -387,57 +327,58 @@ describe('MDCSlider', () => {
   });
 
   describe('a11y support', () => {
-    let startThumb: HTMLElement|null, endThumb: HTMLElement;
+    let endInput: HTMLInputElement;
 
-    it('updates aria-valuenow on thumb value updates', () => {
-      ({root, endThumb} = setUpTest({isDiscrete: true, value: 30, step: 10}));
-      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('30');
-
-      const downEvent = createEventFrom('pointer', 'down', {clientX: 90});
-      root.dispatchEvent(downEvent);
-      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('90');
-    });
-
-    it('updates aria-valuetext on thumb value updates according to ' +
+    it('updates aria-valuetext on value updates according to ' +
            '`valueToAriaValueTextFn`',
        () => {
          let component: MDCSlider;
-         ({component, root, endThumb} =
+         ({component, root, endInput} =
               setUpTest({isDiscrete: true, value: 30, step: 10}));
          component.setValueToAriaValueTextFn(
              (value: number) => `${value} value`);
-         expect(endThumb.getAttribute(attributes.ARIA_VALUETEXT)).toBe(null);
+         expect(endInput.getAttribute(attributes.ARIA_VALUETEXT)).toBe(null);
 
          const downEvent = createEventFrom('pointer', 'down', {clientX: 90});
          root.dispatchEvent(downEvent);
-         expect(endThumb.getAttribute(attributes.ARIA_VALUETEXT))
+         expect(endInput.getAttribute(attributes.ARIA_VALUETEXT))
              .toBe('90 value');
        });
+  });
 
-    it('increments/decrements correct thumb value on keydown', () => {
-      ({root, startThumb, endThumb} = setUpTest({
+  describe('input synchronization: ', () => {
+    let startInput: HTMLInputElement|null, endInput: HTMLInputElement;
+
+    it('updates input value attribute and property on value update', () => {
+      ({component, startInput, endInput} = setUpTest({
          isDiscrete: true,
          valueStart: 10,
          value: 50,
          isRange: true,
-         step: 10
        }));
-      expect(startThumb!.getAttribute(attributes.ARIA_VALUENOW)).toBe('10');
-      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('50');
 
-      const keyUpEvent = createKeyboardEvent('keydown', {key: KEY.ARROW_UP});
-      startThumb!.dispatchEvent(keyUpEvent);
-      expect(startThumb!.getAttribute(attributes.ARIA_VALUENOW)).toBe('20');
+      component.setValueStart(5);
+      expect(startInput!.value).toBe('5');
+      expect(startInput!.getAttribute(attributes.INPUT_VALUE)).toBe('5');
+      expect(endInput.getAttribute(attributes.INPUT_MIN)).toBe('5');
 
-      const keyDownEvent =
-          createKeyboardEvent('keydown', {key: KEY.ARROW_DOWN});
-      endThumb.dispatchEvent(keyDownEvent);
-      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('40');
+      component.setValue(20);
+      expect(endInput.value).toBe('20');
+      expect(endInput.getAttribute(attributes.INPUT_VALUE)).toBe('20');
+      expect(startInput!.getAttribute(attributes.INPUT_MAX)).toBe('20');
+    });
+
+    it('focuses input on thumb down event', () => {
+      ({root, endInput} = setUpTest({value: 30}));
+      const downEvent = createEventFrom('pointer', 'down', {clientX: 90});
+      root.dispatchEvent(downEvent);
+
+      expect(document.activeElement).toBe(endInput);
     });
   });
 
   describe('disabled state', () => {
-    let startThumb: HTMLElement|null, endThumb: HTMLElement;
+    let startInput: HTMLInputElement|null, endInput: HTMLInputElement;
 
     it('updates disabled class when setting disabled state', () => {
       ({root, component} = setUpTest());
@@ -452,36 +393,27 @@ describe('MDCSlider', () => {
       expect(root.classList.contains(cssClasses.DISABLED)).toBe(false);
     });
 
-    it('updates thumb attrs when setting disabled state', () => {
-      ({root, component, endThumb} = setUpTest());
-      expect(endThumb.tabIndex).toBe(0);
+    it('updates input attrs when setting disabled state', () => {
+      ({root, component, endInput} = setUpTest());
 
       component.setDisabled(true);
-      expect(endThumb.tabIndex).toBe(-1);
-      expect(endThumb.getAttribute('aria-disabled')).toBe('true');
+      expect(endInput.getAttribute(attributes.INPUT_DISABLED)).toBe('');
 
       component.setDisabled(false);
-      expect(endThumb.tabIndex).toBe(0);
-      expect(endThumb.getAttribute('aria-disabled')).toBe('false');
+      expect(endInput.getAttribute(attributes.INPUT_DISABLED)).toBe(null);
     });
 
-    it('range slider: updates thumbs\' attrs when setting disabled state',
+    it('range slider: updates inputs\' attrs when setting disabled state',
        () => {
-         ({root, component, startThumb, endThumb} = setUpTest({isRange: true}));
-         expect(startThumb!.tabIndex).toBe(0);
-         expect(endThumb.tabIndex).toBe(0);
+         ({root, component, startInput, endInput} = setUpTest({isRange: true}));
 
          component.setDisabled(true);
-         expect(startThumb!.tabIndex).toBe(-1);
-         expect(endThumb.tabIndex).toBe(-1);
-         expect(startThumb!.getAttribute('aria-disabled')).toBe('true');
-         expect(endThumb.getAttribute('aria-disabled')).toBe('true');
+         expect(startInput!.getAttribute(attributes.INPUT_DISABLED)).toBe('');
+         expect(endInput.getAttribute(attributes.INPUT_DISABLED)).toBe('');
 
          component.setDisabled(false);
-         expect(startThumb!.tabIndex).toBe(0);
-         expect(endThumb.tabIndex).toBe(0);
-         expect(startThumb!.getAttribute('aria-disabled')).toBe('false');
-         expect(endThumb.getAttribute('aria-disabled')).toBe('false');
+         expect(startInput!.getAttribute(attributes.INPUT_DISABLED)).toBe(null);
+         expect(endInput.getAttribute(attributes.INPUT_DISABLED)).toBe(null);
        });
   });
 
@@ -589,8 +521,10 @@ describe('MDCSlider', () => {
     let root: HTMLElement, thumb: HTMLElement, trackActive: HTMLElement;
 
     beforeEach(() => {
-      root = getFixture(`
-        <div class="mdc-slider mdc-slider--discrete" data-step="10">
+      root = createFixture(html`
+        <div class="mdc-slider mdc-slider--discrete">
+          <input class="mdc-slider__input" type="hidden" min="0" max="100"
+                        value="70" step="10">
           <div class="mdc-slider__track">
             <div class="mdc-slider__track--active">
               <div class="mdc-slider__track--active_fill"
@@ -601,7 +535,7 @@ describe('MDCSlider', () => {
           </div>
           <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
                aria-valuemax="100" aria-valuenow="70" style="left:calc(70% - 24px)">
-            <div class="mdc-slider__value-indicator-container">
+            <div class="mdc-slider__value-indicator-container" aria-hidden="true">
               <div class="mdc-slider__value-indicator">
                 <span class="mdc-slider__value-indicator-text">70</span>
               </div>
@@ -610,9 +544,9 @@ describe('MDCSlider', () => {
           </div>
         </div>`);
 
-      thumb = root.querySelector(`.${cssClasses.THUMB}`) as HTMLElement;
+      thumb = root.querySelector<HTMLElement>(`.${cssClasses.THUMB}`)!;
       trackActive =
-          root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+          root.querySelector<HTMLElement>(`.${cssClasses.TRACK_ACTIVE}`)!;
 
       spyOn(root, 'getBoundingClientRect').and.returnValue({
         left: 0,
@@ -651,8 +585,8 @@ describe('MDCSlider', () => {
 
          root.dispatchEvent(createEventFrom('pointer', 'down', {clientX: 30}));
          jasmine.clock().tick(1);  // Tick for RAF.
-         expect(thumb.style.transition).toMatch(/all/);
-         expect(trackActive.style.transition).toMatch(/all/);
+         expect(thumb.style.transition).toMatch(/none/);
+         expect(trackActive.style.transition).toMatch(/none/);
 
          jasmine.clock().tick(1);  // Tick for RAF.
          expect(thumb.style.transition).toBe('');
@@ -672,18 +606,31 @@ function setUpTest(
     } = {}): {
   root: HTMLElement,
   component: MDCSlider,
+  startInput: HTMLInputElement|null,
+  endInput: HTMLInputElement,
   startThumb: HTMLElement|null,
   endThumb: HTMLElement,
   trackActive: HTMLElement
 } {
   const discreteClass = isDiscrete ? cssClasses.DISCRETE : '';
   const rangeClass = isRange ? cssClasses.RANGE : '';
-  const dataStepAttr =
-      isDiscrete ? `${attributes.DATA_ATTR_STEP}="${step || 1}"` : '';
   const tickMarksClass = hasTickMarks ? cssClasses.TICK_MARKS : '';
 
-  const valueIndicator = (valueNum: number) => `
-      <div class="mdc-slider__value-indicator-container">
+  const input =
+      ({min, max, value, step}:
+           {min: number, max: number, value: number, step?: number}) => {
+        const stepAttr = step !== undefined ? `step="${step}"` : '';
+        return `<input class="mdc-slider__input" type="range"
+      min="${min}" max="${max}" value=${value} ${stepAttr}>`;
+      };
+  const inputStart = isRange ?
+      input({min: 0, max: value || 0, value: valueStart || 0, step}) :
+      '';
+  const inputEnd = input(
+      {min: isRange ? valueStart || 0 : 0, max: 100, value: value || 0, step});
+
+  const valueIndicator = (valueNum: number) => html`
+      <div class="mdc-slider__value-indicator-container" aria-hidden="true">
         <div class="mdc-slider__value-indicator">
           <span class="mdc-slider__value-indicator-text">
             ${valueNum}
@@ -692,17 +639,17 @@ function setUpTest(
         </div>`;
   const valueIndicatorStart = isDiscrete ? valueIndicator(valueStart || 0) : '';
   const valueIndicatorEnd = isDiscrete ? valueIndicator(valueStart || 0) : '';
-  const startThumbHtml = isRange ? `
-      <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
-           aria-valuemax="100" aria-valuenow="${valueStart || 0}">
+  const startThumbHtml = isRange ? html`
+      <div class="mdc-slider__thumb">
         ${valueIndicatorStart}
         <div class="mdc-slider__thumb-knob"></div>
       </div>` :
                                    '';
 
-  const root = getFixture(`
-    <div class="mdc-slider ${discreteClass} ${rangeClass} ${tickMarksClass}" ${
-      dataStepAttr}>
+  const root = createFixture(html`
+    <div class="mdc-slider ${discreteClass} ${rangeClass} ${tickMarksClass}">
+      ${inputStart}
+      ${inputEnd}
       <div class="mdc-slider__track">
         <div class="mdc-slider__track--active">
           <div class="mdc-slider__track--active_fill"></div>
@@ -710,17 +657,20 @@ function setUpTest(
         <div class="mdc-slider__track--inactive"></div>
       </div>
       ${startThumbHtml}
-      <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
-           aria-valuemax="100" aria-valuenow="${value || 0}">
+      <div class="mdc-slider__thumb">
         ${valueIndicatorEnd}
         <div class="mdc-slider__thumb-knob"></div>
       </div>
     </div>`);
-  const thumbs = root.querySelectorAll(`.${cssClasses.THUMB}`);
+  const inputs =
+      root.querySelectorAll<HTMLInputElement>(`.${cssClasses.INPUT}`);
+  const startInput = isRange ? inputs[0] : null;
+  const endInput = inputs[inputs.length - 1];
+  const thumbs = root.querySelectorAll<HTMLElement>(`.${cssClasses.THUMB}`);
   const startThumb = isRange ? thumbs[0] as HTMLElement : null;
   const endThumb = thumbs[thumbs.length - 1] as HTMLElement;
   const trackActive =
-      root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+      root.querySelector<HTMLElement>(`.${cssClasses.TRACK_ACTIVE}`)!;
 
   spyOn(root, 'getBoundingClientRect').and.returnValue({
     left: 0,
@@ -732,7 +682,15 @@ function setUpTest(
   const component = MDCSlider.attachTo(root);
   jasmine.clock().tick(1);  // Tick for RAF.
 
-  return {root, component, startThumb, endThumb, trackActive};
+  return {
+    root,
+    component,
+    startInput,
+    endInput,
+    startThumb,
+    endThumb,
+    trackActive
+  };
 }
 
 /**

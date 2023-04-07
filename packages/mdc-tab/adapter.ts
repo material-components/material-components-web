@@ -56,9 +56,10 @@ export interface MDCTabAdapter {
 
   /**
    * Activates the indicator element.
-   * @param previousIndicatorClientRect The client rect of the previously activated indicator
+   * @param previousIndicatorClientRect The client rect of the previously
+   *     activated indicator
    */
-  activateIndicator(previousIndicatorClientRect?: ClientRect): void;
+  activateIndicator(previousIndicatorClientRect?: DOMRect): void;
 
   /** Deactivates the indicator. */
   deactivateIndicator(): void;
@@ -92,4 +93,9 @@ export interface MDCTabAdapter {
    * Applies focus to the root element
    */
   focus(): void;
+
+  /**
+   * Returns whether the root element is focused.
+   */
+  isFocused(): boolean;
 }

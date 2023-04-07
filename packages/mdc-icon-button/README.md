@@ -9,13 +9,6 @@ path: /catalog/buttons/icon-buttons/
 
 # Icon buttons
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-button">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon buttons screenshot">
-  </a>
-</div>-->
-
 [Icon buttons](https://material.io/components/buttons/) allow users to take actions, and make choices, with a single tap.
 
 **Note**: For buttons with both icons and text, use the `mdc-button` component. For more information, see the `mdc-button` [docs](../mdc-button).
@@ -31,9 +24,7 @@ npm install @material/icon-button
 ### Styles
 
 ```scss
-@use "@material/icon-button";
-
-@include icon-button.core-styles;
+@use "@material/icon-button/styles";
 ```
 
 ### JavaScript instantiation
@@ -65,12 +56,35 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ## Icon button
 
 ```html
-<button class="mdc-icon-button material-icons">favorite</button>
+<button class="mdc-icon-button">
+  <div class="mdc-icon-button__ripple"></div>
+  <span class="mdc-icon-button__focus-ring"></span>
+  <i class="material-icons">favorite</i>
+</button>
 ```
 
 **Note**: The MDC Icon Button can be used with both `<button>` and `<a>` tags.
 
 **Note**: IE11 will not center the icon properly if there is a newline or space after the material icon text.
+
+### Making icon buttons accessible
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the following to your button:
+
+```html
+<div class="mdc-touch-target-wrapper">
+  <button class="mdc-icon-button">
+    <div class="mdc-icon-button__ripple"></div>
+    <span class="mdc-icon-button__focus-ring"></span>
+    <i class="material-icons">favorite</i>
+    <div class="mdc-icon-button__touch"></div>
+  </button>
+</div>
+```
+**Note: The outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).**
+
+The `mdc-icon-button__focus-ring` element ensures that a focus indicator is displayed in high contrast mode around the active/focused icon button.
 
 ## Icon button toggle
 
@@ -85,6 +99,8 @@ If the button should be initialized in the "on" state, then add the `mdc-icon-bu
    class="mdc-icon-button"
    aria-label="Add to favorites"
    aria-pressed="false">
+   <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__focus-ring"></span>
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
@@ -106,6 +122,8 @@ The icon button toggle can be used with SVGs.
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
    aria-pressed="true">
+   <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__focus-ring"></span>
    <svg class="mdc-icon-button__icon">
      ...
    </svg>
@@ -124,6 +142,8 @@ The icon button toggle can be used with `img` tags.
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
    aria-pressed="true">
+   <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__focus-ring"></span>
    <img src="" class="mdc-icon-button__icon"/>
    <img src="" class="mdc-icon-button__icon mdc-icon-button__icon--on"/>
 </button>
@@ -142,6 +162,8 @@ and `aria-data-label-off` (aria label in off state) attributes, and omit the
    aria-label="Add to favorites"
    data-aria-label-on="Remove from favorites"
    data-aria-label-off="Add to favorites">
+   <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__focus-ring"></span>
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
@@ -154,9 +176,11 @@ and `aria-data-label-off` (aria label in off state) attributes, and omit the
 CSS Class | Description
 --- | ---
 `mdc-icon-button` | Mandatory.
+`mdc-icon-button__ripple` | Mandatory. Indicates the element which shows the ripple styling.
 `mdc-icon-button--on` | This class is applied to the root element and is used to indicate if the icon button toggle is in the "on" state.
 `mdc-icon-button__icon` | This class is applied to each icon element for the icon button toggle.
 `mdc-icon-button__icon--on` | This class is applied to a icon element and is used to indicate the toggle button icon that is represents the "on" icon.
+`mdc-icon-button__focus-ring` | Recommended. Indicates the element which shows the high contrast mode focus ring styling.
 
 ### Sass mixins
 

@@ -20,15 +20,16 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use 'sass:list';
 @use 'sass:meta';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/animation/functions' as functions2;
 @use '@material/animation/variables' as animation-variables;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/typography/typography';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -79,20 +80,20 @@
       flex-shrink: 0;
       box-sizing: border-box;
       height: 100%;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       border-right-width: 1px;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       border-right-style: solid;
       overflow: hidden;
 
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         border-right-width: 0;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         border-left-width: 1px;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         border-right-style: none;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         border-left-style: solid;
       }
     }
@@ -109,7 +110,7 @@
     @include feature-targeting.targets($feat-structure) {
       transform: translateX(-100%);
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         transform: translateX(100%);
       }
     }
@@ -120,7 +121,7 @@
       transform: translateX(0);
 
       // Required to level the specificity with animate class.
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         transform: translateX(0);
       }
     }
@@ -134,7 +135,7 @@
     @include feature-targeting.targets($feat-structure) {
       transform: translateX(-100%);
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         transform: translateX(100%);
       }
     }
@@ -187,7 +188,7 @@
 
   .mdc-drawer--dismissible {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, 0);
+      @include rtl.reflexive-position(left, 0);
 
       display: none;
       position: absolute;
@@ -200,7 +201,7 @@
 
   .mdc-drawer-app-content {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, 0);
+      @include rtl.reflexive-box(margin, left, 0);
 
       position: relative;
     }
@@ -219,7 +220,7 @@
     );
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, 0);
+      @include rtl.reflexive-position(left, 0);
 
       display: none;
       position: fixed;
@@ -283,7 +284,7 @@
 }
 
 @mixin activated-overlay-color($color, $query: feature-targeting.all()) {
-  :not(.mdc-list--non-interactive) > .mdc-list-item {
+  :not(.mdc-deprecated-list--non-interactive) > .mdc-deprecated-list-item {
     @include ripple-theme.states-activated($color, $query: $query);
   }
 }
@@ -302,7 +303,7 @@
   $rtl-reflexive: true,
   $query: feature-targeting.all()
 ) {
-  @include list-mixins.single-line-shape-radius(
+  @include list-mixins.deprecated-single-line-shape-radius(
     $radius,
     $rtl-reflexive,
     $query: $query
@@ -326,7 +327,7 @@
 @mixin divider-color($color, $query: feature-targeting.all()) {
   $value: rgba(theme-color.prop-value($color), variables.$divider-opacity);
 
-  @include list-mixins.divider-color($value, $query: $query);
+  @include list-mixins.deprecated-divider-color($value, $query: $query);
 }
 
 @mixin title-ink-color($color, $query: feature-targeting.all()) {
@@ -344,7 +345,10 @@
   $feat-color: feature-targeting.create-target($query, color);
   $value: rgba(theme-color.prop-value($color), variables.$subtitle-ink-opacity);
 
-  @include list-mixins.group-subheader-ink-color($value, $query: $query);
+  @include list-mixins.deprecated-group-subheader-ink-color(
+    $value,
+    $query: $query
+  );
 
   .mdc-drawer__subtitle {
     @include feature-targeting.targets($feat-color) {
@@ -369,7 +373,10 @@
     variables.$item-inactive-icon-ink-opacity
   );
 
-  @include list-mixins.item-graphic-ink-color($value, $query: $query);
+  @include list-mixins.deprecated-item-graphic-ink-color(
+    $value,
+    $query: $query
+  );
 }
 
 @mixin item-activated-icon-ink-color($color, $query: feature-targeting.all()) {
@@ -378,8 +385,11 @@
     variables.$item-active-icon-ink-opacity
   );
 
-  .mdc-list-item--activated {
-    @include list-mixins.item-graphic-ink-color($value, $query: $query);
+  .mdc-deprecated-list-item--activated {
+    @include list-mixins.deprecated-item-graphic-ink-color(
+      $value,
+      $query: $query
+    );
   }
 }
 
@@ -389,8 +399,11 @@
     variables.$item-active-text-ink-opacity
   );
 
-  .mdc-list-item--activated {
-    @include list-mixins.item-primary-text-ink-color($value, $query: $query);
+  .mdc-deprecated-list-item--activated {
+    @include list-mixins.deprecated-item-primary-text-ink-color(
+      $value,
+      $query: $query
+    );
   }
 }
 
@@ -400,8 +413,11 @@
     variables.$item-inactive-text-ink-opacity
   );
 
-  .mdc-list-item {
-    @include list-mixins.item-primary-text-ink-color($value, $query: $query);
+  .mdc-deprecated-list-item {
+    @include list-mixins.deprecated-item-primary-text-ink-color(
+      $value,
+      $query: $query
+    );
   }
 }
 
@@ -441,7 +457,7 @@
 
   &.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, $width);
+      @include rtl.reflexive-box(margin, left, $width);
     }
   }
 }
@@ -453,33 +469,33 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   // postcss-bem-linter: ignore
-  .mdc-list-item {
+  .mdc-deprecated-list-item {
     @include typography.typography(subtitle2, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       height: calc(48px - 2 * #{variables.$list-item-spacing});
       // To accomodate margin conflict.
       margin: (variables.$list-item-spacing * 2) 8px;
-      padding: 0 variables.$surface-padding / 2;
+      padding: 0 math.div(variables.$surface-padding, 2);
     }
   }
 
   // postcss-bem-linter: ignore
-  .mdc-list-item:nth-child(1) {
+  .mdc-deprecated-list-item:nth-child(1) {
     @include feature-targeting.targets($feat-structure) {
       margin-top: 2px;
     }
   }
 
   // postcss-bem-linter: ignore
-  .mdc-list-item:nth-last-child(1) {
+  .mdc-deprecated-list-item:nth-last-child(1) {
     @include feature-targeting.targets($feat-structure) {
       margin-bottom: 0;
     }
   }
 
   // postcss-bem-linter: ignore
-  .mdc-list-group__subheader {
+  .mdc-deprecated-list-group__subheader {
     @include typography.typography(body2, $query: $query);
     @include typography.text-baseline($top: 24px, $query: $query);
 
@@ -490,7 +506,7 @@
   }
 
   // postcss-bem-linter: ignore
-  .mdc-list-divider {
+  .mdc-deprecated-list-divider {
     @include feature-targeting.targets($feat-structure) {
       margin: 3px 0 4px;
     }
@@ -498,8 +514,8 @@
 
   // Prevents list item children from being included in the click target.
   // postcss-bem-linter: ignore
-  .mdc-list-item__text,
-  .mdc-list-item__graphic {
+  .mdc-deprecated-list-item__text,
+  .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-structure) {
       pointer-events: none;
     }

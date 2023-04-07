@@ -1,23 +1,29 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/typography/typography';
 @use '@material/rtl/mixins' as rtl;
-@use '@material/icon-button/mixins' as icon-button-theme;
+@use '@material/icon-button/icon-button-theme';
 @use '@material/select/select-theme';
-@use '@material/list/mixins' as list-theme;
+@use '@material/list/evolution-mixins' as list-theme;
 @use '@material/menu/mixins' as menu-theme;
 @use './data-table-theme';
 
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
 // NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
 // selectors.
 
 /// Sets core styles for data table pagination.
 @mixin core-styles($query: feature-targeting.all()) {
+  .mdc-data-table__pagination {
+    @include typography.typography(body2, $query: $query);
+  }
+
+  @include static-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__pagination {
-    @include typography.typography(body2, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       box-sizing: border-box;
       display: flex;
@@ -80,9 +86,7 @@
   }
 
   .mdc-data-table__pagination-rows-per-page-select {
-    @include feature-targeting.targets($feat-structure) {
-      width: 80px;
-    }
+    @include select-theme.variable-width($min-width: 80px, $query: $query);
     @include menu-theme.min-width(80px, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
@@ -96,7 +100,7 @@
       $query: $query
     );
     .mdc-list-item {
-      @include list-theme.single-line-height(
+      @include list-theme.one-line-item-height(
         data-table-theme.$pagination-rows-per-page-select-height,
         $query: $query
       );

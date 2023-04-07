@@ -23,18 +23,22 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
+
 import {MDCLineRippleAdapter} from './adapter';
 import {cssClasses} from './constants';
 
-export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter> {
-  static get cssClasses() {
+/** MDC Line Ripple Foundation */
+export class MDCLineRippleFoundation extends
+    MDCFoundation<MDCLineRippleAdapter> {
+  static override get cssClasses() {
     return cssClasses;
   }
 
   /**
-   * See {@link MDCLineRippleAdapter} for typing information on parameters and return types.
+   * See {@link MDCLineRippleAdapter} for typing information on parameters and
+   * return types.
    */
-  static get defaultAdapter(): MDCLineRippleAdapter {
+  static override get defaultAdapter(): MDCLineRippleAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -47,22 +51,24 @@ export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter>
     // tslint:enable:object-literal-sort-keys
   }
 
-  private readonly transitionEndHandler_: SpecificEventListener<'transitionend'>;
+  private readonly transitionEndHandler: SpecificEventListener<'transitionend'>;
 
   constructor(adapter?: Partial<MDCLineRippleAdapter>) {
     super({...MDCLineRippleFoundation.defaultAdapter, ...adapter});
 
-    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
+    this.transitionEndHandler = (evt) => {
+      this.handleTransitionEnd(evt);
+    };
   }
 
-  init() {
+  override init() {
     this.adapter.registerEventHandler(
-        'transitionend', this.transitionEndHandler_);
+        'transitionend', this.transitionEndHandler);
   }
 
-  destroy() {
+  override destroy() {
     this.adapter.deregisterEventHandler(
-        'transitionend', this.transitionEndHandler_);
+        'transitionend', this.transitionEndHandler);
   }
 
   activate() {

@@ -33,8 +33,9 @@ export const cssClasses = {
  * Attributes and selectors used in component.
  */
 export const strings = {
-  DETERMINATE_CIRCLE_SELECTOR: '.mdc-circular-progress__determinate-circle',
+  ARIA_HIDDEN: 'aria-hidden',
   ARIA_VALUENOW: 'aria-valuenow',
+  DETERMINATE_CIRCLE_SELECTOR: '.mdc-circular-progress__determinate-circle',
   RADIUS: 'r',
   STROKE_DASHOFFSET: 'stroke-dashoffset',
 };

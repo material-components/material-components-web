@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {CloseReason} from './constants';
+import {Action, CloseReason} from './constants';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -62,6 +62,18 @@ export interface MDCBannerAdapter {
   notifyOpening(): void;
 
   /**
+   * Broadcasts an event denoting that a banner button was clicked without
+   * changing the banner state.
+   */
+  notifyActionClicked(action: Action): void;
+
+  /**
+   * Releases focus from banner and restores focus to the previously focused
+   * element.
+   */
+  releaseFocus(): void;
+
+  /**
    * Removes the given class from the banner root element.
    */
   removeClass(className: string): void;
@@ -70,4 +82,9 @@ export interface MDCBannerAdapter {
    * Sets a style property of the banner root element to the passed value.
    */
   setStyleProperty(propertyName: string, value: string): void;
+
+  /**
+   * Traps focus in banner and focuses on the primary action button.
+   */
+  trapFocus(): void;
 }

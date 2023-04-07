@@ -19,23 +19,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+
+@use 'sass:list';
 @use 'sass:map';
+@use 'sass:meta';
 
 /// Adds optional GSS annotation comments. Useful for theme mixins where one or
 /// more properties are set indirectly.
 ///
-/// @example
-///   `annotate((noflip: true)) => /* @noflip */`
+/// Annotations may be provided as a Map of annotations or as named arguments.
+///
+/// @example - scss
+///   @include annotate((noflip: true));
+///   left: 0;
+///
+/// @example - scss
+///   @include annotate($noflip: true);
+///   left: 0;
+///
+/// @example - css
+///   /* @noflip */ /*rtl:ignore*/
+///   left: 0;
 ///
 /// @param {Map} $annotations - Map of annotations. Values must be set to `true`
 ///     for an annotation to be added.
-@mixin annotate($annotations) {
+@mixin annotate($annotations...) {
+  $keywords: meta.keywords($annotations);
+  @if list.length($annotations) > 0 {
+    $annotations: list.nth($annotations, 1);
+  } @else {
+    $annotations: $keywords;
+  }
+
   @if (map.get($annotations, alternate) == true) {
     /* @alternate */
   }
 
   // noflip must be the last tag right before the property
   @if (map.get($annotations, noflip) == true) {
-    /* @noflip */
+    /* @noflip */ /*rtl:ignore*/
   }
 }

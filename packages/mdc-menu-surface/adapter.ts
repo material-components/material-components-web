@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener} from '@material/base/types';
+
 import {MDCMenuDimensions, MDCMenuDistance, MDCMenuPoint} from './types';
 
 /**
@@ -41,23 +43,41 @@ export interface MDCMenuSurfaceAdapter {
   isRtl(): boolean;
 
   getInnerDimensions(): MDCMenuDimensions;
-  getAnchorDimensions(): ClientRect | null;
-  getWindowDimensions(): MDCMenuDimensions;
+  getAnchorDimensions(): DOMRect|null;
+  getViewportDimensions(): MDCMenuDimensions;
   getBodyDimensions(): MDCMenuDimensions;
   getWindowScroll(): MDCMenuPoint;
   setPosition(position: Partial<MDCMenuDistance>): void;
   setMaxHeight(height: string): void;
   setTransformOrigin(origin: string): void;
+  getOwnerDocument?(): Document;
 
   /** Saves the element that was focused before the menu surface was opened. */
   saveFocus(): void;
 
-  /** Restores focus to the element that was focused before the menu surface was opened. */
+  /**
+   * Restores focus to the element that was focused before the menu surface was
+   * opened.
+   */
   restoreFocus(): void;
 
   /** Emits an event when the menu surface is closed. */
   notifyClose(): void;
 
+  /** Emits an event when the menu surface is closing. */
+  notifyClosing(): void;
+
   /** Emits an event when the menu surface is opened. */
   notifyOpen(): void;
+
+  /** Emits an event when the menu surface is opening. */
+  notifyOpening(): void;
+
+  /** Registers an event listener on the window. */
+  registerWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /** Deregisters an event listener on the window. */
+  deregisterWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 }

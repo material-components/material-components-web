@@ -65,7 +65,7 @@ Once `mdc.autoInit()` is called, you can access the component instance via an `M
 property on that element.
 
 ```js
-document.querySelector('.mdc-text-field').MDCTextField.disabled = true;
+document.querySelector<HTMLElement>('.mdc-text-field').MDCTextField.disabled = true;
 ```
 
 #### Calling subsequent `mdc.autoInit()`

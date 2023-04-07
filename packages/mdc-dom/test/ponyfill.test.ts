@@ -21,15 +21,9 @@
  * THE SOFTWARE.
  */
 
-import {closest, estimateScrollWidth, matches} from '../ponyfill';
 
-function getFixture(content: string) {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = content;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-}
+import {createFixture, html} from '../../../testing/dom';
+import {closest, estimateScrollWidth, matches} from '../ponyfill';
 
 describe('MDCDom - ponyfill', () => {
   it('#closest returns result from native method if available', () => {
@@ -85,13 +79,13 @@ describe('MDCDom - ponyfill', () => {
      });
 
   it('#matches returns true when the selector matches the element', () => {
-    const element = getFixture(`<div class="foo"></div>`);
+    const element = createFixture(html`<div class="foo"></div>`);
     expect(matches(element, '.foo')).toBe(true);
   });
 
   it('#matches returns false when the selector does not match the element',
      () => {
-       const element = getFixture(`<div class="foo"></div>`);
+       const element = createFixture(html`<div class="foo"></div>`);
        expect(matches(element, '.bar')).toBe(false);
      });
 
@@ -106,19 +100,21 @@ describe('MDCDom - ponyfill', () => {
 
   it('#estimateScrollWidth returns the default width when the element is not hidden',
      () => {
-       const root = getFixture(`<span>
-    <span id="i0" style="width:10px;"></span>
-  </span>`);
-       const el = root.querySelector('#i0') as HTMLElement;
+       const root = createFixture(html`
+       <span>
+         <span id="i0" style="width:10px;"></span>
+       </span>`);
+       const el = root.querySelector<HTMLSpanElement>('#i0')!;
        expect(estimateScrollWidth(el)).toBe(10);
      });
 
   it('#estimateScrollWidth returns the estimated width when the element is hidden',
      () => {
-       const root = getFixture(`<span style="display:none;">
-    <span id="i0" style="width:10px;"></span>
-  </span>`);
-       const el = root.querySelector('#i0') as HTMLElement;
+       const root = createFixture(html`
+       <span style="display:none;">
+         <span id="i0" style="width:10px;"></span>
+       </span>`);
+       const el = root.querySelector<HTMLSpanElement>('#i0')!;
        expect(estimateScrollWidth(el)).toBe(10);
      });
 });

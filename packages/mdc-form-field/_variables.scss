@@ -20,4 +20,5 @@
 // THE SOFTWARE.
 //
 
-$item-spacing: 4px !default;
+/// @deprecated Import `_form-field-theme.scss` instead.
+@forward './form-field-theme' show $item-spacing;

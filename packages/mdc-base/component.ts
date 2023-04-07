@@ -21,84 +21,112 @@
  * THE SOFTWARE.
  */
 
+import {safeAttrPrefix} from 'safevalues';
+import {safeElement} from 'safevalues/dom';
+
 import {MDCFoundation} from './foundation';
 import {CustomEventListener, EventType, SpecificEventListener} from './types';
 
+function toCamelCase(str: string) {
+  // tslint:disable-next-line:enforce-name-casing
+  return String(str).replace(/\-([a-z])/g, (_, match) => match.toUpperCase());
+}
+
+/** MDC Component base */
 export class MDCComponent<FoundationType extends MDCFoundation> {
-  static attachTo(root: Element): MDCComponent<MDCFoundation<{}>> {
-    // Subclasses which extend MDCBase should provide an attachTo() method that takes a root element and
-    // returns an instantiated component with its root set to that element. Also note that in the cases of
-    // subclasses, an explicit foundation class will not have to be passed in; it will simply be initialized
-    // from getDefaultFoundation().
+  static attachTo(root: HTMLElement): MDCComponent<MDCFoundation<{}>> {
+    // Subclasses which extend MDCBase should provide an attachTo() method that
+    // takes a root element and returns an instantiated component with its root
+    // set to that element. Also note that in the cases of subclasses, an
+    // explicit foundation class will not have to be passed in; it will simply
+    // be initialized from getDefaultFoundation().
     return new MDCComponent(root, new MDCFoundation({}));
   }
 
   protected foundation: FoundationType;
 
   constructor(
-      public root: Element, foundation?: FoundationType, ...args: unknown[]) {
+      public root: HTMLElement, foundation?: FoundationType,
+      ...args: unknown[]) {
     this.initialize(...args);
-    // Note that we initialize foundation here and not within the constructor's default param so that
-    // this.root_ is defined and can be used within the foundation class.
+    // Note that we initialize foundation here and not within the constructor's
+    // default param so that this.root is defined and can be used within the
+    // foundation class.
     this.foundation =
         foundation === undefined ? this.getDefaultFoundation() : foundation;
     this.foundation.init();
     this.initialSyncWithDOM();
   }
 
-  /* istanbul ignore next: method param only exists for typing purposes; it does not need to be unit tested */
-  initialize(..._args: Array<unknown>) {
-    // Subclasses can override this to do any additional setup work that would be considered part of a
-    // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
-    // initialized. Any additional arguments besides root and foundation will be passed in here.
+  /* istanbul ignore next: method param only exists for typing purposes; it does
+   * not need to be unit tested */
+  // tslint:disable-next-line:enforce-name-casing
+  initialize(..._args: unknown[]) {
+    // Subclasses can override this to do any additional setup work that would
+    // be considered part of a "constructor". Essentially, it is a hook into the
+    // parent constructor before the foundation is initialized. Any additional
+    // arguments besides root and foundation will be passed in here.
   }
 
   getDefaultFoundation(): FoundationType {
-    // Subclasses must override this method to return a properly configured foundation class for the
-    // component.
-    throw new Error('Subclasses must override getDefaultFoundation to return a properly configured ' +
+    // Subclasses must override this method to return a properly configured
+    // foundation class for the component.
+    throw new Error(
+        'Subclasses must override getDefaultFoundation to return a properly configured ' +
         'foundation class');
   }
 
   initialSyncWithDOM() {
-    // Subclasses should override this method if they need to perform work to synchronize with a host DOM
-    // object. An example of this would be a form control wrapper that needs to synchronize its internal state
-    // to some property or attribute of the host DOM. Please note: this is *not* the place to perform DOM
-    // reads/writes that would cause layout / paint, as this is called synchronously from within the constructor.
+    // Subclasses should override this method if they need to perform work to
+    // synchronize with a host DOM object. An example of this would be a form
+    // control wrapper that needs to synchronize its internal state to some
+    // property or attribute of the host DOM. Please note: this is *not* the
+    // place to perform DOM reads/writes that would cause layout / paint, as
+    // this is called synchronously from within the constructor.
   }
 
   destroy() {
-    // Subclasses may implement this method to release any resources / deregister any listeners they have
-    // attached. An example of this might be deregistering a resize event from the window object.
+    // Subclasses may implement this method to release any resources /
+    // deregister any listeners they have attached. An example of this might be
+    // deregistering a resize event from the window object.
     this.foundation.destroy();
   }
 
   /**
-   * Wrapper method to add an event listener to the component's root element. This is most useful when
-   * listening for custom events.
+   * Wrapper method to add an event listener to the component's root element.
+   * This is most useful when listening for custom events.
    */
   listen<K extends EventType>(
-    evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean): void;
+      evtType: K, handler: SpecificEventListener<K>,
+      options?: AddEventListenerOptions|boolean): void;
   listen<E extends Event>(
-    evtType: string, handler: CustomEventListener<E>, options?: AddEventListenerOptions | boolean): void;
-  listen(evtType: string, handler: EventListener, options?: AddEventListenerOptions | boolean) {
+      evtType: string, handler: CustomEventListener<E>,
+      options?: AddEventListenerOptions|boolean): void;
+  listen(
+      evtType: string, handler: EventListener,
+      options?: AddEventListenerOptions|boolean) {
     this.root.addEventListener(evtType, handler, options);
   }
 
   /**
-   * Wrapper method to remove an event listener to the component's root element. This is most useful when
-   * unlistening for custom events.
+   * Wrapper method to remove an event listener to the component's root element.
+   * This is most useful when unlistening for custom events.
    */
   unlisten<K extends EventType>(
-    evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean): void;
+      evtType: K, handler: SpecificEventListener<K>,
+      options?: AddEventListenerOptions|boolean): void;
   unlisten<E extends Event>(
-    evtType: string, handler: CustomEventListener<E>, options?: AddEventListenerOptions | boolean): void;
-  unlisten(evtType: string, handler: EventListener, options?: AddEventListenerOptions | boolean) {
+      evtType: string, handler: CustomEventListener<E>,
+      options?: AddEventListenerOptions|boolean): void;
+  unlisten(
+      evtType: string, handler: EventListener,
+      options?: AddEventListenerOptions|boolean) {
     this.root.removeEventListener(evtType, handler, options);
   }
 
   /**
-   * Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+   * Fires a cross-browser-compatible custom event from the component root of
+   * the given type, with the given data.
    */
   emit<T extends object>(evtType: string, evtData: T, shouldBubble = false) {
     let evt: CustomEvent<T>;
@@ -113,6 +141,35 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     }
 
     this.root.dispatchEvent(evt);
+  }
+
+  /**
+   * This is a intermediate fix to allow components to use safevalues. This
+   * limits setAttribute to setting tabindex, data attributes, and aria
+   * attributes.
+   *
+   * TODO(b/263990206): remove this method and add these directly in each
+   * component. This will remove this abstraction and make it clear that the
+   * caller can't set any attribute.
+   */
+  protected safeSetAttribute(
+      element: HTMLElement,
+      attribute: string,
+      value: string,
+  ) {
+    if (attribute.toLowerCase() === 'tabindex') {
+      element.tabIndex = Number(value);
+    } else if (attribute.indexOf('data-') === 0) {
+      const dataKey = toCamelCase(attribute.replace(/^data-/, ''));
+      element.dataset[dataKey] = value;
+    } else {
+      safeElement.setPrefixedAttribute(
+          [safeAttrPrefix`aria-`, safeAttrPrefix`role`],
+          element,
+          attribute,
+          value,
+      );
+    }
   }
 }
 

@@ -28,15 +28,17 @@ import {SegmentDetail} from '../types';
 import {MDCSegmentedButtonAdapter} from './adapter';
 import {cssClasses} from './constants';
 
+/** MDC Segmented Button Foundation */
 export class MDCSegmentedButtonFoundation extends
     MDCFoundation<MDCSegmentedButtonAdapter> {
-  static get defaultAdapter(): MDCSegmentedButtonAdapter {
+  static override get defaultAdapter(): MDCSegmentedButtonAdapter {
     return {
-      hasClass: () => false, getSegments: () => [],
-                selectSegment: () => undefined,
-                unselectSegment: () => undefined,
-                notifySelectedChange: () => undefined
-    }
+      hasClass: () => false,
+      getSegments: () => [],
+      selectSegment: () => undefined,
+      unselectSegment: () => undefined,
+      notifySelectedChange: () => undefined
+    };
   }
 
   constructor(adapter?: Partial<MDCSegmentedButtonAdapter>) {
@@ -78,7 +80,7 @@ export class MDCSegmentedButtonFoundation extends
    * @return Returns true if identified child segment is currently selected,
    * otherwise returns false
    */
-  isSegmentSelected(indexOrSegmentId: number|string): boolean {
+  isSegmentSelected(indexOrSegmentId: number|string|undefined): boolean {
     return this.adapter.getSegments().some(
         segmentDetail => (segmentDetail.index === indexOrSegmentId ||
                           segmentDetail.segmentId === indexOrSegmentId) &&
@@ -115,7 +117,7 @@ export class MDCSegmentedButtonFoundation extends
    * @param index Index of child segment to not unselect
    */
   private unselectPrevSelected(index: number) {
-    for (let selectedSegment of this.getSelectedSegments()) {
+    for (const selectedSegment of this.getSelectedSegments()) {
       if (selectedSegment.index !== index) {
         this.unselectSegment(selectedSegment.index);
       }

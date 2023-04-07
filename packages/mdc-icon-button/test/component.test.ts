@@ -25,18 +25,15 @@ import {MDCIconButtonToggle, MDCIconButtonToggleFoundation} from '../../mdc-icon
 import {cssClasses} from '../../mdc-ripple/constants';
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation as mockFoundationCreator} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <button></button>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest({createMockFoundation = false} = {}) {
@@ -138,7 +135,7 @@ describe('MDCIconButtonToggle', () => {
   it('click handler is added to root element', () => {
     const {root, mockFoundation} = setupTest({createMockFoundation: true});
     emitEvent(root, 'click');
-    expect(mockFoundation.handleClick).toHaveBeenCalledTimes(1);
+    expect(mockFoundation!.handleClick).toHaveBeenCalledTimes(1);
   });
 
   it('click handler is removed from the root element on destroy', () => {
@@ -146,6 +143,6 @@ describe('MDCIconButtonToggle', () => {
         setupTest({createMockFoundation: true});
     component.destroy();
     emitEvent(root, 'click');
-    expect(mockFoundation.handleClick).not.toHaveBeenCalled();
+    expect(mockFoundation!.handleClick).not.toHaveBeenCalled();
   });
 });

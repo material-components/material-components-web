@@ -22,6 +22,7 @@
  */
 
 import {FocusTrap} from '../../mdc-dom/focus-trap';
+import {createFixture, html} from '../../../testing/dom';
 import * as util from '../util';
 
 describe('MDCDialog - util', () => {
@@ -30,7 +31,7 @@ describe('MDCDialog - util', () => {
        const surface = document.createElement('div');
        const yesBtn = document.createElement('button');
        const focusTrapFactory = jasmine.createSpy('focusTrapFactory');
-       const properlyConfiguredFocusTrapInstance = {} as FocusTrap;
+       const properlyConfiguredFocusTrapInstance: FocusTrap = {} as FocusTrap;
        focusTrapFactory
            .withArgs(surface, {
              initialFocusEl: yesBtn,
@@ -61,7 +62,7 @@ describe('MDCDialog - util', () => {
 
   it('isScrollable returns false when element content does not overflow its bounding box',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="height: 20px; overflow: auto;">
            <div style="height: 10px;"></div>
          </div>`);
@@ -78,7 +79,7 @@ describe('MDCDialog - util', () => {
 
   it('isScrollable returns true when element content overflows its bounding box',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="height: 20px; overflow: auto;">
            <div style="height: 30px;"></div>
          </div>`);
@@ -93,13 +94,87 @@ describe('MDCDialog - util', () => {
        }
      });
 
+  it('isScrollAtTop returns true when scrollable content has not been scrolled',
+     () => {
+       const parent = createFixture(html`
+         <div style="height: 20px; overflow: auto;">
+           <div style="height: 30px;"></div>
+         </div>`);
+
+       // Element.scrollHeight only returns the correct value when the element
+       // is attached to the DOM.
+       document.body.appendChild(parent);
+       try {
+         expect(util.isScrollable(parent)).toBe(true);
+         expect(util.isScrollAtTop(parent)).toBe(true);
+       } finally {
+         document.body.removeChild(parent);
+       }
+     });
+
+  it('isScrollAtTop returns false when scrollable content has been scrolled',
+     () => {
+       const parent = createFixture(html`
+         <div style="height: 20px; overflow: auto;">
+           <div style="height: 30px;"></div>
+         </div>`);
+
+       // Element.scrollHeight only returns the correct value when the element
+       // is attached to the DOM.
+       document.body.appendChild(parent);
+       try {
+         expect(util.isScrollable(parent)).toBe(true);
+         parent.scrollTop = 10;
+         expect(util.isScrollAtTop(parent)).toBe(false);
+       } finally {
+         document.body.removeChild(parent);
+       }
+     });
+
+  it('isScrollAtBottom returns false when scrollable content is not scrolled to the bottom',
+     () => {
+       const parent = createFixture(html`
+         <div style="height: 20px; overflow: auto;">
+           <div style="height: 30px;"></div>
+         </div>`);
+
+       // Element.scrollHeight only returns the correct value when the element
+       // is attached to the DOM.
+       document.body.appendChild(parent);
+       try {
+         expect(util.isScrollable(parent)).toBe(true);
+         expect(util.isScrollAtBottom(parent)).toBe(false);
+       } finally {
+         document.body.removeChild(parent);
+       }
+     });
+
+  it('isScrollAtBottom returns true when scrollable content has been scrolled to the bottom',
+     () => {
+       const parent = createFixture(html`
+         <div style="height: 20px; overflow: auto;">
+           <div style="height: 30px;"></div>
+         </div>`);
+
+       // Element.scrollHeight only returns the correct value when the element
+       // is attached to the DOM.
+       document.body.appendChild(parent);
+       try {
+         expect(util.isScrollable(parent)).toBe(true);
+         parent.scrollTop = 10;
+         expect(util.isScrollAtBottom(parent)).toBe(true);
+       } finally {
+         document.body.removeChild(parent);
+       }
+     });
+
   it('areTopsMisaligned returns false when array is empty', () => {
     expect(util.areTopsMisaligned([])).toBe(false);
   });
 
   it('areTopsMisaligned returns false when array only contains one element',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="display: flex;
                      position: relative;
                      flex-direction: row;
@@ -108,8 +183,7 @@ describe('MDCDialog - util', () => {
                      justify-content: flex-end;">
            <button>1</button>
          </div>`);
-       const buttons =
-           [].slice.call(parent.querySelectorAll('button')) as HTMLElement[];
+       const buttons = Array.from(parent.querySelectorAll('button'));
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.
@@ -123,7 +197,7 @@ describe('MDCDialog - util', () => {
 
   it('areTopsMisaligned returns false when elements have same offsetTop',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="display: flex;
                      position: relative;
                      flex-direction: row;
@@ -133,8 +207,7 @@ describe('MDCDialog - util', () => {
            <button>1</button>
            <button>2</button>
          </div>`);
-       const buttons =
-           [].slice.call(parent.querySelectorAll('button')) as HTMLElement[];
+       const buttons = Array.from(parent.querySelectorAll('button'));
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.
@@ -148,7 +221,7 @@ describe('MDCDialog - util', () => {
 
   it('areTopsMisaligned returns true when elements have different "top" values',
      () => {
-       const parent = getElement(`
+       const parent = createFixture(html`
          <div style="display: flex;
                      position: relative;
                      flex-direction: column;
@@ -158,8 +231,7 @@ describe('MDCDialog - util', () => {
            <button>1</button>
            <button>2</button>
          </div>`);
-       const buttons =
-           [].slice.call(parent.querySelectorAll('button')) as HTMLElement[];
+       const buttons = Array.from(parent.querySelectorAll('button'));
 
        // HTMLElement.offsetTop only returns the correct value when the element
        // is attached to the DOM.
@@ -171,11 +243,3 @@ describe('MDCDialog - util', () => {
        }
      });
 });
-
-function getElement(innerHTML: string) {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = innerHTML;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-}

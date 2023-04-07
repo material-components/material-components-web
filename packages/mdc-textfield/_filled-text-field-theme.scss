@@ -1,0 +1,277 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
+@use 'sass:map';
+@use '@material/line-ripple/mixins' as line-ripple-mixins;
+@use '@material/ripple/ripple-theme';
+@use '@material/theme/keys';
+@use '@material/theme/theme';
+@use '@material/theme/validate';
+@use '@material/tokens/resolvers';
+@use './text-field-theme';
+@use './mixins';
+
+$_custom-property-prefix: 'filled-text-field';
+
+$_light-theme: (
+  active-indicator-color: null,
+  active-indicator-height: null,
+  caret-color: null,
+  container-color: null,
+  container-height: null,
+  container-shape: null,
+  disabled-active-indicator-color: null,
+  disabled-active-indicator-height: null,
+  disabled-active-indicator-opacity: null,
+  disabled-container-color: null,
+  disabled-container-opacity: null,
+  disabled-input-text-color: null,
+  disabled-input-text-opacity: null,
+  disabled-label-text-color: null,
+  disabled-label-text-opacity: null,
+  disabled-leading-icon-color: null,
+  disabled-leading-icon-opacity: null,
+  disabled-supporting-text-color: null,
+  disabled-supporting-text-opacity: null,
+  disabled-trailing-icon-color: null,
+  disabled-trailing-icon-opacity: null,
+  error-active-indicator-color: null,
+  error-caret-color: null,
+  error-focus-active-indicator-color: null,
+  error-focus-caret-color: null,
+  error-focus-input-text-color: null,
+  error-focus-label-text-color: null,
+  error-focus-leading-icon-color: null,
+  error-focus-supporting-text-color: null,
+  error-focus-trailing-icon-color: null,
+  error-hover-active-indicator-color: null,
+  error-hover-caret-color: null,
+  error-hover-input-text-color: null,
+  error-hover-label-text-color: null,
+  error-hover-leading-icon-color: null,
+  error-hover-state-layer-color: null,
+  error-hover-state-layer-opacity: null,
+  error-hover-supporting-text-color: null,
+  error-hover-trailing-icon-color: null,
+  error-input-text-color: null,
+  error-label-text-color: null,
+  error-leading-icon-color: null,
+  error-supporting-text-color: null,
+  error-trailing-icon-color: null,
+  focus-active-indicator-color: null,
+  focus-active-indicator-height: null,
+  focus-caret-color: null,
+  focus-input-text-color: null,
+  focus-label-text-color: null,
+  focus-leading-icon-color: null,
+  focus-supporting-text-color: null,
+  focus-trailing-icon-color: null,
+  hover-active-indicator-color: null,
+  hover-active-indicator-height: null,
+  hover-caret-color: null,
+  hover-input-text-color: null,
+  hover-label-text-color: null,
+  hover-leading-icon-color: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  hover-supporting-text-color: null,
+  hover-trailing-icon-color: null,
+  input-text-color: null,
+  input-text-font: null,
+  input-text-line-height: null,
+  input-text-placeholder-color: null,
+  input-text-prefix-color: null,
+  input-text-size: null,
+  input-text-suffix-color: null,
+  input-text-tracking: null,
+  input-text-type: null,
+  input-text-weight: null,
+  label-text-color: null,
+  label-text-font: null,
+  label-text-line-height: null,
+  label-text-populated-line-height: null,
+  label-text-populated-size: null,
+  label-text-size: null,
+  label-text-tracking: null,
+  label-text-type: null,
+  label-text-weight: null,
+  leading-icon-color: null,
+  leading-icon-size: null,
+  supporting-text-color: null,
+  supporting-text-font: null,
+  supporting-text-line-height: null,
+  supporting-text-size: null,
+  supporting-text-tracking: null,
+  supporting-text-weight: null,
+  trailing-icon-color: null,
+  trailing-icon-size: null,
+);
+
+@mixin theme($theme) {
+  $theme: validate.theme($_light-theme, $theme);
+
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  $theme: validate.theme-styles($_light-theme, $theme, false);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+
+  @include text-field-theme.theme-styles($theme, $resolvers: $resolvers);
+
+  &:not(.mdc-text-field--textarea) {
+    @if map.get($theme, container-height) {
+      @include mixins.height(map.get($theme, container-height));
+    }
+  }
+  @if map.get($theme, container-shape) {
+    @include mixins.shape-radius(map.get($theme, container-shape));
+  }
+
+  @include _container-color(
+    (
+      default: map.get($theme, container-color),
+      disabled: map.get($theme, disabled-container-color),
+    )
+  );
+  @include _active-indicator-color(
+    (
+      default: map.get($theme, active-indicator-color),
+      hover: map.get($theme, hover-active-indicator-color),
+      focus: map.get($theme, focus-active-indicator-color),
+      disabled: map.get($theme, disabled-active-indicator-color),
+    )
+  );
+  @include _error-active-indicator-color(
+    (
+      default: map.get($theme, error-active-indicator-color),
+      hover: map.get($theme, error-hover-active-indicator-color),
+      focus: map.get($theme, error-focus-active-indicator-color),
+    )
+  );
+  @include _active-indicator-height(map.get($theme, active-indicator-height));
+  @include _focus-active-indicator-height(
+    map.get($theme, focus-active-indicator-height)
+  );
+  @include _hover-state-layer(
+    (
+      error-hover-state-layer-color:
+        map.get($theme, error-hover-state-layer-color),
+      error-hover-state-layer-opacity:
+        map.get($theme, error-hover-state-layer-opacity),
+      hover-state-layer-color: map.get($theme, hover-state-layer-color),
+      hover-state-layer-opacity: map.get($theme, hover-state-layer-opacity),
+    )
+  );
+}
+
+@mixin _container-color($colors) {
+  @include text-field-theme.if-enabled {
+    @include _set-container-color(map.get($colors, default));
+  }
+
+  @include text-field-theme.if-disabled {
+    @include _set-container-color(map.get($colors, disabled));
+  }
+}
+
+@mixin _set-container-color($color) {
+  @include theme.property(background-color, $color);
+}
+
+@mixin _active-indicator-color($colors) {
+  @include text-field-theme.if-enabled {
+    @include _set-active-indicator-color(map.get($colors, default));
+
+    @include text-field-theme.if-hovered {
+      @include _set-active-indicator-color(map.get($colors, hover));
+    }
+
+    @include _focused-line-ripple-color(map.get($colors, focus));
+  }
+
+  @include text-field-theme.if-disabled {
+    @include _set-active-indicator-color(map.get($colors, disabled));
+  }
+}
+
+@mixin _set-active-indicator-color($color) {
+  .mdc-line-ripple {
+    @include line-ripple-mixins.inactive-color($color);
+  }
+}
+
+@mixin _focused-line-ripple-color($color) {
+  .mdc-line-ripple {
+    @include line-ripple-mixins.active-color($color);
+  }
+}
+
+@mixin _error-active-indicator-color($colors) {
+  &.mdc-text-field--invalid {
+    @include _active-indicator-color($colors);
+  }
+}
+
+@mixin _active-indicator-height($height) {
+  .mdc-line-ripple {
+    @include line-ripple-mixins.height($height);
+  }
+}
+
+@mixin _focus-active-indicator-height($height) {
+  .mdc-line-ripple {
+    @include line-ripple-mixins.active-height($height);
+  }
+}
+
+@mixin _hover-state-layer($colors) {
+  @include ripple-theme.theme-styles(
+    (
+      hover-state-layer-color: map.get($colors, hover-state-layer-color),
+      hover-state-layer-opacity: map.get($colors, hover-state-layer-opacity),
+    ),
+    $ripple-target: '.mdc-text-field__ripple'
+  );
+
+  &.mdc-text-field--invalid {
+    @include ripple-theme.theme-styles(
+      (
+        hover-state-layer-color: map.get($colors, error-hover-state-layer-color),
+        hover-state-layer-opacity:
+          map.get($colors, error-hover-state-layer-opacity),
+      ),
+      $ripple-target: '.mdc-text-field__ripple'
+    );
+  }
+}

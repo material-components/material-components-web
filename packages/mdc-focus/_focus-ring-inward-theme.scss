@@ -1,0 +1,78 @@
+// Styles for a focus ring that animates inward.
+
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:meta';
+
+@use '@material/theme/keys';
+@use '@material/theme/validate';
+@use './focus-ring-shared-theme';
+
+$_custom-property-prefix: 'focus-ring-inward';
+$_ring-extra-offset-bottom-key: 'extra-offset-bottom';
+
+$default-inward-theme: map.merge(
+  focus-ring-shared-theme.$default-shared-theme,
+  (
+    focus-ring-shared-theme.$ring-offset-key: -1 * focus-ring-shared-theme.$track-width-value,
+    focus-ring-shared-theme.$target-shape-key: 8px,
+    // Extra offset to bottom of focus ring in addition to default ring offset
+    $_ring-extra-offset-bottom-key: 0px,
+  )
+);
+
+/// Generates CSS custom properties that are consumed by the focus ring styles.
+/// Intended to be used directly by Material Design customers, as the only
+/// formally supported means of customizing the focus ring.
+///
+/// @param {Map} $theme - A map with one or more of the keys of $default-inward-theme.
+@mixin theme($theme) {
+  $theme: validate.theme($default-inward-theme, $theme);
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+}
+
+@mixin theme-styles($theme: $default-inward-theme) {
+  $theme: validate.theme-styles($default-inward-theme, $theme);
+  $theme: keys.create-theme-vars($theme, $_custom-property-prefix);
+
+  $ring-color: map.get($theme, focus-ring-shared-theme.$ring-color-key);
+  $ring-offset: map.get($theme, focus-ring-shared-theme.$ring-offset-key);
+  $ring-extra-offset-bottom: map.get($theme, $_ring-extra-offset-bottom-key);
+  $track-width: map.get($theme, focus-ring-shared-theme.$track-width-key);
+  $target-shape: map.get($theme, focus-ring-shared-theme.$target-shape-key);
+
+  /// Mold the focus ring to the target shape.
+  /// See the diagram for insights into why the border-radius calc is needed:
+  /// https://screenshot.googleplex.com/3cYw8Pi8WQNa3h8.png
+  border: $track-width solid $ring-color;
+  border-radius: calc($target-shape + $track-width + $ring-offset);
+  inset-block: calc(-1 * ($ring-offset + $track-width))
+    calc(-1 * ($ring-offset + $track-width + $ring-extra-offset-bottom));
+  inset-inline: calc(-1 * ($ring-offset + $track-width));
+
+  @include _focus-ring-animation-keyframes();
+  @include focus-ring-shared-theme.focus-ring-animation(
+    $grow-animation-name: focus-ring-inward-grows,
+    $shrink-animation-name: focus-ring-inward-shrinks
+  );
+}
+
+@mixin _focus-ring-animation-keyframes() {
+  $start-border-width: 0;
+  $midpoint-border-width: 8px;
+
+  @keyframes focus-ring-inward-grows {
+    from {
+      border-width: $start-border-width;
+    }
+    to {
+      border-width: $midpoint-border-width;
+    }
+  }
+
+  @keyframes focus-ring-inward-shrinks {
+    from {
+      border-width: $midpoint-border-width;
+    }
+  }
+}

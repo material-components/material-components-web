@@ -1,0 +1,86 @@
+@use 'true' as test;
+@use 'third_party/javascript/material_components_web/focus/focus-ring-outward-theme';
+
+@include test.describe('Calling focus-ring-theme-outward') {
+  @include test.describe('.theme') {
+    @include test.it('returns nothing when no theme is provided.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-outward-theme.theme(());
+        }
+
+        @include test.expect {
+          // No content. This is testing that an error isn't thrown.
+        }
+      }
+    }
+
+    @include test.it('returns the expected custom property declarations.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-outward-theme.theme(
+            (
+              'color': blue,
+              'offset': 2px,
+              'track-width': 3px,
+              'target-shape': 5px,
+            )
+          );
+        }
+
+        @include test.expect {
+          --mdc-focus-ring-outward-target-shape-start-start: 5px;
+          --mdc-focus-ring-outward-target-shape-start-end: 5px;
+          --mdc-focus-ring-outward-target-shape-end-end: 5px;
+          --mdc-focus-ring-outward-target-shape-end-start: 5px;
+          --mdc-focus-ring-outward-color: blue;
+          --mdc-focus-ring-outward-offset: 2px;
+          --mdc-focus-ring-outward-track-width: 3px;
+        }
+      }
+    }
+  }
+
+  @include test.describe('.theme-styles') {
+    // TODO(b/263502978): Do not remove this first test until a more
+    // deterministic way to test sass output with @keyframes is found.
+    @include test.it('returns CSS for the underlying focus-ring structure.') {
+      @include test.assert {
+        @include test.output {
+          @include focus-ring-outward-theme.theme-styles(
+            (
+              'color': blue,
+              'offset': 2px,
+              'track-width': 3px,
+              'target-shape': 5px,
+            )
+          );
+        }
+
+        @include test.contains {
+          border-start-start-radius: calc(
+            var(--mdc-focus-ring-outward-target-shape-start-start, 5px) +
+              var(--mdc-focus-ring-outward-offset, 2px)
+          );
+          border-start-end-radius: calc(
+            var(--mdc-focus-ring-outward-target-shape-start-end, 5px) +
+              var(--mdc-focus-ring-outward-offset, 2px)
+          );
+          border-end-end-radius: calc(
+            var(--mdc-focus-ring-outward-target-shape-end-end, 5px) +
+              var(--mdc-focus-ring-outward-offset, 2px)
+          );
+          border-end-start-radius: calc(
+            var(--mdc-focus-ring-outward-target-shape-end-start, 5px) +
+              var(--mdc-focus-ring-outward-offset, 2px)
+          );
+          inset: calc(-1 * var(--mdc-focus-ring-outward-offset, 2px));
+          box-shadow: 0 0 0 var(--mdc-focus-ring-outward-track-width, 3px)
+            var(--mdc-focus-ring-outward-color, blue);
+          outline: var(--mdc-focus-ring-outward-track-width, 3px) solid
+            transparent;
+        }
+      }
+    }
+  }
+}

@@ -33,11 +33,12 @@ const emptyClientRect = {
   right: 0,
   top: 0,
   width: 0,
-};
+} as any;
 
+/** MDC Segmented Button Segment Foundation */
 export class MDCSegmentedButtonSegmentFoundation extends
     MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
-  static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
+  static override get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
     return {
       isSingleSelect: () => false, getAttr: () => '', setAttr: () => undefined,
                       addClass: () => undefined, removeClass: () => undefined,
@@ -102,7 +103,7 @@ export class MDCSegmentedButtonSegmentFoundation extends
   /**
    * @return Returns bounding rectangle for ripple effect
    */
-  getDimensions(): ClientRect {
+  getDimensions(): DOMRect {
     return this.adapter.getRootBoundingClientRect();
   }
 

@@ -95,20 +95,6 @@ export const messages = {
 };
 
 /**
- * Attributes and selectors used in component.
- * @deprecated Use `attributes`, `dataAttributes` and `selectors` instead.
- */
-export const strings = {
-  ARIA_SELECTED: attributes.ARIA_SELECTED,
-  ARIA_SORT: attributes.ARIA_SORT,
-  DATA_ROW_ID_ATTR: dataAttributes.ROW_ID,
-  HEADER_ROW_CHECKBOX_SELECTOR: selectors.HEADER_ROW_CHECKBOX,
-  ROW_CHECKBOX_SELECTOR: selectors.ROW_CHECKBOX,
-  ROW_SELECTED_SELECTOR: selectors.ROW_SELECTED,
-  ROW_SELECTOR: selectors.ROW,
-};
-
-/**
  * Sort values defined by ARIA.
  * See https://www.w3.org/WAI/PF/aria/states_and_properties#aria-sort
  */
@@ -130,8 +116,9 @@ export enum SortValue {
  * Event names used in component.
  */
 export const events = {
+  ROW_CLICK: 'MDCDataTable:rowClick',
   ROW_SELECTION_CHANGED: 'MDCDataTable:rowSelectionChanged',
   SELECTED_ALL: 'MDCDataTable:selectedAll',
-  UNSELECTED_ALL: 'MDCDataTable:unselectedAll',
   SORTED: 'MDCDataTable:sorted',
+  UNSELECTED_ALL: 'MDCDataTable:unselectedAll',
 };

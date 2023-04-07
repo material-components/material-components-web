@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,305 +21,548 @@
  * THE SOFTWARE.
  */
 
-import {emitEvent} from '../../../../testing/dom/events';
+import {DATA_MDC_DOM_ANNOUNCE} from '../../../mdc-dom/announce';
+import {createFixture, html} from '../../../../testing/dom';
+import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
-import {MDCChipFoundation} from '../../chip/index';
+import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
+import {MDCChipActionType} from '../../action/constants';
+import {MDCChipAnimation, MDCChipCssClasses, MDCChipEvents} from '../../chip/constants';
+import {MDCChipAnimationEventDetail} from '../../chip/types';
 import {MDCChipSet, MDCChipSetFoundation} from '../index';
 
-const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
-  <div class="mdc-chip-set">
-    <div class="mdc-chip" id="chip1">
-      <div class="mdc-chip__text">Chip content</div>
-    </div>
-    <div class="mdc-chip" id="chip2">
-      <div class="mdc-chip__text">Chip content</div>
-    </div>
-    <div class="mdc-chip" id="chip3">
-      <div class="mdc-chip__text">Chip content</div>
-    </div>
-  </div>`;
+interface ActionOptions {
+  readonly isFocusable: boolean;
+  readonly isSelectable: boolean;
+  readonly isSelected: boolean;
+}
 
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-};
+interface ChipOptions {
+  readonly primary: ActionOptions;
+  readonly trailing?: ActionOptions;
+  readonly id: string;
+}
+
+interface TestOptions {
+  readonly isMultiselectable: boolean;
+  readonly chips: ChipOptions[];
+}
+
+function actionFixture(
+    {isFocusable, isSelectable, isSelected}: ActionOptions,
+    isTrailing: boolean = false): string {
+  return `<button class="mdc-evolution-chip__action ${
+      isTrailing ? 'mdc-evolution-chip__action--trailing' : ''}"
+      ${isFocusable ? '' : 'aria-hidden="true"'}
+      ${isSelectable ? 'role="option"' : ''}
+      ${isSelected ? 'aria-selected="true"' : ''}>Label</button>`;
+}
+
+function chipFixture({primary, trailing, id}: ChipOptions): string {
+  return `
+  <div class="mdc-evolution-chip" id="${id}">
+    ${actionFixture(primary)}
+    ${trailing === undefined ? '' : actionFixture(trailing, true)}
+  </div>`;
+}
+
+function getFixture({chips, isMultiselectable}: TestOptions): HTMLElement {
+  return createFixture(html`
+  <div ${isMultiselectable ? 'aria-multiselectable="true"' : ''}>
+    ${chips.map((chip) => chipFixture(chip))}
+  </div>`);
+}
+
+function setupTest(options: TestOptions) {
+  const root = getFixture(options);
+  const component = new MDCChipSet(root);
+  return {root, component};
+}
+
+function setupTestWithMocks(options: TestOptions) {
+  const root = getFixture(options);
+  const mockFoundation = createMockFoundation(MDCChipSetFoundation);
+  const component = new MDCChipSet(root, mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+function actionChip(id: string): ChipOptions {
+  return {
+    primary: {isFocusable: true, isSelectable: false, isSelected: false},
+    id,
+  };
+}
+
+function disabledActionChip(id: string): ChipOptions {
+  return {
+    primary: {isFocusable: false, isSelectable: false, isSelected: false},
+    id,
+  };
+}
+
+function filterChip(id: string, isSelected: boolean): ChipOptions {
+  return {
+    primary: {isFocusable: true, isSelectable: true, isSelected},
+    id,
+  };
+}
+
+function multiActionInputChip(id: string): ChipOptions {
+  return {
+    primary: {isFocusable: true, isSelectable: false, isSelected: false},
+    trailing: {isFocusable: true, isSelectable: false, isSelected: false},
+    id,
+  };
+}
 
 describe('MDCChipSet', () => {
-  it('attachTo returns an MDCChipSet instance', () => {
-    expect(MDCChipSet.attachTo(getFixture()) instanceof MDCChipSet)
-        .toBeTruthy();
-  });
+  setUpMdcTestEnvironment();
 
-  class FakeChip {
-    id: string;
-    destroy: jasmine.Spy;
-    focusPrimaryAction: jasmine.Spy;
-    focusTrailingAction: jasmine.Spy;
-    remove: jasmine.Spy;
-    removeFocus: jasmine.Spy;
-    setSelectedFromChipSet: jasmine.Spy;
-
-    constructor(el: HTMLElement, readonly selected = false) {
-      this.id = el.id;
-      this.destroy = jasmine.createSpy('.destroy');
-      this.focusPrimaryAction = jasmine.createSpy('.focusPrimaryAction');
-      this.focusTrailingAction = jasmine.createSpy('.focusTrailingAction');
-      this.remove = jasmine.createSpy('.remove');
-      this.removeFocus = jasmine.createSpy('.removeFocus');
-      this.setSelectedFromChipSet =
-          jasmine.createSpy('.setSelectedFromChipSet');
-    }
-  }
-
-  function setupTest() {
-    const root = getFixture();
-    const component =
-        new MDCChipSet(root, undefined, (el: HTMLElement) => new FakeChip(el));
-    return {root, component};
-  }
-
-  function setupMockFoundationTest({hasSelection = false} = {}) {
-    const root = getFixture();
-    const mockFoundation = createMockFoundation(MDCChipSetFoundation);
-
-    if (!hasSelection) {
-      const component = new MDCChipSet(root, mockFoundation);
-      return {root, component, mockFoundation};
-    } else {
-      const component = new MDCChipSet(
-          root, mockFoundation, (el: HTMLElement) => new FakeChip(el, true));
-      return {root, component, mockFoundation};
-    }
-  }
-
-  it('#constructor instantiates child chip components', () => {
-    const {component} = setupTest();
-    expect(component.chips.length).toEqual(3);
-    expect(component.chips[0]).toEqual(jasmine.any(FakeChip));
-    expect(component.chips[1]).toEqual(jasmine.any(FakeChip));
-    expect(component.chips[2]).toEqual(jasmine.any(FakeChip));
-  });
-
-  it('#destroy cleans up child chip components', () => {
-    const {component} = setupTest();
-    component.destroy();
-    expect(component.chips[0].destroy).toHaveBeenCalled();
-    expect(component.chips[1].destroy).toHaveBeenCalled();
-    expect(component.chips[2].destroy).toHaveBeenCalled();
+  it('attachTo initializes and returns an MDCChipSet instance', () => {
+    const chipset = MDCChipSet.attachTo(getFixture({
+      chips: [
+        actionChip('c0'),
+        actionChip('c1'),
+      ],
+      isMultiselectable: false,
+    }));
+    expect(chipset instanceof MDCChipSet).toBeTruthy();
   });
 
   it('#initialSyncWithDOM sets up event handlers', () => {
-    const {root, mockFoundation} = setupMockFoundationTest();
-    const {
-      INTERACTION_EVENT,
-      ARROW_LEFT_KEY,
-      NAVIGATION_EVENT,
-      REMOVAL_EVENT,
-      SELECTION_EVENT
-    } = MDCChipFoundation.strings;
+    const {root, component, mockFoundation} = setupTestWithMocks({
+      chips: [
+        actionChip('c0'),
+        actionChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
 
-    emitEvent(root, INTERACTION_EVENT, {
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('.mdc-evolution-chip__action')!;
+    emitEvent(primaryActionEl, 'click', {
       bubbles: true,
-      cancelable: true,
-      detail: {
-        chipId: 'chipA',
-      },
     });
+    expect(mockFoundation.handleChipInteraction).toHaveBeenCalled();
 
-    expect(mockFoundation.handleChipInteraction).toHaveBeenCalledWith({
-      chipId: 'chipA'
-    });
-    expect(mockFoundation.handleChipInteraction).toHaveBeenCalledTimes(1);
+    primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+    }));
+    expect(mockFoundation.handleChipNavigation).toHaveBeenCalled();
 
-    emitEvent(root, SELECTION_EVENT, {
-      bubbles: true,
-      cancelable: true,
-      detail: {
-        chipId: 'chipA',
-        selected: true,
-        shouldIgnore: false,
-      },
-    });
-
-    expect(mockFoundation.handleChipSelection).toHaveBeenCalledWith({
-      chipId: 'chipA',
-      selected: true,
-      shouldIgnore: false,
-    });
-    expect(mockFoundation.handleChipSelection).toHaveBeenCalledTimes(1);
-
-    emitEvent(root, REMOVAL_EVENT, {
-      bubbles: true,
-      cancelable: true,
-      detail: {
-        chipId: 'chipA',
-        removedAnnouncement: 'Removed foo',
-      },
-    });
-
-    expect(mockFoundation.handleChipRemoval).toHaveBeenCalledWith({
-      chipId: 'chipA',
-      removedAnnouncement: 'Removed foo'
-    });
-    expect(mockFoundation.handleChipRemoval).toHaveBeenCalledTimes(1);
-
-    emitEvent(root, NAVIGATION_EVENT, {
-      bubbles: true,
-      cancelable: true,
-      detail: {
-        chipId: 'chipA',
-        key: ARROW_LEFT_KEY,
-        source: 1,
-      },
-    });
-
-    expect(mockFoundation.handleChipNavigation).toHaveBeenCalledWith({
-      chipId: 'chipA',
-      key: ARROW_LEFT_KEY,
-      source: 1,
-    });
-    expect(mockFoundation.handleChipNavigation).toHaveBeenCalledTimes(1);
+    emitEvent(
+        root.querySelector<HTMLElement>('#c0')!, MDCChipEvents.ANIMATION, {
+          bubbles: true,
+          cancelable: false,
+        });
+    expect(mockFoundation.handleChipAnimation).toHaveBeenCalled();
+    component.destroy();
   });
-
-  it('#initialSyncWithDOM calls MDCChipSetFoundation#select on the selected chips',
-     () => {
-       const {mockFoundation} = setupMockFoundationTest({hasSelection: true});
-       expect(mockFoundation.select).toHaveBeenCalledWith('chip1');
-       expect(mockFoundation.select).toHaveBeenCalledWith('chip2');
-       expect(mockFoundation.select).toHaveBeenCalledWith('chip3');
-     });
 
   it('#destroy removes event handlers', () => {
-    const {root, component, mockFoundation} = setupMockFoundationTest();
+    const {root, component, mockFoundation} = setupTestWithMocks({
+      chips: [
+        actionChip('c0'),
+        actionChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
     component.destroy();
 
-    emitEvent(root, MDCChipFoundation.strings.INTERACTION_EVENT);
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('.mdc-evolution-chip__action')!;
+    emitEvent(primaryActionEl, 'click', {
+      bubbles: true,
+    });
     expect(mockFoundation.handleChipInteraction).not.toHaveBeenCalled();
 
-    emitEvent(root, MDCChipFoundation.strings.SELECTION_EVENT);
-    expect(mockFoundation.handleChipSelection).not.toHaveBeenCalled();
-
-    emitEvent(root, MDCChipFoundation.strings.REMOVAL_EVENT);
-    expect(mockFoundation.handleChipRemoval).not.toHaveBeenCalled();
-
-    emitEvent(root, MDCChipFoundation.strings.NAVIGATION_EVENT);
+    primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+    }));
     expect(mockFoundation.handleChipNavigation).not.toHaveBeenCalled();
+
+    emitEvent(
+        root.querySelector<HTMLElement>('#c0')!, MDCChipEvents.ANIMATION, {
+          bubbles: true,
+          cancelable: false,
+        });
+    expect(mockFoundation.handleChipAnimation).not.toHaveBeenCalled();
   });
 
-  it('get selectedChipIds proxies to foundation', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    component.selectedChipIds;
-    expect(mockFoundation.getSelectedChipIds).toHaveBeenCalled();
+  it('#getChipIndexByID() returns the index of the chip when it exists', () => {
+    const {component} = setupTestWithMocks({
+      chips: [
+        actionChip('c0'),
+        actionChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    expect(component.getChipIndexByID('c1')).toBe(1);
   });
 
-  it('#addChip adds a new chip to the chip set', () => {
-    const {component} = setupTest();
-    // component.initialSyncWithDOM(); // TODO: why is this here?
+  it('#getChipIndexByID() returns -1 when the chip does not exist', () => {
+    const {component} = setupTestWithMocks({
+      chips: [
+        actionChip('c0'),
+        actionChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
 
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
-    <div class="mdc-chip">
-      <div class="mdc-chip__text">Hello world</div>
-    </div>`;
-
-    const chipEl = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(chipEl);
-    component.addChip(chipEl);
-
-    expect(component.chips.length).toEqual(4);
-    expect(component.chips[3]).toEqual(jasmine.any(FakeChip));
+    expect(component.getChipIndexByID('foo')).toBe(-1);
   });
 
-  it('#adapter.hasClass returns true if class is set on chip set element',
+  it('#getChipIdAtIndex() the id when the index is in bounds', () => {
+    const {component} = setupTestWithMocks({
+      chips: [
+        actionChip('c0'),
+        actionChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    expect(component.getChipIdAtIndex(1)).toBe('c1');
+  });
+
+  it('#getChipIdAtIndex() returns an empty string when the index is out of bounds',
      () => {
-       const {root, component} = setupTest();
-       root.classList.add('foo');
+       const {component} = setupTestWithMocks({
+         chips: [
+           actionChip('c0'),
+           actionChip('c1'),
+         ],
+         isMultiselectable: false,
+       });
+
+       expect(component.getChipIdAtIndex(9)).toBe('');
+     });
+
+  it('#getSelectedChipIndexes() returns the indexs of selected chips', () => {
+    const {component} = setupTest({
+      chips: [
+        filterChip('c0', true),
+        filterChip('c1', false),
+        filterChip('c2', true),
+      ],
+      isMultiselectable: true,
+    });
+
+    const selectedIndexes = component.getSelectedChipIndexes();
+    expect(selectedIndexes.size).toBe(2);
+    expect(selectedIndexes.has(0)).toBe(true);
+    expect(selectedIndexes.has(1)).toBe(false);
+    expect(selectedIndexes.has(2)).toBe(true);
+  });
+
+  it('#setChipSelected() updates the selection state of the chip', () => {
+    const {component, root} = setupTest({
+      chips: [
+        filterChip('c0', true),
+        filterChip('c1', false),
+        filterChip('c2', true),
+      ],
+      isMultiselectable: true,
+    });
+
+    component.setChipSelected(1, MDCChipActionType.PRIMARY, true);
+
+    expect(root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!
+               .getAttribute('aria-selected'))
+        .toBe('true');
+  });
+
+  it('#isChipSelected() returns true if the chip is selected', () => {
+    const {component} = setupTest({
+      chips: [
+        filterChip('c0', true),
+        filterChip('c1', false),
+        filterChip('c2', true),
+      ],
+      isMultiselectable: true,
+    });
+
+    expect(component.isChipSelected(0, MDCChipActionType.PRIMARY)).toBe(true);
+  });
+
+  it('#isChipSelected() returns false if the chip is not selected', () => {
+    const {component} = setupTest({
+      chips: [
+        filterChip('c0', true),
+        filterChip('c1', false),
+        filterChip('c2', true),
+      ],
+      isMultiselectable: true,
+    });
+
+    expect(component.isChipSelected(1, MDCChipActionType.PRIMARY)).toBe(false);
+  });
+
+  it('#removeChip() proxies to the foundation', () => {
+    const {component, mockFoundation} = setupTestWithMocks({
+      chips: [
+        filterChip('c0', true),
+        filterChip('c1', false),
+        filterChip('c2', true),
+      ],
+      isMultiselectable: true,
+    });
+
+    component.removeChip(1);
+    expect(mockFoundation.removeChip).toHaveBeenCalledWith(1);
+  });
+
+  it('on click, focuses the source action if focusable', () => {
+    const {root} = setupTest({
+      chips: [
+        multiActionInputChip('c0'),
+        multiActionInputChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
+    emitEvent(primaryActionEl, 'click', {
+      bubbles: true,
+    });
+
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
+        .toBe('0');
+  });
+
+  it('on click, unfocuses all other actions', () => {
+    const {root} = setupTest({
+      chips: [
+        multiActionInputChip('c0'),
+        multiActionInputChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
+    emitEvent(primaryActionEl, 'click', {
+      bubbles: true,
+    });
+
+    expect(root.querySelector<HTMLElement>(
+                   '#c0 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
+        .toBe('-1');
+    expect(root.querySelector<HTMLElement>(
+                   '#c0 .mdc-evolution-chip__action--trailing')!
+               .getAttribute('tabindex'))
+        .toBe('-1');
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action--trailing')!
+               .getAttribute('tabindex'))
+        .toBe('-1');
+  });
+
+  it('on click, does not focuses the source action if unfocusable', () => {
+    const {root} = setupTest({
+      chips: [
+        actionChip('c0'),
+        disabledActionChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
+    emitEvent(primaryActionEl, 'click', {
+      bubbles: true,
+    });
+
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
+        .not.toBe('0');
+  });
+
+  it('on click, selects the newly selected chip if selectable', () => {
+    const {root} = setupTest({
+      chips: [
+        filterChip('c0', false),
+        filterChip('c1', false),
+      ],
+      isMultiselectable: false,
+    });
+
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('#c0 .mdc-evolution-chip__action')!;
+    emitEvent(primaryActionEl, 'click', {
+      bubbles: true,
+    });
+
+    expect(root.querySelector<HTMLElement>('#c0 .mdc-evolution-chip__action')!
+               .getAttribute('aria-selected'))
+        .toBe('true');
+  });
+
+  it('on click, deselects the previously selected chip when not multiselectable',
+     () => {
+       const {root} = setupTest({
+         chips: [
+           filterChip('c0', true),
+           filterChip('c1', false),
+         ],
+         isMultiselectable: false,
+       });
+
+       const primaryActionEl =
+           root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
+       emitEvent(primaryActionEl, 'click', {
+         bubbles: true,
+       });
+
        expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
-           .toBe(true);
+           root.querySelector<HTMLElement>('#c0 .mdc-evolution-chip__action')!
+               .getAttribute('aria-selected'))
+           .toBe('false');
      });
 
-  it('#adapter.removeChipAtIndex removes the chip object from the chip set',
+  it('on click, does not deselect the previously selected chip when multiselectable',
      () => {
-       const {component} = setupTest();
-       const chip = component.chips[0];
-       (component.getDefaultFoundation() as any).adapter.removeChipAtIndex(0);
-       expect(component.chips.length).toEqual(2);
-       expect(chip.destroy).toHaveBeenCalled();
-       expect(chip.remove).toHaveBeenCalled();
+       const {root} = setupTest({
+         chips: [
+           filterChip('c0', true),
+           filterChip('c1', false),
+         ],
+         isMultiselectable: true,
+       });
+
+       const primaryActionEl =
+           root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
+       emitEvent(primaryActionEl, 'click', {
+         bubbles: true,
+       });
+
+       expect(
+           root.querySelector<HTMLElement>('#c0 .mdc-evolution-chip__action')!
+               .getAttribute('aria-selected'))
+           .toBe('true');
      });
 
-  it('#adapter.removeChipAtIndex does nothing if the given object is not in the chip set',
-     () => {
-       const {component} = setupTest();
-       (component.getDefaultFoundation() as any).adapter.removeChipAtIndex(-1);
-       expect(component.chips.length).toEqual(3);
-     });
+  it('on keyboard navigation, focuses the next focusable action', () => {
+    const {root} = setupTest({
+      chips: [
+        multiActionInputChip('c0'),
+        multiActionInputChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
 
-  it('#adapter.selectChipAtIndex calls setSelectedFromChipSet on chip object',
-     () => {
-       const {component} = setupTest();
-       const chip = component.chips[0];
-       (component.getDefaultFoundation() as any)
-           .adapter.selectChipAtIndex(0, true, true);
-       expect(chip.setSelectedFromChipSet).toHaveBeenCalledWith(true, true);
-     });
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
+    primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+    }));
 
-  it('#adapter.getChipListCount returns the number of chips', () => {
-    const {component} = setupTest();
-    expect(
-        (component.getDefaultFoundation() as any).adapter.getChipListCount())
-        .toEqual(3);
+    expect(root.querySelector<HTMLElement>(
+                   '#c0 .mdc-evolution-chip__action--trailing')!
+               .getAttribute('tabindex'))
+        .toBe('0');
   });
 
-  it('#adapter.getIndexOfChipById returns the index of the chip', () => {
-    const {component} = setupTest();
-    expect((component.getDefaultFoundation() as any)
-               .adapter.getIndexOfChipById('chip1'))
-        .toEqual(0);
+  it('on keyboard navigation, unfocuses all other actions', () => {
+    const {root} = setupTest({
+      chips: [
+        multiActionInputChip('c0'),
+        multiActionInputChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('#c1 .mdc-evolution-chip__action')!;
+    primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+    }));
+
+    expect(root.querySelector<HTMLElement>(
+                   '#c0 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
+        .toBe('-1');
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action')!.getAttribute('tabindex'))
+        .toBe('-1');
+    expect(root.querySelector<HTMLElement>(
+                   '#c1 .mdc-evolution-chip__action--trailing')!
+               .getAttribute('tabindex'))
+        .toBe('-1');
   });
 
-  it('#adapter.focusChipPrimaryActionAtIndex focuses the primary action of the chip at the given index',
+  it('announces chip addition when enter animation is complete' +
+         ' and addition announcement is present',
      () => {
-       const {component} = setupTest();
-       (component.getDefaultFoundation() as any)
-           .adapter.focusChipPrimaryActionAtIndex(0);
-       expect(component.chips[0].focusPrimaryAction).toHaveBeenCalledTimes(1);
+       const {root} = setupTest({
+         chips: [
+           multiActionInputChip('c0'),
+           multiActionInputChip('c1'),
+         ],
+         isMultiselectable: false,
+       });
+
+       const detail: MDCChipAnimationEventDetail = {
+         isComplete: true,
+         addedAnnouncement: 'Added a chip',
+         animation: MDCChipAnimation.ENTER,
+         chipID: 'c0',
+       };
+
+       emitEvent(
+           root.querySelector<HTMLElement>('#c0')!, MDCChipEvents.ANIMATION, {
+             bubbles: true,
+             cancelable: false,
+             detail,
+           });
+
+       // Tick clock forward to account for setTimeout inside "announce".
+       jasmine.clock().tick(1);
+       const liveRegion = document.querySelector<HTMLElement>(
+           `[${DATA_MDC_DOM_ANNOUNCE}="true"]`)!;
+       expect(liveRegion.textContent).toEqual('Added a chip');
+       // Clean up the live region.
+       liveRegion.parentNode!.removeChild(liveRegion);
      });
 
-  it('#adapter.focusChipTrailingActionAtIndex focuses the trailing action of the chip at the given index',
-     () => {
-       const {component} = setupTest();
-       (component.getDefaultFoundation() as any)
-           .adapter.focusChipTrailingActionAtIndex(0);
-       expect(component.chips[0].focusTrailingAction).toHaveBeenCalledTimes(1);
-     });
+  it('removes the chip from the DOM when removal animation is complete', () => {
+    const {component, root} = setupTest({
+      chips: [
+        multiActionInputChip('c0'),
+        multiActionInputChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
 
-  it('#adapter.removeFocusFromChipAtIndex removes focus from the chip at the given index',
-     () => {
-       const {component} = setupTest();
-       (component.getDefaultFoundation() as any)
-           .adapter.removeFocusFromChipAtIndex(0);
-       expect(component.chips[0].removeFocus).toHaveBeenCalledTimes(1);
-     });
+    const detail: MDCChipAnimationEventDetail = {
+      isComplete: true,
+      removedAnnouncement: 'Removed a chip',
+      animation: MDCChipAnimation.EXIT,
+      chipID: 'c0',
+    };
 
-  it('#adapter.isRTL returns true if the text direction is RTL', () => {
-    const {component, root} = setupTest();
-    document.documentElement.appendChild(root);
-    document.documentElement.setAttribute('dir', 'rtl');
-    expect((component.getDefaultFoundation() as any).adapter.isRTL())
-        .toBe(true);
-    document.documentElement.removeAttribute('dir');
-    document.documentElement.removeChild(root);
+    emitEvent(
+        root.querySelector<HTMLElement>('#c0')!, MDCChipEvents.ANIMATION, {
+          bubbles: true,
+          cancelable: false,
+          detail,
+        });
+
+    expect(component.getChipIndexByID('c0')).toBe(-1);
   });
 
-  it('#adapter.isRTL returns false if the text direction is not RTL', () => {
-    const {component, root} = setupTest();
-    document.documentElement.appendChild(root);
-    expect((component.getDefaultFoundation() as any).adapter.isRTL())
-        .toBe(false);
-    document.documentElement.removeChild(root);
+  it('animates chip addition', () => {
+    const {component, root} = setupTest({
+      chips: [
+        multiActionInputChip('c0'),
+        multiActionInputChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    const chip0 = root.querySelector<HTMLElement>('#c0')!;
+    component.addChip(0);
+    expect(chip0.classList.contains(MDCChipCssClasses.ENTER)).toBeTrue();
   });
 });

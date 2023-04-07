@@ -1,0 +1,169 @@
+//
+// Copyright 2017 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
+@use 'sass:string';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/theme/keys';
+
+$baseline-buffer-color: #e6e6e6 !default;
+$height: 4px;
+
+$custom-property-prefix: 'linear-progress';
+
+// TODO(b/254889918): Support all linear progress tokens.
+$light-theme: (
+  active-indicator-color: theme-color.$primary,
+  track-color: $baseline-buffer-color,
+  track-height: 4px,
+);
+
+@mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme) {
+  @include theme.validate-theme-styles($light-theme, $theme);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include _buffering-keyframes(map.get($theme, track-height));
+  @include bar-color(map.get($theme, active-indicator-color));
+  @include buffer-color(map.get($theme, track-color));
+  @include track-height(map.get($theme, track-height));
+  // TODO(b/155129310): Add styles for 4-color linear progress once this variant
+  // is supported.
+}
+
+@mixin bar-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-linear-progress__bar-inner {
+    @include feature-targeting.targets($feat-color) {
+      // Border is used rather than background-color to ensure that the
+      // bar is visible in Windows High Contrast Mode.
+      @include theme.property(border-color, $color);
+    }
+  }
+}
+
+@mixin buffer-color($color, $query: feature-targeting.all()) {
+  // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
+  $color-value-for-css: theme-color.prop-value($color);
+  $color-value-for-svg: str-replace_(
+    string.unquote('#{$color-value-for-css}'),
+    '#',
+    '%23'
+  );
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-linear-progress__buffer-dots {
+    @include feature-targeting.targets($feat-color) {
+      // stylelint-disable function-url-quotes -- SVG data URI
+      // SVG is optimized for data URI (https://codepen.io/tigt/post/optimizing-svgs-in-data-uris)
+      @include theme.property(
+        background-image,
+        url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='color-value-for-svg'/%3E%3C/svg%3E"),
+        $replace: (color-value-for-svg: $color-value-for-svg)
+      );
+      // stylelint-enable function-url-quotes
+    }
+  }
+
+  .mdc-linear-progress__buffer-bar {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color-value-for-css);
+    }
+  }
+}
+
+@mixin track-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-linear-progress {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $height);
+    }
+
+    &__bar-inner {
+      @include feature-targeting.targets($feat-structure) {
+        @include theme.property(border-top-width, $height);
+      }
+    }
+
+    &__buffer-dots {
+      @include feature-targeting.targets($feat-structure) {
+        @include theme.property(
+          background-size,
+          10px height,
+          $replace: (height: $height)
+        );
+      }
+    }
+  }
+}
+
+@mixin _buffering-keyframes($track-height) {
+  @keyframes mdc-linear-progress-buffering {
+    from {
+      // Normally the buffer dots start from the left and overflow to the right.
+      // We rotate by 180deg so that the buffer dots start on the right when
+      // in non-reversed mode and overflow to the left.
+      @include rtl.ignore-next-line();
+      @include theme.property(
+        transform,
+        'rotate(180deg) translateX(calc(track-height * -2.5))',
+        $replace: (track-height: $track-height)
+      );
+    }
+  }
+}
+
+// Based on https://css-tricks.com/snippets/sass/str-replace-function/
+@function str-replace_($string, $search, $replace) {
+  $index: string.index($string, $search);
+
+  @if $index {
+    $head: string.slice($string, 1, $index - 1);
+    $tail: str-replace_(
+      string.slice($string, $index + string.length($search)),
+      $search,
+      $replace
+    );
+
+    @return $head + $replace + $tail;
+  }
+
+  @return $string;
+}

@@ -20,11 +20,16 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// Internal styling for Tooltip MDC component.
+
+@use 'sass:math';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/typography/typography';
-@use '@material/button/mixins' as button-mixins;
+@use '@material/button/button-theme';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use './banner-theme';
 
 $_text-type-scale: body2;
@@ -32,7 +37,7 @@ $_min-width: 344px;
 $_max-width: 720px;
 // Minimum banner height minus standard text height, divided by 2 for both top
 // and bottom padding. This is used to support two/three line banners.
-$_text-padding-top-bottom: ((52px - 20px) / 2);
+$_text-padding-top-bottom: math.div(52px - 20px, 2);
 
 $_enter-duration: 300ms;
 $_exit-duration: 250ms;
@@ -42,7 +47,6 @@ $_exit-duration: 250ms;
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  @include banner-theme.text-color(banner-theme.$text-color, $query: $query);
   @include banner-theme.graphic-color(
     banner-theme.$graphic-color,
     $query: $query
@@ -51,19 +55,29 @@ $_exit-duration: 250ms;
     banner-theme.$graphic-background-color,
     $query: $query
   );
-  @include banner-theme.graphic-shape-radius(
-    banner-theme.$graphic-shape-radius,
-    $query: $query
-  );
   @include banner-theme.min-width($_min-width, $query: $query);
   @include banner-theme.max-width($_max-width, $query: $query);
+  @include static-styles($query: $query);
 
   .mdc-banner {
-    @include banner-theme.fill-color(banner-theme.$fill-color, $query: $query);
-    @include banner-theme.divider-color(
-      banner-theme.$divider-color,
+    @include banner-theme.theme-styles(
+      banner-theme.$light-theme,
       $query: $query
     );
+  }
+
+  .mdc-banner__secondary-action {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-property(margin, 0, 8px);
+    }
+  }
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  .mdc-banner {
     @include banner-theme.z-index(banner-theme.$z-index, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
@@ -76,12 +90,11 @@ $_exit-duration: 250ms;
         }
 
         .mdc-banner__text {
-          @include rtl-mixins.reflexive-property(margin, 16px, 36px);
+          @include rtl.reflexive-property(margin, 16px, 36px);
         }
       }
 
       border-bottom-style: solid;
-      border-bottom-width: 1px;
       box-sizing: border-box;
       display: none;
       flex-shrink: 0;
@@ -91,7 +104,9 @@ $_exit-duration: 250ms;
     }
 
     &.mdc-banner--mobile-stacked {
-      @include banner-theme.mobile-stacked($query: $query);
+      @media (max-width: banner-theme.$mobile-breakpoint) {
+        @include banner-theme.layout-stacked($query: $query);
+      }
     }
   }
 
@@ -138,7 +153,6 @@ $_exit-duration: 250ms;
   .mdc-banner__fixed {
     @include feature-targeting.targets($feat-structure) {
       border-bottom-style: solid;
-      border-bottom-width: 1px;
       box-sizing: border-box;
       height: inherit;
       position: fixed;
@@ -165,14 +179,12 @@ $_exit-duration: 250ms;
 
   .mdc-banner__graphic {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, 16px, 0);
+      @include rtl.reflexive-property(margin, 16px, 0);
 
       flex-shrink: 0;
-      height: 40px;
       margin-top: 16px;
       margin-bottom: 16px;
       text-align: center;
-      width: 40px;
     }
   }
 
@@ -185,10 +197,8 @@ $_exit-duration: 250ms;
   }
 
   .mdc-banner__text {
-    @include typography.typography($_text-type-scale, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, 24px, 90px);
+      @include rtl.reflexive-property(margin, 24px, 90px);
 
       align-self: center;
       flex-grow: 1;
@@ -200,7 +210,7 @@ $_exit-duration: 250ms;
 
   .mdc-banner__actions {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, 0, 8px);
+      @include rtl.reflexive-property(padding, 0, 8px);
 
       align-self: flex-end;
       display: flex;
@@ -210,28 +220,9 @@ $_exit-duration: 250ms;
     }
   }
 
-  .mdc-banner__primary-action {
-    @include button-mixins.ink-color(
-      banner-theme.$primary-action-text-color,
-      $query: $query
-    );
-    @include ripple-theme.states(
-      banner-theme.$primary-action-text-color,
-      $query: $query
-    );
-  }
-
   .mdc-banner__secondary-action {
-    @include button-mixins.ink-color(
-      banner-theme.$secondary-action-text-color,
-      $query: $query
-    );
-    @include ripple-theme.states(
-      banner-theme.$secondary-action-text-color,
-      $query: $query
-    );
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, 0, 8px);
+      @include rtl.reflexive-property(margin, 0, 8px);
     }
   }
 }

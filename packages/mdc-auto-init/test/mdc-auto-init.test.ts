@@ -21,11 +21,12 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {MDCAttachable, mdcAutoInit} from '../index';
 
 class FakeComponent {
   static attachTo(node: HTMLElement) {
-    return new this(node);
+    return new FakeComponent(node);
   }
 
   constructor(readonly node: HTMLElement) {
@@ -43,31 +44,27 @@ interface FakeHTMLElement extends HTMLElement {
   FakeComponent: FakeComponent;
 }
 
-const createFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+function getFixture() {
+  return createFixture(html`
   <div id="root">
     <p data-mdc-auto-init="FakeComponent" class="mdc-fake">Fake Element</p>
   </div>
-`;
-  const el = wrapper.firstElementChild as unknown as Document;
-  wrapper.removeChild(el);
-  return el;
-};
+`);
+}
 
-const setupTest = () => {
+function setupTest() {
   mdcAutoInit.deregisterAll();
   mdcAutoInit.register(
       'FakeComponent', FakeComponent as unknown as MDCAttachable);
-  return createFixture();
-};
+  return getFixture();
+}
 
-const setupInvalidTest = () => {
+function setupInvalidTest() {
   mdcAutoInit.deregisterAll();
   mdcAutoInit.register(
       'InvalidComponent', InvalidComponent as unknown as MDCAttachable);
-  return createFixture();
-};
+  return getFixture();
+}
 
 describe('MDCAutoInit', () => {
   it('calls attachTo() on components registered for identifier on nodes w/ data-mdc-auto-init attr',
@@ -75,11 +72,8 @@ describe('MDCAutoInit', () => {
        const root = setupTest();
        mdcAutoInit(root);
 
-       expect(
-           (root.querySelector('.mdc-fake') as FakeHTMLElement)
-               .FakeComponent instanceof
-           FakeComponent)
-           .toBeTruthy();
+       expect(root.querySelector<FakeHTMLElement>('.mdc-fake')!.FakeComponent)
+           .toBeInstanceOf(FakeComponent);
      });
 
   it('throws when attachTo() is missing', () => {
@@ -92,14 +86,14 @@ describe('MDCAutoInit', () => {
        const root = setupTest();
        mdcAutoInit(root);
 
-       const fake = root.querySelector('.mdc-fake') as FakeHTMLElement;
+       const fake = root.querySelector<FakeHTMLElement>('.mdc-fake')!;
        expect(fake.FakeComponent.node).toEqual(fake);
      });
 
   it('throws when no constructor name is specified within "data-mdc-auto-init"',
      () => {
        const root = setupTest();
-       (root.querySelector('.mdc-fake') as HTMLElement).dataset['mdcAutoInit'] =
+       root.querySelector<HTMLElement>('.mdc-fake')!.dataset['mdcAutoInit'] =
            '';
 
        expect(() => mdcAutoInit(root)).toThrow();
@@ -107,7 +101,7 @@ describe('MDCAutoInit', () => {
 
   it('throws when constructor is not registered', () => {
     const root = setupTest();
-    (root.querySelector('.mdc-fake') as HTMLElement).dataset['mdcAutoInit'] =
+    root.querySelector<HTMLElement>('.mdc-fake')!.dataset['mdcAutoInit'] =
         'MDCUnregisteredComponent';
 
     expect(() => mdcAutoInit(root)).toThrow();
@@ -150,7 +144,7 @@ describe('MDCAutoInit', () => {
        try {
          mdcAutoInit(document);
        } finally {
-        (window as unknown as WindowWithCustomEvent).CustomEvent = customEvent;
+         (window as unknown as WindowWithCustomEvent).CustomEvent = customEvent;
        }
 
        expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({type}));
@@ -172,8 +166,8 @@ describe('MDCAutoInit', () => {
        mdcAutoInit(root);
 
        expect(
-           (root.querySelector('.mdc-fake') as FakeHTMLElement)
-               .FakeComponent instanceof
+           root.querySelector<FakeHTMLElement>(
+                   '.mdc-fake')!.FakeComponent instanceof
            FakeComponent)
            .toBe(false);
      });

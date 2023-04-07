@@ -20,74 +20,68 @@
 // THE SOFTWARE.
 //
 
-// Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
-
 @use 'sass:list';
 @use 'sass:meta';
+@use 'sass:selector';
+@use '@material/theme/gss';
+@use '@material/theme/selector-ext';
 @use '@material/theme/theme';
 
 $include: true !default;
 
-// Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
-//
-// Usage Example:
-//
-// ```scss
-// .mdc-foo {
-//   position: absolute;
-//   left: 0;
-//
-//   @include rtl {
-//     left: auto;
-//     right: 0;
-//   }
-//
-//   &__bar {
-//     margin-left: 4px;
-//     @include rtl(".mdc-foo") {
-//       margin-left: auto;
-//       margin-right: 4px;
-//     }
-//   }
-// }
-//
-// .mdc-foo--mod {
-//   padding-left: 4px;
-//
-//   @include rtl {
-//     padding-left: auto;
-//     padding-right: 4px;
-//   }
-// }
-// ```
-//
-// Note that this mixin works by checking for an ancestor element with `[dir="rtl"]`.
-// As a result, nested `dir` values are not supported:
-//
-// ```html
-// <html dir="rtl">
-//   <!-- ... -->
-//   <div dir="ltr">
-//     <div class="mdc-foo">Styled incorrectly as RTL!</div>
-//   </div>
-// </html>
-// ```
-//
-// In the future, selectors such as the `:dir` pseudo-class (http://mdn.io/css/:dir) will help us mitigate this.
-@mixin rtl($root-selector: null) {
+/// Creates a rule that will be applied when a component is within the context
+/// of an RTL layout.
+///
+/// @example - scss
+/// .mdc-foo {
+///   padding-left: 4px;
+///
+///   @include rtl {
+///     padding-left: auto;
+///     padding-right: 4px;
+///   }
+/// }
+///
+/// @example - css
+///   .mdc-foo {
+///     padding-left: 4px;
+///   }
+///
+///   [dir="rtl"] .mdc-foo,
+///   .mdc-foo[dir="rtl"] {
+///     padding-left: auto;
+///     padding-right: 4px;
+///   }
+///
+/// Note that this mixin works by checking for an ancestor element with
+/// `[dir="rtl"]`. As a result, nested `dir` values are not supported:
+///
+/// @example - html
+/// <html dir="rtl">
+///   <!-- ... -->
+///   <div dir="ltr">
+///     <div class="mdc-foo">Styled incorrectly as RTL!</div>
+///   </div>
+/// </html>
+///
+/// In the future, selectors such as the `:dir` pseudo-class
+/// (http://mdn.io/css/:dir) will help us mitigate this.
+///
+/// @content Content to be styled in an RTL context.
+@mixin rtl() {
   @if ($include) {
-    @if ($root-selector) {
-      @at-root {
-        #{$root-selector}[dir='rtl'] &,
-        [dir='rtl'] #{$root-selector} & {
-          @content;
-        }
-      }
-    } @else {
-      [dir='rtl'] &,
-      &[dir='rtl'] {
+    $dir-rtl: '[dir=rtl]';
+
+    $rtl-selectors: list.join(
+      selector.nest($dir-rtl, &),
+      selector-ext.append-strict(&, $dir-rtl)
+    );
+
+    @at-root {
+      #{$rtl-selectors} {
+        /*rtl:begin:ignore*/
         @content;
+        /*rtl:end:ignore*/
       }
     }
   }
@@ -150,7 +144,6 @@ $include: true !default;
   $base-property,
   $default-direction,
   $value,
-  $root-selector: null,
   $replace: null
 ) {
   @if (list.index((right, left), $default-direction) == null) {
@@ -169,7 +162,6 @@ $include: true !default;
     $base-property,
     $left-value,
     $right-value,
-    $root-selector,
     $replace: $replace
   );
 }
@@ -203,7 +195,6 @@ $include: true !default;
   $base-property,
   $left-value,
   $right-value,
-  $root-selector: null,
   $replace: null
 ) {
   $prop-left: #{$base-property}-left;
@@ -214,7 +205,6 @@ $include: true !default;
     $left-value,
     $prop-right,
     $right-value,
-    $root-selector,
     $replace: $replace
   );
 }
@@ -244,12 +234,7 @@ $include: true !default;
 // ```
 //
 // An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
-@mixin reflexive-position(
-  $position-property,
-  $value,
-  $root-selector: null,
-  $replace: null
-) {
+@mixin reflexive-position($position-property, $value, $replace: null) {
   @if (list.index((right, left), $position-property) == null) {
     @error "Invalid position #{position-property}. Please specifiy either right or left";
   }
@@ -268,7 +253,6 @@ $include: true !default;
     $left-value,
     right,
     $right-value,
-    $root-selector,
     $replace: $replace
   );
 }
@@ -302,7 +286,6 @@ $include: true !default;
   $left-value,
   $right-property,
   $right-value,
-  $root-selector: null,
   $replace: null
 ) {
   $left-replace: null;
@@ -319,15 +302,42 @@ $include: true !default;
     @if $left-replace == null and $right-replace == null {
       @error 'mdc-rtl: $replace may only be used with strings but neither left nor right values are strings.';
     }
+
+    // If any replacements are null, treat the entire value as null (do not
+    // emit anything).
+    @each $name, $replacement in $replace {
+      @if $replacement == null {
+        $left-value: null;
+        $right-value: null;
+      }
+    }
   }
 
-  @include _property($left-property, $left-value, $replace: $left-replace);
-  @include _property($right-property, $right-value, $replace: $right-replace);
+  // Do not emit if either value are null
+  @if $left-value and $right-value {
+    @include _property($left-property, $left-value, $replace: $left-replace);
+    @include _property($right-property, $right-value, $replace: $right-replace);
 
-  @include rtl($root-selector) {
-    @include _property($left-property, $right-value, $replace: $right-replace);
-    @include _property($right-property, $left-value, $replace: $left-replace);
+    @include rtl {
+      @include _property(
+        $left-property,
+        $right-value,
+        $replace: $right-replace
+      );
+      @include _property($right-property, $left-value, $replace: $left-replace);
+    }
   }
+}
+
+///
+/// Adds RTL ignore annotation when `$mdc-rtl-include` is true.
+///
+@mixin ignore-next-line() {
+  @include gss.annotate(
+    (
+      noflip: $include,
+    )
+  );
 }
 
 ///

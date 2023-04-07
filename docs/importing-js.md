@@ -6,7 +6,9 @@ section: docs
 path: /docs/importing-js/
 -->
 
-# Importing the JS component
+# Importing JS
+
+## Importing the JS component
 
 Most components ship with Component / Foundation classes which are used to provide a full-fidelity Material Design component. Depending on what technology you use in your stack, there are several ways to import the JavaScript.
 
@@ -51,7 +53,7 @@ There are corresponding `.d.ts` files for each foundation/component/adapter/etc.
 ### CommonJS
 
 ```js
-const mdcFoo = require('mdc-foo');
+const mdcFoo = require('@material/foo');
 const MDCFoo = mdcFoo.MDCFoo;
 const MDCFooFoundation = mdcFoo.MDCFooFoundation;
 ```
@@ -59,7 +61,7 @@ const MDCFooFoundation = mdcFoo.MDCFooFoundation;
 ### AMD
 
 ```js
-require(['path/to/mdc-foo'], mdcFoo => {
+require(['path/to/@material/foo'], mdcFoo => {
   const MDCFoo = mdcFoo.MDCFoo;
   const MDCFooFoundation = mdcFoo.MDCFooFoundation;
 });
@@ -72,7 +74,7 @@ const MDCFoo = mdc.foo.MDCFoo;
 const MDCFooFoundation = mdc.foo.MDCFooFoundation;
 ```
 
-## Instantiating Components via CSS Selector Queries
+## Instantiating components via CSS selector queries
 
 Many of the examples across the MDC Web documentation demonstrate how to create a component instance for a single element in a page:
 

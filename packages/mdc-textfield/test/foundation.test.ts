@@ -24,7 +24,8 @@
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
-import {MDCTextFieldFoundation} from '../../mdc-textfield/foundation';
+import {MDCTextFieldFoundation} from '../foundation';
+import {MDCTextFieldNativeInputElement} from '../types';
 
 const LABEL_WIDTH = 100;
 const {cssClasses, numbers, strings} = MDCTextFieldFoundation;
@@ -76,8 +77,11 @@ describe('MDCTextFieldFoundation', () => {
     useHelperText = false,
     useLeadingIcon = false,
     useTrailingIcon = false,
+    optIsValid = true,
   } = {}) => {
     const {mockAdapter} = setUpFoundationTest(MDCTextFieldFoundation);
+    mockAdapter.hasClass.withArgs('mdc-text-field--invalid')
+        .and.returnValue(!optIsValid);
 
     const helperText = useHelperText ?
         jasmine.createSpyObj(
@@ -151,6 +155,7 @@ describe('MDCTextFieldFoundation', () => {
       useHelperText,
       useLeadingIcon,
       useTrailingIcon,
+      optIsValid,
     });
     const nativeInput = {
       value,
@@ -173,9 +178,22 @@ describe('MDCTextFieldFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.getNativeInput.and.returnValue({
       value: 'initValue',
-    });
+    } as MDCTextFieldNativeInputElement);
     expect('initValue')
-        .toEqual(foundation.getValue(), 'getValue does not match input value.');
+        .withContext('getValue does not match input value.')
+        .toEqual(foundation.getValue());
+  });
+
+  it(`initializes 'valid' property to false when field is invalid`, () => {
+    const {foundation} = setupTest({optIsValid: false});
+    foundation.setUseNativeValidation(false);
+    expect(foundation.isValid()).toBe(false);
+  });
+
+  it(`initializes 'valid' property to true when field is valid`, () => {
+    const {foundation} = setupTest({optIsValid: true});
+    foundation.setUseNativeValidation(false);
+    expect(foundation.isValid()).toBe(true);
   });
 
   it('#setValue with non-empty value styles the label', () => {
@@ -357,7 +375,7 @@ describe('MDCTextFieldFoundation', () => {
     mockAdapter.hasLabel.and.returnValue(true);
     mockAdapter.getNativeInput.and.returnValue({
       value: 'test',
-    });
+    } as MDCTextFieldNativeInputElement);
 
     foundation.setValid(false);
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.INVALID);
@@ -433,7 +451,7 @@ describe('MDCTextFieldFoundation', () => {
 
   it('#setDisabled flips disabled when a native input is given', () => {
     const {foundation, mockAdapter} = setupTest();
-    const nativeInput = {disabled: false};
+    const nativeInput = {disabled: false} as MDCTextFieldNativeInputElement;
     mockAdapter.getNativeInput.and.returnValue(nativeInput);
     foundation.setDisabled(true);
     expect(foundation.isDisabled()).toBeTruthy();
@@ -448,7 +466,7 @@ describe('MDCTextFieldFoundation', () => {
   it('#setDisabled set the disabled property on the native input when there is one',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const nativeInput = {disabled: false};
+       const nativeInput = {disabled: false} as MDCTextFieldNativeInputElement;
        mockAdapter.getNativeInput.and.returnValue(nativeInput);
        foundation.setDisabled(true);
        expect(nativeInput.disabled).toBeTruthy();
@@ -508,7 +526,7 @@ describe('MDCTextFieldFoundation', () => {
        mockAdapter.hasLabel.and.returnValue(true);
        mockAdapter.getNativeInput.and.returnValue({
          value: '',
-       });
+       } as MDCTextFieldNativeInputElement);
        foundation.setValid(false);
        expect(mockAdapter.shakeLabel).toHaveBeenCalledWith(false);
      });
@@ -553,7 +571,7 @@ describe('MDCTextFieldFoundation', () => {
 
   it('#destroy removes event listeners', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation['validationObserver_'] = new MutationObserver(() => {});
+    foundation['validationObserver'] = new MutationObserver(() => {});
     foundation.destroy();
 
     expect(mockAdapter.deregisterInputInteractionHandler)
@@ -571,7 +589,7 @@ describe('MDCTextFieldFoundation', () => {
     expect(mockAdapter.deregisterTextFieldInteractionHandler)
         .toHaveBeenCalledWith('keydown', jasmine.any(Function));
     expect(mockAdapter.deregisterValidationAttributeChangeHandler)
-        .toHaveBeenCalledWith(foundation['validationObserver_']);
+        .toHaveBeenCalledWith(foundation['validationObserver']);
   });
 
   it('#init floats label if the input contains a value', () => {
@@ -795,7 +813,7 @@ describe('MDCTextFieldFoundation', () => {
     const mockInput = {
       disabled: false,
       value: '',
-    };
+    } as MDCTextFieldNativeInputElement;
     let keydown: Function|undefined;
     let input: Function|undefined;
 
@@ -1094,13 +1112,13 @@ describe('MDCTextFieldFoundation', () => {
     mockAdapter.getNativeInput.and.returnValue({
       disabled: false,
       value: '',
-    });
+    } as MDCTextFieldNativeInputElement);
     foundation.init();
-    expect(foundation['receivedUserInput_']).toEqual(false);
+    expect(foundation['receivedUserInput']).toEqual(false);
     if (keydown !== undefined) {
       keydown();
     }
-    expect(foundation['receivedUserInput_']).toEqual(true);
+    expect(foundation['receivedUserInput']).toEqual(true);
   });
 
   it('on click does not set receivedUserInput if input is disabled', () => {
@@ -1111,7 +1129,7 @@ describe('MDCTextFieldFoundation', () => {
     const mockInput = {
       disabled: true,
       value: '',
-    };
+    } as MDCTextFieldNativeInputElement;
     let click: Function|undefined;
 
     mockAdapter.getNativeInput.and.returnValue(mockInput);
@@ -1123,11 +1141,11 @@ describe('MDCTextFieldFoundation', () => {
           }
         });
     foundation.init();
-    expect(foundation['receivedUserInput_']).toEqual(false);
+    expect(foundation['receivedUserInput']).toEqual(false);
     if (click !== undefined) {
       click(mockEvt);
     }
-    expect(foundation['receivedUserInput_']).toEqual(false);
+    expect(foundation['receivedUserInput']).toEqual(false);
   });
 
   it('mousedown on the input sets the line ripple origin', () => {
@@ -1196,7 +1214,7 @@ describe('MDCTextFieldFoundation', () => {
         .toHaveBeenCalledWith(clientX - clientRectLeft);
   });
 
-  it('on validation attribute change calls styleValidity_', () => {
+  it('on validation attribute change calls styleValidity', () => {
     const {foundation, mockAdapter, helperText} =
         setupTest({useHelperText: true});
     let attributeChange: Function|undefined;
@@ -1219,7 +1237,7 @@ describe('MDCTextFieldFoundation', () => {
         .not.toHaveBeenCalledWith(cssClasses.DISABLED);
   });
 
-  it('should not call styleValidity_ on non-whitelisted attribute change',
+  it('should not call styleValidity on non-whitelisted attribute change',
      () => {
        const {foundation, mockAdapter, helperText} =
            setupTest({useHelperText: true});
@@ -1346,14 +1364,16 @@ describe('MDCTextFieldFoundation', () => {
         .and.callFake((handler: Function) => attributeChange = handler);
     foundation.init();
 
-    mockAdapter.getNativeInput.and.returnValue({required: true});
+    mockAdapter.getNativeInput.and.returnValue(
+        {required: true} as MDCTextFieldNativeInputElement);
 
     if (attributeChange !== undefined) {
       attributeChange(['required']);
     }
     expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
 
-    mockAdapter.getNativeInput.and.returnValue({required: false});
+    mockAdapter.getNativeInput.and.returnValue(
+        {required: false} as MDCTextFieldNativeInputElement);
 
     if (attributeChange !== undefined) {
       attributeChange(['required']);

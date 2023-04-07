@@ -52,7 +52,7 @@ function setupScrollToTest({
   mockAdapter.getScrollAreaOffsetWidth.and.returnValue(rootWidth);
   mockAdapter.getScrollContentOffsetWidth.and.returnValue(contentWidth);
   mockAdapter.getScrollAreaScrollLeft.and.returnValue(scrollLeft);
-  foundation.isAnimating_ = isAnimating;
+  (foundation as any).isAnimating = isAnimating;
   mockAdapter.getScrollContentStyleValue.withArgs('transform')
       .and.returnValue(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
   return {foundation, mockAdapter, opts};
@@ -120,7 +120,7 @@ describe('MDCTabScrollerFoundation', () => {
     mockAdapter.getScrollContentStyleValue.withArgs('transform')
         .and.returnValue(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
     mockAdapter.getScrollAreaScrollLeft.and.returnValue(scrollLeft);
-    foundation.isAnimating_ = true;
+    (foundation as any).isAnimating = true;
     return {foundation, mockAdapter};
   }
 
@@ -155,7 +155,7 @@ describe('MDCTabScrollerFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.handleTransitionEnd({
          target: {},
-       });
+       } as TransitionEvent);
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(jasmine.any(String));
      });
@@ -170,7 +170,7 @@ describe('MDCTabScrollerFoundation', () => {
            .and.returnValue(true);
        foundation.handleTransitionEnd({
          target: {},
-       });
+       } as TransitionEvent);
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(MDCTabScrollerFoundation.cssClasses.ANIMATING);
      });

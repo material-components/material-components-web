@@ -7,14 +7,16 @@ const del = require('del');
 const fs = require('fs');
 
 const {sync: globSync} = require('glob');
-const SITE_GENERATOR = 'site-generator-tmp';
 
 function main() {
   removeDirectory('build');
   removeDirectory('.rewrite-tmp');
   removeFilesOfType('css');
   removeFilesOfType('js');
-  removeFilesOfType('d.ts');
+  removeFilesOfType('d.ts', [
+    // This file is hand-written.
+    'packages/mdc-base/externs.d.ts',
+  ]);
   removeFilesOfType('map');
 }
 
@@ -22,10 +24,10 @@ function removeDirectory(directory) {
   del.sync([directory]);
 }
 
-function removeFilesOfType(type) {
+function removeFilesOfType(type, extraIgnore = []) {
   const fileGlob = `packages/**/*.${type}`;
   const filePaths = globSync(fileGlob, {
-    ignore: ['**/node_modules/**'],
+    ignore: ['**/node_modules/**', ...extraIgnore],
   });
   filePaths.forEach((filePath) => {
     fs.unlink(filePath, (err) => {
@@ -34,9 +36,4 @@ function removeFilesOfType(type) {
   });
 }
 
-if (process.argv.includes(`--${SITE_GENERATOR}`)) {
-  removeDirectory(`.${SITE_GENERATOR}`);
-} else {
-  main();
-}
-
+main();

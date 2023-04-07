@@ -23,33 +23,40 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
+import {FocusTrap} from '@material/dom/focus-trap';
 import {closest} from '@material/dom/ponyfill';
 
 import {MDCBannerAdapter} from './adapter';
-import {CloseReason, events, MDCBannerCloseEventDetail, selectors} from './constants';
+import {CloseReason, events, MDCBannerActionEventDetail, MDCBannerCloseEventDetail, MDCBannerFocusTrapFactory, selectors} from './constants';
 import {MDCBannerFoundation} from './foundation';
 
-/** Vanilla JS implementation of banner component. */
+/** Vanilla implementation of banner component. */
 export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
-  static attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCBanner(root);
   }
 
-  root!: HTMLElement;  // Assigned in MDCComponent constructor.
   private handleContentClick!:
       SpecificEventListener<'click'>;            // Assigned in #initialize.
   private primaryActionEl!: HTMLElement;         // Assigned in #initialize.
   private secondaryActionEl!: HTMLElement|null;  // Assigned in #initialize.
   private textEl!: HTMLElement;                  // Assigned in #initialize.
   private contentEl!: HTMLElement;               // Assigned in #initialize.
+  private focusTrap!: FocusTrap;  // assigned in initialSyncWithDOM()
+  private focusTrapFactory!:
+      MDCBannerFocusTrapFactory;  // assigned in initialize()
 
-  initialize() {
-    this.contentEl = this.root.querySelector(selectors.CONTENT) as HTMLElement;
-    this.textEl = this.root.querySelector(selectors.TEXT) as HTMLElement;
+  override initialize(
+      focusTrapFactory: MDCBannerFocusTrapFactory = (el, focusOptions) =>
+          new FocusTrap(el, focusOptions),
+  ) {
+    this.contentEl = this.root.querySelector<HTMLElement>(selectors.CONTENT)!;
+    this.textEl = this.root.querySelector<HTMLElement>(selectors.TEXT)!;
     this.primaryActionEl =
-        this.root.querySelector(selectors.PRIMARY_ACTION) as HTMLElement;
+        this.root.querySelector<HTMLElement>(selectors.PRIMARY_ACTION)!;
     this.secondaryActionEl =
-        this.root.querySelector(selectors.SECONDARY_ACTION) as HTMLElement;
+        this.root.querySelector<HTMLElement>(selectors.SECONDARY_ACTION)!;
+    this.focusTrapFactory = focusTrapFactory;
 
     this.handleContentClick = (evt) => {
       const target = evt.target as Element;
@@ -61,11 +68,13 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
     };
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.registerContentClickHandler(this.handleContentClick);
+    this.focusTrap = this.focusTrapFactory(
+        this.root, {initialFocusEl: this.primaryActionEl});
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.deregisterContentClickHandler(this.handleContentClick);
   }
@@ -95,7 +104,7 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
     this.foundation.close(reason);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
@@ -118,11 +127,20 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
       notifyOpening: () => {
         this.emit(events.OPENING, {});
       },
+      notifyActionClicked: (action) => {
+        this.emit<MDCBannerActionEventDetail>(events.ACTION_CLICKED, {action});
+      },
+      releaseFocus: () => {
+        this.focusTrap.releaseFocus();
+      },
       removeClass: (className) => {
         this.root.classList.remove(className);
       },
       setStyleProperty: (propertyName, value) => {
         this.root.style.setProperty(propertyName, value);
+      },
+      trapFocus: () => {
+        this.focusTrap.trapFocus();
       },
     };
     return new MDCBannerFoundation(adapter);

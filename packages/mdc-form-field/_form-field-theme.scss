@@ -1,0 +1,79 @@
+//
+// Copyright 2023 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
+@use 'sass:string';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/keys';
+@use '@material/theme/theme';
+@use '@material/theme/validate';
+@use '@material/typography/typography';
+
+$item-spacing: 4px !default;
+
+$_custom-property-prefix: 'form-field';
+
+$light-theme: (
+  'label-text-color': 'text-primary-on-background',
+  'label-text-font': string.unquote('Roboto, sans-serif'),
+  'label-text-line-height': typography.px-to-rem(20px),
+  'label-text-size': typography.px-to-rem(14px),
+  'label-text-tracking': typography.get-letter-spacing_(0.25, 0.875),
+  'label-text-weight': 400,
+);
+
+@mixin theme($theme) {
+  $theme: validate.theme($light-theme, $theme);
+
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $query: feature-targeting.all()) {
+  $theme: validate.theme-styles($light-theme, $theme);
+  $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
+
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  .mdc-form-field {
+    @include feature-targeting.targets($feat-typography) {
+      @include typography.theme-styles(
+        (
+          'font': map.get($theme, 'label-text-font'),
+          'line-height': map.get($theme, 'label-text-line-height'),
+          'size': map.get($theme, 'label-text-size'),
+          'tracking': map.get($theme, 'label-text-tracking'),
+          'weight': map.get($theme, 'label-text-weight'),
+        )
+      );
+    }
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, map.get($theme, 'label-text-color'));
+    }
+  }
+}

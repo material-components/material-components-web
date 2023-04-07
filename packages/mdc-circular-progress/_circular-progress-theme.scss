@@ -1,0 +1,173 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
+@use 'sass:string';
+@use '@material/theme/color-palette';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/keys';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/dom/dom';
+
+$color: primary !default;
+$track-color: transparent !default;
+
+/// The rotation position of the arcs that corresponds to their fully contracted state
+$base-angle: 135deg !default;
+/// Amount of circle the arc takes up
+$arc-size: 270deg !default;
+/// Time it takes to expand and contract arc
+$arc-time: 1333ms !default;
+/// Time for inactive indicator to disappear
+$shrink-time: 400ms !default;
+/// How much the start location of the arc should rotate each time; 216 gives
+/// us a 5 pointed star shape (it's 360/5 * 3)
+$arc-start-rotation-interval: 216deg !default;
+/// The timing function used for the core spinner animations.
+$timing-function: cubic-bezier(0.4, 0, 0.2, 1) !default;
+
+$custom-property-prefix: 'circular-progress';
+
+$light-theme: (
+  active-indicator-color: theme-color.$primary,
+  active-indicator-width: 4px,
+  four-color-active-indicator-four-color: color-palette.$cyan-400,
+  four-color-active-indicator-one-color: color-palette.$brown-400,
+  four-color-active-indicator-three-color: color-palette.$orange-400,
+  four-color-active-indicator-two-color: color-palette.$teal-400,
+  size: 48px,
+);
+
+@mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme) {
+  @include theme.validate-theme-styles($light-theme, $theme);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include _active-indicator-color(map.get($theme, active-indicator-color));
+  @include _active-indicator-width(map.get($theme, active-indicator-width));
+  @include _four-color-active-indicator(
+    (
+      map.get($theme, four-color-active-indicator-one-color),
+      map.get($theme, four-color-active-indicator-two-color),
+      map.get($theme, four-color-active-indicator-three-color),
+      map.get($theme, four-color-active-indicator-four-color)
+    )
+  );
+  @include _size(map.get($theme, size));
+}
+
+@mixin _active-indicator-color($color) {
+  @include color($color);
+}
+
+@mixin _active-indicator-width($width) {
+  circle {
+    @include theme.property(stroke-width, $width);
+  }
+}
+
+@mixin _four-color-active-indicator($colors) {
+  .mdc-circular-progress--four-color {
+    @include indeterminate-colors($colors);
+  }
+}
+
+@mixin _size($size) {
+  .mdc-circular-progress {
+    @include theme.property(width, $size, $important: true);
+    @include theme.property(height, $size, $important: true);
+  }
+}
+
+/// Customizes the stroke-color of the indicator. Applies to the
+/// determinate variant, and also the indeterminate variant unless the
+/// four-color mixin is applied.
+/// @param {Color} $color - The desired stroke color.
+/// @see {mixin} indeterminate-colors
+@mixin color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-circular-progress__determinate-circle,
+  .mdc-circular-progress__indeterminate-circle-graphic {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(stroke, $color);
+
+      @include dom.forced-colors-mode {
+        @include theme.property(stroke, CanvasText);
+      }
+    }
+  }
+}
+
+/// Customizes the track color of the indicator. Applies to the
+/// determinate variant only.
+/// @param {Color} $color - The desired track color.
+@mixin track-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-circular-progress__determinate-track {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(stroke, $color);
+    }
+  }
+}
+
+/// Applies four animated stroke-colors to the indeterminate indicator.
+/// Applicable to the indeterminate variant only and overrides any single color
+/// currently set.
+/// @param {List} $colors - A list of four desired colors.
+/// @see {mixin} color
+@mixin indeterminate-colors($colors, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if length($colors) != 4 {
+    @error "`mdc-circular-progress-colors` accepts exactly 4 colors";
+  }
+
+  @for $i from 1 through 4 {
+    .mdc-circular-progress__color-#{$i}
+      .mdc-circular-progress__indeterminate-circle-graphic {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(stroke, nth($colors, $i));
+
+        @include dom.forced-colors-mode {
+          @include theme.property(stroke, CanvasText);
+        }
+      }
+    }
+  }
+}

@@ -25,9 +25,10 @@
 @use 'sass:math';
 @use 'sass:meta';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/theme/custom-properties';
 @use '@material/theme/css';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 
 // Shape categories
@@ -35,21 +36,30 @@ $small-component-radius: 4px !default;
 $medium-component-radius: 4px !default;
 $large-component-radius: 0 !default;
 
-// Shape keyword mapping
+@include keys.set-values(
+  (
+    small: $small-component-radius,
+    medium: $medium-component-radius,
+    large: $large-component-radius,
+  ),
+  $options: (custom-property-prefix: shape)
+);
+
+// @deprecated use shape.resolve-radius() to retrieve a value or
+// shape.get-shape-keys() and shape.is-shape-key() to manipulate keys.
 $category-keywords: (
-  small: (
-    varname: --mdc-shape-small,
-    fallback: $small-component-radius,
-  ),
-  medium: (
-    varname: --mdc-shape-medium,
-    fallback: $medium-component-radius,
-  ),
-  large: (
-    varname: --mdc-shape-large,
-    fallback: $large-component-radius,
-  ),
+  small: keys.create-custom-property(small),
+  medium: keys.create-custom-property(medium),
+  large: keys.create-custom-property(large),
 ) !default;
+
+@function is-shape-key($radius) {
+  @return map.has-key($category-keywords, $radius);
+}
+
+@function get-shape-keys() {
+  @return map.keys($category-keywords);
+}
 
 //
 // Flips the radius values based on RTL context.
@@ -88,20 +98,37 @@ $category-keywords: (
 ///
 /// $radius may be a single value or a list of 1 to 4 values.
 ///
-/// Examples:
+/// @example - scss
+///   resolve-radius(small); // (varname: --mdc-shape-small, fallback: 4px)
+///   resolve-radius((varname: --custom-shape, fallback: small));
+///     // (
+///     //   varname: --custom-shape,
+///     //   fallback: (varname: --mdc-shape-small, fallback: 4px)
+///     // )
+///   resolve-radius(8px); // 8px
+///   resolve-radius(50%, $component-height: 36px); // 16px
 ///
-/// shape.resolve-radius(small) => (varname: --mdc-shape-small, fallback: 4px)
-/// shape.resolve-radius((varname: --custom-shape, fallback: small)) =>
-///     (varname: --custom-shape, fallback: (varname: --mdc-shape-small, fallback: 4px))
-/// shape.resolve-radius(8px) => 8px
-/// shape.resolve-radius(50%, $component-height: 36px) => 16px
+///   $shape: (
+///     family: 'rounded',
+///     radius: (
+///       8px,
+///       8px,
+///       8px,
+///       8px,
+///     ),
+///   );
+///   resolve-radius($shape); // 8px
 ///
 /// @param {String | Number | Map | List} $radius - the radius shape category or
-///     radius value to resolve. May be a number, custom property Map, or a List
-///     of those values.
+///     radius value to resolve. May be a number, custom property Map, shape
+///     Map, or a List of those values.
 /// @return {Number | Map | List} the resolved radius value. May be a number,
 ///     a custom property Map, or a List if $radius was a List.
 @function resolve-radius($radius, $component-height: null) {
+  @if $radius == null {
+    @return null;
+  }
+
   @if meta.type-of($radius) == 'list' {
     // $radius is a List
     @if list.length($radius) > 4 or list.length($radius) < 1 {
@@ -119,10 +146,10 @@ $category-keywords: (
     @return $radii;
   }
 
-  @if map.has-key($category-keywords, $radius) {
-    // $radius is a category value
+  @if is-shape-key($radius) {
+    // $radius is a shape key
     @return resolve-radius(
-      map.get($category-keywords, $radius),
+      keys.create-custom-property($radius),
       $component-height: $component-height
     );
   } @else if custom-properties.is-custom-prop($radius) {
@@ -131,7 +158,23 @@ $category-keywords: (
       custom-properties.get-fallback($radius, $shallow: true),
       $component-height: $component-height
     );
-    @return custom-properties.set-fallback($radius, $fallback);
+    @return custom-properties.set-fallback($radius, $fallback, $shallow: true);
+  } @else if meta.type-of($radius) == 'map' {
+    // $radius is a shape Map
+    $family: map.get($radius, family);
+    @if custom-properties.is-custom-prop($family) {
+      // Shape Map may have been passed through keys.create-custom-properties()
+      $family: custom-properties.get-fallback($family);
+    }
+
+    @if $family != 'rounded' {
+      @error 'mdc-shape: Invalid shape family: "#{$family}". Only "rounded" is supported.';
+    }
+
+    @return resolve-radius(
+      map.get($radius, radius),
+      $component-height: $component-height
+    );
   } @else {
     // $radius is a value
     @if meta.type-of($radius) != 'number' {
@@ -200,8 +243,8 @@ $category-keywords: (
 /// @return {Number} the resolved radius as a number.
 @function _resolve-radius-percentage($percentage, $component-height) {
   // Converts the percentage to number without unit. Example: 50% => 50.
-  $percentage: $percentage / ($percentage * 0 + 1);
-  @return $component-height * ($percentage / 100);
+  $percentage: math.div($percentage, $percentage * 0 + 1);
+  @return $component-height * math.div($percentage, 100);
 }
 
 @mixin radius(
@@ -248,7 +291,7 @@ $category-keywords: (
     }
 
     @if ($needs-flip) {
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         // If it needs to be flipped, it will always have multiple corners
         $gss: (
           noflip: true,
@@ -277,4 +320,117 @@ $category-keywords: (
       }
     }
   }
+}
+
+/// Resolves one or more shape tokens and expands them into 4 separate logical
+/// tokens for each corner.
+///
+/// @example - scss
+///   $theme: (container-shape: (4px 4px 0 0));
+///   $theme: resolve-theme(
+///     $theme,
+///     map.get($resolvers, shape),
+///     container-shape,
+///   );
+///   // (
+///   //   container-shape-start-start: 4px,
+///   //   container-shape-start-end: 4px,
+///   //   container-shape-end-end: 0,
+///   //   container-shape-end-start: 0,
+///   // )
+///
+/// @param {Map} $theme - The theme to resolve tokens for.
+/// @param {Function} $resolver - The shape resolver to use.
+/// @param {String...} $shape-tokens - The shape tokens to resolve.
+/// @return {Map} The theme with resolved shape tokens.
+@function resolve-theme($theme, $resolver, $shape-tokens...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $token in $shape-tokens {
+    $shape-theme: meta.call($resolver, $shape: map.get($theme, $token));
+
+    // Add resolved values, but allow $theme to override the results if needed.
+    $theme: map.merge(
+      (
+        '#{$token}-start-start': map.get($shape-theme, start-start),
+        '#{$token}-start-end': map.get($shape-theme, start-end),
+        '#{$token}-end-end': map.get($shape-theme, end-end),
+        '#{$token}-end-start': map.get($shape-theme, end-start),
+      ),
+      $theme
+    );
+
+    $theme: map.remove($theme, $token);
+  }
+
+  @return $theme;
+}
+
+/// Resolves a shape value by expanding it into logical values for each corner.
+///
+/// @example - scss
+///
+/// resolver($shape: (4px 4px 0 0)) =>
+///  (
+///    start-start: 4px,
+///    start-end: 4px,
+///    end-end: 0,
+///    end-start: 0,
+///  )
+///
+/// resolver($shape: 4px) =>
+///  (
+///    start-start: 4px,
+///    start-end: 4px,
+///    end-end: 4px,
+///    end-start: 4px,
+///  )
+
+/// @param {Number|List} $shape - The shape token's value.
+/// @return {Map} A map with logical tokens for each corner's value.
+@function resolver($shape) {
+  @if meta.type-of($shape) != 'list' {
+    @return (
+      start-start: $shape,
+      start-end: $shape,
+      end-end: $shape,
+      end-start: $shape
+    );
+  }
+
+  @if list.length($shape) == 1 {
+    @return (
+      start-start: list.nth($shape, 1),
+      start-end: list.nth($shape, 1),
+      end-end: list.nth($shape, 1),
+      end-start: list.nth($shape, 1)
+    );
+  }
+
+  @if list.length($shape) == 2 {
+    @return (
+      start-start: list.nth($shape, 1),
+      start-end: list.nth($shape, 2),
+      end-end: list.nth($shape, 1),
+      end-start: list.nth($shape, 2)
+    );
+  }
+
+  @if list.length($shape) == 3 {
+    @return (
+      start-start: list.nth($shape, 1),
+      start-end: list.nth($shape, 2),
+      end-end: list.nth($shape, 3),
+      end-start: list.nth($shape, 2)
+    );
+  }
+
+  @return (
+    start-start: list.nth($shape, 1),
+    start-end: list.nth($shape, 2),
+    end-end: list.nth($shape, 3),
+    end-start: list.nth($shape, 4)
+  );
 }

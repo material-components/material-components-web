@@ -23,12 +23,13 @@
 
 
 import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../../testing/helpers/setup';
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {MDCTextFieldHelperTextFoundation} from '../../../mdc-textfield/helper-text/foundation';
 
 const {cssClasses, strings} = MDCTextFieldHelperTextFoundation;
 
 describe('MDCTextFieldHelperTextFoundation', () => {
+  setUpMdcTestEnvironment();
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCTextFieldHelperTextFoundation).toBeTruthy();
   });
@@ -63,7 +64,7 @@ describe('MDCTextFieldHelperTextFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.getAttr.and.returnValue('bar');
 
-    expect(foundation.getId('foo')).toEqual('bar');
+    expect(foundation.getId()).toEqual('bar');
   });
 
   it('#isPersistent retrieves correct value', () => {
@@ -146,6 +147,27 @@ describe('MDCTextFieldHelperTextFoundation', () => {
            .and.returnValue(true);
        foundation.setValidity(inputIsValid);
        expect(mockAdapter.setAttr).toHaveBeenCalledWith('role', 'alert');
+     });
+
+  it('#setValidity invalid when already invalid refreshes role="alert" if ' +
+         'helper text is being used as a validation message',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const inputIsValid = false;
+       mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+           .and.returnValue(false);
+       mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
+           .and.returnValue(true);
+       mockAdapter.getAttr.withArgs(strings.ROLE).and.returnValue('alert');
+       foundation.setValidity(inputIsValid);
+
+       mockAdapter.setAttr.calls.reset();
+       mockAdapter.removeAttr.calls.reset();
+
+       foundation.setValidity(inputIsValid);
+       jasmine.clock().tick(1);
+       expect(mockAdapter.removeAttr).toHaveBeenCalledWith(strings.ROLE);
+       expect(mockAdapter.setAttr).toHaveBeenCalledWith(strings.ROLE, 'alert');
      });
 
   it('#setValidity removes role="alert" if input is valid', () => {

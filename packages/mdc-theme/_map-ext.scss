@@ -1,0 +1,139 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:list';
+@use 'sass:map';
+
+// A collection of extensions to the sass:map module
+// https://sass-lang.com/documentation/modules/map
+
+/// Splits a Map into two separate Maps: one without the provided keys and one
+/// exclusively with the provided keys.
+///
+/// @example - scss
+///   $map: (
+///     focus: blue,
+///     focus-within: blue,
+///     hover: teal,
+///     active: green,
+///   );
+///
+///   $pair: split($map, focus, focus-within);
+///   // (
+///   //   (hover: teal, active: green),
+///   //   (focus: blue, focus-within: blue)
+///   // );
+///
+/// @param {Map} $map - The Map to split.
+/// @param {String...} $keys - Keys to split the Map by.
+/// @return {List} A List pair with two new Maps: the first with the keys
+///     removed and the second exclusively with the keys.
+@function split($map, $keys...) {
+  $map1: ();
+  $map2: ();
+  @each $key, $value in $map {
+    @if list.index($keys, $key) {
+      $map2: map.set($map2, $key, $value);
+    } @else {
+      $map1: map.set($map1, $key, $value);
+    }
+  }
+
+  @return ($map1, $map2);
+}
+
+/// Picks provided keys from a Map.
+///
+/// @example - scss
+///   $map: (
+///     focus: blue,
+///     focus-within: blue,
+///     hover: teal,
+///     active: green,
+///   );
+///
+///   pick($map, hover, active);
+///   // (hover: teal, active: green),
+///
+///   pick($map, (hover, active)...);
+///   // (hover: teal, active: green),
+///
+/// @param {Map} $map - The Map to pick.
+/// @param {String...} $keys - Keys to pick from the Map.
+/// @return {List} Map with only the keys provided.
+@function pick($map, $keys...) {
+  @return list.nth(split($map, $keys...), 2);
+}
+
+///
+/// trim-keys returns the given map with any matching keys removed.
+///
+/// @example
+///   trim-keys(('foo': red, 'bar': 5), ('foo')) = ('bar': 5)
+///
+/// @param {Map} $map - the map to rename.
+/// @param {List} $keys - the key names to trim off.
+/// @return {Map} the $map with any matching keys removed.
+///
+@function trim-keys($map, $keys) {
+  $out: map.merge($map, ());
+  @each $key, $value in $map {
+    @if list.index($keys, $key) {
+      $out: map.remove($out, $key);
+    }
+  }
+  @return $out;
+}
+
+///
+/// rename-keys returns the given map with any matching keys renamed to the
+/// given name.
+///
+/// @example
+///   rename-keys(('foo': red), ('foo': 'bar')) = ('bar': red)
+///
+/// @param {Map} $map - the map to rename.
+/// @param {Map} $rename - the renames to apply.
+/// @return {Map} the $map with any matching keys renamed per $rename.
+///
+@function rename-keys($map, $rename) {
+  $out: trim-keys($map, map.keys($rename));
+  @each $from, $to in $rename {
+    @if map.has-key($map, $from) {
+      $out: map.set($out, $to, map.get($map, $from));
+    }
+  }
+  @return $out;
+}
+
+/// Useful to avoid typos in the key string when accessing a map where the
+/// key is expected to exist.
+///
+/// @param {Map} $map - the map that contains the key.
+/// @param {String} $key - the key the value of which we want to retrieve.
+@function map-get-or-err($map, $key) {
+  @if not map.has-key($map, $key) {
+    @error 'Key #{$key} expected but not found in argument map.';
+  }
+
+  @return map.get($map, $key);
+}

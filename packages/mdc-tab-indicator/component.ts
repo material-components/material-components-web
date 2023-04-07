@@ -28,34 +28,44 @@ import {MDCFadingTabIndicatorFoundation} from './fading-foundation';
 import {MDCTabIndicatorFoundation} from './foundation';
 import {MDCSlidingTabIndicatorFoundation} from './sliding-foundation';
 
-export type MDCTabIndicatorFactory = (el: Element, foundation?: MDCTabIndicatorFoundation) => MDCTabIndicator;
+/** MDC Tab Indicator Factory */
+export type MDCTabIndicatorFactory =
+    (el: HTMLElement, foundation?: MDCTabIndicatorFoundation) =>
+        MDCTabIndicator;
 
+/** MDC Tab Indicator */
 export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
-  static attachTo(root: Element): MDCTabIndicator {
+  static override attachTo(root: HTMLElement): MDCTabIndicator {
     return new MDCTabIndicator(root);
   }
 
-  private content_!: HTMLElement; // assigned in initialize()
+  private content!: HTMLElement;  // assigned in initialize()
 
-  initialize() {
-    this.content_ = this.root.querySelector<HTMLElement>(
+  override initialize() {
+    this.content = this.root.querySelector<HTMLElement>(
         MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
   }
 
-  computeContentClientRect(): ClientRect {
+  computeContentClientRect(): DOMRect {
     return this.foundation.computeContentClientRect();
   }
 
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+  override getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabIndicatorAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
-      computeContentClientRect: () => this.content_.getBoundingClientRect(),
-      setContentStyleProperty: (prop, value) =>
-          this.content_.style.setProperty(prop, value),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
+      computeContentClientRect: () => this.content.getBoundingClientRect(),
+      setContentStyleProperty: (prop, value) => {
+        this.content.style.setProperty(prop, value);
+      },
     };
     // tslint:enable:object-literal-sort-keys
 
@@ -68,7 +78,7 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     return new MDCSlidingTabIndicatorFoundation(adapter);
   }
 
-  activate(previousIndicatorClientRect?: ClientRect) {
+  activate(previousIndicatorClientRect?: DOMRect) {
     this.foundation.activate(previousIndicatorClientRect);
   }
 

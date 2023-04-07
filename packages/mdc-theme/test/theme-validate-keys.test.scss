@@ -1,0 +1,68 @@
+@use '../theme';
+
+$origin-theme: (
+  one: 1,
+  two: '22',
+  three: 3px,
+  four: (
+    x: 1,
+    y: 2,
+  ),
+);
+
+// Should validate when subset of keys are provided.
+@include theme.validate-theme(
+  $origin-theme,
+  (
+    two: '22',
+    three: 3px,
+  )
+);
+
+// Should validate when theme configuration is empty.
+@include theme.validate-theme($origin-theme, ());
+
+// Should validate when nested theme keys are provided.
+@include theme.validate-theme(
+  $origin-theme,
+  (
+    four: (
+      x: 11,
+      y: 22,
+    ),
+  )
+);
+
+// Should validate when custom property strings are provided.
+@include theme.validate-theme(
+  $origin-theme,
+  (
+    one: var(--one),
+    two: var(--two, 4px),
+  )
+);
+
+// Should throw error when unsupported key (i.e., foobar) is provided.
+.test {
+  @include theme.validate-theme(
+    $origin-theme,
+    (
+      foobar: 66px,
+    ),
+    $test-only: true
+  );
+}
+
+// Should throw error when custom properties are provided.
+.no-custom-props {
+  @include theme.validate-theme(
+    $origin-theme,
+    (
+      three: (
+        varname: --three,
+        fallback: teal,
+      ),
+    ),
+    $test-only: true
+  );
+}

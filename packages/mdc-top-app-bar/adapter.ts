@@ -45,7 +45,8 @@ export interface MDCTopAppBarAdapter {
   hasClass(className: string): boolean;
 
   /**
-   * Sets the specified inline style property on the root Element to the given value.
+   * Sets the specified inline style property on the root Element to the given
+   * value.
    */
   setStyle(property: string, value: string): void;
 

@@ -22,13 +22,13 @@
  */
 
 import {MDCTab, MDCTabFoundation} from '../../mdc-tab/index';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {MDCTabBar, MDCTabBarFoundation} from '../index';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-tab-bar">
       <div class="mdc-tab-scroller">
         <div class="mdc-tab-scroller__scroll-area">
@@ -49,10 +49,7 @@ function getFixture() {
         </div>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as Element;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 describe('MDCTabBar', () => {
@@ -86,17 +83,17 @@ describe('MDCTabBar', () => {
     const root = getFixture();
     const component = new MDCTabBar(
         root, undefined, () => new FakeTab(), () => new FakeTabScroller());
-    expect((component as any).tabList_.length).toEqual(3);
-    expect((component as any).tabList_[0]).toEqual(jasmine.any(FakeTab));
-    expect((component as any).tabList_[1]).toEqual(jasmine.any(FakeTab));
-    expect((component as any).tabList_[2]).toEqual(jasmine.any(FakeTab));
+    expect((component as any).tabList.length).toEqual(3);
+    expect((component as any).tabList[0]).toEqual(jasmine.any(FakeTab));
+    expect((component as any).tabList[1]).toEqual(jasmine.any(FakeTab));
+    expect((component as any).tabList[2]).toEqual(jasmine.any(FakeTab));
   });
 
   it('#constructor instantiates child tab scroller component', () => {
     const root = getFixture();
     const component = new MDCTabBar(
         root, undefined, () => new FakeTab(), () => new FakeTabScroller());
-    expect((component as any).tabScroller_)
+    expect((component as any).tabScroller)
         .toEqual(jasmine.any(FakeTabScroller));
   });
 
@@ -105,9 +102,9 @@ describe('MDCTabBar', () => {
     const component = new MDCTabBar(
         root, undefined, () => new FakeTab(), () => new FakeTabScroller());
     component.destroy();
-    expect((component as any).tabList_[0].destroy).toHaveBeenCalled();
-    expect((component as any).tabList_[1].destroy).toHaveBeenCalled();
-    expect((component as any).tabList_[2].destroy).toHaveBeenCalled();
+    expect((component as any).tabList[0].destroy).toHaveBeenCalled();
+    expect((component as any).tabList[1].destroy).toHaveBeenCalled();
+    expect((component as any).tabList[2].destroy).toHaveBeenCalled();
   });
 
   function setupTest() {
@@ -129,14 +126,14 @@ describe('MDCTabBar', () => {
     const {component} = setupTest();
 
     component.focusOnActivate = false;
-    (component as any)
-        .tabList_.forEach(
-            (tab: MDCTab) => expect(tab.focusOnActivate).toBe(false));
+    (component as any).tabList.forEach((tab: MDCTab) => {
+      expect(tab.focusOnActivate).toBe(false);
+    });
 
     component.focusOnActivate = true;
-    (component as any)
-        .tabList_.forEach(
-            (tab: MDCTab) => expect(tab.focusOnActivate).toBe(true));
+    (component as any).tabList.forEach((tab: MDCTab) => {
+      expect(tab.focusOnActivate).toBe(true);
+    });
   });
 
   it('useAutomaticActivation setter calls foundation#setUseAutomaticActivation',
@@ -155,14 +152,14 @@ describe('MDCTabBar', () => {
   it('#adapter.scrollTo calls scrollTo of the child tab scroller', () => {
     const {component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.scrollTo(123);
-    expect((component as any).tabScroller_.scrollTo).toHaveBeenCalledWith(123);
+    expect((component as any).tabScroller.scrollTo).toHaveBeenCalledWith(123);
   });
 
   it('#adapter.incrementScroll calls incrementScroll of the child tab scroller',
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any).adapter.incrementScroll(123);
-       expect((component as any).tabScroller_.incrementScroll)
+       expect((component as any).tabScroller.incrementScroll)
            .toHaveBeenCalledWith(123);
      });
 
@@ -170,7 +167,7 @@ describe('MDCTabBar', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any).adapter.getScrollPosition();
-       expect((component as any).tabScroller_.getScrollPosition)
+       expect((component as any).tabScroller.getScrollPosition)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -179,7 +176,7 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.getScrollContentWidth();
-       expect((component as any).tabScroller_.getScrollContentWidth)
+       expect((component as any).tabScroller.getScrollContentWidth)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -188,7 +185,7 @@ describe('MDCTabBar', () => {
        const {component, root} = setupTest();
        expect(
            (component.getDefaultFoundation() as any)
-               .adapter.getOffsetWidth() === (root as HTMLElement).offsetWidth)
+               .adapter.getOffsetWidth() === root.offsetWidth)
            .toBe(true);
      });
 
@@ -207,8 +204,8 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.activateTabAtIndex(2, {});
-       expect((component as any).tabList_[2].activate).toHaveBeenCalledWith({});
-       expect((component as any).tabList_[2].activate).toHaveBeenCalledTimes(1);
+       expect((component as any).tabList[2].activate).toHaveBeenCalledWith({});
+       expect((component as any).tabList[2].activate).toHaveBeenCalledTimes(1);
      });
 
   it('#adapter.deactivateTabAtIndex calls deactivate on the tab at the index',
@@ -216,7 +213,7 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.deactivateTabAtIndex(1);
-       expect((component as any).tabList_[1].deactivate)
+       expect((component as any).tabList[1].deactivate)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -225,7 +222,7 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.getTabIndicatorClientRectAtIndex(0);
-       expect((component as any).tabList_[0].computeIndicatorClientRect)
+       expect((component as any).tabList[0].computeIndicatorClientRect)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -234,14 +231,14 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.getTabDimensionsAtIndex(0);
-       expect((component as any).tabList_[0].computeDimensions)
+       expect((component as any).tabList[0].computeDimensions)
            .toHaveBeenCalledTimes(1);
      });
 
   it('#adapter.getPreviousActiveTabIndex returns the index of the active tab',
      () => {
        const {component} = setupTest();
-       (component as any).tabList_[1].active = true;
+       (component as any).tabList[1].active = true;
        expect(
            (component.getDefaultFoundation() as any)
                .adapter.getPreviousActiveTabIndex() === 1)
@@ -250,7 +247,7 @@ describe('MDCTabBar', () => {
 
   it('#adapter.getIndexOfTabById returns the index of the given tab', () => {
     const {component} = setupTest();
-    const tab = (component as any).tabList_[2];
+    const tab = (component as any).tabList[2];
     expect(
         (component.getDefaultFoundation() as any)
             .adapter.getIndexOfTabById(tab.id) === 2)
@@ -260,8 +257,8 @@ describe('MDCTabBar', () => {
   it('#adapter.getTabListLength returns the length of the tab list', () => {
     const {component} = setupTest();
     expect(
-        (component.getDefaultFoundation() as any)
-            .adapter.getTabListLength() === 3)
+        (component.getDefaultFoundation() as any).adapter.getTabListLength() ===
+        3)
         .toBe(true);
   });
 
@@ -272,8 +269,7 @@ describe('MDCTabBar', () => {
        const handler = jasmine.createSpy('');
        root.addEventListener(
            MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT, handler);
-       (component.getDefaultFoundation() as any)
-           .adapter.notifyTabActivated(66);
+       (component.getDefaultFoundation() as any).adapter.notifyTabActivated(66);
        expect(handler).toHaveBeenCalledWith(
            jasmine.objectContaining({detail: {index: 66}}));
      });
@@ -296,8 +292,8 @@ describe('MDCTabBar', () => {
          MDCTabFoundation.strings.INTERACTED_EVENT}, call handleTabInteraction`,
      () => {
        const {root, mockFoundation} = setupMockFoundationTest();
-       const tab = root.querySelector(
-                       MDCTabBarFoundation.strings.TAB_SELECTOR) as HTMLElement;
+       const tab = root.querySelector<HTMLElement>(
+           MDCTabBarFoundation.strings.TAB_SELECTOR)!;
        emitEvent(tab, MDCTabFoundation.strings.INTERACTED_EVENT, {
          bubbles: true,
        });

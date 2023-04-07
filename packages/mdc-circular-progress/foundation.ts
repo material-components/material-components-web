@@ -23,21 +23,23 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCProgressIndicatorFoundation} from '@material/progress-indicator/foundation';
+
 import {MDCCircularProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
+/** MDC Circular Progress Foundation */
 export class MDCCircularProgressFoundation extends
     MDCFoundation<MDCCircularProgressAdapter> implements
         MDCProgressIndicatorFoundation {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCCircularProgressAdapter {
+  static override get defaultAdapter(): MDCCircularProgressAdapter {
     return {
       addClass: () => undefined,
       getDeterminateCircleAttribute: () => null,
@@ -49,59 +51,47 @@ export class MDCCircularProgressFoundation extends
     };
   }
 
-  private isClosed_!: boolean;
-  private isDeterminate_!: boolean;
-  private progress_!: number;
-  private radius_!: number;
+  private closed!: boolean;
+  private determinate!: boolean;
+  private progress!: number;
+  private radius!: number;
 
   constructor(adapter?: Partial<MDCCircularProgressAdapter>) {
     super({...MDCCircularProgressFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
-    this.isClosed_ = this.adapter.hasClass(cssClasses.CLOSED_CLASS);
-    this.isDeterminate_ =
-        !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
-    this.progress_ = 0;
+  override init() {
+    this.closed = this.adapter.hasClass(cssClasses.CLOSED_CLASS);
+    this.determinate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
+    this.progress = 0;
 
-    if (this.isDeterminate_) {
+    if (this.determinate) {
       this.adapter.setAttribute(
-          strings.ARIA_VALUENOW, this.progress_.toString());
+          strings.ARIA_VALUENOW, this.progress.toString());
     }
 
-    this.radius_ =
+    this.radius =
         Number(this.adapter.getDeterminateCircleAttribute(strings.RADIUS));
-  }
-
-  isDeterminate() {
-    return this.isDeterminate_;
-  }
-
-  getProgress() {
-    return this.progress_;
-  }
-
-  /**
-   * @return Returns whether the progress indicator is hidden.
-   */
-  isClosed() {
-    return this.isClosed_;
   }
 
   /**
    * Sets whether the progress indicator is in determinate mode.
-   * @param isDeterminate Whether the indicator should be determinate.
+   * @param determinate Whether the indicator should be determinate.
    */
-  setDeterminate(isDeterminate: boolean) {
-    this.isDeterminate_ = isDeterminate;
+  setDeterminate(determinate: boolean) {
+    this.determinate = determinate;
 
-    if (this.isDeterminate_) {
+    if (this.determinate) {
       this.adapter.removeClass(cssClasses.INDETERMINATE_CLASS);
-      this.setProgress(this.progress_);
+      this.setProgress(this.progress);
     } else {
       this.adapter.addClass(cssClasses.INDETERMINATE_CLASS);
       this.adapter.removeAttribute(strings.ARIA_VALUENOW);
     }
+  }
+
+  isDeterminate() {
+    return this.determinate;
   }
 
   /**
@@ -111,32 +101,45 @@ export class MDCCircularProgressFoundation extends
    * @param value The current progress value, which must be between 0 and 1.
    */
   setProgress(value: number) {
-    this.progress_ = value;
-    if (this.isDeterminate_) {
+    this.progress = value;
+    if (this.determinate) {
       const unfilledArcLength =
-          (1 - this.progress_) * (2 * Math.PI * this.radius_);
+          (1 - this.progress) * (2 * Math.PI * this.radius);
 
       this.adapter.setDeterminateCircleAttribute(
           strings.STROKE_DASHOFFSET, `${unfilledArcLength}`);
       this.adapter.setAttribute(
-          strings.ARIA_VALUENOW, this.progress_.toString());
+          strings.ARIA_VALUENOW, this.progress.toString());
     }
+  }
+
+  getProgress() {
+    return this.progress;
   }
 
   /**
    * Shows the progress indicator.
    */
   open() {
-    this.isClosed_ = false;
+    this.closed = false;
     this.adapter.removeClass(cssClasses.CLOSED_CLASS);
+    this.adapter.removeAttribute(strings.ARIA_HIDDEN);
   }
 
   /**
    * Hides the progress indicator
    */
   close() {
-    this.isClosed_ = true;
+    this.closed = true;
     this.adapter.addClass(cssClasses.CLOSED_CLASS);
+    this.adapter.setAttribute(strings.ARIA_HIDDEN, 'true');
+  }
+
+  /**
+   * @return Returns whether the progress indicator is hidden.
+   */
+  isClosed() {
+    return this.closed;
   }
 }
 

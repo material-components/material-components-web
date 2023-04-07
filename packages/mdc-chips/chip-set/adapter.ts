@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,11 @@
  * THE SOFTWARE.
  */
 
+import {MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants';
+import {MDCChipAnimation} from '../chip/constants';
+
+import {MDCChipSetAttributes, MDCChipSetEvents} from './constants';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -29,59 +34,50 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCChipSetAdapter {
-  /**
-   * @return true if the root element contains the given class name.
-   */
-  hasClass(className: string): boolean;
+  /** Announces the message via an aria-live region */
+  announceMessage(message: string): void;
 
-  /**
-   * Removes the chip with the given index from the chip set.
-   * Make sure to remove it from the chip list, too.
-   */
+  /** Emits the given event with the given detail. */
+  emitEvent<D extends object>(eventName: MDCChipSetEvents, eventDetail: D):
+      void;
+
+  /** Returns the value for the given attribute, if it exists. */
+  getAttribute(attrName: MDCChipSetAttributes): string|null;
+
+  /** Returns the actions provided by the child chip at the given index. */
+  getChipActionsAtIndex(index: number): MDCChipActionType[];
+
+  /** Returns the number of child chips. */
+  getChipCount(): number;
+
+  /** Returns the ID of the chip at the given index. */
+  getChipIdAtIndex(index: number): string;
+
+  /** Returns the index of the child chip with the matching ID. */
+  getChipIndexById(chipID: string): number;
+
+  /** Proxies to the MDCChip#isActionFocusable method. */
+  isChipFocusableAtIndex(index: number, actionType: MDCChipActionType): boolean;
+
+  /** Proxies to the MDCChip#isActionSelectable method. */
+  isChipSelectableAtIndex(index: number, actionType: MDCChipActionType):
+      boolean;
+
+  /** Proxies to the MDCChip#isActionSelected method. */
+  isChipSelectedAtIndex(index: number, actionType: MDCChipActionType): boolean;
+
+  /** Removes the chip at the given index. */
   removeChipAtIndex(index: number): void;
 
-  /**
-   * Sets the selected state of the chip at the given index.
-   */
-  selectChipAtIndex(index: number, isSelected: boolean, shouldNotifyClients: boolean): void;
+  /** Proxies to the MDCChip#setActionFocus method. */
+  setChipFocusAtIndex(
+      index: number, action: MDCChipActionType,
+      focus: MDCChipActionFocusBehavior): void;
 
-  /**
-   * Returns the index of the chip at the given ID.
-   * @param chipId the unique ID of the chip
-   * @return the numerical index of the chip with the matching id or -1.
-   */
-  getIndexOfChipById(chipId: string): number;
+  /** Proxies to the MDCChip#setActionSelected method. */
+  setChipSelectedAtIndex(
+      index: number, actionType: MDCChipActionType, isSelected: boolean): void;
 
-  /**
-   * Calls Chip#focusPrimaryAction() on the chip at the given index.
-   * @param index the index of the chip
-   */
-  focusChipPrimaryActionAtIndex(index: number): void;
-
-  /**
-   * Calls Chip#focusTrailingAction() on the chip at the given index.
-   * @param index the index of the chip
-   */
-  focusChipTrailingActionAtIndex(index: number): void;
-
-  /**
-   * Removes focus from the chip at the given index.
-   * @param index the index of the chip
-   */
-  removeFocusFromChipAtIndex(index: number): void;
-
-  /**
-   * @return true if the text direction is RTL.
-   */
-  isRTL(): boolean;
-
-  /**
-   * @return the number of chips in the chip set.
-   */
-  getChipListCount(): number;
-
-  /**
-   * Announces the message via an aria-live region.
-   */
-  announceMessage(message: string): void;
+  /** Starts the chip animation at the given index. */
+  startChipAnimationAtIndex(index: number, animation: MDCChipAnimation): void;
 }

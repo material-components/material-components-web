@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use '@material/animation/variables' as animation-variables;
 @use '@material/density/functions' as density-functions;
@@ -30,12 +30,15 @@
 @use '@material/tab/mixins' as tab-mixins;
 @use './variables';
 
-@mixin core-styles($query: feature-targeting.all()) {
-  // postcss-bem-linter: define tab-bar
+@mixin static-styles($query: feature-targeting.all()) {
   .mdc-tab-bar {
     @include width(100%, $query);
   }
+}
 
+@mixin core-styles($query: feature-targeting.all()) {
+  // postcss-bem-linter: define tab-bar
+  @include static-styles($query: $query);
   @include density(variables.$density-scale, $query: $query);
   @include stacked-density(variables.$stacked-density-scale, $query: $query);
   // postcss-bem-linter: end

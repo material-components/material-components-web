@@ -22,25 +22,28 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCIconButtonToggleAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAdapter> {
+/** MDC Icon Button Toggle Foundation */
+export class MDCIconButtonToggleFoundation extends
+    MDCFoundation<MDCIconButtonToggleAdapter> {
   /**
    * Whether the icon button has an aria label that changes depending on
    * toggled state.
    */
   private hasToggledAriaLabel: boolean = false;
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCIconButtonToggleAdapter {
+  static override get defaultAdapter(): MDCIconButtonToggleAdapter {
     return {
       addClass: () => undefined,
       hasClass: () => false,
@@ -55,7 +58,7 @@ export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonTo
     super({...MDCIconButtonToggleFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
+  override init() {
     const ariaLabelOn = this.adapter.getAttr(strings.DATA_ARIA_LABEL_ON);
     const ariaLabelOff = this.adapter.getAttr(strings.DATA_ARIA_LABEL_OFF);
     if (ariaLabelOn && ariaLabelOff) {

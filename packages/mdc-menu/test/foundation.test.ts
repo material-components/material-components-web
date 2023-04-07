@@ -26,8 +26,7 @@ import {MDCListFoundation} from '../../mdc-list/foundation';
 import {numbers} from '../../mdc-menu-surface/constants';
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {cssClasses, DefaultFocusState, strings} from '../constants';
-import {numbers as menuNumbers} from '../constants';
+import {cssClasses, DefaultFocusState, numbers as menuNumbers, strings} from '../constants';
 import {MDCMenuFoundation} from '../foundation';
 
 function setupTest() {
@@ -46,6 +45,7 @@ describe('MDCMenuFoundation', () => {
       'removeClassFromElementAtIndex',
       'addAttributeToElementAtIndex',
       'removeAttributeFromElementAtIndex',
+      'getAttributeFromElementAtIndex',
       'elementContainsClass',
       'closeSurface',
       'getElementIndex',
@@ -82,7 +82,7 @@ describe('MDCMenuFoundation', () => {
          key: 'Space',
          target: 'My Element',
          preventDefault: jasmine.createSpy('preventDefault')
-       };
+       } as unknown as KeyboardEvent;
        mockAdapter.elementContainsClass
            .withArgs(event.target, listClasses.LIST_ITEM_CLASS)
            .and.returnValue(true);
@@ -105,7 +105,7 @@ describe('MDCMenuFoundation', () => {
 
   it('handleKeydown does nothing if key is not space, enter, or tab', () => {
     const {foundation, mockAdapter} = setupTest();
-    const event = {key: 'N'};
+    const event = {key: 'N'} as KeyboardEvent;
 
     foundation.handleKeydown(event);
     expect(mockAdapter.closeSurface).not.toHaveBeenCalled();
@@ -115,7 +115,7 @@ describe('MDCMenuFoundation', () => {
 
   it('handleKeydown tab key causes the menu to close', () => {
     const {foundation, mockAdapter} = setupTest();
-    const event = {key: 'Tab'};
+    const event = {key: 'Tab'} as KeyboardEvent;
 
     foundation.handleKeydown(event);
     expect(mockAdapter.closeSurface)
@@ -153,14 +153,14 @@ describe('MDCMenuFoundation', () => {
          key: 'Space',
          target: {tagName: 'input'},
          preventDefault: jasmine.createSpy('preventDefault')
-       };
+       } as unknown as KeyboardEvent;
        mockAdapter.elementContainsClass
            .withArgs(event.target, listClasses.LIST_ITEM_CLASS)
            .and.returnValue(true);
        mockAdapter.getElementIndex.withArgs(event.target).and.returnValue(0);
 
        foundation.handleKeydown(event);
-       event.key = 'Enter';
+       (event as any).key = 'Enter';
        foundation.handleKeydown(event);
 
        expect(event.preventDefault).not.toHaveBeenCalled();
@@ -256,7 +256,7 @@ describe('MDCMenuFoundation', () => {
        mockAdapter.getElementIndex.withArgs(itemEl).and.returnValue(0);
        mockAdapter.elementContainsClass
            .withArgs(itemEl, cssClasses.MENU_SELECTION_GROUP)
-           .and.returnValue(false, true);
+           .and.returnValues(false, true);
        mockAdapter.isSelectableItemAtIndex.withArgs(0).and.returnValue(true);
        mockAdapter.getMenuItemCount.and.returnValue(5);
 
@@ -284,7 +284,7 @@ describe('MDCMenuFoundation', () => {
            .withArgs(itemEl, cssClasses.MENU_SELECTION_GROUP)
            .and.returnValue(false);
        mockAdapter.elementContainsClass.withArgs(itemEl, listClasses.ROOT)
-           .and.returnValue(false, true);
+           .and.returnValues(false, true);
        mockAdapter.isSelectableItemAtIndex.withArgs(0).and.returnValue(false);
        mockAdapter.getMenuItemCount.and.returnValue(5);
 
@@ -382,6 +382,21 @@ describe('MDCMenuFoundation', () => {
        expect(mockAdapter.focusListRoot).not.toHaveBeenCalled();
      });
 
+  it('#getSelectedIndex returns correct index', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.isSelectableItemAtIndex.withArgs(1).and.returnValue(true);
+    const listItemEl = document.createElement('div');
+    mockAdapter.elementContainsClass
+        .withArgs(listItemEl, cssClasses.MENU_SELECTION_GROUP)
+        .and.returnValue(true);
+    mockAdapter.getSelectedSiblingOfItemAtIndex.withArgs(1).and.returnValue(-1);
+    mockAdapter.getMenuItemCount.and.returnValue(2);
+
+    expect(foundation.getSelectedIndex()).not.toBe(1);
+    foundation.setSelectedIndex(1);
+    expect(foundation.getSelectedIndex()).toBe(1);
+  });
+
   it('setSelectedIndex calls addClass and addAttribute only', () => {
     const {foundation, mockAdapter} = setupTest();
     const listItemEl = document.createElement('div');
@@ -439,7 +454,7 @@ describe('MDCMenuFoundation', () => {
     const {foundation} = setupTest();
     try {
       foundation.setSelectedIndex(5);
-    } catch (e) {
+    } catch (e: any) {
       expect(e.message).toEqual(
           'MDCMenuFoundation: No list item at specified index.');
     }
@@ -484,5 +499,24 @@ describe('MDCMenuFoundation', () => {
     foundation.handleItemAction(itemEl);
 
     expect(mockAdapter.closeSurface).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.closeSurface).toHaveBeenCalledWith(false);
   });
+
+  it('closes the menu (with indication to not restore focus) on item action based on DOM attribute',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const itemEl = document.createElement('li');
+       mockAdapter.elementContainsClass
+           .withArgs(itemEl, listClasses.LIST_ITEM_CLASS)
+           .and.returnValue(true);
+       mockAdapter.getElementIndex.withArgs(itemEl).and.returnValue(0);
+       mockAdapter.getAttributeFromElementAtIndex
+           .withArgs(0, strings.SKIP_RESTORE_FOCUS)
+           .and.returnValue('true');
+
+       foundation.handleItemAction(itemEl);
+
+       expect(mockAdapter.closeSurface).toHaveBeenCalledTimes(1);
+       expect(mockAdapter.closeSurface).toHaveBeenCalledWith(true);
+     });
 });

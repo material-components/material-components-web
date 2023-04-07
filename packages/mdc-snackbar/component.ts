@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {closest} from '@material/dom/ponyfill';
+
 import {MDCSnackbarAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
@@ -31,51 +32,63 @@ import {MDCSnackbarAnnouncer, MDCSnackbarAnnouncerFactory, MDCSnackbarCloseEvent
 import * as util from './util';
 
 const {
-  SURFACE_SELECTOR, LABEL_SELECTOR, ACTION_SELECTOR, DISMISS_SELECTOR,
-  OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
+  SURFACE_SELECTOR,
+  LABEL_SELECTOR,
+  ACTION_SELECTOR,
+  DISMISS_SELECTOR,
+  OPENING_EVENT,
+  OPENED_EVENT,
+  CLOSING_EVENT,
+  CLOSED_EVENT,
 } = strings;
 
+/** MDC Snackbar */
 export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
-  static attachTo(root: Element) {
+  static override attachTo(root: HTMLElement) {
     return new MDCSnackbar(root);
   }
 
-  private announce_!: MDCSnackbarAnnouncer; // assigned in initialize()
+  private announce!: MDCSnackbarAnnouncer;  // assigned in initialize()
 
-  private actionEl_!: Element; // assigned in initialSyncWithDOM()
-  private labelEl_!: Element; // assigned in initialSyncWithDOM()
-  private surfaceEl_!: Element; // assigned in initialSyncWithDOM()
+  private actionEl!: HTMLElement;   // assigned in initialSyncWithDOM()
+  private labelEl!: HTMLElement;    // assigned in initialSyncWithDOM()
+  private surfaceEl!: HTMLElement;  // assigned in initialSyncWithDOM()
 
-  private handleKeyDown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
-  private handleSurfaceClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private handleKeyDown!:
+      SpecificEventListener<'keydown'>;  // assigned in initialSyncWithDOM()
+  private handleSurfaceClick!:
+      SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
 
-  initialize(announcerFactory: MDCSnackbarAnnouncerFactory = () => util.announce) {
-    this.announce_ = announcerFactory();
+  override initialize(
+      announcerFactory: MDCSnackbarAnnouncerFactory = () => util.announce) {
+    this.announce = announcerFactory();
   }
 
-  initialSyncWithDOM() {
-    this.surfaceEl_ = this.root.querySelector(SURFACE_SELECTOR)!;
-    this.labelEl_ = this.root.querySelector(LABEL_SELECTOR)!;
-    this.actionEl_ = this.root.querySelector(ACTION_SELECTOR)!;
+  override initialSyncWithDOM() {
+    this.surfaceEl = this.root.querySelector<HTMLElement>(SURFACE_SELECTOR)!;
+    this.labelEl = this.root.querySelector<HTMLElement>(LABEL_SELECTOR)!;
+    this.actionEl = this.root.querySelector<HTMLElement>(ACTION_SELECTOR)!;
 
-    this.handleKeyDown_ = (evt) => this.foundation.handleKeyDown(evt);
-    this.handleSurfaceClick_ = (evt) => {
+    this.handleKeyDown = (evt) => {
+      this.foundation.handleKeyDown(evt);
+    };
+    this.handleSurfaceClick = (evt) => {
       const target = evt.target as Element;
-      if (this.isActionButton_(target)) {
+      if (this.isActionButton(target)) {
         this.foundation.handleActionButtonClick(evt);
-      } else if (this.isActionIcon_(target)) {
+      } else if (this.isActionIcon(target)) {
         this.foundation.handleActionIconClick(evt);
       }
     };
 
-    this.registerKeyDownHandler_(this.handleKeyDown_);
-    this.registerSurfaceClickHandler_(this.handleSurfaceClick_);
+    this.registerKeyDownHandler(this.handleKeyDown);
+    this.registerSurfaceClickHandler(this.handleSurfaceClick);
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
-    this.deregisterKeyDownHandler_(this.handleKeyDown_);
-    this.deregisterSurfaceClickHandler_(this.handleSurfaceClick_);
+    this.deregisterKeyDownHandler(this.handleKeyDown);
+    this.deregisterSurfaceClickHandler(this.handleSurfaceClick);
   }
 
   open() {
@@ -83,27 +96,43 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   /**
-   * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
-   *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
+   * @param reason Why the snackbar was closed. Value will be passed to
+   *     CLOSING_EVENT and CLOSED_EVENT via the `event.detail.reason` property.
+   *     Standard values are REASON_ACTION and REASON_DISMISS, but custom
    *     client-specific values may also be used if desired.
    */
   close(reason = '') {
     this.foundation.close(reason);
   }
 
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+  override getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSnackbarAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      announce: () => this.announce_(this.labelEl_),
-      notifyClosed: (reason) => this.emit<MDCSnackbarCloseEventDetail>(
-          CLOSED_EVENT, reason ? {reason} : {}),
-      notifyClosing: (reason) => this.emit<MDCSnackbarCloseEventDetail>(
-          CLOSING_EVENT, reason ? {reason} : {}),
-      notifyOpened: () => this.emit(OPENED_EVENT, {}),
-      notifyOpening: () => this.emit(OPENING_EVENT, {}),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      announce: () => {
+        this.announce(this.labelEl);
+      },
+      notifyClosed: (reason) => {
+        this.emit<MDCSnackbarCloseEventDetail>(
+            CLOSED_EVENT, reason ? {reason} : {});
+      },
+      notifyClosing: (reason) => {
+        this.emit<MDCSnackbarCloseEventDetail>(
+            CLOSING_EVENT, reason ? {reason} : {});
+      },
+      notifyOpened: () => {
+        this.emit(OPENED_EVENT, {});
+      },
+      notifyOpening: () => {
+        this.emit(OPENING_EVENT, {});
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
     };
     return new MDCSnackbarFoundation(adapter);
   }
@@ -129,44 +158,45 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   get labelText(): string {
-    // This property only returns null if the node is a document, DOCTYPE, or notation.
-    // On Element nodes, it always returns a string.
-    return this.labelEl_.textContent!;
+    // This property only returns null if the node is a document, DOCTYPE,
+    // or notation. On Element nodes, it always returns a string.
+    return this.labelEl.textContent!;
   }
 
   set labelText(labelText: string) {
-    this.labelEl_.textContent = labelText;
+    this.labelEl.textContent = labelText;
   }
 
   get actionButtonText(): string {
-    return this.actionEl_.textContent!;
+    return this.actionEl.textContent!;
   }
 
   set actionButtonText(actionButtonText: string) {
-    this.actionEl_.textContent = actionButtonText;
+    this.actionEl.textContent = actionButtonText;
   }
 
-  private registerKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
+  private registerKeyDownHandler(handler: SpecificEventListener<'keydown'>) {
     this.listen('keydown', handler);
   }
 
-  private deregisterKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
+  private deregisterKeyDownHandler(handler: SpecificEventListener<'keydown'>) {
     this.unlisten('keydown', handler);
   }
 
-  private registerSurfaceClickHandler_(handler: SpecificEventListener<'click'>) {
-    this.surfaceEl_.addEventListener('click', handler as EventListener);
+  private registerSurfaceClickHandler(handler: SpecificEventListener<'click'>) {
+    this.surfaceEl.addEventListener('click', handler as EventListener);
   }
 
-  private deregisterSurfaceClickHandler_(handler: SpecificEventListener<'click'>) {
-    this.surfaceEl_.removeEventListener('click', handler as EventListener);
+  private deregisterSurfaceClickHandler(handler:
+                                            SpecificEventListener<'click'>) {
+    this.surfaceEl.removeEventListener('click', handler as EventListener);
   }
 
-  private isActionButton_(target: Element): boolean {
+  private isActionButton(target: Element): boolean {
     return Boolean(closest(target, ACTION_SELECTOR));
   }
 
-  private isActionIcon_(target: Element): boolean {
+  private isActionIcon(target: Element): boolean {
     return Boolean(closest(target, DISMISS_SELECTOR));
   }
 }

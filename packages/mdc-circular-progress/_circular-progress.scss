@@ -1,0 +1,428 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:math';
+@use '@material/animation/functions' as animation-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
+@use '@material/theme/gss';
+@use '@material/theme/theme';
+@use './circular-progress-theme';
+
+///
+/// Circular progress core styles.
+///
+@mixin core-styles($query: feature-targeting.all()) {
+  @include circular-progress-theme.color(
+    circular-progress-theme.$color,
+    $query
+  );
+  @include circular-progress-theme.track-color(
+    circular-progress-theme.$track-color,
+    $query: $query
+  );
+  @include static-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    @include container-rotate-keyframes_;
+    @include spinner-layer-rotate-keyframes_;
+    @include color-1-fade-in-out-keyframes_;
+    @include color-2-fade-in-out-keyframes_;
+    @include color-3-fade-in-out-keyframes_;
+    @include color-4-fade-in-out-keyframes_;
+    @include left-spin-keyframes_;
+    @include right-spin-keyframes_;
+  }
+
+  .mdc-circular-progress {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-flex;
+      position: relative;
+      @include rtl.ignore-next-line();
+      direction: ltr;
+      line-height: 0;
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: animation-functions.exit-temporary(opacity, 250ms);
+    }
+  }
+
+  .mdc-circular-progress__determinate-container,
+  .mdc-circular-progress__indeterminate-circle-graphic,
+  .mdc-circular-progress__indeterminate-container,
+  .mdc-circular-progress__spinner-layer {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .mdc-circular-progress__determinate-container {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.ignore-next-line();
+      transform: rotate(-90deg);
+    }
+  }
+
+  .mdc-circular-progress__indeterminate-container {
+    @include feature-targeting.targets($feat-structure) {
+      // Font size, letter spacing and nowrap are required in order to ignore
+      // whitespaces between HTML elements.
+      font-size: 0;
+      letter-spacing: 0;
+      white-space: nowrap;
+      opacity: 0;
+    }
+  }
+
+  .mdc-circular-progress__determinate-circle-graphic,
+  .mdc-circular-progress__indeterminate-circle-graphic {
+    @include feature-targeting.targets($feat-structure) {
+      fill: transparent;
+    }
+  }
+
+  .mdc-circular-progress__determinate-circle {
+    @include feature-targeting.targets($feat-animation) {
+      transition: animation-functions.enter(stroke-dashoffset, 500ms);
+    }
+  }
+
+  .mdc-circular-progress__gap-patch {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
+      top: 0;
+      @include rtl.ignore-next-line();
+      left: 47.5%;
+      box-sizing: border-box;
+      width: 5%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .mdc-circular-progress__indeterminate-circle-graphic {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.ignore-next-line();
+        left: -900%;
+        width: 2000%;
+        @include rtl.ignore-next-line();
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .mdc-circular-progress__circle-clipper {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-flex;
+      position: relative;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .mdc-circular-progress__indeterminate-circle-graphic {
+      @include feature-targeting.targets($feat-structure) {
+        width: 200%;
+      }
+    }
+  }
+
+  .mdc-circular-progress__circle-right {
+    .mdc-circular-progress__indeterminate-circle-graphic {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.ignore-next-line();
+        left: -100%;
+      }
+    }
+  }
+
+  .mdc-circular-progress--indeterminate {
+    .mdc-circular-progress__determinate-container {
+      @include feature-targeting.targets($feat-structure) {
+        opacity: 0;
+      }
+    }
+
+    .mdc-circular-progress__indeterminate-container {
+      @include feature-targeting.targets($feat-structure) {
+        opacity: 1;
+      }
+    }
+
+    @include indeterminate-active-animations_($query);
+  }
+
+  .mdc-circular-progress--closed {
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 0;
+    }
+  }
+}
+
+// Private mixins
+
+/// Sets the animations for the indicator in indeterminate mode.
+/// @access private
+@mixin indeterminate-active-animations_($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  .mdc-circular-progress__indeterminate-container {
+    @include feature-targeting.targets($feat-animation) {
+      $duration: math.div(
+        360deg * circular-progress-theme.$arc-time,
+        circular-progress-theme.$arc-start-rotation-interval +
+          (360 - circular-progress-theme.$arc-size)
+      );
+
+      animation: mdc-circular-progress-container-rotate $duration linear
+        infinite;
+    }
+  }
+
+  $spinner-rotate-animation: mdc-circular-progress-spinner-layer-rotate 4 *
+    circular-progress-theme.$arc-time circular-progress-theme.$timing-function
+    infinite both;
+
+  .mdc-circular-progress__spinner-layer {
+    @include feature-targeting.targets($feat-animation) {
+      animation: $spinner-rotate-animation;
+    }
+  }
+
+  @for $i from 1 through 4 {
+    $color-fade-in-out-animation: mdc-circular-progress-color-#{$i}-fade-in-out
+      4 *
+      circular-progress-theme.$arc-time
+      circular-progress-theme.$timing-function
+      infinite
+      both;
+
+    .mdc-circular-progress__color-#{$i} {
+      @include feature-targeting.targets($feat-animation) {
+        animation: $spinner-rotate-animation, $color-fade-in-out-animation;
+      }
+    }
+  }
+
+  .mdc-circular-progress__circle-left
+    .mdc-circular-progress__indeterminate-circle-graphic {
+    @include feature-targeting.targets($feat-animation) {
+      @include gss.annotate(
+        (
+          noflip: true,
+        )
+      );
+      animation: mdc-circular-progress-left-spin
+        circular-progress-theme.$arc-time
+        circular-progress-theme.$timing-function infinite both;
+    }
+  }
+
+  .mdc-circular-progress__circle-right
+    .mdc-circular-progress__indeterminate-circle-graphic {
+    @include feature-targeting.targets($feat-animation) {
+      @include gss.annotate(
+        (
+          noflip: true,
+        )
+      );
+      animation: mdc-circular-progress-right-spin
+        circular-progress-theme.$arc-time
+        circular-progress-theme.$timing-function infinite both;
+    }
+  }
+}
+
+/// Keyframes for the persistent rotation of the outermost container
+/// @access private
+@mixin container-rotate-keyframes_ {
+  @keyframes mdc-circular-progress-container-rotate {
+    to {
+      @include rtl.ignore-next-line();
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/// Keyframes for the rotation of the spinner layer
+/// @access private
+@mixin spinner-layer-rotate-keyframes_ {
+  @keyframes mdc-circular-progress-spinner-layer-rotate {
+    @for $i from 1 through 8 {
+      #{$i * 12.5}% {
+        @include rtl.ignore-next-line();
+        transform: rotate($i * 0.5 * circular-progress-theme.$arc-size);
+      }
+    }
+  }
+}
+
+/// Keyframes for the fade-in and fade-out of the first color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
+@mixin color-1-fade-in-out-keyframes_ {
+  @keyframes mdc-circular-progress-color-1-fade-in-out {
+    from {
+      opacity: 0.99;
+    }
+    25% {
+      opacity: 0.99;
+    }
+    26% {
+      opacity: 0;
+    }
+    89% {
+      opacity: 0;
+    }
+    90% {
+      opacity: 0.99;
+    }
+    to {
+      opacity: 0.99;
+    }
+  }
+}
+
+/// Keyframes for the fade-in and fade-out of the second color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
+@mixin color-2-fade-in-out-keyframes_ {
+  @keyframes mdc-circular-progress-color-2-fade-in-out {
+    from {
+      opacity: 0;
+    }
+    15% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.99;
+    }
+    50% {
+      opacity: 0.99;
+    }
+    51% {
+      opacity: 0;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/// Keyframes for the fade-in and fade-out of the third color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
+@mixin color-3-fade-in-out-keyframes_ {
+  @keyframes mdc-circular-progress-color-3-fade-in-out {
+    from {
+      opacity: 0;
+    }
+    40% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.99;
+    }
+    75% {
+      opacity: 0.99;
+    }
+    76% {
+      opacity: 0;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/// Keyframes for the fade-in and fade-out of the fourth color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
+@mixin color-4-fade-in-out-keyframes_ {
+  @keyframes mdc-circular-progress-color-4-fade-in-out {
+    from {
+      opacity: 0;
+    }
+    65% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 0.99;
+    }
+    90% {
+      opacity: 0.99;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/// Keyframes for the expansion and contraction of the arc for the
+/// left semi-circle.
+/// @access private
+@mixin left-spin-keyframes_ {
+  @keyframes mdc-circular-progress-left-spin {
+    from {
+      @include rtl.ignore-next-line();
+      transform: rotate(265deg);
+    }
+    50% {
+      @include rtl.ignore-next-line();
+      transform: rotate(130deg);
+    }
+    to {
+      @include rtl.ignore-next-line();
+      transform: rotate(265deg);
+    }
+  }
+}
+
+/// Keyframes for the expansion and contraction of the arc for the
+/// right semi-circle.
+/// @access private
+@mixin right-spin-keyframes_ {
+  @keyframes mdc-circular-progress-right-spin {
+    from {
+      @include rtl.ignore-next-line();
+      transform: rotate(-265deg);
+    }
+    50% {
+      @include rtl.ignore-next-line();
+      transform: rotate(-130deg);
+    }
+    to {
+      @include rtl.ignore-next-line();
+      transform: rotate(-265deg);
+    }
+  }
+}

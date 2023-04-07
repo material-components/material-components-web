@@ -22,19 +22,22 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCDrawerAdapter} from '../adapter';
 import {cssClasses, strings} from '../constants';
 
-export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
-  static get strings() {
+/** MDC Dismissible Drawer Foundation */
+export class MDCDismissibleDrawerFoundation extends
+    MDCFoundation<MDCDrawerAdapter> {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCDrawerAdapter {
+  static override get defaultAdapter(): MDCDrawerAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -52,19 +55,19 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     // tslint:enable:object-literal-sort-keys
   }
 
-  private animationFrame_ = 0;
-  private animationTimer_ = 0;
+  private animationFrame = 0;
+  private animationTimer = 0;
 
   constructor(adapter?: Partial<MDCDrawerAdapter>) {
     super({...MDCDismissibleDrawerFoundation.defaultAdapter, ...adapter});
   }
 
-  destroy() {
-    if (this.animationFrame_) {
-      cancelAnimationFrame(this.animationFrame_);
+  override destroy() {
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
     }
-    if (this.animationTimer_) {
-      clearTimeout(this.animationTimer_);
+    if (this.animationTimer) {
+      clearTimeout(this.animationTimer);
     }
   }
 
@@ -79,8 +82,9 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     this.adapter.addClass(cssClasses.OPEN);
     this.adapter.addClass(cssClasses.ANIMATE);
 
-    // Wait a frame once display is no longer "none", to establish basis for animation
-    this.runNextAnimationFrame_(() => {
+    // Wait a frame once display is no longer "none", to establish basis for
+    // animation
+    this.runNextAnimationFrame(() => {
       this.adapter.addClass(cssClasses.OPENING);
     });
 
@@ -140,8 +144,9 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   handleTransitionEnd(evt: TransitionEvent) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
 
-    // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
-    const isRootElement = this.isElement_(evt.target) &&
+    // In Edge, transitionend on ripple pseudo-elements yields a target without
+    // classList, so check for Element first.
+    const isRootElement = this.isElement(evt.target) &&
         this.adapter.elementHasClass(evt.target, ROOT);
     if (!isRootElement) {
       return;
@@ -149,12 +154,12 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
 
     if (this.isClosing()) {
       this.adapter.removeClass(OPEN);
-      this.closed_();
+      this.closed();
       this.adapter.restoreFocus();
       this.adapter.notifyClose();
     } else {
       this.adapter.focusActiveNavigationItem();
-      this.opened_();
+      this.opened();
       this.adapter.notifyOpen();
     }
 
@@ -166,27 +171,29 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   /**
    * Extension point for when drawer finishes open animation.
    */
-  protected opened_() {} // tslint:disable-line:no-empty
+  protected opened() {}  // tslint:disable-line:no-empty
 
   /**
    * Extension point for when drawer finishes close animation.
    */
-  protected closed_() {} // tslint:disable-line:no-empty
+  protected closed() {}  // tslint:disable-line:no-empty
 
   /**
-   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+   * Runs the given logic on the next animation frame, using setTimeout to
+   * factor in Firefox reflow behavior.
    */
-  private runNextAnimationFrame_(callback: () => void) {
-    cancelAnimationFrame(this.animationFrame_);
-    this.animationFrame_ = requestAnimationFrame(() => {
-      this.animationFrame_ = 0;
-      clearTimeout(this.animationTimer_);
-      this.animationTimer_ = setTimeout(callback, 0);
+  private runNextAnimationFrame(callback: () => void) {
+    cancelAnimationFrame(this.animationFrame);
+    this.animationFrame = requestAnimationFrame(() => {
+      this.animationFrame = 0;
+      clearTimeout(this.animationTimer);
+      this.animationTimer = setTimeout(callback, 0);
     });
   }
 
-  private isElement_(element: unknown): element is Element {
-    // In Edge, transitionend on ripple pseudo-elements yields a target without classList.
+  private isElement(element: unknown): element is Element {
+    // In Edge, transitionend on ripple pseudo-elements yields a target without
+    // classList.
     return Boolean((element as Element).classList);
   }
 }

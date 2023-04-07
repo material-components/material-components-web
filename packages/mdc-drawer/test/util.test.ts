@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getFixture} from '../../../testing/dom';
+import {createFixture, html} from '../../../testing/dom';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import * as util from '../util';
 
@@ -30,7 +30,7 @@ describe('MDCDrawer - util', () => {
 
   it('createFocusTrapInstance creates a properly configured focus trap instance with all args specified',
      () => {
-       const rootEl = getFixture(`<div></div>`);
+       const rootEl = createFixture(html`<div></div>`);
        const focusTrapFactory = jasmine.createSpy('focusTrapFactory');
        const properlyConfiguredFocusTrapInstance = {
          trapFocus() {},

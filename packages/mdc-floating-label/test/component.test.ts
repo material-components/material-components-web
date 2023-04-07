@@ -23,15 +23,12 @@
 
 
 import {MDCFloatingLabel} from '../../mdc-floating-label/index';
+import {createFixture, html} from '../../../testing/dom';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <label class="mdc-floating-label"></label>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 
@@ -81,6 +78,14 @@ describe('MDCFloatingLabel', () => {
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
+  });
+
+  it('#adapter.hasClass returns presence of a class', () => {
+    const {root, component} = setupTest();
+    const adapter = (component.getDefaultFoundation() as any).adapter;
+    expect(adapter.hasClass('foo')).toBe(false);
+    root.classList.add('foo');
+    expect(adapter.hasClass('foo')).toBe(true);
   });
 
   it('#adapter.getWidth returns the width of the label element', () => {

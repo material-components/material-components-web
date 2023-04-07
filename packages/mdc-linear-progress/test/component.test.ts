@@ -24,22 +24,25 @@
 
 import {animationDimensionPercentages as percentages} from '../../mdc-linear-progress/constants';
 import {MDCLinearProgress, MDCLinearProgressFoundation} from '../../mdc-linear-progress/index';
+import {MDCResizeObserver, MDCResizeObserverCallback, MDCResizeObserverEntry, WithMDCResizeObserver} from '../../mdc-linear-progress/types';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 
 interface WithObserverFoundation {
-  foundation: {observer: null|ResizeObserver};
+  foundation: {observer: null|MDCResizeObserver};
 }
 
-const roundPixelsToTwoDecimals = (val: string) => {
+const RO = (window as unknown as WithMDCResizeObserver).ResizeObserver;
+
+function roundPixelsToTwoDecimals(val: string) {
   const numberVal = Number(val.split('px')[0]);
   return Math.floor(numberVal * 100) / 100;
-};
+}
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div role="progressbar" class="mdc-linear-progress" aria-label="Unit Test Progress Bar" aria-valuemin="0"
       aria-valuemax="1" aria-valuenow="0" style="width: 100px">
       <div class="mdc-linear-progress__buffer">
@@ -53,13 +56,10 @@ function getFixture() {
         <span class="mdc-linear-progress__bar-inner"></span>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
-const originalResizeObserver = window.ResizeObserver;
+const originalResizeObserver = RO;
 
 function setupTest(hasMockFoundation = false) {
   const root = getFixture();
@@ -92,16 +92,18 @@ describe('MDCLinearProgress', () => {
         .toBeTruthy();
     expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUENOW))
         .toEqual(null);
+    expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUEMAX))
+        .toEqual(null);
+    expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUEMIN))
+        .toEqual(null);
   });
 
   it('set progress', () => {
     const {root, component} = setupTest();
 
     component.progress = 0.5;
-    const primaryBar =
-        root.querySelector(
-            MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR) as
-        HTMLElement;
+    const primaryBar = root.querySelector<HTMLElement>(
+        MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR)!;
     // External GitHub TS compiler insists that `buffer.style.transform` could
     // be null
     // tslint:disable-next-line:no-unnecessary-type-assertion
@@ -114,22 +116,12 @@ describe('MDCLinearProgress', () => {
     const {root, component} = setupTest();
 
     component.buffer = 0.5;
-    const buffer =
-        root.querySelector(
-            MDCLinearProgressFoundation.strings.BUFFER_BAR_SELECTOR) as
-        HTMLElement;
+    const buffer = root.querySelector<HTMLElement>(
+        MDCLinearProgressFoundation.strings.BUFFER_BAR_SELECTOR)!;
     // External GitHub TS compiler insists that `buffer.style.transform` could
     // be null
     // tslint:disable-next-line:no-unnecessary-type-assertion
     expect('50%').toEqual(buffer.style.flexBasis as string);
-  });
-
-  it('set reverse', () => {
-    const {root, component} = setupTest();
-
-    component.reverse = true;
-    expect(root.classList.contains('mdc-linear-progress--reversed'))
-        .toBeTruthy();
   });
 
   it('open and close', () => {
@@ -160,11 +152,13 @@ describe('MDCLinearProgress', () => {
       if (root) {
         document.body.removeChild(root);
       }
-      window.ResizeObserver = originalResizeObserver;
+      (window as unknown as WithMDCResizeObserver).ResizeObserver =
+          originalResizeObserver;
     });
 
     it('will not error if there is no resize observer', () => {
-      (window.ResizeObserver as unknown as null) = null;
+      ((window as unknown as WithMDCResizeObserver).ResizeObserver as unknown as
+       null) = null;
       component = setupTest().component;
 
       const foundation =
@@ -175,7 +169,7 @@ describe('MDCLinearProgress', () => {
     });
 
     it('will update size on resize', async () => {
-      if (!window.ResizeObserver) {
+      if (!RO) {
         // skip tests on IE which wouldn't run these anyway
         return;
       }
@@ -187,7 +181,7 @@ describe('MDCLinearProgress', () => {
       class MockObserver {
         observedElement: HTMLElement|null = null;
 
-        constructor(public callback: ResizeObserverCallback) {
+        constructor(public callback: MDCResizeObserverCallback) {
           this.callback = callback;
         }
 
@@ -202,12 +196,13 @@ describe('MDCLinearProgress', () => {
         triggerResize(width: number) {
           const fakeEntry = {contentRect: {width}};
           this.callback(
-              [fakeEntry as unknown as ResizeObserverEntry],
-              this as unknown as ResizeObserver);
+              [fakeEntry as unknown as MDCResizeObserverEntry],
+              this as unknown as MDCResizeObserver);
         }
       }
 
-      window.ResizeObserver = MockObserver as unknown as typeof ResizeObserver;
+      (window as unknown as WithMDCResizeObserver).ResizeObserver =
+          MockObserver as unknown as typeof RO;
       ({root, component} = setupTest());
       document.body.appendChild(root);
       component.determinate = false;

@@ -22,6 +22,7 @@
  */
 
 import {EventType, SpecificEventListener} from '@material/base/types';
+
 import {CssClasses} from './constants';
 
 /**
@@ -43,6 +44,11 @@ export interface MDCTooltipAdapter {
   setAttribute(attr: string, value: string): void;
 
   /**
+   * Removes an attribute on the root element.
+   */
+  removeAttribute(attr: string): void;
+
+  /**
    * Adds a class onto the root element.
    */
   addClass(className: CssClasses): void;
@@ -58,9 +64,21 @@ export interface MDCTooltipAdapter {
   removeClass(className: CssClasses): void;
 
   /**
+   * @return the value of the given computed style property on the root element.
+   */
+  getComputedStyleProperty(propertyName: string): string;
+
+  /**
    * Sets the property value of the given style property on the root element.
    */
   setStyleProperty(propertyName: string, value: string): void;
+
+  /**
+   * Sets the property value of the given style property on the tooltip's
+   * surface-animation element (indicated by the
+   * "mdc-tooltip__surface-animation" class).
+   */
+  setSurfaceAnimationStyleProperty(propertyName: string, value: string): void;
 
   /**
    * @return the width of the viewport.
@@ -78,9 +96,14 @@ export interface MDCTooltipAdapter {
   getTooltipSize(): {width: number, height: number};
 
   /**
-   * @return the ClientRect for the anchor element.
+   * @return the DOMRect for the anchor element.
    */
-  getAnchorBoundingRect(): ClientRect|null;
+  getAnchorBoundingRect(): DOMRect|null;
+
+  /**
+   * @return the DOMRect for the parent of the tooltip element.
+   */
+  getParentBoundingRect(): DOMRect|null;
 
   /**
    * @return the attribute string if present on the anchor element, null
@@ -89,9 +112,53 @@ export interface MDCTooltipAdapter {
   getAnchorAttribute(attr: string): string|null;
 
   /**
+   * Sets an attribute on the anchor element.
+   */
+  setAnchorAttribute(attr: string, value: string): void;
+
+  /**
    * @return true if the text direction is right-to-left.
    */
   isRTL(): boolean;
+
+  /**
+   * Checks if element is contained within the anchor element.
+   */
+  anchorContainsElement(element: Element): boolean;
+
+  /**
+   * Checks if element is contained within the tooltip element.
+   */
+  tooltipContainsElement(element: Element): boolean;
+
+  /**
+   * Sets focus on the anchor element.
+   */
+  focusAnchorElement(): void;
+
+  /**
+   * Registers an event listener to the root element.
+   */
+  registerEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener to the root element.
+   */
+  deregisterEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Registers an event listener to the anchor element.
+   */
+  registerAnchorEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener to the anchor element.
+   */
+  deregisterAnchorEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener to the document body.
@@ -106,8 +173,52 @@ export interface MDCTooltipAdapter {
       evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
+   * Registers an event listener to the window.
+   */
+  registerWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener to the window.
+   */
+  deregisterWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
    * Notification that the tooltip element has been fully hidden. Typically used
    * to wait for the hide animation to complete.
    */
   notifyHidden(): void;
+
+  /**
+   * Notification that the tooltip element has been shown.
+   */
+  notifyShown(): void;
+
+  /**
+   * @return the DOMRect for the caret element.
+   */
+  getTooltipCaretBoundingRect(): DOMRect|null;
+
+  /**
+   * Sets the property value of the given style property on both the caret-top
+   * and caret-bottom elements.
+   */
+  setTooltipCaretStyle(propertyName: string, value: string): void;
+
+  /**
+   * Clears all inline styles set on the caret-top and caret-bottom elements.
+   */
+  clearTooltipCaretStyles(): void;
+
+  /**
+   * @return the active element of the document that owns the tooltip.
+   */
+  getActiveElement(): Element|null;
+
+  /**
+   * @return whether the provided object is an Element or not. This is
+   * required because Elements from iframes are typed differently.
+   */
+  isInstanceOfElement(eventTarget: EventTarget|null): boolean;
 }

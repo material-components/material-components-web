@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,295 +22,209 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {MDCRippleAdapter} from '@material/ripple/adapter';
-import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
-import {MDCRippleFoundation} from '@material/ripple/foundation';
-import {MDCRippleCapableSurface} from '@material/ripple/types';
+import {CustomEventListener} from '@material/base/types';
 
-import {MDCChipTrailingAction, MDCChipTrailingActionFactory} from '../trailingaction/component';
-import {strings as trailingActionStrings} from '../trailingaction/constants';
-import {MDCChipTrailingActionInteractionEvent, MDCChipTrailingActionNavigationEvent} from '../trailingaction/types';
+import {MDCChipAction, MDCChipActionFactory} from '../action/component';
+import {MDCChipActionEvents, MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants';
 
 import {MDCChipAdapter} from './adapter';
-import {strings} from './constants';
+import {MDCChipAnimation} from './constants';
 import {MDCChipFoundation} from './foundation';
-import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail} from './types';
+import {ActionInteractionEvent, ActionNavigationEvent} from './types';
 
-export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) => MDCChip;
+/**
+ * MDCChipFactory is used by the parent MDCChipSet component to initialize
+ * chips.
+ */
+export type MDCChipFactory =
+    (el: HTMLElement, foundation?: MDCChipFoundation) => MDCChip;
 
-export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippleCapableSurface {
-  /**
-   * @return Whether the chip is selected.
-   */
-  get selected(): boolean {
-    return this.foundation.isSelected();
-  }
-
-  /**
-   * Sets selected state on the chip.
-   */
-  set selected(selected: boolean) {
-    this.foundation.setSelected(selected);
-  }
-
-  /**
-   * @return Whether a trailing icon click should trigger exit/removal of the chip.
-   */
-  get shouldRemoveOnTrailingIconClick(): boolean {
-    return this.foundation.getShouldRemoveOnTrailingIconClick();
-  }
-
-  /**
-   * Sets whether a trailing icon click should trigger exit/removal of the chip.
-   */
-  set shouldRemoveOnTrailingIconClick(shouldRemove: boolean) {
-    this.foundation.setShouldRemoveOnTrailingIconClick(shouldRemove);
-  }
-
-  /**
-   * Sets whether a clicking on the chip should focus the primary action.
-   */
-  set setShouldFocusPrimaryActionOnClick(shouldFocus: boolean) {
-    this.foundation.setShouldFocusPrimaryActionOnClick(shouldFocus);
-  }
-
-  get ripple(): MDCRipple {
-    return this.ripple_;
-  }
-
-  get id(): string {
-    return this.root.id;
-  }
-
-  static attachTo(root: Element) {
+/**
+ * MDCChip provides component encapsulation of the foundation implementation.
+ */
+export class MDCChip extends MDCComponent<MDCChipFoundation> {
+  static override attachTo(root: HTMLElement): MDCChip {
     return new MDCChip(root);
   }
 
-  private leadingIcon_!: Element | null; // assigned in initialize()
-  private checkmark_!: Element | null; // assigned in initialize()
-  private primaryAction_!: Element|null;            // assigned in initialize()
-  private trailingAction_!: MDCChipTrailingAction|
-      null;                    // assigned in initialize()
-  private ripple_!: MDCRipple; // assigned in initialize()
+  // Below properties are all assigned in #initialize()
+  private handleActionInteraction!: CustomEventListener<ActionInteractionEvent>;
+  private handleActionNavigation!: CustomEventListener<ActionNavigationEvent>;
+  private actions!: Map<MDCChipActionType, MDCChipAction>;
 
-  private handleTrailingActionInteraction_!: CustomEventListener<
-      MDCChipTrailingActionInteractionEvent>;  // assigned in
-                                               // initialSyncWithDOM()
-  private handleTrailingActionNavigation_!: CustomEventListener<
-      MDCChipTrailingActionNavigationEvent>;  // assigned in
-                                              // initialSyncWithDOM()
-  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
-  private handleClick_!:
-      SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
-  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
-  private handleFocusIn_!:
-      SpecificEventListener<'focusin'>;  // assigned in initialSyncWIthDOM()
-  private handleFocusOut_!:
-      SpecificEventListener<'focusout'>;  // assigned in initialSyncWIthDOM()
-
-  initialize(
-      rippleFactory:
-          MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-      trailingActionFactory:
-          MDCChipTrailingActionFactory = (el) => new MDCChipTrailingAction(el),
-  ) {
-    this.leadingIcon_ = this.root.querySelector(strings.LEADING_ICON_SELECTOR);
-    this.checkmark_ = this.root.querySelector(strings.CHECKMARK_SELECTOR);
-    this.primaryAction_ =
-        this.root.querySelector(strings.PRIMARY_ACTION_SELECTOR);
-
-    const trailingActionEl =
-        this.root.querySelector(strings.TRAILING_ACTION_SELECTOR);
-
-    if (trailingActionEl) {
-      this.trailingAction_ = trailingActionFactory(trailingActionEl);
-    }
-
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    const rippleAdapter: MDCRippleAdapter = {
-      ...MDCRipple.createAdapter(this),
-      computeBoundingRect: () => this.foundation.getDimensions(),
-    };
-    this.ripple_ =
-        rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
-  }
-
-  initialSyncWithDOM() {
-    // Custom events
-    this.handleTrailingActionInteraction_ = () => {
-      this.foundation.handleTrailingActionInteraction();
-    };
-    this.handleTrailingActionNavigation_ =
-        (evt: MDCChipTrailingActionNavigationEvent) => {
-          this.foundation.handleTrailingActionNavigation(evt);
-        };
-    // Native events
-    this.handleClick_ = () => {
-      this.foundation.handleClick();
-    };
-    this.handleKeydown_ = (evt: KeyboardEvent) => {
-      this.foundation.handleKeydown(evt);
-    };
-    this.handleTransitionEnd_ = (evt: TransitionEvent) => {
-      this.foundation.handleTransitionEnd(evt);
-    };
-    this.handleFocusIn_ = (evt: FocusEvent) => {
-      this.foundation.handleFocusIn(evt);
-    };
-    this.handleFocusOut_ = (evt: FocusEvent) => {
-      this.foundation.handleFocusOut(evt);
-    };
-
-
-    this.listen('transitionend', this.handleTransitionEnd_);
-    this.listen('click', this.handleClick_);
-    this.listen('keydown', this.handleKeydown_);
-    this.listen('focusin', this.handleFocusIn_);
-    this.listen('focusout', this.handleFocusOut_);
-
-    if (this.trailingAction_) {
-      this.listen(
-          trailingActionStrings.INTERACTION_EVENT,
-          this.handleTrailingActionInteraction_);
-      this.listen(
-          trailingActionStrings.NAVIGATION_EVENT,
-          this.handleTrailingActionNavigation_);
+  override initialize(
+      actionFactory:
+          MDCChipActionFactory = (el: HTMLElement) => new MDCChipAction(el)) {
+    this.actions = new Map();
+    const actionEls =
+        this.root.querySelectorAll<HTMLElement>('.mdc-evolution-chip__action');
+    for (let i = 0; i < actionEls.length; i++) {
+      const action = actionFactory(actionEls[i]);
+      this.actions.set(action.actionType(), action);
     }
   }
 
-  destroy() {
-    this.ripple_.destroy();
+  override initialSyncWithDOM() {
+    this.handleActionInteraction = (event) => {
+      this.foundation.handleActionInteraction(event);
+    };
 
-    this.unlisten('transitionend', this.handleTransitionEnd_);
-    this.unlisten('keydown', this.handleKeydown_);
-    this.unlisten('click', this.handleClick_);
-    this.unlisten('focusin', this.handleFocusIn_);
-    this.unlisten('focusout', this.handleFocusOut_);
+    this.handleActionNavigation = (event) => {
+      this.foundation.handleActionNavigation(event);
+    };
 
-    if (this.trailingAction_) {
-      this.unlisten(
-          trailingActionStrings.INTERACTION_EVENT,
-          this.handleTrailingActionInteraction_);
-      this.unlisten(
-          trailingActionStrings.NAVIGATION_EVENT,
-          this.handleTrailingActionNavigation_);
-    }
+    this.listen(MDCChipActionEvents.INTERACTION, this.handleActionInteraction);
+    this.listen(MDCChipActionEvents.NAVIGATION, this.handleActionNavigation);
+  }
 
+  override destroy() {
+    this.unlisten(
+        MDCChipActionEvents.INTERACTION, this.handleActionInteraction);
+    this.unlisten(MDCChipActionEvents.NAVIGATION, this.handleActionNavigation);
     super.destroy();
   }
 
-  /**
-   * Begins the exit animation which leads to removal of the chip.
-   */
-  beginExit() {
-    this.foundation.beginExit();
-  }
-
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+  override getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      addClassToLeadingIcon: (className) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.classList.add(className);
-        }
+      addClass: (className) => {
+        this.root.classList.add(className);
       },
-      eventTargetHasClass: (target, className) =>
-          target ? (target as Element).classList.contains(className) : false,
-      focusPrimaryAction: () => {
-        if (this.primaryAction_) {
-          (this.primaryAction_ as HTMLElement).focus();
-        }
+      emitEvent: (eventName, eventDetail) => {
+        this.emit(eventName, eventDetail, true /* shouldBubble */);
       },
-      focusTrailingAction: () => {
-        if (this.trailingAction_) {
-          this.trailingAction_.focus();
+      getActions: () => {
+        const actions: MDCChipActionType[] = [];
+        for (const [key] of this.actions) {
+          actions.push(key);
         }
+        return actions;
       },
-      getAttribute: (attr) => this.root.getAttribute(attr),
-      getCheckmarkBoundingClientRect: () =>
-          this.checkmark_ ? this.checkmark_.getBoundingClientRect() : null,
-      getComputedStyleValue: (propertyName) =>
-          window.getComputedStyle(this.root).getPropertyValue(propertyName),
-      getRootBoundingClientRect: () => this.root.getBoundingClientRect(),
+      getAttribute: (attrName) => this.root.getAttribute(attrName),
+      getElementID: () => this.root.id,
+      getOffsetWidth: () => {
+        return this.root.offsetWidth;
+      },
       hasClass: (className) => this.root.classList.contains(className),
-      hasLeadingIcon: () => !!this.leadingIcon_,
-      isRTL: () => window.getComputedStyle(this.root).getPropertyValue(
-                       'direction') === 'rtl',
-      isTrailingActionNavigable: () => {
-        if (this.trailingAction_) {
-          return this.trailingAction_.isNavigable();
+      isActionSelectable: (actionType: MDCChipActionType) => {
+        const action = this.actions.get(actionType);
+        if (action) {
+          return action.isSelectable();
         }
         return false;
       },
-      notifyInteraction: () => this.emit<MDCChipInteractionEventDetail>(
-          strings.INTERACTION_EVENT, {chipId: this.id},
-          true /* shouldBubble */),
-      notifyNavigation: (key, source) =>
-          this.emit<MDCChipNavigationEventDetail>(
-              strings.NAVIGATION_EVENT, {chipId: this.id, key, source},
-              true /* shouldBubble */),
-      notifyRemoval: (removedAnnouncement) => {
-        this.emit<MDCChipRemovalEventDetail>(
-            strings.REMOVAL_EVENT, {chipId: this.id, removedAnnouncement},
-            true /* shouldBubble */);
-      },
-      notifySelection: (selected, shouldIgnore) =>
-          this.emit<MDCChipSelectionEventDetail>(
-              strings.SELECTION_EVENT,
-              {chipId: this.id, selected, shouldIgnore},
-              true /* shouldBubble */),
-      notifyTrailingIconInteraction: () =>
-          this.emit<MDCChipInteractionEventDetail>(
-              strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id},
-              true /* shouldBubble */),
-      notifyEditStart: () => { /* Not Implemented. */ },
-      notifyEditFinish: () => { /* Not Implemented. */ },
-      removeClass: (className) => this.root.classList.remove(className),
-      removeClassFromLeadingIcon: (className) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.classList.remove(className);
+      isActionSelected: (actionType: MDCChipActionType) => {
+        const action = this.actions.get(actionType);
+        if (action) {
+          return action.isSelected();
         }
+        return false;
       },
-      removeTrailingActionFocus: () => {
-        if (this.trailingAction_) {
-          this.trailingAction_.removeFocus();
+      isActionFocusable: (actionType: MDCChipActionType) => {
+        const action = this.actions.get(actionType);
+        if (action) {
+          return action.isFocusable();
         }
+        return false;
       },
-      setPrimaryActionAttr: (attr, value) => {
-        if (this.primaryAction_) {
-          this.primaryAction_.setAttribute(attr, value);
+      isActionDisabled: (actionType: MDCChipActionType) => {
+        const action = this.actions.get(actionType);
+        if (action) {
+          return action.isDisabled();
         }
+        return false;
       },
-      setStyleProperty: (propertyName, value) =>
-          (this.root as HTMLElement).style.setProperty(propertyName, value),
+      isRTL: () => window.getComputedStyle(this.root).getPropertyValue(
+                       'direction') === 'rtl',
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
+      setActionDisabled:
+          (actionType: MDCChipActionType, isDisabled: boolean) => {
+            const action = this.actions.get(actionType);
+            if (action) {
+              action.setDisabled(isDisabled);
+            }
+          },
+      setActionFocus:
+          (actionType: MDCChipActionType,
+           behavior: MDCChipActionFocusBehavior) => {
+            const action = this.actions.get(actionType);
+            if (action) {
+              action.setFocus(behavior);
+            }
+          },
+      setActionSelected:
+          (actionType: MDCChipActionType, isSelected: boolean) => {
+            const action = this.actions.get(actionType);
+            if (action) {
+              action.setSelected(isSelected);
+            }
+          },
+      setStyleProperty: (prop: string, value: string) => {
+        this.root.style.setProperty(prop, value);
+      },
     };
+
+    // Default to the primary foundation
     return new MDCChipFoundation(adapter);
   }
 
-  setSelectedFromChipSet(selected: boolean, shouldNotifyClients: boolean) {
-    this.foundation.setSelectedFromChipSet(selected, shouldNotifyClients);
-  }
-
-  focusPrimaryAction() {
-    this.foundation.focusPrimaryAction();
-  }
-
-  focusTrailingAction() {
-    this.foundation.focusTrailingAction();
-  }
-
-  removeFocus() {
-    this.foundation.removeFocus();
-  }
-
+  /** Exposed to be called by the parent chip set. */
   remove() {
     const parent = this.root.parentNode;
     if (parent !== null) {
       parent.removeChild(this.root);
     }
+  }
+
+  /** Returns the MDCChipActionTypes for the encapsulated actions. */
+  getActions(): MDCChipActionType[] {
+    return this.foundation.getActions();
+  }
+
+  /** Returns the ID of the root element. */
+  getElementID(): string {
+    return this.foundation.getElementID();
+  }
+
+  isDisabled(): boolean {
+    return this.foundation.isDisabled();
+  }
+
+  setDisabled(isDisabled: boolean) {
+    this.foundation.setDisabled(isDisabled);
+  }
+
+  /** Returns the focusability of the action. */
+  isActionFocusable(action: MDCChipActionType): boolean {
+    return this.foundation.isActionFocusable(action);
+  }
+
+  /** Returns the selectability of the action. */
+  isActionSelectable(action: MDCChipActionType): boolean {
+    return this.foundation.isActionSelectable(action);
+  }
+
+  /** Returns the selected state of the action. */
+  isActionSelected(action: MDCChipActionType): boolean {
+    return this.foundation.isActionSelected(action);
+  }
+
+  /** Sets the focus behavior of the action. */
+  setActionFocus(action: MDCChipActionType, focus: MDCChipActionFocusBehavior) {
+    this.foundation.setActionFocus(action, focus);
+  }
+
+  /** Sets the selected state of the action. */
+  setActionSelected(action: MDCChipActionType, isSelected: boolean) {
+    this.foundation.setActionSelected(action, isSelected);
+  }
+
+  /** Starts the animation on the chip. */
+  startAnimation(animation: MDCChipAnimation) {
+    this.foundation.startAnimation(animation);
   }
 }

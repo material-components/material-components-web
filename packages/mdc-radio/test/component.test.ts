@@ -21,16 +21,16 @@
  * THE SOFTWARE.
  */
 
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
+import {createFixture, html} from '../../../testing/dom';
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCRadio, MDCRadioFoundation} from '../index';
 
 const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-radio">
       <input type="radio" id="my-radio" name="my-radio-group"
              class="mdc-radio__native-control" aria-labelledby="my-radio-label">
@@ -39,10 +39,7 @@ function getFixture() {
         <div class="mdc-radio__inner-circle"></div>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as Element;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {
@@ -78,7 +75,7 @@ describe('MDCRadio', () => {
      () => {
        const {root, component} = setupTest();
        const radio =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+           root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
        component.checked = true;
        expect(radio.checked).toBeTruthy();
        expect(component.checked).toEqual(radio.checked);
@@ -88,7 +85,7 @@ describe('MDCRadio', () => {
      () => {
        const {root, component} = setupTest();
        const radio =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+           root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
        component.disabled = true;
        expect(radio.disabled).toBeTruthy();
        expect(component.disabled).toEqual(radio.disabled);
@@ -100,7 +97,7 @@ describe('MDCRadio', () => {
   it('get/set value updates the value of the native radio element', () => {
     const {root, component} = setupTest();
     const radio =
-        root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+        root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR)!;
     component.value = 'new value';
     expect(radio.value).toEqual('new value');
     expect(component.value).toEqual(radio.value);
@@ -127,8 +124,8 @@ describe('MDCRadio', () => {
   it('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to true',
      () => {
        const {root, component} = setupTest();
-       const radio =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+       const radio = root.querySelector<HTMLElement>(NATIVE_CONTROL_SELECTOR) as
+           HTMLInputElement;
 
        (component.getDefaultFoundation() as any)
            .adapter.setNativeControlDisabled(true);
@@ -138,8 +135,8 @@ describe('MDCRadio', () => {
   it('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to false',
      () => {
        const {root, component} = setupTest();
-       const radio =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+       const radio = root.querySelector<HTMLElement>(NATIVE_CONTROL_SELECTOR) as
+           HTMLInputElement;
        radio.disabled = true;
 
        (component.getDefaultFoundation() as any)

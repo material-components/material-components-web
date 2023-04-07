@@ -23,15 +23,15 @@
 
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {strings} from '../constants';
 import {MDCCheckbox, MDCCheckboxFoundation} from '../index';
 
-function getFixture(): Element {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+function getFixture() {
+  return createFixture(html`
     <div class="mdc-checkbox">
       <input type="checkbox"
              class="mdc-checkbox__native-control"
@@ -48,16 +48,13 @@ function getFixture(): Element {
         <div class="mdc-checkbox__mixedmark"></div>
       </div>
     </div>
-  `;
-  const el = wrapper.firstElementChild as Element;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {
   const root = getFixture();
   const cb =
-      root.querySelector(strings.NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+      root.querySelector<HTMLInputElement>(strings.NATIVE_CONTROL_SELECTOR)!;
   const component = new MDCCheckbox(root);
   return {root, cb, component};
 }
@@ -65,7 +62,7 @@ function setupTest() {
 function setupMockFoundationTest() {
   const root = getFixture();
   const cb =
-      root.querySelector(strings.NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+      root.querySelector<HTMLInputElement>(strings.NATIVE_CONTROL_SELECTOR)!;
   const mockFoundation = createMockFoundation(MDCCheckboxFoundation);
   const component = new MDCCheckbox(root, mockFoundation);
   return {root, cb, component, mockFoundation};
@@ -92,7 +89,7 @@ describe('MDCCheckbox', () => {
     it('(regression) activates ripple on keydown when the input element surface is active',
        () => {
          const {root} = setupTest();
-         const input = root.querySelector('input') as HTMLInputElement;
+         const input = root.querySelector('input')!;
          jasmine.clock().tick(1);
 
          const fakeMatches = jasmine.createSpy('.matches');
@@ -161,8 +158,7 @@ describe('MDCCheckbox', () => {
     const {root, component} = setupTest();
     (component as any).foundation.handleAnimationEnd = jasmine.createSpy();
     emitEvent(root, 'animationend');
-    expect((component as any).foundation.handleAnimationEnd)
-        .toHaveBeenCalled();
+    expect((component as any).foundation.handleAnimationEnd).toHaveBeenCalled();
   });
 
   it('"checked" property change hook calls foundation#handleChange', () => {
@@ -306,8 +302,7 @@ describe('MDCCheckbox', () => {
 
   it('#adapter.hasNativeControl returns true when checkbox exists', () => {
     const {component} = setupTest();
-    expect(
-        (component.getDefaultFoundation() as any).adapter.hasNativeControl())
+    expect((component.getDefaultFoundation() as any).adapter.hasNativeControl())
         .toBe(true);
   });
 

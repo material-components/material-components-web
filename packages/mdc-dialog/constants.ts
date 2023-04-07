@@ -28,6 +28,32 @@ export const cssClasses = {
   SCROLLABLE: 'mdc-dialog--scrollable',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
   STACKED: 'mdc-dialog--stacked',
+  FULLSCREEN: 'mdc-dialog--fullscreen',
+  // Class for showing a scroll divider on full-screen dialog header element.
+  // Should only be displayed on scrollable content, when the dialog content is
+  // scrolled "underneath" the header.
+  SCROLL_DIVIDER_HEADER: 'mdc-dialog-scroll-divider-header',
+  // Class for showing a scroll divider on a full-screen dialog footer element.
+  // Should only be displayed on scrolalble content, when the dialog content is
+  // obscured "underneath" the footer.
+  SCROLL_DIVIDER_FOOTER: 'mdc-dialog-scroll-divider-footer',
+  // The "surface scrim" is a scrim covering only the surface of a dialog. This
+  // is used in situations where a confirmation dialog is shown over an already
+  // opened full-screen dialog. On larger screen-sizes, the full-screen dialog
+  // is sized as a modal and so in these situations we display a "surface scrim"
+  // to prevent a "double scrim" (where the scrim from the secondary
+  // confirmation dialog would overlap with the scrim from the full-screen
+  // dialog).
+  SURFACE_SCRIM_SHOWN: 'mdc-dialog__surface-scrim--shown',
+  // "Showing" animating class for the surface-scrim.
+  SURFACE_SCRIM_SHOWING: 'mdc-dialog__surface-scrim--showing',
+  // "Hiding" animating class for the surface-scrim.
+  SURFACE_SCRIM_HIDING: 'mdc-dialog__surface-scrim--hiding',
+  // Class to hide a dialog's scrim (used in conjunction with a surface-scrim).
+  // Note that we only hide the original scrim rather than removing it entirely
+  // to prevent interactions with the content behind this scrim, and to capture
+  // scrim clicks.
+  SCRIM_HIDDEN: 'mdc-dialog__scrim--hidden',
 };
 
 export const strings = {
@@ -47,6 +73,7 @@ export const strings = {
   SUPPRESS_DEFAULT_PRESS_SELECTOR: [
     'textarea',
     '.mdc-menu .mdc-list-item',
+    '.mdc-menu .mdc-deprecated-list-item',
   ].join(', '),
   SURFACE_SELECTOR: '.mdc-dialog__surface',
 };

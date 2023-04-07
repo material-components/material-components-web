@@ -20,9 +20,6 @@
 // THE SOFTWARE.
 //
 
-// Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
-
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:meta';
@@ -30,6 +27,7 @@
 @use './css';
 @use './custom-properties';
 @use './gss';
+@use './keys';
 @use './replace';
 @use './theme-color';
 
@@ -38,23 +36,25 @@
 
   :root {
     @include feature-targeting.targets($feat-color) {
-      @each $style in map.keys(theme-color.$property-values) {
-        --mdc-theme-#{$style}: #{map.get(theme-color.$property-values, $style)};
+      @each $style in theme-color.get-theme-keys() {
+        @include custom-properties.declaration(
+          keys.create-custom-property($style)
+        );
       }
     }
   }
 
-  @each $style in map.keys(theme-color.$property-values) {
+  @each $style in theme-color.get-theme-keys() {
     @if $style != 'background' and $style != 'surface' {
       .mdc-theme--#{$style} {
         @include feature-targeting.targets($feat-color) {
-          @include prop(color, $style, true);
+          @include property(color, $style, $important: true);
         }
       }
     } @else {
       .mdc-theme--#{$style} {
         @include feature-targeting.targets($feat-color) {
-          @include prop(background-color, $style);
+          @include property(background-color, $style);
         }
       }
     }
@@ -64,7 +64,7 @@
   @each $style in ('primary', 'secondary') {
     .mdc-theme--#{$style}-bg {
       @include feature-targeting.targets($feat-color) {
-        @include prop(background-color, $style, true);
+        @include property(background-color, $style, $important: true);
       }
     }
   }
@@ -80,7 +80,7 @@
 ///
 /// @example
 ///   @include theme.property(color, teal);
-///   @include theme.property(color, custom-properties.create(--mdc-foo, blue));
+///   @include theme.property(color, custom-properties.create(foo, blue));
 ///   @include theme.property(color, primary);
 ///
 /// A `$replace` Map parameter may be provided to replace key/value pairs for
@@ -91,14 +91,32 @@
 ///   @include theme.property(
 ///     width,
 ///     calc(foo + bar),
-///     $replace: (foo: custom-properties.create(--mdc-foo), bar: 8px)
+///     $replace: (foo: custom-properties.create(foo), bar: 8px)
 ///   );
 ///
 /// Note: Material theme key Strings (e.g. `primary`) are not supported as
 /// replacement values.
 ///
-/// @param {String} $property - The name of the CSS property.
+/// A CSS custom property declaration may be emitted by providing a custom
+/// property Map to `$property`. The fallback value (or `$value` if provided)
+/// will be used as the declaration value.
+///
+/// @example - scss
+///   .foo {
+///     @include theme.property(custom-properties.create(foo, teal));
+///     @include theme.property(custom-properties.create(bar, teal), blue);
+///   }
+///
+/// @example - css
+///   .foo {
+///     --mdc-foo: teal;
+///     --mdc-bar: blue;
+///   }
+///
+/// @param {String | Map} $property - The name of the CSS property. May also be
+///     a custom property Map to emit a custom propery declaration.
 /// @param {String | Number | Color | List | Map} $value - The property's value.
+///     This parameter may be omitted if `$property` is a custom property Map.
 /// @param {Map} $gss - Optional Map of GSS annotations to set.
 /// @param {Map} $replace - An optional Map of replacement key/value pairs if
 ///     the `$value` is a string.
@@ -106,23 +124,63 @@
 ///     to false.
 @mixin property(
   $property,
-  $value,
+  $value: null,
   $gss: (),
   $replace: null,
   $important: false
 ) {
-  @if custom-properties.is-custom-prop($value) {
+  @if custom-properties.is-custom-prop($property) {
+    // $property is a custom property Map
+    //   --mdc-foo: value;
+    @if $value {
+      $property: custom-properties.set-fallback(
+        $property,
+        $value,
+        $shallow: true
+      );
+    }
+
+    @include custom-properties.declaration(
+      $property,
+      $gss: $gss,
+      $important: $important
+    );
+  } @else if custom-properties.is-custom-prop($value) {
     // $value is a custom property Map
-    @include custom-properties.apply(
+    //   property: var(--mdc-foo, fallback);
+    @include custom-properties.declaration(
       $property,
       $value,
       $gss: $gss,
       $important: $important
     );
-  } @else if map.has-key(theme-color.$property-values, $value) {
-    // $value is a theme property String
-    $custom-prop: theme-color.get-custom-property($value);
-    @include custom-properties.apply(
+  } @else if keys.is-key($value) {
+    // $value is a key String
+    //   property: key;
+    $custom-prop: keys.create-custom-property($value);
+
+    @if theme-color.is-theme-key($value) {
+      // Determine if we need to use a compile-time updated value to support
+      // Angular.
+      $key: $value;
+      // (changed: Bool, value: *)
+      $result: theme-color.deprecated-get-global-theme-key-value-if-changed(
+        $key
+      );
+
+      @if map.get($result, changed) {
+        // $mdc-theme-property-values was changed at compile time. Use the
+        // global value instead. Otherwise if it was not changed, continue
+        // using the key store normally.
+        $custom-prop: keys.create-custom-property($key);
+        $custom-prop: custom-properties.set-fallback(
+          $custom-prop,
+          map.get($result, value)
+        );
+      }
+    }
+
+    @include custom-properties.declaration(
       $property,
       $custom-prop,
       $gss: $gss,
@@ -130,20 +188,68 @@
     );
   } @else {
     // $value is a standard CSS value
+    //   property: value;
     $fallback: null;
     @if $replace {
-      @if meta.type-of($value) != 'string' {
-        // theme.property() should support non-string replacements in the
-        // future, such as List types
-        // e.g. theme.property(border-radius, 8px foo, $replace: (foo: $foo));
-        @error 'mdc-theme: Invalid replacement value #{$value}. $replace may only be used with string values.';
+      // If any replacements are null, treat the entire value as null (do not
+      // emit anything).
+      @each $name, $replacement in $replace {
+        @if $replacement == null {
+          $value: null;
+        }
+      }
+    }
+
+    @if $replace and $value {
+      @if meta.type-of($replace) != 'map' {
+        @error 'mdc-theme: Invalid replacement #{$replace}. Must be a Map.';
       }
 
-      $fallback: replace.replace-string($value, $replace, $fallback: true);
-      $value: replace.replace-string($value, $replace);
-      @if $fallback == $value {
-        // The replacements don't contain custom properties with fallbacks
-        $fallback: null;
+      $replace-map-fallback: ();
+      $replace-map-value: ();
+      $needs-fallback: false;
+      @each $name, $replacement in $replace {
+        @if custom-properties.is-custom-prop($replacement) {
+          $replace-value: custom-properties.get-declaration-value($replacement);
+          $replace-fallback: custom-properties.get-declaration-fallback(
+            $replacement
+          );
+          @if $replace-fallback {
+            $needs-fallback: true;
+          }
+
+          $replace-map-value: map.set(
+            $replace-map-value,
+            $name,
+            $replace-value
+          );
+          $replace-map-fallback: map.set(
+            $replace-map-fallback,
+            $name,
+            $replace-fallback
+          );
+        } @else {
+          $replace-map-value: map.set($replace-map-value, $name, $replacement);
+          $replace-map-fallback: map.set(
+            $replace-map-fallback,
+            $name,
+            $replacement
+          );
+        }
+      }
+
+      @if meta.type-of($value) == 'string' {
+        @if $needs-fallback {
+          $fallback: replace.replace-string($value, $replace-map-fallback);
+        }
+        $value: replace.replace-string($value, $replace-map-value);
+      } @else if meta.type-of($value) == 'list' {
+        @if $needs-fallback {
+          $fallback: replace.replace-list($value, $replace-map-fallback);
+        }
+        $value: replace.replace-list($value, $replace-map-value);
+      } @else {
+        @error 'mdc-theme: Invalid replacement value #{$value}. $replace may only be used with string or list values.';
       }
     }
 
@@ -157,47 +263,107 @@
   }
 }
 
-// Applies the correct theme color style to the specified property.
-// $property is typically color or background-color, but can be any CSS property that accepts color values.
-// $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a color value.
 // @deprecated use the `property()` mixin instead
 @mixin prop($property, $style, $important: false) {
-  @if custom-properties.is-custom-prop($style) {
-    @include custom-properties.apply($property, $style, $important: $important);
-  } @else if theme-color.is-valid-theme-prop-value_($style) {
-    @include css.declaration($property, $style, $important: $important);
-  } @else {
-    @if not map.has-key(theme-color.$property-values, $style) {
-      @error "Invalid style: '#{$style}'. Choose one of: #{map.keys(theme-color.$property-values)}";
-    }
-    $value: map.get(theme-color.$property-values, $style);
+  @include property($property, $style, $important: $important);
+}
 
-    @include css.declaration(
-      $property,
-      $value: var(--mdc-theme-#{$style}, $value),
-      $fallback-value: $value,
-      $important: $important
-    );
+/// Validates theme configuration keys by comparing it with original theme
+/// configuration, also validates theme values to see if it has any unsupported
+/// value formats.
+///
+/// Use this in internal `theme()` mixins to validate library-provided
+/// `$theme` maps and ensure that all tokens are correct and present.
+///
+/// @example
+///     @mixin theme($theme) {
+///       @include theme.validate-theme($light-theme, $theme);
+///       ...
+///     }
+///
+/// @see validate-theme-styles to validate only theme keys.
+///
+/// @param {Map} $origin-theme - Original theme configuration in Sass map format
+///     that has all supported keys.
+/// @param {Map} $custom-theme - Provided theme configuration in Sass map format
+///     that should be validated against `$origin-theme`.
+@mixin validate-theme($origin-theme, $custom-theme, $test-only: false) {
+  @include validate-theme-styles(
+    $origin-theme,
+    $custom-theme,
+    $test-only: $test-only
+  );
+  @include _validate-theme-values($custom-theme, $test-only: $test-only);
+}
+
+/// Validates theme configuration keys by comparing it with original theme
+/// configuration.
+///
+/// Use this in internal `theme-styles()` mixins to validate library-provided
+/// `$theme` maps and ensure that all tokens are correct and present.
+///
+/// @example
+///     @mixin theme-styles($theme) {
+///       @include theme.validate-theme-styles($light-theme, $theme);
+///       ...
+///     }
+///
+/// @see validate-theme to validate both theme keys and theme values.
+///
+/// @param {Map} $origin-theme - Original theme configuration in Sass map format
+///     that has all supported keys.
+/// @param {Map} $custom-theme - Provided theme configuration in Sass map format
+///     that should be validated against `$origin-theme`.
+@mixin validate-theme-styles($origin-theme, $custom-theme, $test-only: false) {
+  $origin-keys: map.keys($origin-theme);
+  $unsupported-keys: ();
+
+  @each $key, $value in $custom-theme {
+    @if (not list.index($origin-keys, $key)) {
+      $unsupported-keys: list.append(
+        $unsupported-keys,
+        $key,
+        $separator: comma
+      );
+    }
+  }
+
+  @if list.length($unsupported-keys) > 0 {
+    $error-message: 'Unsupported keys found: #{$unsupported-keys}. Expected one of: #{$origin-keys}.';
+
+    @if $test-only {
+      content: $error-message;
+    } @else {
+      @error $error-message;
+    }
   }
 }
 
-/// Perform a recursive map.get on a nested map structure
-/// Returns a value, or `null` if `$map` does not contain `$path`.
-///
-/// @example scss
-///   $color: deep-get((foo: (bar: black)), (foo, bar));
-///   $color === black;
-///
-/// @param {Map} $map - Map to recurse down
-/// @param {List} $path - List of keys to traverse the map
-/// @return {*} The deep value or `null`
-@function deep-get($map: (), $keys: ()) {
-  $result: $map;
-  @each $key in $keys {
-    $result: map.get($result, $key);
-    @if $result == null {
-      @return null;
+/// Validates theme configuration values to see if it has any unsupported value
+/// formats.
+/// @see Use `validate-theme()` to validate both theme keys and theme values.
+/// @param {Map} $custom-theme - Provided theme configuration in Sass map format
+///     that needs to be validated.
+@mixin _validate-theme-values($custom-theme, $test-only: false) {
+  $unsupported-custom-prop-keys: ();
+
+  @each $key, $value in $custom-theme {
+    @if custom-properties.is-custom-prop($value) {
+      $unsupported-custom-prop-keys: list.append(
+        $unsupported-custom-prop-keys,
+        $key,
+        $separator: comma
+      );
     }
   }
-  @return $result;
+
+  @if list.length($unsupported-custom-prop-keys) > 0 {
+    $error-message: 'Custom properties are not supported for theme map keys: #{$unsupported-custom-prop-keys}';
+
+    @if $test-only {
+      content: $error-message;
+    } @else {
+      @error $error-message;
+    }
+  }
 }

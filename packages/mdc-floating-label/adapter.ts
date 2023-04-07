@@ -42,6 +42,11 @@ export interface MDCFloatingLabelAdapter {
   removeClass(className: string): void;
 
   /**
+   * Checks if the label element has the given class.
+   */
+  hasClass(className: string): boolean;
+
+  /**
    * Returns the width of the label element.
    */
   getWidth(): number;
@@ -49,10 +54,12 @@ export interface MDCFloatingLabelAdapter {
   /**
    * Registers an event listener on the root element for a given event.
    */
-  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  registerInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the root element for a given event.
    */
-  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  deregisterInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 }

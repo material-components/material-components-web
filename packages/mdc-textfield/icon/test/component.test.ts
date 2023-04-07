@@ -22,18 +22,14 @@
  */
 
 
+import {createFixture, html} from '../../../../testing/dom';
 import {emitEvent} from '../../../../testing/dom/events';
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from '../../../mdc-textfield/icon/index';
 
 const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-text-field__icon mdc-text-field__icon--leading"></div>
-  `;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 };
 
 describe('MDCTextFieldIcon', () => {

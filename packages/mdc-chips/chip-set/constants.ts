@@ -21,11 +21,26 @@
  * THE SOFTWARE.
  */
 
-export const strings = {
-  CHIP_SELECTOR: '.mdc-chip',
-};
+/**
+ * MDCChipSetAttributes provides the named constants for attributes used by the
+ * foundation.
+ */
+export enum MDCChipSetAttributes {
+  ARIA_MULTISELECTABLE = 'aria-multiselectable',
+}
 
-export const cssClasses = {
-  CHOICE: 'mdc-chip-set--choice',
-  FILTER: 'mdc-chip-set--filter',
-};
+/**
+ * MDCChipSetCssClasses provides the named constants for class names.
+ */
+export enum MDCChipSetCssClasses {
+  CHIP = 'mdc-evolution-chip',
+}
+
+/**
+ * MDCChipSetEvents provides the constants for emitted events.
+ */
+export enum MDCChipSetEvents {
+  INTERACTION = 'MDCChipSet:interaction',
+  REMOVAL = 'MDCChipSet:removal',
+  SELECTION = 'MDCChipSet:selection',
+}

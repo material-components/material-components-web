@@ -1,9 +1,9 @@
-@use '../mixins' as menu;
+@use '../menu';
 @use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
-    @include menu.core-styles($query: $query);
+    @include menu.static-styles($query: $query);
     @include menu.width(0, $query: $query);
   }
 }

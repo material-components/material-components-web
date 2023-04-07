@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use '@material/animation/variables' as animation-variables;
 @use '@material/tab/mixins' as tab-mixins;
@@ -46,6 +46,10 @@
       transition: $duration-ms transform $timing-function;
     }
   }
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
+  @include core-styles($query: $query);
 }
 
 @mixin core-styles($query: feature-targeting.all()) {

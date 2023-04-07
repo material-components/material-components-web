@@ -282,10 +282,12 @@ user change the rows per page (page size) and navigate between data table pages.
           Rows per page
         </div>
 
-        <div class="mdc-select mdc-select--outlined mdc-select--no-label mdc-data-table__pagination-rows-per-page-select">
+        <div class="mdc-select mdc-select--outlined mdc-select--no-label mdc-data-table__pagination-rows-per-page-select mdc-data-table__pagination-rows-per-page-select--outlined">
           <div class="mdc-select__anchor" role="button" aria-haspopup="listbox"
                 aria-labelledby="demo-pagination-select" tabindex="0">
-            <span id="demo-pagination-select" class="mdc-select__selected-text">10</span>
+            <span class="mdc-select__selected-text-container">
+              <span id="demo-pagination-select" class="mdc-select__selected-text">10</span>
+            </span>
             <span class="mdc-select__dropdown-icon">
               <svg
                   class="mdc-select__dropdown-icon-graphic"
@@ -312,14 +314,26 @@ user change the rows per page (page size) and navigate between data table pages.
 
           <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth" role="listbox">
             <ul class="mdc-list">
-              <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value="10">
-                <span class="mdc-list-item__text">10</span>
+              <li class="mdc-select__option mdc-select__one-line-option mdc-list-item mdc-list-item--selected mdc-list-item--with-one-line"
+                  aria-selected="true" role="option" data-value="10">
+                <span class="mdc-list-item__ripple"></span>
+                <span class="mdc-list-item__content">
+                  <span class="mdc-list-item__primary-text">10</span>
+                </span>
               </li>
-              <li class="mdc-list-item" role="option" data-value="25">
-                <span class="mdc-list-item__text">25</span>
+              <li class="mdc-select__option mdc-select__one-line-option mdc-list-item mdc-list-item--with-one-line"
+                  role="option" data-value="25">
+                <span class="mdc-list-item__ripple"></span>
+                <span class="mdc-list-item__content">
+                  <span class="mdc-list-item__primary-text">25</span>
+                </span>
               </li>
-              <li class="mdc-list-item" role="option" data-value="100">
-                <span class="mdc-list-item__text">100</span>
+              <li class="mdc-select__option mdc-select__one-line-option mdc-list-item mdc-list-item--with-one-line"
+                  role="option" data-value="100">
+                <span class="mdc-list-item__ripple"></span>
+                <span class="mdc-list-item__content">
+                  <span class="mdc-list-item__primary-text">100</span>
+                </span>
               </li>
             </ul>
           </div>
@@ -568,6 +582,7 @@ CSS Class | Description
 `mdc-data-table__pagination-trailing` | Immediate child of pagination. Used to wrap pagination content.
 `mdc-data-table__pagination-rows-per-page` | Container of rows per page label and rows per page select.
 `mdc-data-table__pagination-rows-per-page-select` | Class name added to select component used for changing rows per page (page size).
+`mdc-data-table__pagination-rows-per-page-select--outlined` | Class name added to outlined select component used for changing rows per page (page size). Used to override outlined select styles.
 `mdc-data-table__pagination-navigation` | Block element containing all icon buttons used to navigate between data table pages.
 `mdc-data-table__pagination-button` | Class name added to icon button component used to navigate between data table pages.
 `mdc-data-table__progress-indicator` | Block element rendered as immediate child to data table root element. Contains linear progress and scrim blocking the data table content.

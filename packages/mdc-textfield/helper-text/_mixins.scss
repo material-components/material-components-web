@@ -20,13 +20,15 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
-@use '../functions';
+@use '@material/animation/animation';
+@use '@material/animation/variables';
 @use '@material/theme/theme';
 @use '@material/typography/typography';
 @use '@material/feature-targeting/feature-targeting';
+
 // Public mixins
 
 @mixin helper-text-core-styles($query: feature-targeting.all()) {
@@ -46,7 +48,7 @@
     }
 
     @include feature-targeting.targets($feat-animation) {
-      transition: functions.transition(opacity);
+      transition: animation.standard(opacity, 150ms);
     }
   }
 
@@ -97,7 +99,7 @@
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -109,7 +111,7 @@
     + .mdc-text-field-helper-line
     .mdc-text-field-helper-text--validation-msg {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }

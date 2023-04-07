@@ -28,13 +28,11 @@ import {MDCFoundation} from '@material/base/foundation';
 
 import {strings} from './constants';
 
-const {AUTO_INIT_ATTR, AUTO_INIT_STATE_ATTR, INITIALIZED_STATE} = strings;
+const {AUTO_INIT_ATTR, DATASET_AUTO_INIT_STATE, INITIALIZED_STATE} = strings;
 
-export interface MDCAttachable {
-  new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: Array<unknown>): MDCComponent<F>;
-
-  // Static method.
-  attachTo<F extends MDCFoundation>(root: Element): MDCComponent<F>;
+/** MDC Attachable */
+export interface MDCAttachable extends Function {
+  attachTo(root: HTMLElement): MDCComponent<MDCFoundation>;
 }
 
 interface InternalComponentRegistry {
@@ -43,9 +41,11 @@ interface InternalComponentRegistry {
 
 const registry: InternalComponentRegistry = {};
 
-const CONSOLE_WARN = console.warn.bind(console); // tslint:disable-line:no-console
+// tslint:disable-next-line:no-console
+const CONSOLE_WARN = console.warn.bind(console);
 
-function emit<T extends object>(evtType: string, evtData: T, shouldBubble = false) {
+function emit<T extends object>(
+    evtType: string, evtData: T, shouldBubble = false) {
   let evt;
   if (typeof CustomEvent === 'function') {
     evt = new CustomEvent<T>(evtType, {
@@ -64,10 +64,12 @@ function emit<T extends object>(evtType: string, evtData: T, shouldBubble = fals
 /**
  * Auto-initializes all MDC components on a page.
  */
-function mdcAutoInit(root = document) {
+function mdcAutoInit(root: ParentNode = document) {
   const components = [];
-  let nodes: Element[] = [].slice.call(root.querySelectorAll(`[${AUTO_INIT_ATTR}]`));
-  nodes = nodes.filter((node) => node.getAttribute(AUTO_INIT_STATE_ATTR) !== INITIALIZED_STATE);
+  let nodes =
+      Array.from(root.querySelectorAll<HTMLElement>(`[${AUTO_INIT_ATTR}]`));
+  nodes = nodes.filter(
+      (node) => node.dataset[DATASET_AUTO_INIT_STATE] !== INITIALIZED_STATE);
 
   for (const node of nodes) {
     const ctorName = node.getAttribute(AUTO_INIT_ATTR);
@@ -75,14 +77,17 @@ function mdcAutoInit(root = document) {
       throw new Error('(mdc-auto-init) Constructor name must be given.');
     }
 
-    const Constructor = registry[ctorName]; // tslint:disable-line:variable-name
+    // tslint:disable-next-line:enforce-name-casing
+    const Constructor = registry[ctorName];
     if (typeof Constructor !== 'function') {
       throw new Error(
-          `(mdc-auto-init) Could not find constructor in registry for ${ctorName}`);
+          `(mdc-auto-init) Could not find constructor in registry for ${
+              ctorName}`);
     }
 
     // TODO: Should we make an eslint rule for an attachTo() static method?
-    // See https://github.com/Microsoft/TypeScript/issues/14600 for discussion of static interface support in TS
+    // See https://github.com/Microsoft/TypeScript/issues/14600 for discussion
+    // of static interface support in TS
     const component = Constructor.attachTo(node);
     Object.defineProperty(node, ctorName, {
       configurable: true,
@@ -91,22 +96,27 @@ function mdcAutoInit(root = document) {
       writable: false,
     });
     components.push(component);
-    node.setAttribute(AUTO_INIT_STATE_ATTR, INITIALIZED_STATE);
+    node.dataset[DATASET_AUTO_INIT_STATE] = INITIALIZED_STATE;
   }
 
   emit('MDCAutoInit:End', {});
   return components;
 }
 
-// Constructor is PascalCased because it is a direct reference to a class, rather than an instance of a class.
-// tslint:disable-next-line:variable-name
-mdcAutoInit.register = function(componentName: string, Constructor: MDCAttachable, warn = CONSOLE_WARN) {
+// Constructor is PascalCased because it is a direct reference to a class,
+// rather than an instance of a class.
+mdcAutoInit.register = function(
+    componentName: string,
+    // tslint:disable-next-line:enforce-name-casing
+    Constructor: MDCAttachable, warn = CONSOLE_WARN) {
   if (typeof Constructor !== 'function') {
-    throw new Error(`(mdc-auto-init) Invalid Constructor value: ${Constructor}. Expected function.`);
+    throw new Error(`(mdc-auto-init) Invalid Constructor value: ${
+        Constructor}. Expected function.`);
   }
   const registryValue = registry[componentName];
   if (registryValue) {
-    warn(`(mdc-auto-init) Overriding registration for ${componentName} with ${Constructor}. Was: ${registryValue}`);
+    warn(`(mdc-auto-init) Overriding registration for ${componentName} with ${
+        Constructor}. Was: ${registryValue}`);
   }
   registry[componentName] = Constructor;
 };
@@ -117,8 +127,9 @@ mdcAutoInit.deregister = function(componentName: string) {
 
 /** @nocollapse */
 mdcAutoInit.deregisterAll = function() {
-  const keys = Object.keys(registry) as string[];
-  keys.forEach(this.deregister, this);
+  for (const componentName of Object.keys(registry)) {
+    mdcAutoInit.deregister(componentName);
+  }
 };
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.

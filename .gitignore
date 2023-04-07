@@ -21,9 +21,6 @@ packages/**/*.map
 packages/**/test/**.css
 packages/**/package-lock.json
 
-# Material.io site generator test (`npm run test:site`)
-.site-generator-tmp/
-
 # Used by internal sync & rewrite scripts
 .rewrite-tmp/
 

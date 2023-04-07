@@ -60,7 +60,7 @@ For example, to instantiate an MDC List inside of a simple or confirmation dialo
 
 ```js
 import {MDCList} from '@material/list';
-const list = new MDCList(document.querySelector('.mdc-dialog .mdc-list'));
+const list = new MDCList(document.querySelector('.mdc-dialog .mdc-deprecated-list'));
 
 dialog.listen('MDCDialog:opened', () => {
   list.layout();
@@ -72,7 +72,7 @@ indication that child components are being instantiated before the dialog has fi
 
 ### Making dialogs accessible
 
-##### Using `aria-hidden` as a fallback for `aria-modal`
+#### Using `aria-hidden` as a fallback for `aria-modal`
 
 `aria-modal` is part of the ARIA 1.1 specification, and indicates to screen readers that they should confine themselves to a single element. We recommend adding `aria-modal="true"` to the root element of its DOM structure.
 
@@ -150,12 +150,12 @@ As simple dialogs are interruptive, they should be used sparingly. Alternatively
      -->Choose a Ringtone<!--
    --></h2>
       <div class="mdc-dialog__content" id="my-dialog-content">
-        <ul class="mdc-list mdc-list--avatar-list">
-          <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="none">
-            <span class="mdc-list-item__text">None</span>
+        <ul class="mdc-deprecated-list mdc-deprecated-list--avatar-list">
+          <li class="mdc-deprecated-list-item" tabindex="0" data-mdc-dialog-action="none">
+            <span class="mdc-deprecated-list-item__text">None</span>
           </li>
-          <li class="mdc-list-item" data-mdc-dialog-action="callisto">
-            <span class="mdc-list-item__text">Callisto</span>
+          <li class="mdc-deprecated-list-item" data-mdc-dialog-action="callisto">
+            <span class="mdc-deprecated-list-item__text">Callisto</span>
           </li>
           <!-- ... -->
         </ul>
@@ -166,7 +166,7 @@ As simple dialogs are interruptive, they should be used sparingly. Alternatively
 </div>
 ```
 
-**Note: Note the inclusion of the `mdc-list--avatar-list` class, which aligns with the Simple Dialog spec.**
+**Note: Note the inclusion of the `mdc-deprecated-list--avatar-list` class, which aligns with the Simple Dialog spec.**
 
 ## Confirmation dialog
 
@@ -191,9 +191,9 @@ If the user confirms a choice, it’s carried out. Otherwise, the user can dismi
      -->Choose a Ringtone<!--
    --></h2>
       <div class="mdc-dialog__content" id="my-dialog-content">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" tabindex="0">
-            <span class="mdc-list-item__graphic">
+        <ul class="mdc-deprecated-list">
+          <li class="mdc-deprecated-list-item" tabindex="0">
+            <span class="mdc-deprecated-list-item__graphic">
               <div class="mdc-radio">
                 <input class="mdc-radio__native-control"
                        type="radio"
@@ -208,7 +208,7 @@ If the user confirms a choice, it’s carried out. Otherwise, the user can dismi
             </span>
             <label id="test-dialog-baseline-confirmation-radio-1-label"
                    for="test-dialog-baseline-confirmation-radio-1"
-                   class="mdc-list-item__text">None</label>
+                   class="mdc-deprecated-list-item__text">None</label>
           </li>
           <!-- ... -->
         </ul>
@@ -235,11 +235,88 @@ to be detected the same way.**
 
 ## Full-screen dialog
 
-Full-screen dialogs group a series of tasks, such as creating a calendar entry with the event title, date, location, and time. Because they take up the entire screen, full-screen dialogs are the only dialogs over which other dialogs can appear.
-
-MDC Web does not yet support full-screen dialogs.
+Full-screen dialogs group a series of tasks, such as creating a calendar entry with the event title, date, location, and time.
 
 <img src="images/full-screen-dialog.png" alt="Full-screen dialog: event" width="250px">
+
+### Full-screen dialog example
+
+```html
+<div class="mdc-dialog mdc-dialog--open mdc-dialog--fullscreen">
+  <div class="mdc-dialog__container">
+    <div class="mdc-dialog__surface"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="my-dialog-title"
+      aria-describedby="my-dialog-content">
+      <div class="mdc-dialog__header">
+        <h2 class="mdc-dialog__title" id="my-dialog-title">
+          Full-Screen Dialog Title
+        </h2>
+        <button class="mdc-icon-button material-icons mdc-dialog__close"
+                data-mdc-dialog-action="close">
+          close
+        </button>
+      </div>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Sed scelerisque metus dapibus, maximus massa pulvinar, commodo nunc.
+        Quisque vitae luctus lectus, ut tempus ipsum. Sed suscipit gravida scelerisque.
+        Aenean vulputate elementum est, quis consectetur orci consectetur ac.
+        Quisque accumsan vel nisi id dapibus. Suspendisse nec urna eu massa ornare rutrum.
+        Vivamus at nisi sit amet nulla pretium volutpat sit amet in justo. Donec mi metus,
+        interdum ac tincidunt at, vehicula vitae nisl. Morbi fermentum dapibus massa,
+        nec lobortis massa vestibulum eu.
+      </div>
+      <div class="mdc-dialog__actions">
+        <button type="button" class="mdc-button mdc-dialog__button"
+                data-mdc-dialog-action="ok">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">OK</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mdc-dialog__scrim"></div>
+</div>
+```
+
+Note: Full-screen dialogs are intended for mobile/small-screen devices. The
+dialog's size will adapt to the screen size, and so becomes modal if used on
+larger screen sizes.
+
+## Floating sheet
+
+Floating sheets are dialogs with a close icon button. Clicking the close icon
+button closes the sheet. Having the close icon button is mutually exclusive with
+having action bar buttons (e.g. cancel and OK buttons). The icon button is
+absolutely positioned. Sheet content can have no default padding by using the
+`mdc-dialog--no-content-padding` class.
+
+### Floating sheet example
+
+```html
+<div class="mdc-dialog mdc-dialog--open test-dialog mdc-dialog--sheet mdc-dialog--no-content-padding"
+     aria-modal="true"
+     aria-labelledby="test-dialog__title--with-close-icon-button"
+     aria-describedby="test-dialog__content--with-close-icon-button"
+     id="test-dialog">
+  <div class="mdc-dialog__scrim" data-mdc-dialog-action="cancel"></div>
+  <div class="mdc-dialog__container">
+    <div class="mdc-dialog__surface">
+      <button class="mdc-icon-button material-icons mdc-dialog__close" data-mdc-dialog-action="close">
+        close
+      </button>
+      <div class="mdc-dialog__content test-dialog__content">
+        <div class="test-sheet__content">
+          <h3>Sheets</h3>
+          There are no action buttons. Any HTML content can go here. Title is also defined through content.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
 
 ## Additional Information
 
@@ -321,6 +398,7 @@ CSS Class | Description
 --- | ---
 `mdc-dialog` | Mandatory. The root DOM element containing the surface and the container.
 `mdc-dialog__scrim` | Mandatory. Semitransparent backdrop that displays behind a dialog.
+`mdc-dialog__scrim--removed` | Optional. Remove semitransparent backdrop behind dialog and allow pointer on a content behind a dialog.
 `mdc-dialog__container` | Mandatory. Wrapper element needed to ensure flexbox behavior in IE 11.
 `mdc-dialog__surface` | Mandatory. The bounding box for the dialog's content.
 `mdc-dialog__title` | Optional. Brief summary of the dialog's purpose.
@@ -341,6 +419,7 @@ Mixin | Description
 `scrim-color($color, $opacity)` | Sets the color of the scrim behind the dialog.
 `title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
 `content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
+`content-display($display)` | Sets the display property of the dialog's content.
 `content-padding($padding-top, $padding-right, $padding-bottom, $padding-left)` | Sets the padding of the dialog's content.
 `scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
 `shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
@@ -425,6 +504,8 @@ Method Signature | Description
 `handleClick(event: MouseEvent)` | Handles `click` events on or within the dialog's root element.
 `handleKeydown(event: KeyboardEvent)` | Handles `keydown` events on or within the dialog's root element.
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open.
+`getSuppressDefaultPressSelector() => string` | Returns the selector string for elements that suppress the default dialog press action, such as pressing enter in a textarea.
+`setSuppressDefaultPressSelector(selector: string)` | Customize the selector string to suppress the default dialog press action. An empty string indicates that no elements should suppress the default action.
 
 #### Event handlers
 

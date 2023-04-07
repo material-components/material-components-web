@@ -22,13 +22,18 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+
 import {MDCTextFieldIconAdapter} from './adapter';
 import {MDCTextFieldIconFoundation} from './foundation';
 
-export type MDCTextFieldIconFactory = (el: Element, foundation?: MDCTextFieldIconFoundation) => MDCTextFieldIcon;
+/** MDC Text Field Icon Factory */
+export type MDCTextFieldIconFactory =
+    (el: HTMLElement, foundation?: MDCTextFieldIconFoundation) =>
+        MDCTextFieldIcon;
 
+/** MDC Text Field Icon */
 export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
-  static attachTo(root: Element): MDCTextFieldIcon {
+  static override attachTo(root: HTMLElement): MDCTextFieldIcon {
     return new MDCTextFieldIcon(root);
   }
 
@@ -37,21 +42,33 @@ export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
     return this.foundation;
   }
 
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+  override getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTextFieldIconAdapter = {
       getAttr: (attr) => this.root.getAttribute(attr),
-      setAttr: (attr, value) => this.root.setAttribute(attr, value),
-      removeAttr: (attr) => this.root.removeAttribute(attr),
+      setAttr: (attr, value) => {
+        this.safeSetAttribute(this.root, attr, value);
+      },
+      removeAttr: (attr) => {
+        this.root.removeAttribute(attr);
+      },
       setContent: (content) => {
         this.root.textContent = content;
       },
-      registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
-      notifyIconAction: () => this.emit(
-          MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
+      registerInteractionHandler: (evtType, handler) => {
+        this.listen(evtType, handler);
+      },
+      deregisterInteractionHandler: (evtType, handler) => {
+        this.unlisten(evtType, handler);
+      },
+      notifyIconAction: () => {
+        this.emit(
+            MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */,
+            true /* shouldBubble */);
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCTextFieldIconFoundation(adapter);

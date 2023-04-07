@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,592 +21,257 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple} from '../../../mdc-ripple/index';
-import {emitEvent} from '../../../../testing/dom/events';
-import {createMockFoundation} from '../../../../testing/helpers/foundation';
-import {strings as trailingActionStrings} from '../../trailingaction/constants';
-import {chipStrings, MDCChip, MDCChipFoundation} from '../index';
+import {createFixture, html} from '../../../../testing/dom';
+import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
+import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
+import {MDCChipActionFocusBehavior, MDCChipActionType} from '../../action/constants';
+import {MDCChip, MDCChipAnimation, MDCChipCssClasses, MDCChipEvents} from '../index';
 
-const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
-
-const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
-  <div class="mdc-chip" role="row">
-    <span role="gridcell">
-      <span role="button" tabindex="0" class="mdc-chip__primary-action">
-        <span class="mdc-chip__text">Chip content</span>
-      </span>
-    </span>
-  </div>`;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-};
-
-const getFixtureWithCheckmark = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
-  <div class="mdc-chip">
-    <div class="mdc-chip__checkmark" >
-      <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-        <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
-              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-      </svg>
-    </div>
-    <span role="gridcell">
-      <span role="checkbox" aria-checked="false" tabindex="0" class="mdc-chip__primary-action">
-        <span class="mdc-chip__text">Chip content</span>
-      </span>
-    </span>
-  </div>`;
-
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-};
-
-const addLeadingIcon = (root: HTMLElement) => {
-  const wrapper = document.createElement('div');
-
-  wrapper.innerHTML =
-      `<i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>`;
-  const icon = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(icon);
-
-  root.insertBefore(icon, root.firstChild);
-  return icon;
-};
-
-const addTrailingAction = (root: HTMLElement, isFocusable?: boolean) => {
-  const wrapper = document.createElement('div');
-
-  wrapper.innerHTML = `<span role="gridcell"></span>`;
-  const parent = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(parent);
-
-  let innerHTML: string;
-  if (isFocusable) {
-    innerHTML =
-        `<button class="mdc-chip-trailing-action aria-label="Remove chip" tabindex="-1">
-  <span class='mdc-chip-trailing-action__ripple'></span>
-  <span class="mdc-chip-trailing-action__icon material-icons">close</span>
-</button>`;
-  } else {
-    innerHTML = `<button class="mdc-chip-trailing-action aria-hidden="true">
-  <span class='mdc-chip-trailing-action__ripple'></span>
-  <span class="mdc-chip-trailing-action__icon material-icons">close</span>
-</button>`;
-  }
-
-  wrapper.innerHTML = innerHTML;
-  const trailingAction = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(trailingAction);
-
-  parent.appendChild(trailingAction);
-  root.appendChild(parent);
-  return trailingAction;
-};
-
-const addFocusableTrailingAction = (root: HTMLElement) =>
-    addTrailingAction(root, true);
-
-class FakeRipple {
-  destroy: jasmine.Spy;
-
-  constructor(readonly root: HTMLElement|null) {
-    this.destroy = jasmine.createSpy('.destroy');
-  }
+interface ActionOptions {
+  readonly isFocusable: boolean;
+  readonly isSelectable: boolean;
+  readonly isDisabled: boolean;
 }
 
-function setupTest() {
-  const root = getFixture();
+interface TestOptions {
+  readonly primary: ActionOptions;
+  readonly trailing?: ActionOptions;
+  readonly id: string;
+}
+
+function actionFixture(
+    {isFocusable, isSelectable, isDisabled}: ActionOptions,
+    isTrailing: boolean = false): string {
+  return `<button class="mdc-evolution-chip__action ${
+      isTrailing ? 'mdc-evolution-chip__action--trailing' : ''}"
+      ${isFocusable ? '' : 'aria-hidden="true"'}
+      ${isSelectable ? 'role="option"' : ''}
+      ${
+      isDisabled ? (isSelectable ? 'aria-disabled="true"' : 'disabled') :
+                   ''}>Label</button>`;
+}
+
+function getFixture({primary, trailing, id}: TestOptions): HTMLElement {
+  return createFixture(html`
+  <div id="${id}">
+    ${actionFixture(primary)}
+    ${trailing === undefined ? '' : actionFixture(trailing, true)}
+  </div>`);
+}
+
+function setupTest(options: TestOptions) {
+  const root = getFixture(options);
   const component = new MDCChip(root);
   return {root, component};
 }
 
-function setupMockRippleTest() {
-  const root = getFixture();
-  const component = new MDCChip(root, undefined, () => new FakeRipple(null));
-  return {root, component};
-}
+describe('MDCChipAction', () => {
+  setUpMdcTestEnvironment();
 
-function setupMockFoundationTest(root = getFixture()) {
-  const mockFoundation = createMockFoundation(MDCChipFoundation);
-  const component = new MDCChip(root, mockFoundation);
-  return {root, component, mockFoundation};
-}
-
-describe('MDCChip', () => {
-  it('attachTo returns an MDCChip instance', () => {
-    expect(MDCChip.attachTo(getFixture()) instanceof MDCChip).toBe(true);
+  it('attachTo initializes and returns a MDCChipAction instance', () => {
+    const chip = MDCChip.attachTo(getFixture({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      trailing: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    }));
+    expect(chip instanceof MDCChip).toBeTruthy();
   });
 
   it('#initialSyncWithDOM sets up event handlers', () => {
-    const {root, mockFoundation} = setupMockFoundationTest();
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      trailing: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
 
-    emitEvent(root, 'click');
-    expect(mockFoundation.handleClick).toHaveBeenCalled();
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('.mdc-evolution-chip__action')!;
+    const interactionHandler = jasmine.createSpy('emitInteractionHandler');
+    component.listen(MDCChipEvents.INTERACTION, interactionHandler);
+    emitEvent(primaryActionEl, 'click', {
+      bubbles: true,
+    });
+    component.unlisten(MDCChipEvents.INTERACTION, interactionHandler);
+    expect(interactionHandler).toHaveBeenCalled();
 
-    emitEvent(root, 'transitionend');
-    expect(mockFoundation.handleTransitionEnd)
-        .toHaveBeenCalledWith(jasmine.anything());
-    expect(mockFoundation.handleTransitionEnd).toHaveBeenCalledTimes(1);
-
-    emitEvent(root, 'keydown');
-    expect(mockFoundation.handleKeydown)
-        .toHaveBeenCalledWith(jasmine.anything());
-    expect(mockFoundation.handleKeydown).toHaveBeenCalledTimes(1);
-
-    emitEvent(root, 'focusin');
-    expect(mockFoundation.handleFocusIn)
-        .toHaveBeenCalledWith(jasmine.anything());
-    expect(mockFoundation.handleFocusIn).toHaveBeenCalledTimes(1);
-
-    emitEvent(root, 'focusout');
-    expect(mockFoundation.handleFocusOut)
-        .toHaveBeenCalledWith(jasmine.anything());
-    expect(mockFoundation.handleFocusOut).toHaveBeenCalledTimes(1);
+    const navigationHandler = jasmine.createSpy('emitNavigationHandler');
+    component.listen(MDCChipEvents.NAVIGATION, navigationHandler);
+    primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+    }));
+    component.unlisten(MDCChipEvents.NAVIGATION, navigationHandler);
+    expect(navigationHandler).toHaveBeenCalled();
   });
-
-  it('#initialSyncWithDOM sets up trailing action event handlers if present',
-     () => {
-       const root = getFixture();
-       addTrailingAction(root);
-       const {mockFoundation} = setupMockFoundationTest(root);
-
-       emitEvent(root, trailingActionStrings.INTERACTION_EVENT);
-       expect(mockFoundation.handleTrailingActionInteraction)
-           .toHaveBeenCalledTimes(1);
-       emitEvent(root, trailingActionStrings.NAVIGATION_EVENT);
-       expect(mockFoundation.handleTrailingActionNavigation)
-           .toHaveBeenCalledTimes(1);
-     });
 
   it('#destroy removes event handlers', () => {
-    const {root, component, mockFoundation} = setupMockFoundationTest();
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      trailing: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
     component.destroy();
 
-    emitEvent(root, 'click');
-    expect(mockFoundation.handleClick).not.toHaveBeenCalled();
+    const primaryActionEl =
+        root.querySelector<HTMLElement>('.mdc-evolution-chip__action')!;
+    const interactionHandler = jasmine.createSpy('emitInteractionHandler');
+    component.listen(MDCChipEvents.INTERACTION, interactionHandler);
+    emitEvent(primaryActionEl, 'click', {
+      bubbles: true,
+    });
+    component.unlisten(MDCChipEvents.INTERACTION, interactionHandler);
+    expect(interactionHandler).not.toHaveBeenCalled();
 
-    emitEvent(root, 'transitionend');
-    expect(mockFoundation.handleTransitionEnd)
-        .not.toHaveBeenCalledWith(jasmine.anything());
-
-    emitEvent(root, 'keydown');
-    expect(mockFoundation.handleKeydown)
-        .not.toHaveBeenCalledWith(jasmine.anything());
-
-    emitEvent(root, 'focusin');
-    expect(mockFoundation.handleFocusIn)
-        .not.toHaveBeenCalledWith(jasmine.anything());
-
-    emitEvent(root, 'focusout');
-    expect(mockFoundation.handleFocusOut)
-        .not.toHaveBeenCalledWith(jasmine.anything());
+    const navigationHandler = jasmine.createSpy('emitNavigationHandler');
+    component.listen(MDCChipEvents.NAVIGATION, navigationHandler);
+    primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+    }));
+    component.unlisten(MDCChipEvents.NAVIGATION, navigationHandler);
+    expect(navigationHandler).not.toHaveBeenCalled();
   });
 
-  it('#destroy removes trailing action event handlers if present', () => {
-    const root = getFixture();
-    addTrailingAction(root);
-    const {component, mockFoundation} = setupMockFoundationTest(root);
+  it('#getActions() returns the included actions', () => {
+    const {component} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      trailing: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
 
-    component.destroy();
-    emitEvent(root, trailingActionStrings.INTERACTION_EVENT);
-    expect(mockFoundation.handleTrailingActionInteraction)
-        .not.toHaveBeenCalledWith(jasmine.anything());
-    emitEvent(root, trailingActionStrings.NAVIGATION_EVENT);
-    expect(mockFoundation.handleTrailingActionNavigation)
-        .not.toHaveBeenCalledWith(jasmine.anything());
+    expect(component.getActions()).toEqual([
+      MDCChipActionType.PRIMARY, MDCChipActionType.TRAILING
+    ]);
   });
 
-  it('#destroy destroys ripple', () => {
-    const {component} = setupMockRippleTest();
-    component.destroy();
-    expect(component.ripple.destroy).toHaveBeenCalled();
+  it('#getElementID() returns the root ID', () => {
+    const {component} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      trailing: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'foo',
+    });
+
+    expect(component.getElementID()).toBe('foo');
   });
 
-  it('get ripple returns MDCRipple instance', () => {
-    const {component} = setupTest();
-    expect(component.ripple instanceof MDCRipple).toBe(true);
+  it(`#isActionFocusable() returns true when configured`, () => {
+    const {component} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      trailing: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
+
+    expect(component.isActionFocusable(MDCChipActionType.PRIMARY)).toBe(true);
   });
 
-  it('sets id on chip if attribute exists', () => {
-    const wrapper = document.createElement('div');
+  it(`#isActionSelectable() returns true when configured`, () => {
+    const {component} = setupTest({
+      primary: {isFocusable: true, isSelectable: true, isDisabled: false},
+      trailing: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
 
-    wrapper.innerHTML = `
-    <div class="mdc-chip" id="hello-chip">
-      <div class="mdc-chip__text">Hello</div>
-    </div>
-  `;
-    const root = wrapper.firstElementChild as HTMLElement;
-    wrapper.removeChild(root);
-
-    const component = new MDCChip(root);
-    expect(component.id).toEqual('hello-chip');
+    expect(component.isActionSelectable(MDCChipActionType.PRIMARY)).toBe(true);
   });
 
-  it('adapter#hasClass returns true if class is set on chip set element',
-     () => {
-       const {root, component} = setupTest();
-       root.classList.add('foo');
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
-           .toBe(true);
-     });
+  it(`#isActionSelected() returns true when configured`, () => {
+    const {component} = setupTest({
+      primary: {isFocusable: true, isSelectable: true, isDisabled: false},
+      trailing: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
 
-  it('adapter#addClass adds a class to the root element', () => {
-    const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    component.setActionSelected(MDCChipActionType.PRIMARY, true);
+    expect(component.isActionSelected(MDCChipActionType.PRIMARY)).toBe(true);
   });
 
-  it('adapter#removeClass removes a class from the root element', () => {
-    const {root, component} = setupTest();
-    root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+  it(`#setActionFocus() updates the focus when configured`, () => {
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
+
+    component.setActionFocus(
+        MDCChipActionType.PRIMARY, MDCChipActionFocusBehavior.FOCUSABLE);
+    expect(root.querySelector<HTMLElement>(
+                   '.mdc-evolution-chip__action')!.getAttribute('tabindex'))
+        .toBe('0');
   });
 
-  it('adapter#addClassToLeadingIcon adds a class to the leading icon element',
-     () => {
-       const root = getFixtureWithCheckmark();
-       const leadingIcon = addLeadingIcon(root);
-       const component = new MDCChip(root);
+  it(`#setActionSelected() updates selection when configured`, () => {
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: true, isDisabled: false},
+      id: 'c0',
+    });
 
-       (component.getDefaultFoundation() as any)
-           .adapter.addClassToLeadingIcon('foo');
-       expect(leadingIcon.classList.contains('foo')).toBe(true);
-     });
-
-  it('adapter#addClassToLeadingIcon does nothing if no leading icon element is present',
-     () => {
-       const {component} = setupTest();
-       expect(
-           () => (component.getDefaultFoundation() as any)
-                     .adapter.addClassToLeadingIcon)
-           .not.toThrow();
-     });
-
-  it('adapter#removeClassFromLeadingIcon removes a class from the leading icon element',
-     () => {
-       const root = getFixtureWithCheckmark();
-       const leadingIcon = addLeadingIcon(root);
-       const component = new MDCChip(root);
-
-       leadingIcon.classList.add('foo');
-       (component.getDefaultFoundation() as any)
-           .adapter.removeClassFromLeadingIcon('foo');
-       expect(leadingIcon.classList.contains('foo')).toBe(false);
-     });
-
-  it('adapter#removeClassFromLeadingIcon does nothing if no leading icon element is present',
-     () => {
-       const {component} = setupTest();
-       expect(
-           () => (component.getDefaultFoundation() as any)
-                     .adapter.removeClassFromLeadingIcon)
-           .not.toThrow();
-     });
-
-  it('adapter#eventTargetHasClass returns true if given element has class',
-     () => {
-       const {component} = setupTest();
-
-       const wrapper = document.createElement('div');
-
-       wrapper.innerHTML = `<div class="foo">bar</div>`;
-       const mockEventTarget = wrapper.firstElementChild as HTMLElement;
-       wrapper.removeChild(mockEventTarget);
-
-       expect((component.getDefaultFoundation() as any)
-                  .adapter.eventTargetHasClass(mockEventTarget, 'foo'))
-           .toBe(true);
-     });
-
-  it('adapter#notifyInteraction emits ' +
-         MDCChipFoundation.strings.INTERACTION_EVENT,
-     () => {
-       const {component} = setupTest();
-       const handler = jasmine.createSpy('interaction handler');
-
-       component.listen(MDCChipFoundation.strings.INTERACTION_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter.notifyInteraction();
-
-       expect(handler).toHaveBeenCalledWith(jasmine.anything());
-     });
-
-  it('adapter#notifySelection emits ' +
-         MDCChipFoundation.strings.SELECTION_EVENT,
-     () => {
-       const {component} = setupTest();
-       const handler = jasmine.createSpy('selection handler');
-
-       component.listen(MDCChipFoundation.strings.SELECTION_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter.notifySelection();
-
-       expect(handler).toHaveBeenCalledWith(jasmine.anything());
-     });
-
-  it('adapter#notifyTrailingIconInteraction emits ' +
-         MDCChipFoundation.strings.TRAILING_ICON_INTERACTION_EVENT,
-     () => {
-       const {component} = setupTest();
-       const handler = jasmine.createSpy('interaction handler');
-
-       component.listen(
-           MDCChipFoundation.strings.TRAILING_ICON_INTERACTION_EVENT, handler);
-       (component.getDefaultFoundation() as any)
-           .adapter.notifyTrailingIconInteraction();
-
-       expect(handler).toHaveBeenCalledWith(jasmine.anything());
-     });
-
-  it('adapter#notifyRemoval emits ' + MDCChipFoundation.strings.REMOVAL_EVENT,
-     () => {
-       const {component} = setupTest();
-       const handler = jasmine.createSpy('interaction handler');
-
-       component.listen(MDCChipFoundation.strings.REMOVAL_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter.notifyRemoval();
-
-       expect(handler).toHaveBeenCalledWith(jasmine.anything());
-     });
-
-  it('adapter#notifyNavigation emits ' +
-         MDCChipFoundation.strings.NAVIGATION_EVENT,
-     () => {
-       const {component} = setupTest();
-       const handler = jasmine.createSpy('interaction handler');
-
-       component.listen(MDCChipFoundation.strings.NAVIGATION_EVENT, handler);
-       (component.getDefaultFoundation() as any)
-           .adapter.notifyNavigation(MDCChipFoundation.strings.ARROW_LEFT_KEY);
-
-       expect(handler).toHaveBeenCalledWith(jasmine.anything());
-     });
-
-  it('adapter#getComputedStyleValue returns property value from root element styles',
-     () => {
-       const {root, component} = setupTest();
-       expect((component.getDefaultFoundation() as any)
-                  .adapter.getComputedStyleValue('color'))
-           .toEqual(window.getComputedStyle(root).getPropertyValue('color'));
-     });
-
-  it('adapter#setStyleProperty sets a style property on the root element',
-     () => {
-       const {root, component} = setupTest();
-       const color = 'blue';
-       (component.getDefaultFoundation() as any)
-           .adapter.setStyleProperty('color', color);
-       expect(root.style.getPropertyValue('color')).toEqual(color);
-     });
-
-  it('adapter#hasLeadingIcon returns true if the chip has a leading icon',
-     () => {
-       const root = getFixtureWithCheckmark();
-       addLeadingIcon(root);
-       const component = new MDCChip(root);
-
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasLeadingIcon())
-           .toBe(true);
-     });
-
-  it('adapter#hasLeadingIcon returns false if the chip does not have a leading icon',
-     () => {
-       const {component} = setupTest();
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasLeadingIcon())
-           .toBe(false);
-     });
-
-  it('adapter#getRootBoundingClientRect calls getBoundingClientRect on the root element',
-     () => {
-       const {root, component} = setupTest();
-       root.getBoundingClientRect = jasmine.createSpy('');
-       (component.getDefaultFoundation() as any)
-           .adapter.getRootBoundingClientRect();
-       expect(root.getBoundingClientRect).toHaveBeenCalledTimes(1);
-     });
-
-  it('adapter#getCheckmarkBoundingClientRect calls getBoundingClientRect on the checkmark element if it exists',
-     () => {
-       const root = getFixtureWithCheckmark();
-       const component = new MDCChip(root);
-       const checkmark = root.querySelector(CHECKMARK_SELECTOR);
-
-       checkmark!.getBoundingClientRect = jasmine.createSpy('');
-       (component.getDefaultFoundation() as any)
-           .adapter.getCheckmarkBoundingClientRect();
-       expect(checkmark!.getBoundingClientRect).toHaveBeenCalledTimes(1);
-     });
-
-  it('adapter#getCheckmarkBoundingClientRect returns null when there is no checkmark element',
-     () => {
-       const {component} = setupTest();
-       expect((component.getDefaultFoundation() as any)
-                  .adapter.getCheckmarkBoundingClientRect())
-           .toBe(null);
-     });
-
-  it('adapter#isRTL returns false if the text direction is not RTL', () => {
-    const {component, root} = setupTest();
-    document.documentElement.appendChild(root);
-    expect((component.getDefaultFoundation() as any).adapter.isRTL())
-        .toBe(false);
-    document.documentElement.removeChild(root);
+    component.setActionSelected(MDCChipActionType.PRIMARY, true);
+    expect(
+        root.querySelector<HTMLElement>(
+                '.mdc-evolution-chip__action')!.getAttribute('aria-selected'))
+        .toBe('true');
   });
 
-  it('adapter#isRTL returns true if the text direction is RTL', () => {
-    const {component, root} = setupTest();
-    document.documentElement.appendChild(root);
-    document.documentElement.setAttribute('dir', 'rtl');
-    expect((component.getDefaultFoundation() as any).adapter.isRTL())
-        .toBe(true);
-    document.documentElement.removeAttribute('dir');
-    document.documentElement.removeChild(root);
+  it(`#setDisabled(true) updates the disabled state of all controls`, () => {
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
+
+    component.setDisabled(true);
+    expect(root.querySelector<HTMLButtonElement>(
+                   '.mdc-evolution-chip__action')!.disabled)
+        .toBeTrue();
   });
 
-  it('adapter#focusPrimaryAction gives focus to the primary action element',
-     () => {
-       const {component, root} = setupTest();
-       document.documentElement.appendChild(root);
-       (component.getDefaultFoundation() as any).adapter.focusPrimaryAction();
-       expect(document.activeElement)
-           .toEqual(root.querySelector(chipStrings.PRIMARY_ACTION_SELECTOR));
-       document.documentElement.removeChild(root);
-     });
+  it(`#setDisabled(false) updates the disabled state of all controls`, () => {
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: true},
+      id: 'c0',
+    });
 
-  it('adapter#focusTrailingAction gives focus to the trailing icon element',
-     () => {
-       const root = getFixture();
-       const trailingAction = addTrailingAction(root);
-       document.documentElement.appendChild(root);
-       const component = new MDCChip(root);
-       (component.getDefaultFoundation() as any).adapter.focusTrailingAction();
-       expect(document.activeElement).toEqual(trailingAction);
-       document.documentElement.removeChild(root);
-     });
-
-  it('adapter#setPrimaryActionAttr sets the attribute on the text element',
-     () => {
-       const {root, component} = setupTest();
-       const primaryAction =
-           root.querySelector(chipStrings.PRIMARY_ACTION_SELECTOR);
-       (component.getDefaultFoundation() as any)
-           .adapter.setPrimaryActionAttr('tabindex', '-1');
-       expect(primaryAction!.getAttribute('tabindex')).toEqual('-1');
-     });
-
-  it('adapter#focusTrailingAction focuses the trailing action element', () => {
-    const root = getFixture();
-    const trailingAction = addFocusableTrailingAction(root);
-    document.documentElement.appendChild(root);
-    const component = new MDCChip(root);
-    (component.getDefaultFoundation() as any).adapter.focusTrailingAction();
-    expect(document.activeElement).toEqual(trailingAction);
-    document.documentElement.removeChild(root);
-    expect(trailingAction.getAttribute('tabindex')).toEqual('0');
+    component.setDisabled(false);
+    expect(root.querySelector<HTMLButtonElement>(
+                   '.mdc-evolution-chip__action')!.disabled)
+        .toBeFalse();
   });
 
-  it('adapter#removeTrailingActionFocus removes focus from the trailing action element',
-     () => {
-       const root = getFixture();
-       const trailingAction = addFocusableTrailingAction(root);
-       const component = new MDCChip(root);
-       (component.getDefaultFoundation() as any)
-           .adapter.removeTrailingActionFocus();
-       expect(trailingAction.getAttribute('tabindex')).toEqual('-1');
-     });
+  it(`#isDisabled() returns false when configured`, () => {
+    const {component} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: false},
+      id: 'c0',
+    });
 
-  it('adapter#isTrailingActionNavigable returns true if focusable', () => {
-    const root = getFixture();
-    addFocusableTrailingAction(root);
-    const component = new MDCChip(root);
-    const got = (component.getDefaultFoundation() as any)
-                    .adapter.isTrailingActionNavigable();
-    expect(got).toEqual(true);
+    expect(component.isDisabled()).toBeFalse();
   });
 
-  it('adapter#isTrailingActionNavigable returns false if absent', () => {
-    const root = getFixture();
-    const component = new MDCChip(root);
-    const got = (component.getDefaultFoundation() as any)
-                    .adapter.isTrailingActionNavigable();
-    expect(got).toEqual(false);
+  it(`#isDisabled() returns true when configured`, () => {
+    const {component} = setupTest({
+      primary: {isFocusable: true, isSelectable: false, isDisabled: true},
+      id: 'c0',
+    });
+
+    expect(component.isDisabled()).toBeTrue();
   });
 
-  it('#get selected proxies to foundation', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    expect(component.selected).toEqual(mockFoundation.isSelected());
+  it(`#handleAnimationEnd() sets width on exit animation completion`, () => {
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: true, isDisabled: false},
+      id: 'c0',
+    });
+
+    const width = root.offsetWidth;
+    // tslint:disable-next-line:no-any
+    (component as any).foundation.handleAnimationEnd({
+      animationName: MDCChipAnimation.EXIT,
+    });
+    expect(root.style.getPropertyValue('width')).toBe(`${width}px`);
   });
 
-  it('#set selected proxies to foundation', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    component.selected = true;
-    expect(mockFoundation.setSelected).toHaveBeenCalledWith(true);
-  });
+  it(`#startMDCChipAnimation() starts the animation`, () => {
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: true, isDisabled: false},
+      id: 'c0',
+    });
 
-  it('#get shouldRemoveOnTrailingIconClick proxies to foundation', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    expect(component.shouldRemoveOnTrailingIconClick)
-        .toEqual(mockFoundation.getShouldRemoveOnTrailingIconClick());
-  });
-
-  it('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    component.shouldRemoveOnTrailingIconClick = false;
-    expect(mockFoundation.setShouldRemoveOnTrailingIconClick)
-        .toHaveBeenCalledWith(false);
-  });
-
-  it('#set setShouldFocusPrimaryActionOnClick proxies to foundation', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    component.setShouldFocusPrimaryActionOnClick = false;
-    expect(mockFoundation.setShouldFocusPrimaryActionOnClick)
-        .toHaveBeenCalledWith(false);
-  });
-
-  it('#setSelectedFromChipSet proxies to the same foundation method', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    component.setSelectedFromChipSet(true, false);
-    expect(mockFoundation.setSelectedFromChipSet)
-        .toHaveBeenCalledWith(true, false);
-  });
-
-  it('#beginExit proxies to foundation', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    component.beginExit();
-    expect(mockFoundation.beginExit).toHaveBeenCalled();
-  });
-
-  it('#focusPrimaryAction proxies to the foundation#focusPrimaryAction', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    component.focusPrimaryAction();
-    expect(mockFoundation.focusPrimaryAction).toHaveBeenCalled();
-  });
-
-  it('#focusTrailingAction proxies to the foundation#focusTrailingAction',
-     () => {
-       const {component, mockFoundation} = setupMockFoundationTest();
-       component.focusTrailingAction();
-       expect(mockFoundation.focusTrailingAction).toHaveBeenCalled();
-     });
-
-  it('#removeFocus proxies to the foundation#removeFocus', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
-    component.removeFocus();
-    expect(mockFoundation.removeFocus).toHaveBeenCalled();
-  });
-
-  it('#remove removes the root from the DOM', () => {
-    const {component, root} = setupTest();
-    document.documentElement.appendChild(root);
-    component.remove();
-    expect(document.querySelector('.mdc-chip')).toEqual(null);
+    component.startAnimation(MDCChipAnimation.ENTER);
+    expect(root.classList.contains(MDCChipCssClasses.ENTER)).toBeTrue();
   });
 });

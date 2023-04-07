@@ -1,0 +1,123 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/tokens/resolvers';
+@use '@material/theme/keys';
+@use '@material/theme/theme';
+@use './button-shared-theme';
+
+$custom-property-prefix: 'filled-button';
+
+$light-theme: (
+  container-color: primary,
+  container-elevation: 0,
+  container-height: button-shared-theme.$height,
+  container-shadow-color: null,
+  container-shape: button-shared-theme.$shape-radius,
+  disabled-container-color: button-shared-theme.$disabled-container-color,
+  disabled-container-elevation: 0,
+  disabled-label-text-color: button-shared-theme.$disabled-ink-color,
+  focus-container-elevation: 0,
+  focus-label-text-color: null,
+  focus-state-layer-color: on-primary,
+  focus-state-layer-opacity: 0.24,
+  hover-container-elevation: 0,
+  hover-label-text-color: null,
+  hover-state-layer-color: on-primary,
+  hover-state-layer-opacity: 0.08,
+  /// Prevent the increased touch target from being reseted if the
+  /// container-height differs from the default (36px)
+  keep-touch-target: false,
+  label-text-color: on-primary,
+  label-text-font: button-font-family,
+  label-text-size: button-font-size,
+  label-text-tracking: button-letter-spacing,
+  label-text-transform: button-text-transform,
+  label-text-weight: button-font-weight,
+  pressed-container-elevation: 0,
+  pressed-label-text-color: null,
+  pressed-state-layer-color: on-primary,
+  pressed-state-layer-opacity: 0.24,
+  with-icon-disabled-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-hover-icon-color: null,
+  with-icon-icon-color: null,
+  with-icon-icon-size: 18px,
+  with-icon-pressed-icon-color: null,
+);
+
+/// Sets theme based on provided theme configuration.
+/// Only emits theme related styles.
+/// @param {Map} $theme - Theme configuration to use.
+@mixin theme($theme, $resolver: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: button-shared-theme.resolve-theme-elevation-keys(
+    $theme,
+    $resolver: $resolver
+  );
+  @include keys.declare-custom-properties($theme, $custom-property-prefix);
+}
+
+@mixin theme-styles(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+  @include button-shared-theme.theme-styles($theme, $resolver, $query: $query);
+}
+
+@mixin deprecated-theme-styles($query: feature-targeting.all()) {
+  .mdc-button--raised,
+  .mdc-button--unelevated {
+    $theme: map.merge(
+      $light-theme,
+      (
+        focus-state-layer-color: null,
+        focus-state-layer-opacity: null,
+        hover-state-layer-color: null,
+        hover-state-layer-opacity: null,
+        pressed-state-layer-color: null,
+        pressed-state-layer-opacity: null,
+        label-text-font: null,
+        label-text-size: null,
+        label-text-tracking: null,
+        label-text-transform: null,
+        label-text-weight: null,
+      )
+    );
+    @include button-shared-theme.theme-styles(
+      $theme,
+      resolvers.$material,
+      $query: $query
+    );
+  }
+}

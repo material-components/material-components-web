@@ -8,8 +8,6 @@ Here are the guidelines we'd like you to follow:
   - [Development Process](#development-process)
     - [Setting up your development environment](#setting-up-your-development-environment)
     - [Building Components](#building-components)
-    - [Running development server](#running-development-server)
-      - [App Engine development server](#app-engine-development-server)
     - [Building MDC Web](#building-mdc-web)
     - [Linting / Testing / Coverage Enforcement](#linting--testing--coverage-enforcement)
       - [Running Tests across browsers](#running-tests-across-browsers)
@@ -64,7 +62,6 @@ You can find much more information with respect to building components within ou
 npm run build # Cleans out build/ and builds unminified files for each MDC Web package
 npm run build:min # Builds minified files for each MDC Web package
 npm run dist # Runs both of the above commands sequentially
-npm run build:demos # Cleans out build/ and builds demo CSS/JS files, e.g. for deploying to App Engine
 ```
 
 ### Linting / Testing / Coverage Enforcement

@@ -1,7 +1,7 @@
 {
   "name": "@material/progress-indicator",
   "description": "The Material Components for the web interface for Progress Indicators",
-  "version": "8.0.0",
+  "version": "14.0.0",
   "license": "MIT",
   "sideEffects": false,
   "repository": {
@@ -10,7 +10,7 @@
     "directory": "packages/mdc-progress-indicator"
   },
   "dependencies": {
-    "tslib": "^1.9.3"
+    "tslib": "^2.1.0"
   },
   "publishConfig": {
     "access": "public"

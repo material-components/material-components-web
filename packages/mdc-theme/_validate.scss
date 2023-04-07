@@ -1,0 +1,130 @@
+//
+// Copyright 2021 Google LLC
+// SPDX-License-Identifier: Apache-2.0
+//
+
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use './string-ext';
+
+/// Validates a theme's tokens and throws an error if incorrect tokens are
+/// present or any tokens are missing.
+///
+/// Use this in internal `theme-styles()` mixins to validate library-provided
+/// `$theme` maps and ensure that all tokens are correct and present.
+///
+/// @example - scss
+///   @mixin theme-styles($theme) {
+///     $theme: theme.validate-theme-styles($light-theme, $theme);
+///     $theme: theme.create-theme-vars($theme, checkbox);
+///   }
+///
+/// @throw If any tokens are invalid or missing.
+/// @param {Map|List} $reference-theme - A reference theme Map whose token keys
+///     will be used to validate the user-provided theme (or list of tokens).
+/// @param {Map} $theme - The theme Map to validate.
+/// @return {Map} The validated theme Map.
+@function theme-styles($reference-theme, $theme, $require-all: true) {
+  $valid-tokens: $reference-theme;
+  @if meta.type-of($reference-theme) == 'map' {
+    $valid-tokens: map.keys($reference-theme);
+  }
+
+  $theme: _validate-theme-tokens(
+    $valid-tokens,
+    $theme,
+    $require-all: $require-all
+  );
+
+  @return $theme;
+}
+
+/// Validates a theme's tokens and values and throws an error if incorrect
+/// tokens are present or invalid values are provided.
+///
+/// Use this in `theme()` mixins to validate user-provided `$theme` maps before
+/// providing the value to `theme.create-theme-vars()`.
+///
+/// @example - scss
+///   @mixin theme($theme) {
+///     $theme: validate.theme($light-theme, $theme);
+///     $theme: theme.create-theme-vars($theme, checkbox);
+///   }
+///
+/// @throw If any tokens or values are invalid.
+/// @param {Map|List} $reference-theme - A reference theme Map whose token keys
+///     will be used to validate the user-provided theme (or list of tokens).
+/// @param {Map} $theme - User-provided theme Map to validate.
+/// @return {Map} The validated user-provided theme Map.
+@function theme($reference-theme, $theme) {
+  $valid-tokens: $reference-theme;
+  @if meta.type-of($reference-theme) == 'map' {
+    $valid-tokens: map.keys($reference-theme);
+  }
+
+  $theme: _validate-theme-tokens($valid-tokens, $theme, $require-all: false);
+
+  @return $theme;
+}
+
+/// Validates input for a `theme` mixin and throws an error if incorrect tokens
+/// are present or optionally missing if `$require-all` is true.
+///
+/// @throw If any tokens are invalid or optionally missing.
+/// @param {List} $valid-tokens - A List of token keys to validate the theme.
+/// @param {Map} $theme - The theme Map to validate.
+/// @param {Bool} $require-all [false] - If true, throw an error if the theme
+///     is missing tokens from the list.
+/// @return {Map} The validated theme Map.
+@function _validate-theme-tokens($valid-tokens, $theme, $require-all: false) {
+  $missing-tokens: ();
+  $unsupported-tokens: ();
+
+  @each $token, $value in $theme {
+    @if list.index($valid-tokens, $token) == null {
+      $unsupported-tokens: list.append(
+        $unsupported-tokens,
+        $token,
+        $separator: comma
+      );
+    }
+  }
+
+  @if $require-all {
+    // TODO(b/203778922): Remove when type composite tokens are removed
+    $ignore-suffix: (
+      // Ignore composite font tokens
+      '-type'
+    );
+
+    @each $token in $valid-tokens {
+      $missing: map.get($theme, $token) == null;
+      @if $missing {
+        @each $suffix in $ignore-suffix {
+          @if string-ext.has-suffix($token, $suffix) {
+            $missing: false;
+          }
+        }
+      }
+
+      @if $missing {
+        $missing-tokens: list.append(
+          $missing-tokens,
+          $token,
+          $separator: comma
+        );
+      }
+    }
+  }
+
+  @if list.length($unsupported-tokens) > 0 {
+    @error 'The following tokens are invalid: #{$unsupported-tokens}.';
+  }
+
+  @if list.length($missing-tokens) > 0 {
+    @error 'The following required tokens are missing: #{$missing-tokens}.';
+  }
+
+  @return $theme;
+}

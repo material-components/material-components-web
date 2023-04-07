@@ -1,0 +1,1554 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Internal stylesheet for material list component. Selector '.mdc-*' should
+// only be used in this project.
+
+@use '@material/density/functions' as density-functions;
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple-theme';
+@use '@material/ripple/ripple';
+@use '@material/rtl/rtl';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
+@use '@material/typography/typography';
+@use './evolution-variables' as variables;
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+
+$ripple-target: variables.$ripple-target;
+
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include _high-contrast-mode($query: $query);
+  .mdc-list {
+    @include _static-list-base($query: $query);
+  }
+
+  .mdc-list-item__wrapper {
+    @include feature-targeting.targets($feat-structure) {
+      display: block;
+    }
+  }
+
+  .mdc-list-item {
+    @include item-base($query: $query);
+    @include _list-item-baseline-height($query: $query);
+    @include one-line-item-start-alignment(center, $query: $query);
+    @include two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
+    @include three-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
+
+    @include one-line-item-end-alignment(center, $query: $query);
+    @include two-line-item-end-alignment(center, $query: $query);
+    @include three-line-item-end-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
+
+    @include feature-targeting.targets($feat-structure) {
+      align-items: stretch;
+      cursor: pointer;
+    }
+
+    // Reset mouse cursor for disabled and non-interactive items.
+    &.mdc-list-item--disabled,
+    &.mdc-list-item--non-interactive {
+      @include feature-targeting.targets($feat-structure) {
+        cursor: auto;
+      }
+    }
+
+    // TODO(b/254711887): Likely need to update this to adhere to a HCM focus
+    // ring spec.
+    // For components using aria-activedescendant, the focus pseudoclass is
+    // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
+    &:not(.mdc-list-item--selected):focus::before,
+    &.mdc-ripple-upgraded--background-focused::before {
+      @include dom-mixins.transparent-border($query: $query);
+    }
+
+    &.mdc-list-item--selected::before {
+      @include dom-mixins.transparent-border(
+        $border-width: 3px,
+        $border-style: double,
+        $query: $query
+      );
+    }
+
+    &.mdc-list-item--selected:focus::before {
+      @include dom-mixins.transparent-border(
+        $border-width: 3px,
+        $query: $query
+      );
+    }
+  }
+
+  // stylelint-disable selector-max-type --
+  // Override anchor tag styles for the use-case of a list being used for navigation
+  a.mdc-list-item {
+    @include feature-targeting.targets($feat-structure) {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+  // stylelint-enable selector-max-type
+
+  .mdc-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      fill: currentColor;
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+  }
+
+  .mdc-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+  }
+
+  .mdc-list-item__content {
+    @include typography.overflow-ellipsis($query);
+    @include feature-targeting.targets($feat-structure) {
+      align-self: center;
+      flex: 1;
+      pointer-events: none;
+    }
+
+    .mdc-list-item--with-two-lines &,
+    .mdc-list-item--with-three-lines & {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: stretch;
+      }
+    }
+
+    // Disable interaction on label elements that may automatically
+    // toggle corresponding checkbox / radio input.
+    &[for] {
+      @include feature-targeting.targets($feat-structure) {
+        pointer-events: none;
+      }
+    }
+  }
+
+  .mdc-list-item__primary-text {
+    @include typography.overflow-ellipsis($query);
+
+    .mdc-list-item--with-two-lines &,
+    .mdc-list-item--with-three-lines & {
+      @include typography.text-baseline(
+        $top: 28px,
+        $bottom: 20px,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-list-item__secondary-text {
+    @include typography.overflow-ellipsis($query);
+    @include typography.text-baseline(
+      $top: 20px,
+      $display: block,
+      $query: $query
+    );
+
+    .mdc-list-item--with-three-lines & {
+      @include feature-targeting.targets($feat-structure) {
+        white-space: normal;
+        line-height: 20px;
+      }
+    }
+
+    .mdc-list-item--with-overline & {
+      @include feature-targeting.targets($feat-structure) {
+        white-space: nowrap;
+        line-height: auto;
+      }
+    }
+  }
+
+  .mdc-list-item__overline-text {
+    @include typography.overflow-ellipsis($query);
+
+    .mdc-list-item--with-two-lines & {
+      @include typography.text-baseline(
+        $top: 24px,
+        $bottom: 20px,
+        $query: $query
+      );
+    }
+
+    .mdc-list-item--with-three-lines & {
+      @include typography.text-baseline(
+        $top: 28px,
+        $bottom: 20px,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-list-item--with-leading-avatar {
+    @include item-start-spacing(16px, $query: $query);
+    @include _two-line-item-text-baseline($query: $query);
+    @include _tall-list-item-baseline-height($query: $query);
+
+    .mdc-list-item__start {
+      @include feature-targeting.targets($feat-structure) {
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .mdc-list-item--with-leading-icon {
+    @include item-start-spacing(
+      $leading: 16px,
+      $trailing: 32px,
+      $query: $query
+    );
+    @include _two-line-item-text-baseline($query: $query);
+    @include _tall-list-item-baseline-height($query: $query);
+  }
+
+  .mdc-list-item--with-leading-thumbnail {
+    @include item-start-spacing(16px, $query: $query);
+    @include _two-line-item-text-baseline($query: $query);
+    @include _tall-list-item-baseline-height($query: $query);
+  }
+
+  .mdc-list-item--with-leading-image {
+    @include item-start-spacing(16px, $query: $query);
+    @include _two-line-item-text-baseline($query: $query);
+    @include _one-line-item-taller-density(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include _two-line-item-tall-density(
+      variables.$two-line-item-density-scale,
+      $query: $query
+    );
+  }
+
+  .mdc-list-item--with-leading-video {
+    @include two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: 8px,
+      $query: $query
+    );
+    @include item-start-spacing($leading: 0, $trailing: 16px, $query: $query);
+    @include _two-line-item-text-baseline($query: $query);
+    @include _one-line-item-taller-density(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include _two-line-item-tall-density(
+      variables.$two-line-item-density-scale,
+      $query: $query
+    );
+  }
+
+  .mdc-list-item--with-leading-checkbox {
+    $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
+    $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
+    $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
+
+    @include item-start-spacing($leading, $trailing, $query: $query);
+    @include two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: $top,
+      $query: $query
+    );
+    @include _two-line-item-text-baseline($query: $query);
+    @include _tall-list-item-baseline-height($query: $query);
+  }
+
+  .mdc-list-item--with-leading-radio {
+    $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
+    $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
+    $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
+
+    @include item-start-spacing($leading, $trailing, $query: $query);
+    @include two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: $top,
+      $query: $query
+    );
+    @include _two-line-item-text-baseline($query: $query);
+    @include _tall-list-item-baseline-height($query: $query);
+  }
+
+  .mdc-list-item--with-leading-switch {
+    @include item-start-spacing(16px, $query: $query);
+    @include two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
+    @include _two-line-item-text-baseline($query: $query);
+    @include _tall-list-item-baseline-height($query: $query);
+  }
+
+  .mdc-list-item--with-trailing-icon {
+    @include item-end-spacing(16px, $query: $query);
+  }
+
+  .mdc-list-item--with-trailing-meta {
+    @include two-line-item-end-alignment(flex-start, $query: $query);
+    @include three-line-item-end-alignment(flex-start, $query: $query);
+    @include item-end-spacing($leading: 28px, $trailing: 16px, $query: $query);
+    @include _multi-line-item-end-text-baseline($query: $query);
+
+    .mdc-list-item__end {
+      @include typography.typography(caption, $query);
+    }
+  }
+
+  .mdc-list-item--with-trailing-checkbox {
+    $leading: absorb-overflow(32px, $actual: 40px, $available: 24px);
+    $trailing: absorb-overflow(16px, $actual: 40px, $available: 24px);
+    $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
+
+    @include item-end-spacing($leading, $trailing, $query: $query);
+    @include three-line-item-end-alignment(
+      $alignment: flex-start,
+      $offset: $top,
+      $query: $query
+    );
+  }
+
+  .mdc-list-item--with-trailing-radio {
+    $leading: absorb-overflow(32px, $actual: 40px, $available: 24px);
+    $trailing: absorb-overflow(16px, $actual: 40px, $available: 24px);
+    $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
+
+    @include item-end-spacing($leading, $trailing, $query: $query);
+    @include three-line-item-end-alignment(
+      $alignment: flex-start,
+      $offset: $top,
+      $query: $query
+    );
+  }
+
+  .mdc-list-item--with-trailing-switch {
+    @include item-end-spacing(16px, $query: $query);
+    @include three-line-item-end-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
+  }
+
+  .mdc-list-item--with-overline {
+    @include _two-line-item-primary-text-baseline(20px, 0px, $query: $query);
+    @include _three-line-item-primary-baseline(20px, 0px, $query: $query);
+  }
+
+  // This must be specified last to ensure that RTL padding takes priority over
+  // LTR padding in the cascade.
+  .mdc-list-item {
+    @include item-spacing(16px, $query: $query);
+  }
+
+  //
+  // Grouping
+  //
+  .mdc-list-group {
+    @include feature-targeting.targets($feat-structure) {
+      // Cancel top/bottom padding on individual lists within group
+      .mdc-deprecated-list {
+        padding: 0;
+      }
+    }
+  }
+  .mdc-list-group__subheader {
+    @include _list-group-subheader-margin($query: $query);
+  }
+
+  //
+  // Dividers
+  //
+
+  .mdc-list-divider {
+    @include feature-targeting.targets($feat-structure) {
+      padding: 0;
+
+      // Allows the use of padding to specify leading and trailing insets
+      // independently.
+      background-clip: content-box;
+    }
+  }
+
+  // The base inset variant corresponds to the item's padding.
+  .mdc-list-divider,
+  .mdc-list-divider--with-leading-text,
+  .mdc-list-divider--with-leading-icon,
+  .mdc-list-divider--with-leading-image,
+  .mdc-list-divider--with-leading-thumbnail,
+  .mdc-list-divider--with-leading-avatar,
+  .mdc-list-divider--with-leading-checkbox,
+  .mdc-list-divider--with-leading-switch,
+  .mdc-list-divider--with-leading-radio {
+    @include divider-leading-inset(16px, $query: $query);
+    @include divider-trailing-inset(16px, $query: $query);
+  }
+
+  .mdc-list-divider--with-leading-video {
+    @include divider-leading-inset(0px, $query: $query);
+  }
+
+  // This is needed to ensure that default padding isn't applied in RTL locales.
+  .mdc-list-divider {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.rtl {
+        padding: 0;
+      }
+    }
+  }
+}
+
+@mixin core-styles($query: feature-targeting.all()) {
+  @include without-ripple($query);
+  @include with-ripple($query);
+}
+
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  //
+  // Items
+  //
+
+  @include list-primary-text-ink-color(text-primary-on-background, $query);
+  @include list-secondary-text-ink-color(text-secondary-on-background, $query);
+  @include list-overline-text-ink-color(text-hint-on-background, $query);
+  @include list-icon-fill-color(transparent, $query);
+  @include list-icon-ink-color(text-icon-on-background, $query);
+  @include list-meta-text-ink-color(text-hint-on-background, $query);
+  @include list-disabled-opacity(variables.$content-disabled-opacity, $query);
+  @include list-disabled-ink-color(variables.$content-disabled-color, $query);
+  @include list-selected-ink-color(variables.$content-selected-color, $query);
+
+  @include group-subheader-ink-color(text-primary-on-background, $query);
+
+  @include _high-contrast-mode-border-color($query);
+
+  .mdc-list {
+    @include _typography-list-base($query: $query);
+  }
+
+  .mdc-list-item__primary-text {
+    @include typography.typography(subtitle1, $query);
+  }
+
+  .mdc-list-item__secondary-text {
+    @include typography.typography(body2, $query);
+  }
+
+  .mdc-list-item__overline-text {
+    @include typography.typography(overline, $query);
+  }
+
+  .mdc-list-item--with-leading-avatar {
+    @include item-start-size(40px, $query: $query);
+  }
+
+  .mdc-list-item--with-leading-icon {
+    @include item-start-size(24px, $query: $query);
+  }
+
+  .mdc-list-item--with-leading-thumbnail {
+    @include item-start-size(40px, $query: $query);
+  }
+
+  .mdc-list-item--with-leading-image {
+    @include item-start-size(56px, $query: $query);
+  }
+
+  .mdc-list-item--with-leading-video {
+    @include item-start-size($width: 100px, $height: 56px, $query: $query);
+  }
+
+  .mdc-list-item--with-leading-checkbox {
+    @include item-start-size(40px, $query: $query);
+  }
+
+  .mdc-list-item--with-leading-radio {
+    @include item-start-size(40px, $query: $query);
+  }
+
+  .mdc-list-item--with-leading-switch {
+    @include item-start-size($width: 36px, $height: 20px, $query: $query);
+  }
+
+  .mdc-list-item--with-trailing-icon {
+    @include item-end-size(24px, $query: $query);
+  }
+
+  .mdc-list-item--with-trailing-meta {
+    .mdc-list-item__end {
+      @include typography.typography(caption, $query);
+    }
+  }
+
+  .mdc-list-item--with-trailing-checkbox {
+    @include item-end-size(40px, $query: $query);
+  }
+
+  .mdc-list-item--with-trailing-radio {
+    @include item-end-size(40px, $query: $query);
+  }
+
+  .mdc-list-item--with-trailing-switch {
+    @include item-end-size($width: 36px, $height: 20px, $query: $query);
+  }
+
+  .mdc-list-group__subheader {
+    @include typography.typography(subtitle1, $query);
+  }
+
+  //
+  // Dividers
+  //
+
+  $divider-color: if(
+    theme-color.tone(theme-color.$background) == 'dark',
+    variables.$divider-color-on-dark-bg,
+    variables.$divider-color-on-light-bg
+  );
+
+  @include divider-color($divider-color, $query: $query);
+  @include divider-height(1px, $query: $query);
+  @include static-styles($query: $query);
+} // end of without-ripple
+
+@mixin with-ripple($query: feature-targeting.all()) {
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  :not(.mdc-list-item--disabled).mdc-list-item {
+    @include _item-interactive-ripple($query);
+  }
+}
+
+///
+/// Adjusts an offset (i.e., margin) to accomodate contents that are larger than
+/// the space allocated by the specification.
+///
+/// For instance, the specification provides 24x24dp for a checkbox with a 16dp
+/// margin. However, checkboxes are actually 40x40dp. To ensure that the
+/// checkbox is positioned correctly, the margin is reduced by 8dp to reflect
+/// that the margin is already "baked into" the checkbox.
+///
+/// Concretely, 40dp - 24dp = 16dp. Assuming that the control is symmetrical,
+/// half of the overflow (8dp) is on the leading side and half on the trailing
+/// side. Therefore, the leading and trailing margins are reduced by 8dp.
+///
+/// Note: this might be more useful if it's added into the leading/trailing
+/// margin mixins as a parameter.
+///
+@function absorb-overflow($offset, $actual, $available, $symmetric: true) {
+  @if $actual <= $available {
+    @return $offset;
+  }
+  $overflow: $actual - $available;
+  @return $offset - math.div($overflow, if($symmetric, 2, 1));
+}
+
+@mixin one-line-item-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-one-line {
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
+  }
+}
+
+@mixin two-line-item-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-two-lines {
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
+  }
+}
+@mixin three-line-item-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-three-lines {
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
+  }
+}
+
+@mixin list-item-height($height) {
+  &.mdc-list-item--with-one-line,
+  &.mdc-list-item--with-two-lines,
+  &.mdc-list-item--with-three-lines {
+    @include theme.property(height, $height);
+  }
+}
+
+@mixin item-spacing(
+  $leading,
+  $trailing: $leading,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    @include rtl.reflexive-property(padding, $leading, $trailing);
+  }
+}
+
+@mixin one-line-item-start-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-one-line {
+    .mdc-list-item__start {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
+    }
+  }
+}
+
+@mixin two-line-item-start-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__start {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
+    }
+  }
+}
+
+@mixin three-line-item-start-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__start {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
+    }
+  }
+}
+
+@mixin one-line-item-end-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-one-line {
+    .mdc-list-item__end {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
+    }
+  }
+}
+
+@mixin two-line-item-end-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__end {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
+    }
+  }
+}
+
+@mixin three-line-item-end-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__end {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
+    }
+  }
+}
+
+@mixin item-start-spacing(
+  $leading,
+  $trailing: $leading,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    // Extra specificity needed to override default customizations.
+    &.mdc-list-item {
+      // We rely on auto to avoid clobbering the opposite padding.
+      @include rtl.reflexive-property(padding, 0, auto);
+    }
+
+    .mdc-list-item__start {
+      @include rtl.reflexive-property(margin, $leading, $trailing);
+    }
+  }
+}
+
+@mixin item-end-spacing(
+  $leading,
+  $trailing: $leading,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    // Extra specificity needed to override default customizations.
+    &.mdc-list-item {
+      // We rely on auto to avoid clobbering the opposite padding.
+      @include rtl.reflexive-property(padding, auto, 0);
+    }
+
+    .mdc-list-item__end {
+      @include rtl.reflexive-property(margin, $leading, $trailing);
+    }
+  }
+}
+
+@mixin item-start-size(
+  $width,
+  $height: $width,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-list-item__start {
+      @include theme.property(width, $width);
+      @include theme.property(height, $height);
+    }
+  }
+}
+
+@mixin item-end-size($width, $height: $width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-list-item__end {
+      @include theme.property(width, $width);
+      @include theme.property(height, $height);
+    }
+  }
+}
+
+@mixin list-item-selected-container-color($color) {
+  &.mdc-list-item.mdc-list-item--selected {
+    @include theme.property(background-color, $color);
+  }
+}
+
+@mixin list-primary-text-typography($typography-theme) {
+  .mdc-list-item__primary-text {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin list-primary-text-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item__primary-text {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin list-secondary-text-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item__secondary-text {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin list-secondary-text-typography($typography-theme) {
+  .mdc-list-item__secondary-text {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin list-overline-text-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item__overline-text {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin list-meta-text-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item__end {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin list-icon-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item--with-leading-icon .mdc-list-item__start,
+  .mdc-list-item--with-trailing-icon .mdc-list-item__end {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin list-icon-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item--with-leading-icon .mdc-list-item__start,
+  .mdc-list-item--with-trailing-icon .mdc-list-item__end {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color);
+    }
+  }
+}
+
+@mixin list-selected-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item--selected,
+  .mdc-list-item--activated {
+    @include list-primary-text-ink-color($color, $query);
+    @include _item-icon-ink-color($color, $leading-only: true, $query: $query);
+  }
+}
+
+@mixin list-selected-meta-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item--selected,
+  .mdc-list-item--activated {
+    @include list-meta-text-ink-color($color, $query);
+  }
+}
+
+@mixin list-disabled-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item--disabled {
+    @include list-primary-text-ink-color($color, $query);
+    @include list-secondary-text-ink-color($color, $query);
+    @include list-overline-text-ink-color($color, $query);
+    @include _item-icon-ink-color($color, $query: $query);
+    @include item-meta-text-ink-color($color, $query);
+  }
+}
+
+@mixin list-disabled-opacity($opacity, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item--disabled {
+    .mdc-list-item__start,
+    .mdc-list-item__content,
+    .mdc-list-item__end {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(opacity, $opacity);
+      }
+    }
+  }
+}
+
+@mixin group-subheader-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-deprecated-list-group__subheader {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+///
+/// Sets shape radius (rounded) to single line list variant.
+///
+/// @param {Number | List<Number>} $radius Radius size in `px` or percentage. It can be 4 value corner or single radius.
+///     Set to `50%` for rounded shape.
+/// @param {Boolean} $rtl-reflexive Set to true to flip border radius in RTL context. Defaults to `false`.
+/// @param {Number} $density-scale Density scale of single line list. Set this only when custom density is applied.
+///     Defaults to `$mdc-deprecated-list-single-line-density-scale`.
+///
+/// @access public
+///
+@mixin one-line-list-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: variables.$one-line-item-density-scale,
+  $query: feature-targeting.all()
+) {
+  .mdc-list-item--with-one-line {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height:
+        density-functions.prop-value(
+          $density-config: variables.$one-line-item-density-config,
+          $density-scale: $density-scale,
+          $property-name: height
+        ),
+      $query: $query
+    );
+
+    &.mdc-list-item--with-leading-avatar,
+    &.mdc-list-item--with-leading-icon,
+    &.mdc-list-item--with-leading-thumbnail,
+    &.mdc-list-item--with-leading-checkbox,
+    &.mdc-list-item--with-leading-radio,
+    &.mdc-list-item--with-leading-switch {
+      @include shape-mixins.radius(
+        $radius,
+        $rtl-reflexive,
+        $component-height:
+          density-functions.prop-value(
+            $density-config: variables.$one-line-item-tall-density-config,
+            $density-scale: $density-scale,
+            $property-name: height
+          ),
+        $query: $query
+      );
+    }
+
+    &.mdc-list-item--with-leading-image,
+    &.mdc-list-item--with-leading-video {
+      @include shape-mixins.radius(
+        $radius,
+        $rtl-reflexive,
+        $component-height:
+          density-functions.prop-value(
+            $density-config: variables.$one-line-item-taller-density-config,
+            $density-scale: $density-scale,
+            $property-name: height
+          ),
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin two-line-list-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: variables.$two-line-item-density-scale,
+  $query: feature-targeting.all()
+) {
+  .mdc-list-item--with-two-lines {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height:
+        density-functions.prop-value(
+          $density-config: variables.$two-line-item-density-config,
+          $density-scale: $density-scale,
+          $property-name: height
+        ),
+      $query: $query
+    );
+
+    &.mdc-list-item--with-leading-avatar,
+    &.mdc-list-item--with-leading-icon,
+    &.mdc-list-item--with-leading-thumbnail,
+    &.mdc-list-item--with-leading-checkbox,
+    &.mdc-list-item--with-leading-radio,
+    &.mdc-list-item--with-leading-switch,
+    &.mdc-list-item--with-leading-image,
+    &.mdc-list-item--with-leading-video {
+      @include shape-mixins.radius(
+        $radius,
+        $rtl-reflexive,
+        $component-height:
+          density-functions.prop-value(
+            $density-config: variables.$two-line-item-tall-density-config,
+            $density-scale: $density-scale,
+            $property-name: height
+          ),
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin three-line-list-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: variables.$three-line-item-density-scale,
+  $query: feature-targeting.all()
+) {
+  .mdc-list-item--with-three-lines {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height:
+        density-functions.prop-value(
+          $density-config: variables.$three-line-item-density-config,
+          $density-scale: $density-scale,
+          $property-name: height
+        ),
+      $query: $query
+    );
+  }
+}
+
+@mixin divider-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-divider {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color);
+    }
+  }
+}
+
+@mixin divider-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-list-divider {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $height);
+    }
+  }
+}
+
+@mixin divider-leading-inset($inset, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-divider--with-leading-inset {
+    @include feature-targeting.targets($feat-structure) {
+      // We rely on auto to avoid clobbering the opposite padding.
+      @include rtl.reflexive-property(padding, $inset, auto);
+    }
+  }
+}
+
+@mixin divider-trailing-inset($inset, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-list-divider--with-trailing-inset {
+    @include feature-targeting.targets($feat-structure) {
+      // We rely on auto to avoid clobbering the opposite padding.
+      @include rtl.reflexive-property(padding, auto, $inset);
+    }
+  }
+}
+
+// The public density mixins apply the appropriate density styles regardless of
+// the item's start contents.
+@mixin one-line-item-density(
+  $density-scale,
+  $exclude-variants: false,
+  $query: feature-targeting.all()
+) {
+  @include _one-line-item-density($density-scale, $query: $query);
+
+  @if not $exclude-variants {
+    &.mdc-list-item--with-leading-avatar,
+    &.mdc-list-item--with-leading-icon,
+    &.mdc-list-item--with-leading-thumbnail,
+    &.mdc-list-item--with-leading-checkbox,
+    &.mdc-list-item--with-leading-radio,
+    &.mdc-list-item--with-leading-switch {
+      @include _one-line-item-tall-density($density-scale, $query: $query);
+    }
+
+    &.mdc-list-item--with-leading-image,
+    &.mdc-list-item--with-leading-video {
+      @include _one-line-item-taller-density($density-scale, $query: $query);
+    }
+  }
+}
+
+@mixin two-line-item-density($density-scale, $query: feature-targeting.all()) {
+  @include _two-line-item-density($density-scale, $query: $query);
+
+  &.mdc-list-item--with-leading-avatar,
+  &.mdc-list-item--with-leading-icon,
+  &.mdc-list-item--with-leading-thumbnail,
+  &.mdc-list-item--with-leading-checkbox,
+  &.mdc-list-item--with-leading-radio,
+  &.mdc-list-item--with-leading-switch,
+  &.mdc-list-item--with-leading-image,
+  &.mdc-list-item--with-leading-video {
+    @include _two-line-item-tall-density($density-scale, $query: $query);
+  }
+}
+
+@mixin three-line-item-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  @include _three-line-item-density($density-scale, $query: $query);
+}
+
+//
+// Private
+//
+
+// Mixins that apply baseline height for one-, two-, and three- line item
+// container heights. This mixin calls the density mixins so that the styles
+// can be overwritten by future density mixin calls.
+@mixin _list-item-baseline-height($query: feature-targeting.all()) {
+  @include _one-line-item-density(
+    variables.$one-line-item-density-scale,
+    $query: $query
+  );
+
+  @include _two-line-item-density(
+    variables.$two-line-item-density-scale,
+    $query: $query
+  );
+
+  @include _three-line-item-density(
+    variables.$three-line-item-density-scale,
+    $query: $query
+  );
+}
+
+@mixin _tall-list-item-baseline-height($query: feature-targeting.all()) {
+  @include _one-line-item-tall-density(
+    variables.$one-line-item-density-scale,
+    $query: $query
+  );
+  @include _two-line-item-tall-density(
+    variables.$two-line-item-density-scale,
+    $query: $query
+  );
+}
+
+// The private density mixins allow density properties to be overridden
+// individually to avoid increasing specificity.
+
+@mixin _one-line-item-density($density-scale, $query: feature-targeting.all()) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$one-line-item-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include one-line-item-height($height, $query: $query);
+}
+
+@mixin _one-line-item-tall-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$one-line-item-tall-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include one-line-item-height($height, $query: $query);
+}
+
+@mixin _one-line-item-taller-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$one-line-item-taller-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include one-line-item-height($height, $query: $query);
+}
+
+@mixin _two-line-item-density($density-scale, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $height: density-functions.prop-value(
+    $density-config: variables.$two-line-item-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include two-line-item-height($height, $query: $query);
+
+  @if ($density-scale and $density-scale != 0) {
+    &.mdc-list-item--with-two-lines {
+      .mdc-list-item__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .mdc-list-item__primary-text,
+      .mdc-list-item__secondary-text {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        line-height: 1.4;
+        &::before,
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@mixin _two-line-item-tall-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$two-line-item-tall-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include two-line-item-height($height, $query: $query);
+}
+
+@mixin _three-line-item-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$three-line-item-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include three-line-item-height($height, $query: $query);
+}
+
+// Split the list-base mixin into two sub-mixins, one holding the
+// structural/static styles (static-list-base) and the other holding styles
+// that are themable (typography-list-base). However, the existing list-base
+// mixin need to be preserved as Angular calls this mixin for autocomplete
+// base styling.
+@mixin _typography-list-base($query: feature-targeting.all()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
+  @include typography.typography(subtitle1, $query);
+  @include feature-targeting.targets($feat-typography) {
+    // According to the mocks and stickersheet, the line-height is
+    // adjusted to 24px for text content, same as for body1.
+    /* @alternate */
+    line-height: map.get(map.get(typography.$styles, body1), line-height);
+  }
+}
+
+@mixin _static-list-base($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    margin: 0;
+    padding: 8px 0;
+    list-style-type: none;
+
+    &:focus // lint-disable-focus-psuedo-selector
+    {
+      outline: none;
+    }
+  }
+}
+
+@mixin list-base($query: feature-targeting.all()) {
+  @include _typography-list-base($query: $query);
+  @include _static-list-base($query: $query);
+}
+
+@mixin item-base($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: 0;
+
+    &:focus // lint-disable-focus-psuedo-selector
+    {
+      outline: none;
+    }
+  }
+}
+
+@mixin _item-interactive-ripple($query: feature-targeting.all()) {
+  @include ripple.surface(
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple.radius-bounded(
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states(
+    theme-color.prop-value(on-surface),
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states-activated(
+    primary,
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states-selected(
+    primary,
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+
+  #{variables.$ripple-target} {
+    @include ripple.surface-styles($query: $query);
+    @include ripple.target-common($query: $query);
+  }
+}
+
+@mixin _two-line-item-text-baseline($query: feature-targeting.all()) {
+  @include _two-line-item-primary-text-baseline(32px, 20px, $query: $query);
+  @include _two-line-item-overline-text-baseline(28px, 20px, $query: $query);
+  @include _two-line-item-meta-text-baseline($top: 32px, $query: $query);
+}
+
+@mixin _two-line-item-primary-text-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__primary-text {
+      @include typography.text-baseline(
+        $top: $top,
+        $bottom: $bottom,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _three-line-item-primary-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__primary-text {
+      @include typography.text-baseline(
+        $top: $top,
+        $bottom: $bottom,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _two-line-item-overline-text-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__overline-text {
+      @include typography.text-baseline(
+        $top: $top,
+        $bottom: $bottom,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _three-line-item-overline-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__overline-text {
+      @include typography.text-baseline(
+        $top: $top,
+        $bottom: $bottom,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _multi-line-item-end-text-baseline($query: feature-targeting.all()) {
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__end {
+      @include typography.text-baseline(
+        $display: block,
+        $top: 28px,
+        $query: $query
+      );
+    }
+  }
+
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__end {
+      @include typography.text-baseline(
+        $display: block,
+        $top: 28px,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _two-line-item-meta-text-baseline(
+  $top,
+  $query: feature-targeting.all()
+) {
+  &.mdc-list-item--with-two-lines {
+    &.mdc-list-item--with-trailing-meta {
+      .mdc-list-item__end {
+        @include typography.text-baseline(
+          $display: block,
+          $top: $top,
+          $query: $query
+        );
+      }
+    }
+  }
+}
+
+@mixin item-meta-text-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  &.mdc-list-item--with-trailing-meta {
+    .mdc-list-item__end {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(color, $color);
+      }
+    }
+  }
+}
+
+@mixin _item-icon-ink-color(
+  $color,
+  $leading-only: false,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  &.mdc-list-item--with-leading-icon {
+    .mdc-list-item__start {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(color, $color);
+      }
+    }
+  }
+
+  @if (not $leading-only) {
+    &.mdc-list-item--with-trailing-icon {
+      .mdc-list-item__end {
+        @include feature-targeting.targets($feat-color) {
+          @include theme.property(color, $color);
+        }
+      }
+    }
+  }
+}
+
+@mixin _high-contrast-mode-border-color($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  .mdc-list-divider::after {
+    @include feature-targeting.targets($feat-color) {
+      // Color ensures border is shown, but will be overridden by the browser.
+      @include theme.property(border-bottom-color, white);
+    }
+  }
+}
+
+@mixin _high-contrast-mode($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include dom-mixins.forced-colors-mode {
+    .mdc-list-divider::after {
+      @include feature-targeting.targets($feat-structure) {
+        content: '';
+        display: block;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+      }
+    }
+  }
+}
+
+@mixin _list-group-subheader-margin($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  $mdc-list-subheader-virtual-height: 3rem;
+  $mdc-list-subheader-leading: map.get(
+    map.get(typography.$styles, body1),
+    line-height
+  );
+  $mdc-list-subheader-margin: calc(
+    (#{$mdc-list-subheader-virtual-height} - #{$mdc-list-subheader-leading}) / 2
+  );
+
+  @include feature-targeting.targets($feat-structure) {
+    margin: $mdc-list-subheader-margin variables.$side-padding;
+  }
+}

@@ -21,4 +21,4 @@
 //
 
 /// @deprecated Import '_density.scss' module instead.
-@forward './density' show $internal, $minimum-scale, $maximum-scale, $supported-scales, $supported-properties, $default-scale;
+@forward './density' show $interval, $minimum-scale, $maximum-scale, $supported-scales, $supported-properties, $default-scale;

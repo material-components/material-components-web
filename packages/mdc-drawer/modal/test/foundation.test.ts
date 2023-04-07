@@ -26,12 +26,12 @@ import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/
 import {MDCModalDrawerFoundation} from '../foundation';
 
 class MDCModalDrawerFoundationTest extends MDCModalDrawerFoundation {
-  opened_() {
-    super.opened_();
+  override opened() {
+    super.opened();
   }
 
-  closed_() {
-    super.closed_();
+  override closed() {
+    super.closed();
   }
 }
 
@@ -46,15 +46,15 @@ describe('MDCModalDrawerFoundation', () => {
     return {foundation, mockAdapter, mockFoundation};
   };
 
-  it('#opened_ traps the focus when drawer finishes animating open', () => {
+  it('#opened traps the focus when drawer finishes animating open', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation.opened_();
+    foundation.opened();
     expect(mockAdapter.trapFocus).toHaveBeenCalledTimes(1);
   });
 
-  it('#closed_ untraps the focus when drawer finishes animating close', () => {
+  it('#closed untraps the focus when drawer finishes animating close', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation.closed_();
+    foundation.closed();
     expect(mockAdapter.releaseFocus).toHaveBeenCalledTimes(1);
   });
 

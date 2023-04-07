@@ -22,34 +22,41 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCTextFieldCharacterCounterAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export class MDCTextFieldCharacterCounterFoundation extends MDCFoundation<MDCTextFieldCharacterCounterAdapter> {
-  static get cssClasses() {
+/** MDC Text Field Character Counter Foundation */
+export class MDCTextFieldCharacterCounterFoundation extends
+    MDCFoundation<MDCTextFieldCharacterCounterAdapter> {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
-   * See {@link MDCTextFieldCharacterCounterAdapter} for typing information on parameters and return types.
+   * See {@link MDCTextFieldCharacterCounterAdapter} for typing information on
+   * parameters and return types.
    */
-  static get defaultAdapter(): MDCTextFieldCharacterCounterAdapter {
+  static override get defaultAdapter(): MDCTextFieldCharacterCounterAdapter {
     return {
       setContent: () => undefined,
+      setCounterValue: () => undefined,
     };
   }
 
   constructor(adapter?: Partial<MDCTextFieldCharacterCounterAdapter>) {
-    super({...MDCTextFieldCharacterCounterFoundation.defaultAdapter, ...adapter});
+    super(
+        {...MDCTextFieldCharacterCounterFoundation.defaultAdapter, ...adapter});
   }
 
   setCounterValue(currentLength: number, maxLength: number) {
     currentLength = Math.min(currentLength, maxLength);
     this.adapter.setContent(`${currentLength} / ${maxLength}`);
+    this.adapter.setCounterValue(currentLength, maxLength);
   }
 }
 

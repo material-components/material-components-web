@@ -23,10 +23,13 @@
 
 import {animationDimensionPercentages as percentages} from '../../mdc-linear-progress/constants';
 import {MDCLinearProgressFoundation} from '../../mdc-linear-progress/foundation';
+import {WithMDCResizeObserver} from '../../mdc-linear-progress/types';
 import {checkNumTimesSpyCalledWithArgs, verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 
 const {cssClasses, strings} = MDCLinearProgressFoundation;
+
+const RO = (window as unknown as WithMDCResizeObserver).ResizeObserver;
 
 const multiplyPercentages = (multipler: number) => {
   return {
@@ -76,7 +79,7 @@ describe('MDCLinearProgressFoundation', () => {
            .and.returnValue(false);
        foundation.init();
        foundation.setDeterminate(false);
-       expect(foundation.getDeterminate()).toBe(false);
+       expect(foundation.isDeterminate()).toBe(false);
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
        expect(mockAdapter.setPrimaryBarStyle)
@@ -85,21 +88,25 @@ describe('MDCLinearProgressFoundation', () => {
            .toHaveBeenCalledWith('flex-basis', '100%');
        expect(mockAdapter.removeAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW);
+       expect(mockAdapter.removeAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMAX);
+       expect(mockAdapter.removeAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMIN);
      });
 
   it('#setDeterminate false updates custom props', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.getWidth.and.returnValue(100);
-    mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+    mockAdapter.attachResizeObserver.and.returnValue(RO);
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(false);
     foundation.init();
     expect(mockAdapter.attachResizeObserver).toHaveBeenCalled();
     expect(mockAdapter.setStyle).toHaveBeenCalledTimes(0);
     foundation.setDeterminate(false);
-    expect(foundation.getDeterminate()).toBe(false);
+    expect(foundation.isDeterminate()).toBe(false);
 
-    if (!window.ResizeObserver) {
+    if (!RO) {
       expect(mockAdapter.setStyle).toHaveBeenCalledTimes(0);
       return;
     }
@@ -156,20 +163,10 @@ describe('MDCLinearProgressFoundation', () => {
         .and.returnValue(false);
     foundation.init();
     foundation.setDeterminate(true);
-    expect(foundation.getDeterminate()).toBe(true);
+    expect(foundation.isDeterminate()).toBe(true);
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
   });
-
-  it('#setDeterminate false calls forceLayout to correctly reset animation timers when reversed',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-           .and.returnValue(true);
-       foundation.init();
-       foundation.setDeterminate(false);
-       expect(mockAdapter.forceLayout).toHaveBeenCalled();
-     });
 
   it('#setDeterminate restores previous progress value after toggled from false to true',
      () => {
@@ -207,6 +204,10 @@ describe('MDCLinearProgressFoundation', () => {
            .toHaveBeenCalledWith('transform', 'scaleX(0.123)');
        expect(mockAdapter.setAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.123');
+       expect(mockAdapter.setAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMAX, '1');
+       expect(mockAdapter.setAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMIN, '0');
      });
 
   it('#calculateAndSetDimensions called on initialization with indeterminate class',
@@ -214,30 +215,26 @@ describe('MDCLinearProgressFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
            .and.returnValue(true);
-       mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+       mockAdapter.attachResizeObserver.and.returnValue(RO);
        foundation.init();
-       expect(mockAdapter.setStyle)
-           .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+       expect(mockAdapter.setStyle).toHaveBeenCalledTimes(RO ? 10 : 0);
      });
 
   it('#calculateAndSetDimensions called only on setDeterminate(false)', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(true);
-    mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+    mockAdapter.attachResizeObserver.and.returnValue(RO);
     foundation.init();
-    expect(mockAdapter.setStyle)
-        .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+    expect(mockAdapter.setStyle).toHaveBeenCalledTimes(RO ? 10 : 0);
 
     foundation.setDeterminate(true);
 
-    expect(mockAdapter.setStyle)
-        .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+    expect(mockAdapter.setStyle).toHaveBeenCalledTimes(RO ? 10 : 0);
 
     foundation.setDeterminate(false);
 
-    expect(mockAdapter.setStyle)
-        .toHaveBeenCalledTimes(window.ResizeObserver ? 20 : 0);
+    expect(mockAdapter.setStyle).toHaveBeenCalledTimes(RO ? 20 : 0);
   });
 
   it('#calculateAndSetDimensions restarts animation with a forced reflow',
@@ -245,9 +242,9 @@ describe('MDCLinearProgressFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
            .and.returnValue(true);
-       mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+       mockAdapter.attachResizeObserver.and.returnValue(RO);
        foundation.init();
-       if (window.ResizeObserver) {
+       if (RO) {
          expect(mockAdapter.addClass)
              .toHaveBeenCalledWith(cssClasses.ANIMATION_READY_CLASS);
          expect(mockAdapter.forceLayout).toHaveBeenCalledTimes(1);
@@ -269,6 +266,7 @@ describe('MDCLinearProgressFoundation', () => {
         .toHaveBeenCalledWith('transform', 'scaleX(0.5)');
     expect(mockAdapter.setAttribute)
         .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.5');
+    expect(foundation.getProgress()).toEqual(0.5);
   });
 
   it('#setProgress on indeterminate does nothing', () => {
@@ -289,6 +287,7 @@ describe('MDCLinearProgressFoundation', () => {
     foundation.setBuffer(0.5);
     expect(mockAdapter.setBufferBarStyle)
         .toHaveBeenCalledWith('flex-basis', '50%');
+    expect(foundation.getBuffer()).toEqual(0.5);
   });
 
   it('#setBuffer on indeterminate does nothing', () => {
@@ -300,70 +299,31 @@ describe('MDCLinearProgressFoundation', () => {
     expect(mockAdapter.setBufferBarStyle).not.toHaveBeenCalled();
   });
 
-  it('#setReverse adds class', () => {
+  it('#open removes class and aria-hidden', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-        .and.returnValue(false);
-    foundation.init();
-    foundation.setReverse(true);
-    expect(mockAdapter.addClass)
-        .toHaveBeenCalledWith(cssClasses.REVERSED_CLASS);
-  });
-
-  it('#setReverse removes class', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-        .and.returnValue(true);
-    foundation.init();
-    foundation.setReverse(false);
-    expect(mockAdapter.removeClass)
-        .toHaveBeenCalledWith(cssClasses.REVERSED_CLASS);
-  });
-
-  it('#setReverse true calls forceLayout to correctly reset animation timers when indeterminate',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
-           .and.returnValue(true);
-       foundation.init();
-       foundation.setReverse(true);
-       expect(mockAdapter.forceLayout).toHaveBeenCalled();
-     });
-
-  it('#setReverse false calls forceLayout to correctly reset animation timers when indeterminate',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
-           .and.returnValue(true);
-       foundation.init();
-       foundation.setReverse(false);
-       expect(mockAdapter.forceLayout).toHaveBeenCalled();
-     });
-
-  it('#open removes class', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-        .and.returnValue(true);
     foundation.init();
     foundation.open();
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
+    expect(mockAdapter.removeAttribute)
+        .toHaveBeenCalledWith(strings.ARIA_HIDDEN);
   });
 
-  it('#close adds class', () => {
+  it('#close adds class and aria-hidden', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-        .and.returnValue(true);
     foundation.init();
     foundation.close();
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
+    expect(mockAdapter.setAttribute)
+        .toHaveBeenCalledWith(strings.ARIA_HIDDEN, 'true');
     mockAdapter.hasClass.withArgs(cssClasses.CLOSED_CLASS)
         .and.returnValue(true);
     foundation.handleTransitionEnd();
     expect(mockAdapter.addClass)
         .toHaveBeenCalledWith(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
+    expect(foundation.isClosed()).toBeTrue();
   });
 
   it('#destroy disconnects the resize observer', () => {

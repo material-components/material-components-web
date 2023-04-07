@@ -74,6 +74,26 @@ describe('MDCSelectHelperTextFoundation', () => {
                cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
      });
 
+  it('#getIsValidationMsgPersistent returns true if the persistent validation ' +
+         'class is set',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass
+           .withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT)
+           .and.returnValue(true);
+       expect(foundation.getIsValidationMsgPersistent()).toBeTrue();
+     });
+
+  it('#getIsValidationMsgPersistent returns false if the persistent validation ' +
+         'class is not set',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass
+           .withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT)
+           .and.returnValue(false);
+       expect(foundation.getIsValidationMsgPersistent()).toBeFalse();
+     });
+
   it('#setValidation toggles the validation class', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.setValidation(true);
@@ -83,6 +103,21 @@ describe('MDCSelectHelperTextFoundation', () => {
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.HELPER_TEXT_VALIDATION_MSG);
   });
+
+  it('#getIsValidation returns true if the validation class is set', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
+        .and.returnValue(true);
+    expect(foundation.getIsValidation()).toBeTrue();
+  });
+
+  it('#getIsValidation returns false if the validation class is not set',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
+           .and.returnValue(false);
+       expect(foundation.getIsValidation()).toBeFalse();
+     });
 
   it('#setValidity adds role="alert" to helper text if input is invalid and' +
          'helper text is being used as a validation message',

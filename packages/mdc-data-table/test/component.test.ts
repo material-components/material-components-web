@@ -21,32 +21,33 @@
  * THE SOFTWARE.
  */
 
-import {html} from '../../../testing/dom';
+import {createFixture, html} from '../../../testing/dom';
+import {createMouseEvent} from '../../../testing/dom/events';
 import {MDCDataTable} from '../component';
-import {cssClasses, dataAttributes, events, selectors, SortValue, strings} from '../constants';
+import {cssClasses, dataAttributes, events, selectors, SortValue} from '../constants';
 
 interface ClassMap {
   [className: string]: boolean;
 }
 
-const classMap = (classesMap: ClassMap) => {
+function classMap(classesMap: ClassMap) {
   return Object.keys(classesMap)
       .filter((className: string) => {
         return classesMap[className];
       })
       .join(' ');
-};
+}
 
 interface CheckboxTemplateProps {
   classNames: string;
   isChecked: boolean;
 }
 
-function mdcCheckboxTemplate(props: Partial<CheckboxTemplateProps>): string {
+function mdcCheckboxTemplate(props: Partial<CheckboxTemplateProps>) {
   return html`
     <div class="mdc-checkbox ${props.classNames || ''}">
       <input type="checkbox" class="mdc-checkbox__native-control" ${
-      props.isChecked ? 'checked' : ''}></input>
+      props.isChecked ? 'checked' : ''}>
       <div class="mdc-checkbox__background">
         <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
           <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -61,7 +62,7 @@ interface IconButtonProps {
   classNames: string;
 }
 
-function mdcIconButtonTemplate(props: IconButtonProps): string {
+function mdcIconButtonTemplate(props: IconButtonProps) {
   const classes = {
     'mdc-icon-button': true,
     'material-icons': true,
@@ -72,14 +73,14 @@ function mdcIconButtonTemplate(props: IconButtonProps): string {
 }
 
 interface DataTableHeaderCellTemplateProps {
-  content: string;
+  content: string|ReturnType<typeof html>;
   isSortable?: boolean;
   columnId?: string;
 }
 
 
 function mdcDataTableHeaderCellTemplate(
-    props: DataTableHeaderCellTemplateProps): string {
+    props: DataTableHeaderCellTemplateProps) {
   const classes = {
     [cssClasses.HEADER_CELL]: true,
     [cssClasses.HEADER_CELL_WITH_SORT]: !!props.isSortable,
@@ -106,11 +107,10 @@ function mdcDataTableHeaderCellTemplate(
 
 interface DataTableCellTemplateProps {
   isNumeric: boolean;
-  content: string|number;
+  content: string|number|ReturnType<typeof html>;
 }
 
-function mdcDataTableCellTemplate(props: Partial<DataTableCellTemplateProps>):
-    string {
+function mdcDataTableCellTemplate(props: Partial<DataTableCellTemplateProps>) {
   const classes = {
     [cssClasses.CELL_NUMERIC]: !!props.isNumeric,
   };
@@ -126,7 +126,7 @@ interface DataTableRowTemplateProps {
   withoutRowSelection?: boolean;
 }
 
-function mdcDataTableRowTemplate(props: DataTableRowTemplateProps): string {
+function mdcDataTableRowTemplate(props: DataTableRowTemplateProps) {
   const classes = {
     [cssClasses.ROW]: true,
     [cssClasses.ROW_SELECTED]: props.isSelected,
@@ -150,7 +150,7 @@ function mdcDataTableRowTemplate(props: DataTableRowTemplateProps): string {
   `;
 }
 
-const progressIndicatorTemplate = (): string => {
+function progressIndicatorTemplate() {
   return html`
       <div class="mdc-data-table__progress-indicator">
         <div class="mdc-data-table__scrim"></div>
@@ -168,7 +168,7 @@ const progressIndicatorTemplate = (): string => {
         </div>
       </div>
       `;
-};
+}
 
 interface DataTableHeader {
   name: string;
@@ -222,20 +222,17 @@ interface RenderComponentProps {
 }
 
 function renderComponent(props: RenderComponentProps): HTMLElement {
-  const headerRowContent = (props.withoutRowSelection ? ''
-      : mdcDataTableHeaderCellTemplate({
-          content: mdcCheckboxTemplate({
-            classNames: cssClasses.HEADER_ROW_CHECKBOX,
-          }),
-        })
-      ) +
-      props.data.headers
-          .map((header: DataTableHeader) => mdcDataTableHeaderCellTemplate({
-                 content: header.name,
-                 isSortable: header.isSortable,
-                 columnId: header.columnId,
-               }))
-          .join('');
+  const headerRowContent =
+      html`${props.withoutRowSelection ? '' : mdcDataTableHeaderCellTemplate({
+        content: mdcCheckboxTemplate({
+          classNames: cssClasses.HEADER_ROW_CHECKBOX,
+        }),
+      })}
+      ${props.data.headers.map((header) => mdcDataTableHeaderCellTemplate({
+                                 content: header.name,
+                                 isSortable: header.isSortable,
+                                 columnId: header.columnId,
+                               }))}`;
   const bodyContent =
       props.data.rows.map((row: Array<string|number>, index: number) => {
         const isSelected = props.data.selectedRowIndexes.indexOf(index) >= 0;
@@ -270,15 +267,12 @@ function renderComponent(props: RenderComponentProps): HTMLElement {
     </div>
   `;
 
-  const prevTable = document.querySelector(`.${cssClasses.ROOT}`);
+  const prevTable = document.querySelector<HTMLElement>(`.${cssClasses.ROOT}`);
   if (prevTable) {
     document.body.removeChild(prevTable.parentElement as HTMLElement);
   }
 
-  const container = document.createElement('div');
-  container.innerHTML = blobHtml;
-  document.body.appendChild(container);
-  return document.querySelector(`.${cssClasses.ROOT}`) as HTMLElement;
+  return createFixture(blobHtml);
 }
 
 interface SetupProps {
@@ -312,13 +306,12 @@ describe('MDCDataTable', () => {
        const {root} = setupTest();
 
        const rowCheckbox =
-           root.querySelector(strings.ROW_CHECKBOX_SELECTOR)!.querySelector(
-               'input') as HTMLInputElement;
+           root.querySelector(selectors.ROW_CHECKBOX)!.querySelector('input')!;
        rowCheckbox.click();
 
        const headerRowCheckbox =
-           root.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)!
-               .querySelector('input') as HTMLInputElement;
+           root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
+               'input')!;
        expect(headerRowCheckbox.indeterminate).toBe(true);
      });
 
@@ -343,8 +336,8 @@ describe('MDCDataTable', () => {
        const {component, root, adapter} = setupTest();
 
        const nativeCheckbox =
-           root.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)!
-               .querySelector('input') as HTMLInputElement;
+           root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
+               'input')!;
 
        nativeCheckbox.checked = false;
        expect(adapter.isHeaderRowCheckboxChecked()).toBe(false);
@@ -406,9 +399,8 @@ describe('MDCDataTable', () => {
   it('adapter#getRowIndexByChildElement', () => {
     const {component, root, adapter} = setupTest();
 
-    const rows = [].slice.call(root.querySelectorAll(strings.ROW_SELECTOR)) as
-        HTMLElement[];
-    const inputEl = rows[2].querySelector('input') as HTMLInputElement;
+    const rows = Array.from(root.querySelectorAll<HTMLElement>(selectors.ROW));
+    const inputEl = rows[2].querySelector('input')!;
     expect(adapter.getRowIndexByChildElement(inputEl)).toEqual(2);
 
     component.destroy();
@@ -448,8 +440,8 @@ describe('MDCDataTable', () => {
     const {component, root, adapter} = setupTest();
 
     const nativeCheckbox =
-        root.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)!.querySelector(
-            'input') as HTMLInputElement;
+        root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
+            'input')!;
 
     nativeCheckbox.indeterminate = false;
     adapter.setHeaderRowCheckboxIndeterminate(true);
@@ -462,8 +454,8 @@ describe('MDCDataTable', () => {
     const {component, root, adapter} = setupTest();
 
     const nativeCheckbox =
-        root.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)!.querySelector(
-            'input') as HTMLInputElement;
+        root.querySelector(selectors.HEADER_ROW_CHECKBOX)!.querySelector(
+            'input')!;
     expect(nativeCheckbox.checked).toBe(false);
     adapter.setHeaderRowCheckboxChecked(true);
     expect(nativeCheckbox.checked).toBe(true);
@@ -481,9 +473,7 @@ describe('MDCDataTable', () => {
   it('adapter#setRowCheckboxCheckedAtIndex', () => {
     const {component, root, adapter} = setupTest();
     const nativeCheckbox =
-        ([].slice.call(root.querySelectorAll(
-             strings.ROW_CHECKBOX_SELECTOR))[0] as HTMLInputElement)
-            .querySelector('input');
+        root.querySelector(selectors.ROW_CHECKBOX)!.querySelector('input');
 
     expect(nativeCheckbox!.checked).toBe(false);
     adapter.setRowCheckboxCheckedAtIndex(0, true);
@@ -513,6 +503,69 @@ describe('MDCDataTable', () => {
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
 
     component.unlisten(events.UNSELECTED_ALL, handler);
+    component.destroy();
+  });
+
+  it('Should trigger row click event when clicked on data row', () => {
+    const {component} = setupTest();
+
+    const handler = jasmine.createSpy('mockRowClickListener');
+    component.listen(events.ROW_CLICK, handler);
+    component.getRows()[1].click();
+    expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
+      detail: {
+        rowId: 'u1',
+        row: component.getRows()[1],
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+      }
+    }));
+
+    component.unlisten(events.ROW_CLICK, handler);
+    component.destroy();
+  });
+
+  it('Should trigger row click event with modifiers when clicked on data row',
+     () => {
+       const {component} = setupTest();
+
+       const handler = jasmine.createSpy('mockRowClickListener');
+       component.listen(events.ROW_CLICK, handler);
+       component.getRows()[1].dispatchEvent(createMouseEvent('click', {
+         bubbles: true,
+         cancelable: true,
+         altKey: true,
+         ctrlKey: true,
+         metaKey: true,
+         shiftKey: true
+       }));
+
+       expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
+         detail: {
+           rowId: 'u1',
+           row: component.getRows()[1],
+           altKey: true,
+           ctrlKey: true,
+           metaKey: true,
+           shiftKey: true,
+         }
+       }));
+
+       component.unlisten(events.ROW_CLICK, handler);
+       component.destroy();
+     });
+
+  it('Should not trigger row click event when clicked on header cell', () => {
+    const {component, root} = setupTest();
+
+    const handler = jasmine.createSpy('mockRowClickListener');
+    component.listen(events.ROW_CLICK, handler);
+    root.querySelector<HTMLElement>('th')!.click();
+    expect(handler).not.toHaveBeenCalled();
+
+    component.unlisten(events.ROW_CLICK, handler);
     component.destroy();
   });
 

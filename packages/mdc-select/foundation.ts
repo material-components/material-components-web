@@ -31,23 +31,25 @@ import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
 import {MDCSelectIconFoundation} from './icon/foundation';
 import {MDCSelectFoundationMap} from './types';
 
+/** MDC Select Foundation */
 export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
-   * See {@link MDCSelectAdapter} for typing information on parameters and return types.
+   * See {@link MDCSelectAdapter} for typing information on parameters and
+   * return types.
    */
-  static get defaultAdapter(): MDCSelectAdapter {
+  static override get defaultAdapter(): MDCSelectAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -91,6 +93,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;
+  // Client provided `aria-describedby` ids. Does not include helpTextId.
+  private readonly ariaDescribedbyIds: string[];
 
   // Disabled state
   private disabled = false;
@@ -112,11 +116,18 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter?: Partial<MDCSelectAdapter>, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
+  constructor(
+      adapter?: Partial<MDCSelectAdapter>,
+      foundationMap: Partial<MDCSelectFoundationMap> = {}) {
     super({...MDCSelectFoundation.defaultAdapter, ...adapter});
 
     this.leadingIcon = foundationMap.leadingIcon;
     this.helperText = foundationMap.helperText;
+    this.ariaDescribedbyIds =
+        this.adapter.getSelectAnchorAttr(strings.ARIA_DESCRIBEDBY)
+            ?.split(' ')
+            ?.filter(id => id !== this.helperText?.getId() && id !== '') ||
+        [];
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
@@ -129,14 +140,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
+    this.adapter.setSelectedIndex(index);
+
     if (index === numbers.UNSET_INDEX) {
       this.adapter.setSelectedText('');
     } else {
       this.adapter.setSelectedText(
           this.adapter.getMenuItemTextAtIndex(index).trim());
     }
-
-    this.adapter.setSelectedIndex(index);
 
     if (closeMenu) {
       this.adapter.closeMenu();
@@ -237,16 +248,20 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
-    // Menu should open to the last selected element, should open to first menu item otherwise.
+    // Menu should open to the last selected element, should open to first menu
+    // item otherwise.
     const selectedIndex = this.getSelectedIndex();
     const focusItemIndex = selectedIndex >= 0 ? selectedIndex : 0;
     this.adapter.focusMenuItemAtIndex(focusItemIndex);
   }
 
+  handleMenuClosing() {
+    this.adapter.setSelectAnchorAttr('aria-expanded', 'false');
+  }
+
   handleMenuClosed() {
     this.adapter.removeClass(cssClasses.ACTIVATED);
     this.isMenuOpen = false;
-    this.adapter.setSelectAnchorAttr('aria-expanded', 'false');
 
     // Unfocus the select if menu is closed without a selection
     if (!this.adapter.isSelectAnchorFocused()) {
@@ -321,10 +336,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const isSpace = normalizeKey(event) === KEY.SPACEBAR;
     const arrowUp = normalizeKey(event) === KEY.ARROW_UP;
     const arrowDown = normalizeKey(event) === KEY.ARROW_DOWN;
-
+    const isModifier = event.ctrlKey || event.metaKey;
     // Typeahead
-    if (!isSpace && event.key && event.key.length === 1 ||
-        isSpace && this.adapter.isTypeaheadInProgress()) {
+    if (!isModifier &&
+        (!isSpace && event.key && event.key.length === 1 ||
+         isSpace && this.adapter.isTypeaheadInProgress())) {
       const key = isSpace ? ' ' : event.key;
       const typeaheadNextIndex =
           this.adapter.typeaheadMatchItem(key, this.getSelectedIndex());
@@ -337,15 +353,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     if (!isEnter && !isSpace && !arrowUp && !arrowDown) {
       return;
-    }
-
-    // Increment/decrement index as necessary and open menu.
-    if (arrowUp && this.getSelectedIndex() > 0) {
-      this.setSelectedIndex(this.getSelectedIndex() - 1);
-    } else if (
-        arrowDown &&
-        this.getSelectedIndex() < this.adapter.getMenuItemCount() - 1) {
-      this.setSelectedIndex(this.getSelectedIndex() + 1);
     }
 
     this.openMenu();
@@ -388,6 +395,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
   }
 
+  getUseDefaultValidation(): boolean {
+    return this.useDefaultValidation;
+  }
+
   setUseDefaultValidation(useDefaultValidation: boolean) {
     this.useDefaultValidation = useDefaultValidation;
   }
@@ -413,8 +424,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     if (this.useDefaultValidation &&
         this.adapter.hasClass(cssClasses.REQUIRED) &&
         !this.adapter.hasClass(cssClasses.DISABLED)) {
-      // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
-      // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
+      // See notes for required attribute under
+      // https://www.w3.org/TR/html52/sec-forms.html#the-select-element TL;DR:
+      // Invalid if no index is selected, or if the first index is selected and
+      // has an empty value.
       return this.getSelectedIndex() !== numbers.UNSET_INDEX &&
           (this.getSelectedIndex() !== 0 || Boolean(this.getValue()));
     }
@@ -435,7 +448,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return this.adapter.getSelectAnchorAttr('aria-required') === 'true';
   }
 
-  init() {
+  override init() {
     const anchorEl = this.adapter.getAnchorElement();
     if (anchorEl) {
       this.adapter.setMenuAnchorElement(anchorEl);
@@ -474,11 +487,19 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const helperTextId = this.helperText.getId();
 
     if (helperTextVisible && helperTextId) {
-      this.adapter.setSelectAnchorAttr(strings.ARIA_DESCRIBEDBY, helperTextId);
+      this.adapter.setSelectAnchorAttr(
+          strings.ARIA_DESCRIBEDBY,
+          [...this.ariaDescribedbyIds, helperTextId].join(' '));
     } else {
-      // Needed because screenreaders will read labels pointed to by
-      // `aria-describedby` even if they are `aria-hidden`.
-      this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
+      // Remove helptext from list of describedby ids. Needed because
+      // screenreaders will read labels pointed to by `aria-describedby` even if
+      // they are `aria-hidden`.
+      if (this.ariaDescribedbyIds.length > 0) {
+        this.adapter.setSelectAnchorAttr(
+            strings.ARIA_DESCRIBEDBY, this.ariaDescribedbyIds.join(' '));
+      } else {  // helper text is the only describedby element
+        this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
+      }
     }
   }
 

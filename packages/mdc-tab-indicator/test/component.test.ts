@@ -21,32 +21,25 @@
  * THE SOFTWARE.
  */
 
+import {createFixture, html} from '../../../testing/dom';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
-import {MDCFadingTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCTabIndicator, MDCTabIndicatorFoundation,} from '../index';
+import {MDCFadingTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCTabIndicator, MDCTabIndicatorFoundation} from '../index';
 
-const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+function getFixture() {
+  return createFixture(html`
   <span class="mdc-tab-indicator">
     <span class="mdc-tab-indicator__content"></span>
   </span>
-`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-};
+`);
+}
 
-const getFadingFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+function getFadingFixture() {
+  return createFixture(html`
   <span class="mdc-tab-indicator mdc-tab-indicator--fade">
     <span class="mdc-tab-indicator__content"></span>
   </span>
-`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-};
+`);
+}
 
 describe('MDCTabIndicator', () => {
   it('attachTo returns an MDCTabIndicator instance', () => {
@@ -63,9 +56,8 @@ describe('MDCTabIndicator', () => {
   function setupTest() {
     const root = getFixture();
     const component = new MDCTabIndicator(root);
-    const content =
-        root.querySelector(
-            MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR) as HTMLElement;
+    const content = root.querySelector<HTMLElement>(
+        MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
     return {root, component, content};
   }
 
@@ -116,13 +108,13 @@ describe('MDCTabIndicator', () => {
 
   it('#activate sliding indicator calls activate with passed args', () => {
     const {component, mockFoundation} = setupMockSlidingFoundationTest();
-    component.activate({width: 100, left: 0} as ClientRect);
+    component.activate({width: 100, left: 0} as DOMRect);
     expect(mockFoundation.activate).toHaveBeenCalledWith({width: 100, left: 0});
   });
 
   it('#activate icon indicator calls activate with passed args', () => {
     const {component, mockFoundation} = setupMockFadingFoundationTest();
-    component.activate({width: 1, left: 2} as ClientRect);
+    component.activate({width: 1, left: 2} as DOMRect);
     expect(mockFoundation.activate).toHaveBeenCalledWith({width: 1, left: 2});
   });
 

@@ -273,7 +273,7 @@ describe('MDCSnackbarFoundation', () => {
        foundation.close = jasmine.createSpy('close');
 
        foundation.open();
-       foundation.handleKeyDown({key: 'Escape'});
+       foundation.handleKeyDown({key: 'Escape'} as KeyboardEvent);
 
        expect(foundation.close).toHaveBeenCalledWith(strings.REASON_DISMISS);
      });
@@ -284,7 +284,7 @@ describe('MDCSnackbarFoundation', () => {
        foundation.close = jasmine.createSpy('close');
 
        foundation.open();
-       foundation.handleKeyDown({keyCode: 27});
+       foundation.handleKeyDown({keyCode: 27} as KeyboardEvent);
 
        expect(foundation.close).toHaveBeenCalledWith(strings.REASON_DISMISS);
      });
@@ -296,7 +296,7 @@ describe('MDCSnackbarFoundation', () => {
        foundation.setCloseOnEscape(false);
 
        foundation.open();
-       foundation.handleKeyDown({key: 'Escape'});
+       foundation.handleKeyDown({key: 'Escape'} as KeyboardEvent);
 
        expect(foundation.close)
            .not.toHaveBeenCalledWith(strings.REASON_DISMISS);
@@ -309,7 +309,7 @@ describe('MDCSnackbarFoundation', () => {
        foundation.setCloseOnEscape(false);
 
        foundation.open();
-       foundation.handleKeyDown({keyCode: 27});
+       foundation.handleKeyDown({keyCode: 27} as KeyboardEvent);
 
        expect(foundation.close)
            .not.toHaveBeenCalledWith(strings.REASON_DISMISS);
@@ -320,7 +320,7 @@ describe('MDCSnackbarFoundation', () => {
     foundation.close = jasmine.createSpy('close');
 
     foundation.open();
-    foundation.handleKeyDown({key: 'Enter'});
+    foundation.handleKeyDown({key: 'Enter'} as KeyboardEvent);
 
     expect(foundation.close).not.toHaveBeenCalledWith(strings.REASON_DISMISS);
   });
@@ -332,7 +332,7 @@ describe('MDCSnackbarFoundation', () => {
        foundation.close = jasmine.createSpy('close');
 
        foundation.open();
-       foundation.handleActionButtonClick({});
+       foundation.handleActionButtonClick({} as MouseEvent);
 
        expect(foundation.close).toHaveBeenCalledWith(strings.REASON_ACTION);
      });
@@ -344,7 +344,7 @@ describe('MDCSnackbarFoundation', () => {
        foundation.close = jasmine.createSpy('close');
 
        foundation.open();
-       foundation.handleActionIconClick({});
+       foundation.handleActionIconClick({} as MouseEvent);
 
        expect(foundation.close).toHaveBeenCalledWith(strings.REASON_DISMISS);
      });
@@ -352,14 +352,12 @@ describe('MDCSnackbarFoundation', () => {
   it('#setTimeoutMs throws an error for values outside the min/max range',
      () => {
        const {foundation} = setupTest();
-       expect(
-           () =>
-               foundation.setTimeoutMs(numbers.MIN_AUTO_DISMISS_TIMEOUT_MS - 1))
-           .toThrow();
-       expect(
-           () =>
-               foundation.setTimeoutMs(numbers.MAX_AUTO_DISMISS_TIMEOUT_MS + 1))
-           .toThrow();
+       expect(() => {
+         foundation.setTimeoutMs(numbers.MIN_AUTO_DISMISS_TIMEOUT_MS - 1);
+       }).toThrow();
+       expect(() => {
+         foundation.setTimeoutMs(numbers.MAX_AUTO_DISMISS_TIMEOUT_MS + 1);
+       }).toThrow();
      });
 
   it('#getTimeoutMs returns the default value', () => {

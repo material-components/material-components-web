@@ -29,6 +29,8 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 
+import {MDCResizeObserver, MDCResizeObserverCallback} from './types';
+
 export interface MDCLinearProgressAdapter {
   addClass(className: string): void;
   /**
@@ -42,7 +44,8 @@ export interface MDCLinearProgressAdapter {
    *    root element with the given callback. `null` if `ResizeObserver` is not
    *    implemented or polyfilled.
    */
-  attachResizeObserver(callback: ResizeObserverCallback): ResizeObserver|null;
+  attachResizeObserver(callback: MDCResizeObserverCallback): MDCResizeObserver
+      |null;
   forceLayout(): void;
   setBufferBarStyle(styleProperty: string, value: string): void;
   setPrimaryBarStyle(styleProperty: string, value: string): void;

@@ -23,28 +23,32 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCRipple} from '@material/ripple/component';
+
 import {MDCFormFieldAdapter} from './adapter';
 import {MDCFormFieldFoundation} from './foundation';
 
+/** MDC Form Field Input */
 export interface MDCFormFieldInput {
-  readonly ripple: MDCRipple | undefined;
+  readonly ripple: MDCRipple|undefined;
 }
 
+/** MDC Form Field */
 export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
-  static attachTo(root: HTMLElement) {
+  static override attachTo(root: HTMLElement) {
     return new MDCFormField(root);
   }
 
   input?: MDCFormFieldInput;
 
-  private labelEl(): Element|null {
+  private labelEl() {
     const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
-    return this.root.querySelector(LABEL_SELECTOR);
+    return this.root.querySelector<HTMLElement>(LABEL_SELECTOR);
   }
 
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+  override getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCFormFieldAdapter = {
       activateInputRipple: () => {
         if (this.input && this.input.ripple) {
@@ -57,16 +61,10 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
         }
       },
       deregisterInteractionHandler: (evtType, handler) => {
-        const labelEl = this.labelEl();
-        if (labelEl) {
-          (labelEl as HTMLElement).removeEventListener(evtType, handler);
-        }
+        this.labelEl()?.removeEventListener(evtType, handler);
       },
       registerInteractionHandler: (evtType, handler) => {
-        const labelEl = this.labelEl();
-        if (labelEl) {
-          (labelEl as HTMLElement).addEventListener(evtType, handler);
-        }
+        this.labelEl()?.addEventListener(evtType, handler);
       },
     };
     return new MDCFormFieldFoundation(adapter);

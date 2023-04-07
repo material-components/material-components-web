@@ -73,6 +73,7 @@ Add the following to meet this requirement for mini FABs:
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-fab mdc-fab--mini mdc-fab--touch">
     <div class="mdc-fab__ripple"></div>
+    <div class="mdc-fab__focus-ring"></div>
     <span class="material-icons mdc-fab__icon">add</span>
     <div class="mdc-fab__touch"></div>
   </button>
@@ -80,6 +81,20 @@ Add the following to meet this requirement for mini FABs:
 ```
 
 **Note: The outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).**
+
+Additionally, to support rendering focused FABs in High Contrast Mode, add the
+following `mdc-fab__focus-ring` element:
+
+```html
+<div class="mdc-touch-target-wrapper">
+  <button class="mdc-fab mdc-fab--mini mdc-fab--touch">
+    <div class="mdc-fab__ripple"></div>
+    <div class="mdc-fab__focus-ring"></div>
+    <span class="material-icons mdc-fab__icon">add</span>
+    <div class="mdc-fab__touch"></div>
+  </button>
+</div>
+```
 
 ## Regular FABs
 

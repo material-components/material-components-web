@@ -23,7 +23,7 @@
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {CloseReason, cssClasses, numbers} from '../constants';
+import {Action, CloseReason, cssClasses, numbers} from '../constants';
 import {MDCBannerFoundation} from '../foundation';
 
 describe('MDCBannerFoundation', () => {
@@ -37,8 +37,11 @@ describe('MDCBannerFoundation', () => {
       'notifyOpened',
       'notifyClosing',
       'notifyClosed',
+      'notifyActionClicked',
       'setStyleProperty',
       'removeClass',
+      'trapFocus',
+      'releaseFocus',
     ]);
   });
 
@@ -163,6 +166,26 @@ describe('MDCBannerFoundation', () => {
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.CLOSING);
     expect(mockAdapter.notifyClosing).not.toHaveBeenCalledWith('');
     expect(mockAdapter.notifyClosed).not.toHaveBeenCalledWith('');
+    expect(mockAdapter.releaseFocus).not.toHaveBeenCalled();
+  });
+
+  it('#open activates focus trapping on the banner', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    foundation.open();
+    jasmine.clock().tick(1);
+    jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
+    expect(mockAdapter.trapFocus).toHaveBeenCalled();
+  });
+
+  it('#close deactivates focus trapping on the dialog surface', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    foundation.open();
+    foundation.close(CloseReason.UNSPECIFIED);
+    jasmine.clock().tick(1);
+    jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
+    expect(mockAdapter.releaseFocus).toHaveBeenCalled();
   });
 
   it('#isOpen returns false when the banner has never been opened', () => {
@@ -188,7 +211,7 @@ describe('MDCBannerFoundation', () => {
   });
 
   it(`#handlePrimaryActionClick closes the banner with reason "${
-         CloseReason.PRIMARY}"`,
+         CloseReason.PRIMARY}" if disableAutoClose is false`,
      () => {
        const {foundation} = setupTest();
        foundation.close = jasmine.createSpy('close');
@@ -199,8 +222,22 @@ describe('MDCBannerFoundation', () => {
        expect(foundation.close).toHaveBeenCalledWith(CloseReason.PRIMARY);
      });
 
+  it(`#handlePrimaryActionClick does not close the banner if disableAutoClose is
+     true, instead emits ActionClicked with action "${Action.PRIMARY}"`,
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.close = jasmine.createSpy('close');
+
+       foundation.open();
+       foundation.handlePrimaryActionClick(/** disableAutoClose= */ true);
+
+       expect(foundation.close).not.toHaveBeenCalled();
+       expect(mockAdapter.notifyActionClicked)
+           .toHaveBeenCalledWith(Action.PRIMARY);
+     });
+
   it(`#handleSecondaryActionClick closes the banner with reason "${
-         CloseReason.PRIMARY}"`,
+         CloseReason.SECONDARY}" if disableAutoClose is false`,
      () => {
        const {foundation} = setupTest();
        foundation.close = jasmine.createSpy('close');
@@ -209,5 +246,19 @@ describe('MDCBannerFoundation', () => {
        foundation.handleSecondaryActionClick();
 
        expect(foundation.close).toHaveBeenCalledWith(CloseReason.SECONDARY);
+     });
+
+  it(`#handleSecondaryActionClick does not close the banner if disableAutoClose
+     is true, instead emits ActionClicked with action "${Action.SECONDARY}"`,
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.close = jasmine.createSpy('close');
+
+       foundation.open();
+       foundation.handleSecondaryActionClick(/** disableAutoClose= */ true);
+
+       expect(foundation.close).not.toHaveBeenCalled();
+       expect(mockAdapter.notifyActionClicked)
+           .toHaveBeenCalledWith(Action.SECONDARY);
      });
 });

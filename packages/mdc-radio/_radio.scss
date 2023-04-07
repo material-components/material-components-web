@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:map';
 @use '@material/animation/animation';
@@ -32,8 +32,9 @@
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/touch-target/variables' as touch-target-variables;
 @use './radio-theme';
+@use '@material/focus-ring/focus-ring';
 
-$ripple-target: '.mdc-radio__ripple';
+$ripple-target: radio-theme.$ripple-target;
 
 ///
 /// Radio core styles.
@@ -43,60 +44,12 @@ $ripple-target: '.mdc-radio__ripple';
   @include ripple($query);
 }
 
-// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
-// radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
-@mixin without-ripple($query: feature-targeting.all()) {
-  // postcss-bem-linter: define radio
-
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
-
   .mdc-radio {
-    @include radio-theme.unchecked-stroke-color(
-      radio-theme.$unchecked-color,
-      $query: $query
-    );
-    @include radio-theme.checked-stroke-color(
-      radio-theme.$baseline-theme-color,
-      $query: $query
-    );
-    @include radio-theme.ink-color(
-      radio-theme.$baseline-theme-color,
-      $query: $query
-    );
-    @include radio-theme.disabled-unchecked-stroke-color(
-      radio-theme.$disabled-circle-color,
-      $query: $query
-    );
-    @include radio-theme.disabled-checked-stroke-color(
-      radio-theme.$disabled-circle-color,
-      $query: $query
-    );
-    @include radio-theme.disabled-ink-color(
-      radio-theme.$disabled-circle-color,
-      $query: $query
-    );
-    @include radio-theme.focus-indicator-color(
-      radio-theme.$baseline-theme-color,
-      $query: $query
-    );
-    @include radio-theme.density(radio-theme.$density-scale, $query: $query);
-
-    @include dom.ie-high-contrast-mode {
-      @include radio-theme.disabled-unchecked-stroke-color(
-        GrayText,
-        $query: $query
-      );
-      @include radio-theme.disabled-checked-stroke-color(
-        GrayText,
-        $query: $query
-      );
-      @include radio-theme.disabled-ink-color(GrayText, $query: $query);
-    }
-
     @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       position: relative;
@@ -107,6 +60,9 @@ $ripple-target: '.mdc-radio__ripple';
       cursor: pointer;
       /* @alternate */
       will-change: opacity, transform, border-color, color;
+      &[hidden] {
+        display: none;
+      }
     }
 
     // Container for radio circles and ripple.
@@ -194,6 +150,16 @@ $ripple-target: '.mdc-radio__ripple';
         $query: $query
       );
     }
+
+    @include ripple-theme.focus {
+      .mdc-radio__focus-ring {
+        @include focus-ring.focus-ring(
+          $container-outer-padding-vertical: 0,
+          $container-outer-padding-horizontal: 0,
+          $query: $query
+        );
+      }
+    }
   }
 
   .mdc-radio__native-control:checked,
@@ -259,7 +225,61 @@ $ripple-target: '.mdc-radio__ripple';
       }
     }
   }
+}
 
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
+@mixin without-ripple($query: feature-targeting.all()) {
+  // postcss-bem-linter: define radio
+  @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-radio {
+    @include radio-theme.unchecked-stroke-color(
+      radio-theme.$unchecked-color,
+      $query: $query
+    );
+    @include radio-theme.checked-stroke-color(
+      radio-theme.$baseline-theme-color,
+      $query: $query
+    );
+    @include radio-theme.ink-color(
+      radio-theme.$baseline-theme-color,
+      $query: $query
+    );
+    @include radio-theme.disabled-unchecked-stroke-color(
+      radio-theme.$disabled-circle-color,
+      $query: $query
+    );
+    @include radio-theme.disabled-checked-stroke-color(
+      radio-theme.$disabled-circle-color,
+      $query: $query
+    );
+    @include radio-theme.disabled-ink-color(
+      radio-theme.$disabled-circle-color,
+      $query: $query
+    );
+    @include radio-theme.focus-indicator-color(
+      radio-theme.$baseline-theme-color,
+      $query: $query
+    );
+    @include radio-theme.density(radio-theme.$density-scale, $query: $query);
+
+    @include dom.forced-colors-mode {
+      &.mdc-radio--disabled {
+        @include radio-theme.disabled-unchecked-stroke-color(
+          GrayText,
+          $query: $query
+        );
+        @include radio-theme.disabled-checked-stroke-color(
+          GrayText,
+          $query: $query
+        );
+        @include radio-theme.disabled-ink-color(GrayText, $query: $query);
+      }
+    }
+  }
+
+  @include static-styles($query: $query);
   // postcss-bem-linter: end
 }
 
@@ -282,6 +302,7 @@ $ripple-target: '.mdc-radio__ripple';
       $ripple-target: $ripple-target
     );
 
+    &.mdc-ripple-upgraded,
     &.mdc-ripple-upgraded--background-focused {
       .mdc-radio__background::before {
         @include feature-targeting.targets($feat-structure) {

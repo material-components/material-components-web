@@ -1,0 +1,242 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/animation/functions' as animation-functions;
+@use '@material/button/button-theme';
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/icon-button/icon-button-theme';
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/rtl';
+@use '@material/typography/typography';
+@use './snackbar-theme';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include snackbar-theme.fill-color(
+    snackbar-theme.$fill-color,
+    $query: $query
+  );
+  @include snackbar-theme.label-ink-color(
+    snackbar-theme.$label-ink-color,
+    $query: $query
+  );
+  @include snackbar-theme.min-width(snackbar-theme.$min-width, $query: $query);
+  @include snackbar-theme.max-width(snackbar-theme.$max-width, $query: $query);
+  @include snackbar-theme.elevation(snackbar-theme.$elevation, $query: $query);
+  @include snackbar-theme.shape-radius(
+    snackbar-theme.$shape-radius,
+    $query: $query
+  );
+  @include static-styles($query);
+
+  .mdc-snackbar {
+    @include snackbar-theme.z-index(snackbar-theme.$z-index, $query: $query);
+    @include snackbar-theme.viewport-margin(
+      snackbar-theme.$viewport-margin-narrow,
+      $query: $query
+    );
+  }
+
+  .mdc-snackbar--stacked {
+    @include snackbar-theme.layout-stacked($query: $query);
+  }
+
+  .mdc-snackbar--leading {
+    @include snackbar-theme.position-leading($query: $query);
+  }
+
+  .mdc-snackbar__label {
+    @include typography.typography(
+      snackbar-theme.$label-type-scale,
+      $query: $query
+    );
+  }
+
+  .mdc-snackbar__action {
+    @include button-theme.ink-color(
+      snackbar-theme.$action-ink-color,
+      $query: $query
+    );
+    @include ripple-theme.states(
+      snackbar-theme.$action-ink-color,
+      $ripple-target: button-theme.$ripple-target,
+      $query: $query
+    );
+  }
+
+  .mdc-snackbar__dismiss {
+    @include icon-button-theme.ink-color(
+      snackbar-theme.$dismiss-ink-color,
+      $query: $query
+    );
+  }
+
+  // Two selectors are needed to increase specificity above `.material-icons`.
+  .mdc-snackbar__dismiss.mdc-snackbar__dismiss {
+    @include icon-button-theme.size(
+      snackbar-theme.$dismiss-button-size,
+      $query: $query
+    );
+    @include feature-targeting.targets($feat-structure) {
+      font-size: snackbar-theme.$dismiss-icon-size;
+    }
+  }
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  .mdc-snackbar {
+    @include feature-targeting.targets($feat-structure) {
+      display: none;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+
+      // Ignore mouse events on the root layout element.
+      pointer-events: none;
+
+      // For some reason, iOS Safari displays a tap highlight on the entire snackbar element.
+      // Mobile Safari only supports `rgba` values for this property; named values like
+      // `transparent` are ignored. From Apple's docs:
+      // > This property obeys the alpha value, if specified.
+      // > If you don’t specify an alpha value, Safari on iOS applies a default alpha value to the color.
+      // > To disable tap highlighting, set the alpha value to 0 (invisible).
+      // > If you set the alpha value to 1.0 (opaque), the element is not visible when tapped.
+      // See https://github.com/ben-eb/postcss-colormin/issues/1
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+  }
+
+  .mdc-snackbar--opening,
+  .mdc-snackbar--open,
+  .mdc-snackbar--closing {
+    @include feature-targeting.targets($feat-structure) {
+      display: flex;
+    }
+  }
+
+  .mdc-snackbar--open .mdc-snackbar__label,
+  .mdc-snackbar--open .mdc-snackbar__actions {
+    @include feature-targeting.targets($feat-structure) {
+      visibility: visible;
+    }
+  }
+
+  .mdc-snackbar__surface {
+    // 1px border around the snackbar surface for high contrast mode.
+    &::before {
+      @include dom-mixins.transparent-border($query: $query);
+    }
+
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-property(padding, 0, snackbar-theme.$padding);
+
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      box-sizing: border-box;
+      transform: scale(0.8);
+      opacity: 0;
+    }
+
+    .mdc-snackbar--open & {
+      @include feature-targeting.targets($feat-structure) {
+        transform: scale(1);
+        opacity: 1;
+        pointer-events: auto; // Allow mouse events on surface element while snackbar is open
+      }
+
+      @include feature-targeting.targets($feat-animation) {
+        transition: animation-functions.enter(
+            opacity,
+            snackbar-theme.$enter-duration
+          ),
+          animation-functions.enter(transform, snackbar-theme.$enter-duration);
+      }
+    }
+
+    .mdc-snackbar--closing & {
+      @include feature-targeting.targets($feat-structure) {
+        transform: scale(1);
+      }
+
+      @include feature-targeting.targets($feat-animation) {
+        transition: animation-functions.exit-permanent(
+          opacity,
+          snackbar-theme.$exit-duration
+        );
+      }
+    }
+  }
+
+  .mdc-snackbar__label {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-property(padding, 16px, snackbar-theme.$padding);
+
+      width: 100%;
+      flex-grow: 1;
+      box-sizing: border-box;
+      margin: 0;
+      visibility: hidden;
+
+      // 14px top/bottom padding needed to make the height 48px.
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+  }
+
+  // Used to prevent visual jank when announcing label text to screen readers.
+  // See the `announce()` function in util.js for details.
+  .mdc-snackbar__label::before {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline;
+      content: attr(data-mdc-snackbar-label-text);
+    }
+  }
+
+  .mdc-snackbar__actions {
+    @include feature-targeting.targets($feat-structure) {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      box-sizing: border-box;
+      visibility: hidden;
+    }
+  }
+
+  .mdc-snackbar__action + .mdc-snackbar__dismiss {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-property(margin, snackbar-theme.$padding, 0);
+    }
+  }
+}

@@ -25,8 +25,11 @@
 export const cssClasses = {
   DISABLED: 'mdc-slider--disabled',
   DISCRETE: 'mdc-slider--discrete',
+  INPUT: 'mdc-slider__input',
   RANGE: 'mdc-slider--range',
   THUMB: 'mdc-slider__thumb',
+  // Applied when thumb is in the focused state.
+  THUMB_FOCUSED: 'mdc-slider__thumb--focused',
   THUMB_KNOB: 'mdc-slider__thumb-knob',
   // Class added to the top thumb (for overlapping thumbs in range slider).
   THUMB_TOP: 'mdc-slider__thumb--top',
@@ -38,14 +41,16 @@ export const cssClasses = {
   TRACK: 'mdc-slider__track',
   // The active track fill element that will be scaled as the value changes.
   TRACK_ACTIVE: 'mdc-slider__track--active_fill',
+  VALUE_INDICATOR_CONTAINER: 'mdc-slider__value-indicator-container',
   VALUE_INDICATOR_TEXT: 'mdc-slider__value-indicator-text',
 };
 
 /** Slider numbers. */
 export const numbers = {
-  // Default factor to multiply `step` by for big step value, if
-  // `DATA_ATTR_BIG_STEP` is not set.
-  BIG_STEP_FACTOR: 4,
+  // Default step size.
+  STEP_SIZE: 1,
+  // Default minimum difference between the start and end values.
+  MIN_RANGE: 0,
   // Minimum absolute difference between clientX of move event / down event
   // for which to update thumb, in the case of overlapping thumbs.
   // This is needed to reduce chances of choosing the thumb based on
@@ -55,18 +60,30 @@ export const numbers = {
 
 /** Slider attributes. */
 export const attributes = {
-  ARIA_DISABLED: 'aria-disabled',
-  ARIA_VALUEMAX: 'aria-valuemax',
-  ARIA_VALUEMIN: 'aria-valuemin',
-  ARIA_VALUENOW: 'aria-valuenow',
   ARIA_VALUETEXT: 'aria-valuetext',
-  // Step value to increment/decrement by for PAGE_UP or PAGE_DOWN keypresses.
-  DATA_ATTR_BIG_STEP: 'data-big-step',
-  DATA_ATTR_STEP: 'data-step',
+  INPUT_DISABLED: 'disabled',
+  INPUT_MIN: 'min',
+  INPUT_MAX: 'max',
+  INPUT_VALUE: 'value',
+  INPUT_STEP: 'step',
+  DATA_MIN_RANGE: 'data-min-range',
 };
 
 /** Slider events. */
 export const events = {
   CHANGE: 'MDCSlider:change',
   INPUT: 'MDCSlider:input',
+};
+
+/** Slider strings. */
+export const strings = {
+  VAR_VALUE_INDICATOR_CARET_LEFT: '--slider-value-indicator-caret-left',
+  VAR_VALUE_INDICATOR_CARET_RIGHT: '--slider-value-indicator-caret-right',
+  VAR_VALUE_INDICATOR_CARET_TRANSFORM:
+      '--slider-value-indicator-caret-transform',
+  VAR_VALUE_INDICATOR_CONTAINER_LEFT: '--slider-value-indicator-container-left',
+  VAR_VALUE_INDICATOR_CONTAINER_RIGHT:
+      '--slider-value-indicator-container-right',
+  VAR_VALUE_INDICATOR_CONTAINER_TRANSFORM:
+      '--slider-value-indicator-container-transform',
 };

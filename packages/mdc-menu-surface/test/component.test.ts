@@ -21,40 +21,35 @@
  * THE SOFTWARE.
  */
 
+import {getCorrectPropertyName} from '@material/animation/util';
+
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {Corner, cssClasses, strings} from '../constants';
 import {MDCMenuSurface, MDCMenuSurfaceFoundation} from '../index';
-import {getTransformPropertyName} from '../util';
 
 function getFixture(open = false, fixedPosition = false) {
   const openClass = open ? 'mdc-menu-surface--open' : '';
   const fixedClass = fixedPosition ? 'mdc-menu-surface--fixed' : '';
 
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-menu-surface ${openClass} ${fixedClass}" tabindex="-1">
-      <ul class="mdc-list" role="menu">
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item</a>
+      <ul class="mdc-deprecated-list" role="menu">
+        <li class="mdc-deprecated-list-item" role="menuitem" tabindex="0">Item</a>
         <li role="separator"></li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Another Item</a>
+        <li class="mdc-deprecated-list-item" role="menuitem" tabindex="0">Another Item</a>
       </nav>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function getAnchorFixture(menuFixture: HTMLElement) {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  const anchorEl = createFixture(html`
     <div class="mdc-menu-surface--anchor">
       <button class="mdc-button">Open</button>
     </div>
-  `;
-  const anchorEl = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(anchorEl);
+  `);
 
   anchorEl.appendChild(menuFixture);
   return anchorEl;
@@ -264,16 +259,14 @@ describe('MDCMenuSurface', () => {
      () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
+       expect((component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
   it('adapter#hasClass returns false if the root element does not have specified class',
      () => {
        const {component} = setupTest();
-       expect(
-           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
+       expect((component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(false);
      });
 
@@ -299,6 +292,15 @@ describe('MDCMenuSurface', () => {
        expect(handler).toHaveBeenCalled();
      });
 
+  it(`adapter#notifyClosing fires an ${strings.CLOSING_EVENT} custom event`,
+     () => {
+       const {root, component} = setupTest();
+       const handler = jasmine.createSpy('notifyClosing handler');
+       root.addEventListener(strings.CLOSING_EVENT, handler);
+       (component.getDefaultFoundation() as any).adapter.notifyClosing();
+       expect(handler).toHaveBeenCalled();
+     });
+
   it(`adapter#notifyOpen fires an ${strings.OPENED_EVENT} custom event`, () => {
     const {root, component} = setupTest();
     const handler = jasmine.createSpy('notifyOpen handler');
@@ -306,6 +308,15 @@ describe('MDCMenuSurface', () => {
     (component.getDefaultFoundation() as any).adapter.notifyOpen();
     expect(handler).toHaveBeenCalled();
   });
+
+  it(`adapter#notifyOpening fires an ${strings.OPENING_EVENT} custom event`,
+     () => {
+       const {root, component} = setupTest();
+       const handler = jasmine.createSpy('notifyOpening handler');
+       root.addEventListener(strings.OPENING_EVENT, handler);
+       (component.getDefaultFoundation() as any).adapter.notifyOpening();
+       expect(handler).toHaveBeenCalled();
+     });
 
   it('adapter#restoreFocus restores focus saved by adapter#saveFocus', () => {
     const {root, component} = setupTest({open: true});
@@ -403,19 +414,20 @@ describe('MDCMenuSurface', () => {
        document.body.removeChild(root);
      });
 
-  it('adapter#getWindowDimensions returns the dimensions of the window', () => {
-    const {root, component} = setupTest({open: true});
-    document.body.appendChild(root);
-    expect((component.getDefaultFoundation() as any)
-               .adapter.getWindowDimensions()
-               .height)
-        .toEqual(window.innerHeight);
-    expect((component.getDefaultFoundation() as any)
-               .adapter.getWindowDimensions()
-               .width)
-        .toEqual(window.innerWidth);
-    document.body.removeChild(root);
-  });
+  it('adapter#getViewportDimensions returns the dimensions of the window',
+     () => {
+       const {root, component} = setupTest({open: true});
+       document.body.appendChild(root);
+       expect((component.getDefaultFoundation() as any)
+                  .adapter.getViewportDimensions()
+                  .height)
+           .toEqual(window.innerHeight);
+       expect((component.getDefaultFoundation() as any)
+                  .adapter.getViewportDimensions()
+                  .width)
+           .toEqual(window.innerWidth);
+       document.body.removeChild(root);
+     });
 
   it('adapter#getBodyDimensions returns the body dimensions', () => {
     const {root, component} = setupTest({open: true});
@@ -524,14 +536,14 @@ describe('MDCMenuSurface', () => {
        // Write expected value and read canonical value from browser.
        root.style.transformOrigin = 'left top 10px';
        const expected = root.style.getPropertyValue(
-           `${getTransformPropertyName(window)}-origin`);
+           `${getCorrectPropertyName(window, 'transform')}-origin`);
        // Reset value.
        root.style.transformOrigin = '';
 
        (component.getDefaultFoundation() as any)
            .adapter.setTransformOrigin('left top 10px');
        expect(root.style.getPropertyValue(
-                  `${getTransformPropertyName(window)}-origin`))
+                  `${getCorrectPropertyName(window, 'transform')}-origin`))
            .toEqual(expected);
      });
 
@@ -553,5 +565,29 @@ describe('MDCMenuSurface', () => {
        const {root, component} = setupTest();
        (component.getDefaultFoundation() as any).adapter.setMaxHeight('100px');
        expect(root.style.maxHeight).toEqual('100px');
+     });
+
+  it('adapter#registerWindowEventHandler uses the handler as a window resize listener',
+     () => {
+       const {component} = setupTest();
+       const handler = jasmine.createSpy('resizeListener');
+       (component.getDefaultFoundation() as any)
+           .adapter.registerWindowEventHandler('resize', handler);
+       emitEvent(window, 'resize');
+       expect(handler).toHaveBeenCalledWith(jasmine.anything());
+       window.removeEventListener('resize', handler);
+     });
+
+  it('adapter#deregisterWindowEventHandler unlistens the handler for window resize',
+     () => {
+       const {component} = setupTest();
+       const handler = jasmine.createSpy('resizeListener');
+       window.addEventListener('resize', handler);
+       (component.getDefaultFoundation() as any)
+           .adapter.deregisterWindowEventHandler('resize', handler);
+       emitEvent(window, 'resize');
+       expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
+       // Just to be safe
+       window.removeEventListener('resize', handler);
      });
 });

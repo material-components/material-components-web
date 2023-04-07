@@ -20,9 +20,28 @@
 // THE SOFTWARE.
 //
 
+@use 'sass:list';
 @use 'sass:map';
 @use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
 @use './custom-properties';
+@use './selector-ext';
+
+/// List of all valid states. When adding new state functions, add the name of
+/// the state to this List.
+$_valid-states: (
+  enabled,
+  disabled,
+  dragged,
+  error,
+  focus,
+  hover,
+  opened,
+  pressed,
+  selected,
+  unselected
+);
 
 /// Retrieves the default state from the provided parameter. The parameter may
 /// be the state's default value or a state Map. A state Map has individual keys
@@ -42,6 +61,21 @@
   }
 
   @return $state;
+}
+
+/// Retrieves the enabled state from the provided parameter. The parameter may
+/// be the state's default value or a state Map. A state Map has individual keys
+/// describing each state's value.
+///
+/// @example
+///   get-enabled-state(blue); // blue
+///   get-enabled-state((enabled: blue)); // blue
+///   get-enabled-state((hover: red)); // null
+///
+/// @param {*} $default-or-map - The state's default value or a state Map.
+/// @return The enabled state if present, or null.
+@function get-enabled-state($default-or-map) {
+  @return _get-state($default-or-map, enabled);
 }
 
 /// Retrieves the disabled state from the provided parameter. The parameter may
@@ -164,6 +198,21 @@
   @return _get-state($default-or-map, selected);
 }
 
+/// Retrieves the unselected state from the provided parameter. The parameter
+/// may be the state's default value or a state Map. A state Map has individual
+/// key describing each state's value.
+///
+/// @example
+///   get-unselected-state(blue); // null
+///   get-unselected-state((unselected: red)); // red
+///   get-unselected-state((default: blue)); // null
+///
+/// @param {*} $default-or-map - The state's default value or a state Map.
+/// @return The unselected state if present, or null.
+@function get-unselected-state($default-or-map) {
+  @return _get-state($default-or-map, unselected);
+}
+
 @function _get-state($default-or-map, $state) {
   @if _is-state-map($default-or-map) {
     @return map.get($default-or-map, $state);
@@ -175,4 +224,546 @@
 @function _is-state-map($default-or-map) {
   @return meta.type-of($default-or-map) == 'map' and not
     custom-properties.is-custom-prop($default-or-map);
+}
+
+/// Appends the default state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include default($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo:enabled {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin default($selectors) {
+  @include enabled($selectors) {
+    @content;
+  }
+}
+
+/// Appends the enabled state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include enabled($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo:enabled {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin enabled($selectors) {
+  @include _selector($selectors, enabled) {
+    @content;
+  }
+}
+
+/// Appends the disabled state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include disabled($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo:disabled {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin disabled($selectors) {
+  @include _selector($selectors, disabled) {
+    @content;
+  }
+}
+
+/// Appends the dragged state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include dragged($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo:enabled.mdc-foo--dragged {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin dragged($selectors) {
+  @include enabled($selectors) {
+    @include _selector($selectors, dragged) {
+      @content;
+    }
+  }
+}
+
+/// Appends the error state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include error($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo:invalid {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin error($selectors) {
+  @include _selector($selectors, error) {
+    @content;
+  }
+}
+
+/// Appends the focus state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include focus($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo:enabled:focus:not(:active) {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin focus($selectors) {
+  @include enabled($selectors) {
+    @include _selector($selectors, focus) {
+      @content;
+    }
+  }
+}
+
+/// Appends the hover state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include hover($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo:enabled:hover:not(:focus):not(:active) {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin hover($selectors) {
+  @include enabled($selectors) {
+    @include _selector($selectors, hover) {
+      @content;
+    }
+  }
+}
+
+/// Appends the opened state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include opened($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo.mdc-foo--opened {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin opened($selectors) {
+  @include _selector($selectors, opened) {
+    @content;
+  }
+}
+
+/// Appends the pressed state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include pressed($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo:enabled:active {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin pressed($selectors) {
+  @include enabled($selectors) {
+    @include _selector($selectors, pressed) {
+      @content;
+    }
+  }
+}
+
+/// Appends the selected state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include selected($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo.mdc-foo--selected {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin selected($selectors) {
+  @include _selector($selectors, selected) {
+    @content;
+  }
+}
+
+/// Appends the unselected state selector to the current parent.
+///
+/// @example - scss
+///   .mdc-foo {
+///     @include unselected($selectors) {
+///       color: teal;
+///     }
+///   }
+///
+/// @example - css
+///   .mdc-foo.mdc-foo--unselected {
+///     color: teal;
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+@mixin unselected($selectors) {
+  @include _selector($selectors, unselected) {
+    @content;
+  }
+}
+
+/// Creates and returns a Map of independent selectors from a Map of simple
+/// selectors.
+///
+/// This function ensures that each selector is independent given all possible
+/// states provided. An "independent" selector does not rely on CSS override
+/// order or specificity.
+///
+/// @example - scss
+///   $selectors: state.create-selectors(
+///     (
+///       disabled: ':disabled',
+///       hover: ':hover',
+///       focus: ':focus',
+///       pressed: ':active',
+///     )
+///   );
+///   // (
+///   //   enabled: ':enabled',
+///   //   disabled: ':disabled',
+///   //   hover: ':hover:not(:focus):not(:active)',
+///   //   focus: ':focus:not(:active)',
+///   //   pressed: ':active',
+///   // )
+///
+/// @see {function} _create-independent-selector
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+/// @return {Map} A Map of state selectors.
+@function _create-selectors($selectors) {
+  $new-selectors: ();
+  @each $state, $selector in $selectors {
+    @if not list.index($_valid-states, $state) {
+      @error 'Unsupported state #{$state}, must be one of #{$_valid-states}.';
+    }
+
+    // Check if there are any dependent states for this state that we need to
+    // add to the selector with :not()
+    $dependent-states: ();
+    @each $group in $_dependent-state-groups {
+      $index: list.index($group, $state);
+      @if $index and $index < list.length($group) {
+        // State is part of this group. Add any remaining selectors as
+        // dependents, only if they haven't already been added (the state may be
+        // part of multiple groups with shared state dependents, like
+        // :hover:focus:active and :link:visited:hover:active)
+        @for $i from $index + 1 through list.length($group) {
+          $dependent: list.nth($group, $i);
+          @if not list.index($dependent-states, $dependent) {
+            $dependent-states: list.append($dependent-states, $dependent);
+          }
+        }
+      }
+    }
+
+    $dependents: ();
+    @each $dependent-state in $dependent-states {
+      $dependent: map.get($selectors, $dependent-state);
+      @if $dependent and not list.index($_independent-states, $dependent-state)
+      {
+        $dependents: list.append($dependents, $dependent);
+      }
+    }
+
+    // Make the selector independent (if any dependents were found)
+    $selector: _create-independent-selector($selector, $dependents...);
+    $new-selectors: map.set($new-selectors, $state, $selector);
+  }
+
+  $new-selectors: _add-default-enabled-selector($new-selectors);
+
+  @return $new-selectors;
+}
+
+/// Adds a default selector for the "enabled" state if one does not exist and if
+/// it is possible to infer one from the provided Map of selectors.
+///
+/// @example - scss
+///   _add-default-enabled-selector((disabled: ':disabled'));
+///   // (
+///   //   disabled: ':disabled',
+///   //   enabled: ':enabled',
+///   // )
+///
+///   _add-default-enabled-selector((disabled: '.mdc-foo--disabled'));
+///   // (
+///   //   disabled: '.mdc-foo--disabled',
+///   //   enabled: ':not(.mdc-foo--disabled)',
+///   // )
+///
+/// @param {Map} $selectors - A Map of state selectors.
+/// @return {Map} The same Map of selectors, potentially with an additional
+///     "enabled" key with the enabled selector value.
+@function _add-default-enabled-selector($selectors) {
+  $enabled: map.get($selectors, enabled);
+  $disabled: map.get($selectors, disabled);
+  @if $disabled == ':disabled' {
+    @if $enabled and $enabled != ':enabled' {
+      // TODO: Clean up instances of :not(:disabled)
+      // Enabled selector was provided, but it was not :enabled. These
+      // can be cleaned up, but don't change them right now.
+      @warn 'Use :enabled instead of #{$enabled} when using :disabled.';
+      @return $selectors;
+    }
+
+    // For :disabled, use :enabled instead of the :not() variant
+    @return map.set($selectors, enabled, ':enabled');
+  }
+
+  @if $disabled and not $enabled {
+    @return map.set($selectors, enabled, selector-ext.negate($disabled));
+  }
+
+  @return $selectors;
+}
+
+/// A Map of override selectors. This can be used to temporarily change and
+/// configure state selectors.
+/// @type {Map}
+/// @see {mixin} override-selectors
+$_override-selectors: ();
+
+/// Override the current selectors provided to a state mixin for the provided
+/// content.
+///
+/// @example - scss
+///   // Change theme so that focus styles only show during keyboard navigation
+///   @include state.override-selectors((focus: ':focus-within')) {
+///     @include foo.theme($theme);
+///   }
+///
+/// @param {Map} $selectors A Map whose keys are states and values are string
+///     selectors.
+/// @content The styles to override state selectors for.
+@mixin override-selectors($selectors) {
+  $reset: $_override-selectors;
+  $_override-selectors: $selectors !global;
+  @content;
+  $_override-selectors: $reset !global;
+}
+
+$_independent-states: ();
+
+/// Indicates that for the given content of state mixins, the provided states
+/// are on their own independent elements and that they should ignore typical
+/// dependent groupings, such as `:hover`, `:focus`, and `:active`.
+///
+/// This mixin is useful when multiple states within a typical dependency group
+/// need to be visible at the same time (such as `:focus` and `:active`). To
+/// achieve this, the states must be on their own independent elements (such as
+/// separate `::before` and `::after` pseudo elements).
+///
+/// @example - scss
+///   .broken-ripple {
+///     @include state.hover {
+///       &::before { opacity: 0.1; }
+///     }
+///     @include state.focus {
+///       &::before { opacity: 0.2; }
+///     }
+///     @include state.pressed {
+///       &::after { opacity: 0.3; }
+///     }
+///   }
+///
+///   .fixed-ripple {
+///     @include state.independent-elements(pressed) {
+///       @include state.hover {
+///         &::before { opacity: 0.1; }
+///       }
+///       @include state.focus {
+///         &::before { opacity: 0.2; }
+///       }
+///       @include state.pressed {
+///         &::before { opacity: 0.3; }
+///       }
+///     }
+///   }
+///
+///  @example - css
+///   .broken-ripple:hover:not(:focus):not(:active)::before {
+///     opacity: 0.1;
+///   }
+///   .broken-ripple:focus:not(:active)::before {
+///     /* Focus styles will not be visible due to :not(:active)!! */
+///     opacity: 0.2;
+///   }
+///   .broken-ripple:active::after {
+///     opacity: 0.3;
+///   }
+///
+///   .fixed-ripple:hover:not(:focus)::before {
+///     opacity: 0.1;
+///   }
+///   .fixed-ripple:focus::before {
+///     /* Both focus and pressed styles are visible during press. Only hover
+///        and focus need to be independent of each other since they share an
+///        element. */
+///     opacity: 0.2;
+///   }
+///   .fixed-ripple:active::after {
+///     opacity: 0.3;
+///   }
+///
+/// @param {String...} $states - One or more states that should be considered
+///     independent and on its own element.
+/// @content Two or more state mixins that are part of a dependency group
+///     involving the provided independent states.
+@mixin independent-elements($states...) {
+  $reset: $_independent-states;
+  $_independent-states: $states !global;
+  @content;
+  $_independent-states: $reset !global;
+}
+
+/// A List of state groups that are dependent on each other for CSS override
+/// order. These are used to determine which state selectors are needed for
+/// `_create-independent-selector()`.
+// Note: Sass syntax does not allow declaring nested Lists; an empty second List
+// placeholder is added for the correct data structure.
+$_dependent-state-groups: ((hover, focus, pressed), ());
+
+/// Creates a selector that will be independent based on the other selectors
+/// that are dependents of it.
+///
+/// Selector dependencies are selector groups that must follow a certain order
+/// for CSS overrides. For example: `:hover`, `:focus`, `:active` or `:link`,
+/// `:visited`, `:hover`, `:active`.
+///
+/// Selectors at the start of a group are dependencies of selectors at the end
+/// of a group.
+///
+/// @example - scss
+///   #{_create-independent-selector(':hover', ':focus', ':active')} {
+///     color: teal;
+///   }
+///
+///   #{_create-independent-selector(':focus', ':active')} {
+///     color: magenta;
+///   }
+///
+/// @example - css
+///   :hover:not(:focus):not(:active) {
+///     color: teal;
+///   }
+///
+///   :focus:not(:active) {
+///     color: magenta;
+///   }
+///
+/// The returned selector is considered "independent" and does not rely on CSS
+/// override order or specificity within its group. In other words, "hover"
+/// styles can be customized after "focus" styles without hiding default focus
+/// styles.
+///
+/// @example - css
+///   /* Default focus styles */
+///   :focus:not(:active) { color: magenta; }
+///
+///   /* New hover styles, does not prevent focus styles from being visible */
+///   :hover:not(:focus):not(:active) { color: orange; }
+///
+/// @param {String} $selector - The main selector to target.
+/// @param {String...} $dependents - Additional group dependents of the main
+///     selector. They will be added as `:not()` selectors.
+/// @return {List} A new independent selector in selector value format.
+@function _create-independent-selector($selector, $dependents...) {
+  @each $dependent in $dependents {
+    @if $dependent {
+      $selector: selector-ext.append-strict(
+        $selector,
+        selector-ext.negate($dependent)
+      );
+    }
+  }
+
+  @return $selector;
+}
+
+@mixin _selector($selectors, $state) {
+  $selectors: _create-selectors(map.merge($selectors, $_override-selectors));
+  @if not map.has-key($selectors, $state) {
+    @error 'Missing #{$state} from #{$selectors}';
+  }
+
+  @at-root {
+    #{selector-ext.append-strict(&, map.get($selectors, $state))} {
+      @content;
+    }
+  }
 }

@@ -27,13 +27,13 @@
  * supported.
  */
 export function emitEvent(
-    targetEl: Element|Window|Document, eventName: string,
+    targetEl: EventTarget, eventName: string,
     {bubbles, cancelable, detail}: CustomEventInit = {
       bubbles: false,
       cancelable: false,
     }) {
   let event;
-  if (typeof(Event) === 'function') {
+  if (typeof Event === 'function') {
     event = new CustomEvent(eventName, {bubbles, cancelable, detail});
   } else {
     // IE11 support.
@@ -94,7 +94,7 @@ export function createKeyboardEvent(
 
   let event;
   const eventOptions = {...eventDefaults, ...eventInit};
-  if (typeof (KeyboardEvent) === 'function') {
+  if (typeof KeyboardEvent === 'function') {
     event = new KeyboardEvent(eventName, eventInit);
   } else {
     // IE11 support.

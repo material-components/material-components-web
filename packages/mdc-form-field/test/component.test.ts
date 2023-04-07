@@ -22,19 +22,16 @@
  */
 
 import {MDCFormField} from '../../mdc-form-field/index';
+import {createFixture, html} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 
 function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+  return createFixture(html`
     <div class="mdc-form-field">
       <input type="radio" id="radio" checked name="radio">
-      <label for="radio">Foo</label>
+      <label class="mdc-label" for="radio">Foo</label>
     </div>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
+  `);
 }
 
 function setupTest() {
@@ -64,7 +61,7 @@ describe('MDCFormField', () => {
      () => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('eventHandler');
-       const label = root.querySelector('label') as HTMLElement;
+       const label = root.querySelector('label')!;
 
        (component.getDefaultFoundation() as any)
            .adapter.registerInteractionHandler('click', handler);
@@ -77,7 +74,7 @@ describe('MDCFormField', () => {
      () => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('eventHandler');
-       const label = root.querySelector('label') as HTMLElement;
+       const label = root.querySelector('label')!;
        label.addEventListener('click', handler);
 
        (component.getDefaultFoundation() as any)
@@ -89,7 +86,7 @@ describe('MDCFormField', () => {
 
   it('adapter#activateInputRipple calls activate on the input ripple', () => {
     const {component} = setupTest();
-    const ripple = {activate: jasmine.createSpy('activate')} as any;
+    const ripple: any = {activate: jasmine.createSpy('activate')};
     const input = {ripple};
 
     component.input = input;
@@ -123,7 +120,7 @@ describe('MDCFormField', () => {
   it('adapter#deactivateInputRipple calls deactivate on the input ripple',
      () => {
        const {component} = setupTest();
-       const ripple = {deactivate: jasmine.createSpy('deactivate')} as any;
+       const ripple: any = {deactivate: jasmine.createSpy('deactivate')};
        const input = {ripple};
 
        component.input = input;

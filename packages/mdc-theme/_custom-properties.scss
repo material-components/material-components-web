@@ -19,10 +19,67 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+
+@use 'sass:list';
 @use 'sass:map';
 @use 'sass:meta';
+@use 'sass:string';
 @use './css';
 @use './gss';
+
+/// Configuration for custom properties.
+/// @see {mixin} configure
+$_config: (
+  emit-custom-properties: true,
+  emit-fallback-values: true,
+  emit-fallback-vars: true,
+  varname-prefix: 'mdc',
+);
+
+/// Configure options for custom properties. The configuration will be applied
+/// within the scope of the mixin's content and reset when the mixin scope ends.
+///
+/// @example - scss
+///   @include configure($emit-fallback-values: false) {
+///     // No fallback values will be emitted within this mixin scope
+///     @include another-mixin();
+///   }
+///
+/// All parameters must be provided as argument lists.
+///
+/// @link https://sass-lang.com/documentation/values/lists#argument-lists
+///
+/// @param {Bool} $emit-custom-properties [true] - Enable or disable all
+///     custom property emission.
+/// @param {Bool} $emit-fallback-values [true] - Enable or disable emission of
+///     fallback CSS static values. This does not include dynamic `var()`
+///     fallback values.
+/// @param {Bool} $emit-fallback-vars [true] - Enable or disable emission of
+///     fallback `var()` values.
+/// @param {String} $varname-prefix ['mdc'] - Global prefix for all custom properties.
+@mixin configure($config...) {
+  @if not meta.content-exists() {
+    @error 'content is required for configure()';
+  }
+
+  $config: meta.keywords($config);
+  @each $key, $value in $config {
+    @if $value == null {
+      $config: map.remove($config, $key);
+    }
+  }
+
+  @if list.length($config) == 0 {
+    @content;
+  } @else {
+    $previous: $_config;
+    // Use !global to avoid shadowing
+    // https://sass-lang.com/documentation/variables#shadowing
+    $_config: map.merge($_config, $config) !global;
+    @content;
+    $_config: $previous !global;
+  }
+}
 
 /// Returns true if the parameter is a custom property Map.
 ///
@@ -30,6 +87,19 @@
 /// @return true if the value is a custom property Map, or false if not.
 @function is-custom-prop($value) {
   @return meta.type-of($value) == 'map' and map.has-key($value, 'varname');
+}
+
+/// Indicates whether or not a value is a custom property var() string.
+///
+/// @example - scss
+///   $is-prop-string: is-custom-prop-string('var(--foo)'); // true
+///
+/// @param {*} $value - The value to test.
+/// @return {Bool} True if the value is a custom property var() string, or
+///     false if not.
+@function is-custom-prop-string($value) {
+  @return meta.type-of($value) == 'string' and string.slice($value, 1, 4) ==
+    'var(';
 }
 
 /// Returns true if $prop1's varname and fallback values are deeply equal to
@@ -49,7 +119,23 @@
 ///     property Map). May be null.
 /// @return a custom property Map.
 @function create($varname, $fallback: null) {
+  @if string.slice($varname, 1, 2) != '--' {
+    $varname: create-varname($varname);
+  }
+
   @return (varname: $varname, fallback: $fallback);
+}
+
+/// Create a custom property variable name with the global prefix.
+///
+/// @example - scss
+///   $varname: create-varname(foo); // --mdc-foo
+///
+/// @param {String} $name - The name of the custom property.
+/// @return {String} The full CSS custom property variable name.
+@function create-varname($name) {
+  $varname-prefix: map.get($_config, 'varname-prefix');
+  @return --#{$varname-prefix}-#{$name};
 }
 
 /// Returns the custom property variable name of a custom property Map.
@@ -100,42 +186,131 @@
   @return create($varname, $new-fallback);
 }
 
-/// Creates and returns a `var()` function declaration represented by the
-/// provided custom property Map.
+/// Creates and returns a CSS `var()` function value represented by the provided
+/// custom property Map.
 ///
-/// @param {Map} $custom-prop - a custom property Map.
-/// @return a `var()` function declaration using the custom property Map's
-///     varname and fallback value.
+/// If custom properties are disabled, this function will return the custom
+/// property's fallback value instead, which may be `null` and result in an
+/// empty declaration.
+///
+/// @param {Map} $custom-prop - A custom property Map.
+/// @return {*} A CSS value, typically a `var()` function, representing the
+///     custom property. The returned value may change depending on the current
+///     configuration options for custom properties and whether or not a
+///     fallback value is present in the custom property Map.
 @function create-var($custom-prop) {
+  @if not map.get($_config, emit-custom-properties) {
+    // If configured not to emit custom properties and a request is made for a
+    // custom prop's CSS value, return its fallback value. If this is null, it
+    // will result in an empty declaration.
+    @return get-fallback($custom-prop);
+  }
+
   $varname: get-varname($custom-prop);
   $fallback: get-fallback($custom-prop, $shallow: true);
 
-  @if is-custom-prop($fallback) {
+  $emit-fallback-vars: map.get($_config, emit-fallback-vars);
+  $fallback-is-prop: is-custom-prop($fallback);
+  @if $fallback-is-prop and $emit-fallback-vars {
     @return var($varname, create-var($fallback));
-  } @else if $fallback != null {
-    @return var($varname, $fallback);
-  } @else {
-    @return var($varname);
   }
+
+  $emit-fallback-values: map.get($_config, emit-fallback-values);
+  @if $fallback and not $fallback-is-prop and $emit-fallback-values {
+    @return var($varname, $fallback);
+  }
+
+  @return var($varname);
 }
 
-/// Applies a custom property value to the specified property.
+/// Retrieves the CSS declaration value for a custom property Map. This is
+/// typically a `var()` function.
 ///
-/// @param {String} $property - the name of the CSS property.
-/// @param {Map} $custom-prop - a custom property Map for the property's value.
-/// @param {Map} $gss - optional Map of GSS annotations to set.
-/// @param {Bool} $important - set to true to add an `!important` rule. Defaults
-///     to false.
-@mixin apply($property, $custom-prop, $gss: (), $important: false) {
-  @if not is-custom-prop($custom-prop) {
-    @error "mdc-theme: Invalid custom property: #{$custom-prop}. Must be a Map with 'varname' and 'fallback'.";
+/// If custom properties are disabled, the custom property's fallback value
+/// will be returned instead.
+///
+/// @param {Map} $custom-prop - The custom property Map to retrieve a
+///     declaration value for.
+/// @return {*} The CSS declaration value.
+@function get-declaration-value($custom-prop) {
+  // This will return just the fallback value if `emit-custom-properties` is false.
+  @return create-var($custom-prop);
+}
+
+/// Retrieves the CSS fallback declaration value for a custom property Map.
+/// This is typically a static CSS value if a custom property has a fallback, or
+/// null if it does not.
+///
+/// This function will always return `null` if custom properties or fallback
+/// values are disabled.
+///
+/// @param {Map} $custom-prop - The custom property Map to retrieve a fallback
+///     declaration value for.
+/// @return {String | null} The CSS fallback declaration value.
+@function get-declaration-fallback($custom-prop) {
+  $emit-custom-properties: map.get($_config, emit-custom-properties);
+  $emit-fallback-values: map.get($_config, emit-fallback-values);
+  @if not $emit-custom-properties or not $emit-fallback-values {
+    @return null;
   }
 
-  @include css.declaration(
-    $property,
-    $value: create-var($custom-prop),
-    $fallback-value: get-fallback($custom-prop),
-    $gss: $gss,
-    $important: $important
-  );
+  @return get-fallback($custom-prop);
+}
+
+/// Emits a CSS declaration for a custom property. A custom property may either
+/// be provided as the value to a CSS property string to be emitted as a var()
+/// function, or as a standalone value to be emitted as a custom property
+/// declaration.
+///
+/// @example - scss
+///   @include declaration(color, create(--foo, teal));
+///   // color: var(--foo, teal);
+///   @include declaration(create(--foo, teal));
+///   // --foo: teal;
+///
+/// Standalone custom properties must have a fallback value to emit as a CSS
+/// declaration.
+///
+/// The declaration emitted for a custom property may change or be ignored
+/// based on the current configuration for custom properties.
+///
+/// @see {mixin} css.declaration
+/// @see {mixin} configuration
+///
+/// @param {String} $property - The CSS property of the declaration or the
+///     custom property Map to emit.
+/// @param {Map} $custom-prop - A custom property Map for the property's value.
+///     Optional if $property is the custom property Map to emit.
+/// @param {Map} $gss - An optional Map of GSS annotations to add.
+/// @param {Bool} $important - If true, add `!important` to the declaration.
+@mixin declaration($property, $custom-prop: null, $gss: (), $important: false) {
+  @if $property {
+    $value: null;
+    $fallback-value: null;
+    @if is-custom-prop($property) {
+      @if map.get($_config, emit-custom-properties) {
+        $custom-prop: $property;
+        $property: get-varname($custom-prop);
+        $value: get-fallback($custom-prop, $shallow: true);
+        @if is-custom-prop($value) {
+          $value: create-var($value);
+        }
+      }
+    } @else {
+      @if not is-custom-prop($custom-prop) {
+        @error "Invalid custom property: #{$custom-prop}. Must be a Map with 'varname' and 'fallback'.";
+      }
+
+      $value: get-declaration-value($custom-prop);
+      $fallback-value: get-declaration-fallback($custom-prop);
+    }
+
+    @include css.declaration(
+      $property,
+      $value,
+      $fallback-value: $fallback-value,
+      $gss: $gss,
+      $important: $important
+    );
+  }
 }

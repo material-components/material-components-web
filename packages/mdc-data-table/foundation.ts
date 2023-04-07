@@ -24,15 +24,15 @@
 import {MDCFoundation} from '@material/base/foundation';
 
 import {MDCDataTableAdapter} from './adapter';
-import {cssClasses, SortValue, strings} from './constants';
-import {SortActionEventData} from './types';
+import {cssClasses, SortValue, attributes} from './constants';
+import {RowClickEventData, SortActionEventData} from './types';
 
 /**
  * The Foundation of data table component containing pure business logic, any
  * logic requiring DOM manipulation are delegated to adapter methods.
  */
 export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
-  static get defaultAdapter(): MDCDataTableAdapter {
+  static override get defaultAdapter(): MDCDataTableAdapter {
     return {
       addClass: () => undefined,
       addClassAtRowIndex: () => undefined,
@@ -53,6 +53,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       notifySelectedAll: () => undefined,
       notifySortAction: () => undefined,
       notifyUnselectedAll: () => undefined,
+      notifyRowClick: () => undefined,
       registerHeaderRowCheckbox: () => undefined,
       registerRowCheckboxes: () => undefined,
       removeClass: () => undefined,
@@ -74,8 +75,9 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   }
 
   /**
-   * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
-   * Use this if registering checkbox is synchronous.
+   * Re-initializes header row checkbox and row checkboxes when selectable rows
+   * are added or removed from table. Use this if registering checkbox is
+   * synchronous.
    */
   layout() {
     if (this.adapter.isRowsSelectable()) {
@@ -87,8 +89,9 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   }
 
   /**
-   * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
-   * Use this if registering checkbox is asynchronous.
+   * Re-initializes header row checkbox and row checkboxes when selectable rows
+   * are added or removed from table. Use this if registering checkbox is
+   * asynchronous.
    */
   async layoutAsync(): Promise<void> {
     if (this.adapter.isRowsSelectable()) {
@@ -102,7 +105,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   /**
    * @return Returns array of row elements.
    */
-  getRows(): Element[] {
+  getRows(): HTMLElement[] {
     return this.adapter.getRowElements();
   }
 
@@ -214,7 +217,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       this.adapter.removeClassNameByHeaderCellIndex(
           index, cssClasses.HEADER_CELL_SORTED_DESCENDING);
       this.adapter.setAttributeByHeaderCellIndex(
-          index, strings.ARIA_SORT, SortValue.NONE);
+          index, attributes.ARIA_SORT, SortValue.NONE);
       this.adapter.setSortStatusLabelByHeaderCellIndex(index, SortValue.NONE);
     }
 
@@ -223,7 +226,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
         columnIndex, cssClasses.HEADER_CELL_SORTED);
 
     const currentSortValue = this.adapter.getAttributeByHeaderCellIndex(
-        columnIndex, strings.ARIA_SORT);
+        columnIndex, attributes.ARIA_SORT);
     let sortValue = SortValue.NONE;
 
     // Set to descending if sorted on ascending order.
@@ -231,19 +234,19 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       this.adapter.setClassNameByHeaderCellIndex(
           columnIndex, cssClasses.HEADER_CELL_SORTED_DESCENDING);
       this.adapter.setAttributeByHeaderCellIndex(
-          columnIndex, strings.ARIA_SORT, SortValue.DESCENDING);
+          columnIndex, attributes.ARIA_SORT, SortValue.DESCENDING);
       sortValue = SortValue.DESCENDING;
       // Set to ascending if sorted on descending order.
     } else if (currentSortValue === SortValue.DESCENDING) {
       this.adapter.removeClassNameByHeaderCellIndex(
           columnIndex, cssClasses.HEADER_CELL_SORTED_DESCENDING);
       this.adapter.setAttributeByHeaderCellIndex(
-          columnIndex, strings.ARIA_SORT, SortValue.ASCENDING);
+          columnIndex, attributes.ARIA_SORT, SortValue.ASCENDING);
       sortValue = SortValue.ASCENDING;
     } else {
       // Set to ascending by default when not sorted.
       this.adapter.setAttributeByHeaderCellIndex(
-          columnIndex, strings.ARIA_SORT, SortValue.ASCENDING);
+          columnIndex, attributes.ARIA_SORT, SortValue.ASCENDING);
       sortValue = SortValue.ASCENDING;
     }
 
@@ -254,6 +257,21 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       columnIndex,
       headerCell,
       sortValue,
+    });
+  }
+
+  /**
+   * Handles data table row click event.
+   */
+  handleRowClick({rowId, row, altKey, ctrlKey, metaKey, shiftKey}:
+                     RowClickEventData) {
+    this.adapter.notifyRowClick({
+      rowId,
+      row,
+      altKey,
+      ctrlKey,
+      metaKey,
+      shiftKey,
     });
   }
 
@@ -306,11 +324,11 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
     if (selected) {
       this.adapter.addClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
       this.adapter.setAttributeAtRowIndex(
-          rowIndex, strings.ARIA_SELECTED, 'true');
+          rowIndex, attributes.ARIA_SELECTED, 'true');
     } else {
       this.adapter.removeClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
       this.adapter.setAttributeAtRowIndex(
-          rowIndex, strings.ARIA_SELECTED, 'false');
+          rowIndex, attributes.ARIA_SELECTED, 'false');
     }
   }
 }

@@ -20,9 +20,10 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use 'sass:color';
 @use 'sass:map';
 @use '@material/animation/functions' as functions2;
@@ -30,23 +31,23 @@
 @use '@material/base/mixins' as base-mixins;
 @use '@material/theme/custom-properties';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
-@use '@material/theme/theme-color';
 @use './ripple-theme';
 
-@mixin core-styles(
-  $query: feature-targeting.all(),
-  // TODO(b/151931961): Remove this param once resolved.
-    $include-will-change: true
-) {
+@mixin core-styles($query: feature-targeting.all()) {
+  @include static-styles($query: $query);
+
+  .mdc-ripple-surface {
+    @include ripple-theme.states($query: $query);
+  }
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-ripple-surface {
-    @include surface(
-      $include-will-change: $include-will-change,
-      $query: $query
-    );
-    @include ripple-theme.states($query: $query);
+    @include surface($query: $query);
     @include radius-bounded($query: $query);
     @include surface-styles($query: $query);
   }
@@ -173,7 +174,7 @@
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-structure) {
         top: 0;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: 0;
         transform: scale(0);
         transform-origin: center center;
@@ -185,7 +186,7 @@
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-structure) {
         top: var(--mdc-ripple-top, 0);
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: var(--mdc-ripple-left, 0);
       }
     }
@@ -209,6 +210,7 @@
 
       @include feature-targeting.targets($feat-structure) {
         // Retain transform from mdc-ripple-fg-radius-in activation
+        @include rtl.ignore-next-line();
         transform: translate(var(--mdc-ripple-fg-translate-end, 0))
           scale(var(--mdc-ripple-fg-scale, 1));
       }
@@ -227,7 +229,7 @@
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-struture) {
       top: calc(50% - #{$radius});
-      /* @noflip */
+      @include rtl.ignore-next-line();
       left: calc(50% - #{$radius});
       width: $radius * 2;
       height: $radius * 2;
@@ -254,9 +256,9 @@
   #{$ripple-target}::before,
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-struture) {
-      top: calc(50% - #{$radius / 2});
-      /* @noflip */
-      left: calc(50% - #{$radius / 2});
+      top: calc(50% - #{math.div($radius, 2)});
+      @include rtl.ignore-next-line();
+      left: calc(50% - #{math.div($radius, 2)});
       width: $radius;
       height: $radius;
     }
@@ -266,9 +268,9 @@
     #{$ripple-target}::before,
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-struture) {
-        top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
-        /* @noflip */
-        left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
+        top: var(--mdc-ripple-top, calc(50% - #{math.div($radius, 2)}));
+        @include rtl.ignore-next-line();
+        left: var(--mdc-ripple-left, calc(50% - #{math.div($radius, 2)}));
         width: var(--mdc-ripple-fg-size, $radius);
         height: var(--mdc-ripple-fg-size, $radius);
       }
@@ -308,10 +310,12 @@
       // used in conjunction with `.mdc-ripple-upgraded`. Since MDCRippleFoundation checks to ensure
       // that custom properties are supported within the browser before adding this class, we can
       // safely use them without a fallback.
+      @include rtl.ignore-next-line();
       transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
     }
 
     to {
+      @include rtl.ignore-next-line();
       transform: translate(var(--mdc-ripple-fg-translate-end, 0))
         scale(var(--mdc-ripple-fg-scale, 1));
     }

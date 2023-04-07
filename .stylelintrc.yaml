@@ -42,7 +42,11 @@ rules:
     - true
     - ignorePseudoElements:
         ng-deep
-  scss/at-rule-no-unknown: true
+  scss/at-rule-no-unknown:
+    - true
+    - ignoreAtRules:
+      - provide
+      - require
   # No config allows this:
   #
   # ```scss

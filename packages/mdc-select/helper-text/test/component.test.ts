@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-import {getFixture as createFixture} from '../../../../testing/dom/index';
+import {createFixture, html} from '../../../../testing/dom/index';
 import {MDCSelectHelperText} from '../index';
 
-const getFixture = () => createFixture(`
+const getFixture = () => createFixture(html`
   <p class="mdc-select-helper-text"></p>
 `);
 

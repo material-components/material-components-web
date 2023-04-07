@@ -25,6 +25,7 @@ import 'jasmine';
 
 import * as fs from 'fs';
 import * as path from 'path';
+
 import {expectStylesWithNoFeaturesToBeEmpty} from '../../../testing/featuretargeting';
 
 describe('mdc-typography.scss', () => {

@@ -1,0 +1,621 @@
+// Copyright 2016 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/elevation/elevation-theme';
+@use '@material/animation/functions' as animation-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple-theme';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/css';
+@use '@material/theme/custom-properties';
+@use '@material/theme/keys';
+@use '@material/theme/replace';
+@use '@material/theme/state';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/tokens/resolvers';
+@use './fab-custom-properties';
+@use 'sass:math';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+
+$height: 56px !default;
+$mini-height: 40px !default;
+$shape-radius: 50% !default;
+$ripple-target: '.mdc-fab__ripple';
+
+$light-theme: (
+  container-color: secondary,
+  container-elevation: 6,
+  container-height: 56px,
+  container-shadow-color: black,
+  container-shape: $shape-radius,
+  container-surface-tint-layer-color: null,
+  container-width: 56px,
+  focus-container-elevation: null,
+  focus-icon-color: null,
+  focus-outline-color: null,
+  focus-outline-width: null,
+  focus-state-layer-color: theme-color.$primary,
+  focus-state-layer-opacity: null,
+  hover-container-elevation: null,
+  hover-icon-color: null,
+  hover-state-layer-color: theme-color.$primary,
+  hover-state-layer-opacity: null,
+  icon-color: on-secondary,
+  icon-size: 24px,
+  lowered-container-elevation: null,
+  lowered-focus-container-elevation: null,
+  lowered-hover-container-elevation: null,
+  lowered-pressed-container-elevation: null,
+  pressed-container-elevation: null,
+  pressed-icon-color: null,
+  pressed-ripple-color: null,
+  pressed-ripple-opacity: null,
+  pressed-state-layer-color: theme-color.$primary,
+  pressed-state-layer-opacity: null,
+);
+
+$custom-property-prefix: 'fab';
+
+///
+/// Applies the given theme as custom properties without any selectors.
+///
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+  $resolved-theme: resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties(
+    $resolved-theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+  @include base-theme-styles($theme, $resolvers: $resolvers);
+
+  $shape-radius: map.get($theme, container-shape);
+  @if $shape-radius {
+    @include shape-radius($shape-radius);
+  }
+}
+
+///
+/// Resolves the given theme with the given resolvers.
+///
+@function resolve-theme($theme, $resolvers) {
+  $elevation-resolver: map.get($resolvers, elevation);
+  @return _resolve-theme-elevation-keys(
+    $theme,
+    $elevation-resolver,
+    (
+      container-elevation,
+      hover-container-elevation,
+      focus-container-elevation,
+      pressed-container-elevation,
+      disabled-container-elevation,
+      lowered-container-elevation,
+      lowered-focus-container-elevation,
+      lowered-hover-container-elevation,
+      lowered-pressed-container-elevation
+    )
+  );
+}
+
+///
+/// Returns the theme with the elevation keys resolved.
+///
+@function _resolve-theme-elevation-keys($theme, $resolver, $elevation-keys) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  // Shadow color is universal for the component.
+  $shadow-color: map.get($theme, container-shadow-color);
+
+  @each $key in $elevation-keys {
+    $elevation: map.get($theme, $key);
+    @if $elevation != null {
+      $resolved-value: meta.call(
+        $resolver,
+        $elevation: $elevation,
+        $shadow-color: $shadow-color
+      );
+      // Update the key with the resolved value.
+      $theme: map.set($theme, $key, $resolved-value);
+    }
+  }
+
+  @return $theme;
+}
+
+@mixin base-theme-styles($theme, $resolvers: resolvers.$material) {
+  @include container-color(map.get($theme, container-color));
+  @include _container-elevation(
+    map.get($resolvers, elevation),
+    map.get($theme, container-shadow-color),
+    map.get($theme, container-surface-tint-layer-color),
+    (
+      default: map.get($theme, container-elevation),
+      hover: map.get($theme, hover-container-elevation),
+      focus: map.get($theme, focus-container-elevation),
+      pressed: map.get($theme, pressed-container-elevation),
+    )
+  );
+  @include _container-height(map.get($theme, container-height));
+  @include _container-width(map.get($theme, container-width));
+  @include icon-size(map.get($theme, icon-size));
+  @include _icon-color(
+    (
+      default: map.get($theme, icon-color),
+      hover: map.get($theme, hover-icon-color),
+      focus: map.get($theme, focus-icon-color),
+      pressed: map.get($theme, pressed-icon-color),
+    )
+  );
+
+  $opacity-map: (
+    hover: map.get($theme, hover-state-layer-opacity),
+    focus: map.get($theme, focus-state-layer-opacity),
+    press: map.get($theme, pressed-state-layer-opacity),
+  );
+  $hover-state-layer-color: map.get($theme, hover-state-layer-color);
+  @if $hover-state-layer-color {
+    @include ripple-color($hover-state-layer-color, $opacity-map: $opacity-map);
+  }
+
+  $focus-outline-color: map.get($theme, focus-outline-color);
+  @if $focus-outline-color {
+    @include focus-outline-color($focus-outline-color);
+  }
+  $focus-outline-width: map.get($theme, focus-outline-width);
+  @if $focus-outline-width {
+    @include focus-outline-width($focus-outline-width);
+  }
+}
+
+@mixin ripple-color($color, $opacity-map: (), $query: feature-targeting.all()) {
+  @include ripple-theme.states(
+    $color,
+    $opacity-map: $opacity-map,
+    $query: $query,
+    $ripple-target: $ripple-target
+  );
+}
+
+@mixin accessible($container-color, $query: feature-targeting.all()) {
+  @include container-color($container-color, $query: $query);
+
+  $fill-tone: theme-color.tone($container-color);
+
+  @if ($fill-tone == 'dark') {
+    @include ink-color(text-primary-on-dark, $query: $query);
+    @include ripple-theme.states(
+      text-primary-on-dark,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+  } @else {
+    @include ink-color(text-primary-on-light, $query: $query);
+    @include ripple-theme.states(
+      text-primary-on-light,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+  }
+}
+
+@mixin container-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(background-color, $color);
+  }
+}
+
+@mixin icon-size($width, $height: $width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-fab__icon {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property('width', $width);
+      @include theme.property('height', $height);
+      @include theme.property('font-size', $height);
+    }
+  }
+}
+
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    &,
+    &:not(:disabled) .mdc-fab__icon,
+    &:not(:disabled) .mdc-fab__label,
+    &:disabled .mdc-fab__icon,
+    &:disabled .mdc-fab__label {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin _container-height($height) {
+  @include theme.property('height', $height);
+}
+
+@mixin _container-width($width) {
+  @include theme.property('width', $width);
+}
+
+@mixin _icon-color($color-or-map) {
+  &:not(:disabled) {
+    @include _set-icon-color(state.get-default-state($color-or-map));
+
+    &:hover {
+      @include _set-icon-color(state.get-hover-state($color-or-map));
+    }
+
+    &:focus {
+      @include _set-icon-color(state.get-focus-state($color-or-map));
+    }
+
+    &:active {
+      @include _set-icon-color(state.get-pressed-state($color-or-map));
+    }
+  }
+
+  &:disabled {
+    @include _set-icon-color(state.get-disabled-state($color-or-map));
+  }
+}
+
+@mixin _set-icon-color($color) {
+  .mdc-fab__icon {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _container-elevation($resolver, $shadow-color, $container-color, $map) {
+  &:not(:disabled) {
+    @include elevation-theme.with-resolver(
+      $resolver,
+      $elevation: state.get-default-state($map),
+      $shadow-color: $shadow-color
+    );
+    @include elevation-theme.overlay-container-color($container-color);
+
+    &:hover {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-hover-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
+
+    &:focus {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-focus-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
+
+    &:active {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-pressed-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
+  }
+
+  &:disabled {
+    // FAB does not have disabled state. Use default state's elevation.
+    @include elevation-theme.with-resolver(
+      $resolver,
+      $elevation: state.get-default-state($map),
+      $shadow-color: $shadow-color
+    );
+  }
+}
+
+///
+/// Sets outline width only when button is in focus. Also sets padding to
+/// include outline on focus (Helps prevent size jump on focus).
+/// @param {Number} $width - Outline (border) width.
+/// @param {Number|List} $padding [0] - Padding when button is not in focus.
+///     Offsets padding based on given outline width on focus.
+///
+@mixin focus-outline-width(
+  $width,
+  $padding: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  $padding: css.unpack-value($padding);
+  $padding-fallbacks: (0 0 0 0);
+  $is-padding-custom-prop: (false false false false);
+  $is-width-custom-prop: custom-properties.is-custom-prop($width);
+  $width-fallback: if(
+    custom-properties.is-custom-prop($width),
+    custom-properties.get-fallback($width),
+    $width
+  );
+  $width: if(
+    custom-properties.is-custom-prop($width),
+    custom-properties.get-declaration-value($width),
+    $width
+  );
+
+  // conform padding values and extract custom property metadata from them
+  @for $i from 1 through list.length($padding) {
+    $value: list.nth($padding, $i);
+    $value-is-custom-prop: custom-properties.is-custom-prop($value);
+    // css max will fail to compare a bare 0 to a px value
+    $value: if($value == 0, 0px, $value);
+    $value-fallback: if(
+      $value-is-custom-prop,
+      custom-properties.get-fallback($value),
+      $value
+    );
+    $value: if(
+      $value-is-custom-prop,
+      custom-properties.get-declaration-value($value),
+      $value
+    );
+
+    $padding: list.set-nth($padding, $i, $value);
+    $padding-fallbacks: list.set-nth($padding-fallbacks, $i, $value-fallback);
+    $is-padding-custom-prop: list.set-nth(
+      $is-padding-custom-prop,
+      $i,
+      $value-is-custom-prop
+    );
+  }
+
+  // Padding should include outline width which will be set on focus.
+  // sass math required for IE since IE doesn't support css max
+  $padding-top-fallback: math.max(
+    list.nth($padding-fallbacks, 1),
+    $width-fallback
+  );
+  $padding-right-fallback: math.max(
+    list.nth($padding-fallbacks, 2),
+    $width-fallback
+  );
+  $padding-bottom-fallback: math.max(
+    list.nth($padding-fallbacks, 3),
+    $width-fallback
+  );
+  $padding-left-fallback: math.max(
+    list.nth($padding-fallbacks, 4),
+    $width-fallback
+  );
+
+  $padding-top: replace.replace-string(
+    'max(paddingval, width)',
+    (
+      paddingval: list.nth($padding, 1),
+      width: $width,
+    )
+  );
+  $padding-right: replace.replace-string(
+    'max(paddingval, width)',
+    (
+      paddingval: list.nth($padding, 2),
+      width: $width,
+    )
+  );
+  $padding-bottom: replace.replace-string(
+    'max(paddingval, width)',
+    (
+      paddingval: list.nth($padding, 3),
+      width: $width,
+    )
+  );
+  $padding-left: replace.replace-string(
+    'max(paddingval, width)',
+    (
+      paddingval: list.nth($padding, 4),
+      width: $width,
+    )
+  );
+
+  $top-has-custom-prop: $is-width-custom-prop or
+    list.nth($is-padding-custom-prop, 1);
+  @include css.declaration(padding-top, $padding-top-fallback);
+  @if $top-has-custom-prop {
+    @include css.declaration(
+      padding-top,
+      $padding-top,
+      $gss: (alternate: $top-has-custom-prop)
+    );
+  }
+
+  $right-has-custom-prop: $is-width-custom-prop or
+    list.nth($is-padding-custom-prop, 2);
+  @include css.declaration(padding-right, $padding-right-fallback);
+  @if $right-has-custom-prop {
+    @include css.declaration(
+      padding-right,
+      $padding-right,
+      $gss: (alternate: $right-has-custom-prop)
+    );
+  }
+
+  $bottom-has-custom-prop: $is-width-custom-prop or
+    list.nth($is-padding-custom-prop, 3);
+  @include css.declaration(padding-bottom, $padding-bottom-fallback);
+  @if $bottom-has-custom-prop {
+    @include css.declaration(
+      padding-bottom,
+      $padding-bottom,
+      $gss: (alternate: $bottom-has-custom-prop)
+    );
+  }
+
+  $left-has-custom-prop: $is-width-custom-prop or
+    list.nth($is-padding-custom-prop, 4);
+  @include css.declaration(padding-left, $padding-left-fallback);
+  @if $left-has-custom-prop {
+    @include css.declaration(
+      padding-left,
+      $padding-left,
+      $gss: (alternate: $left-has-custom-prop)
+    );
+  }
+
+  &:not(:disabled) {
+    @include ripple-theme.focus() {
+      @include feature-targeting.targets($feat-structure) {
+        border-style: solid;
+        @include theme.property(border-width, $width);
+
+        // sass math required for IE since IE doesn't support css max
+        $padding-top-fallback: math.abs(
+          list.nth($padding-fallbacks, 1) - $width-fallback
+        );
+        $padding-right-fallback: math.abs(
+          list.nth($padding-fallbacks, 2) - $width-fallback
+        );
+        $padding-bottom-fallback: math.abs(
+          list.nth($padding-fallbacks, 3) - $width-fallback
+        );
+        $padding-left-fallback: math.abs(
+          list.nth($padding-fallbacks, 4) - $width-fallback
+        );
+
+        // max(a, calc(a * -1)) is equivalent to math.abs
+        $padding-top: replace.replace-string(
+          'max(paddingcalc, calc(paddingcalc * -1))',
+          (
+            paddingcalc: 'calc(paddingval - width)',
+            paddingval: list.nth($padding, 1),
+            width: $width,
+          )
+        );
+        $padding-right: replace.replace-string(
+          'max(paddingcalc, calc(paddingcalc * -1))',
+          (
+            paddingcalc: 'calc(paddingval - width)',
+            paddingval: list.nth($padding, 2),
+            width: $width,
+          )
+        );
+        $padding-bottom: replace.replace-string(
+          'max(paddingcalc, calc(paddingcalc * -1))',
+          (
+            paddingcalc: 'calc(paddingval - width)',
+            paddingval: list.nth($padding, 3),
+            width: $width,
+          )
+        );
+        $padding-left: replace.replace-string(
+          'max(paddingcalc, calc(paddingcalc * -1))',
+          (
+            paddingcalc: 'calc(paddingval - width)',
+            paddingval: list.nth($padding, 4),
+            width: $width,
+          )
+        );
+
+        @include css.declaration(padding-top, $padding-top-fallback);
+        @if $top-has-custom-prop {
+          @include css.declaration(
+            padding-top,
+            $padding-top,
+            $gss: (alternate: $top-has-custom-prop)
+          );
+        }
+        @include css.declaration(padding-right, $padding-right-fallback);
+        @if $right-has-custom-prop {
+          @include css.declaration(
+            padding-right,
+            $padding-right,
+            $gss: (alternate: $right-has-custom-prop)
+          );
+        }
+        @include css.declaration(padding-bottom, $padding-bottom-fallback);
+        @if $bottom-has-custom-prop {
+          @include css.declaration(
+            padding-bottom,
+            $padding-bottom,
+            $gss: (alternate: $bottom-has-custom-prop)
+          );
+        }
+        @include css.declaration(padding-left, $padding-left-fallback);
+        @if $left-has-custom-prop {
+          @include css.declaration(
+            padding-left,
+            $padding-left,
+            $gss: (alternate: $left-has-custom-prop)
+          );
+        }
+      }
+    }
+  }
+}
+
+///
+/// Sets outline color only when button is in focus. Use `focus-outline-width()`
+/// to set appropriate outline width.
+/// @param {Color} $color - Outline (border) color.
+///
+@mixin focus-outline-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  &:not(:disabled) {
+    @include ripple-theme.focus() {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(border-color, $color);
+      }
+    }
+  }
+}
+
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  &:not(.mdc-fab--extended) {
+    // Do not specify $component-height for shape radius. FABs are circular,
+    // which means they can use percentage border radius without resolving to
+    // a component height.
+    @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+
+    #{$ripple-target} {
+      @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+    }
+  }
+}

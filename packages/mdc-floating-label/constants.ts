@@ -24,6 +24,7 @@
 export const cssClasses = {
   LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
   LABEL_REQUIRED: 'mdc-floating-label--required',
+  LABEL_HIDE_REQUIRED_MARKER: 'mdc-floating-label--hide-required-marker',
   LABEL_SHAKE: 'mdc-floating-label--shake',
   ROOT: 'mdc-floating-label',
 };

@@ -34,7 +34,7 @@ export interface MDCSelectIconAdapter {
   /**
    * Gets the value of an attribute on the icon element.
    */
-  getAttr(attr: string): string | null;
+  getAttr(attr: string): string|null;
 
   /**
    * Sets an attribute on the icon element.
@@ -54,12 +54,14 @@ export interface MDCSelectIconAdapter {
   /**
    * Registers an event listener on the icon element for a given event.
    */
-  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  registerInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the icon element for a given event.
    */
-  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  deregisterInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Emits a custom event "MDCSelect:icon" denoting a user has clicked the icon.

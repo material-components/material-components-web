@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2020 Google Inc.
+ * Copyright 2021 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,164 +21,139 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple} from '../../mdc-ripple/component';
-import {supportsCssVariables} from '../../mdc-ripple/util';
-import {MDCSwitch} from '../../mdc-switch/component';
-import {strings} from '../../mdc-switch/constants';
-import {MDCSwitchFoundation} from '../../mdc-switch/foundation';
-import {emitEvent} from '../../../testing/dom/events';
-import {createMockFoundation} from '../../../testing/helpers/foundation';
+import {createFixture, html} from '../../../testing/dom';
+import {spyOnAllFunctions, spyOnAllPrototypeFunctions} from '../../../testing/helpers/jasmine';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {MDCSwitchRenderAdapter} from '../adapter';
+import {MDCSwitch} from '../component';
+import {CssClasses} from '../constants';
+import {MDCSwitchRenderFoundation} from '../foundation';
 
-const {NATIVE_CONTROL_SELECTOR, RIPPLE_SURFACE_SELECTOR} = strings;
-
-function getFixture(): Element {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
-    <div class="mdc-switch">
+function getFixture() {
+  return createFixture<HTMLButtonElement>(html`
+    <button class="mdc-switch" role="switch" type="button" aria-checked="false">
       <div class="mdc-switch__track"></div>
-      <div class="mdc-switch__thumb-underlay">
-        <div class="mdc-switch__thumb">
-          <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+      <div class="mdc-switch__handle-track">
+        <div class="mdc-switch__handle">
+          <div class="mdc-switch__shadow">
+            <div class="mdc-elevation-overlay"></div>
+          </div>
+          <div class="mdc-switch__ripple"></div>
+          <div class="mdc-switch__handle">
+            <div class="mdc-switch__icons">
+              <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24" width="18" height="18">
+                <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
+              </svg>
+              <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24" width="18" height="18">
+                <path d="M20 13H4v-2h16v2z" />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  `;
-  const el = wrapper.firstElementChild as Element;
-  wrapper.removeChild(el);
-  return el;
+    </button>
+  `);
+}
+
+class MockMDCSwitch extends MDCSwitch {
+  static override attachTo(root: HTMLButtonElement) {
+    return new MockMDCSwitch(root);
+  }
+
+  adapter!: jasmine.SpyObj<MDCSwitchRenderAdapter>;
+  override foundation!: jasmine.SpyObj<MDCSwitchRenderFoundation>;
+
+  override getDefaultFoundation() {
+    const foundation = spyOnAllPrototypeFunctions(super.getDefaultFoundation())
+                           .and.callThrough();
+    this.foundation = this.foundation || foundation;
+    return foundation;
+  }
+
+  protected override createAdapter() {
+    const adapter = spyOnAllFunctions(super.createAdapter()).and.callThrough();
+    this.adapter = this.adapter || adapter;
+    return adapter;
+  }
 }
 
 function setupTest() {
   const root = getFixture();
-  const component = new MDCSwitch(root);
-  const rippleSurface = root.querySelector(RIPPLE_SURFACE_SELECTOR);
-  return {root, component, rippleSurface};
+  const component = MockMDCSwitch.attachTo(root);
+  return {
+    root,
+    component,
+    adapter: component.adapter,
+    foundation: component.foundation,
+  };
 }
 
 describe('MDCSwitch', () => {
   setUpMdcTestEnvironment();
 
   it('attachTo initializes and returns a MDCSwitch instance', () => {
-    expect(MDCSwitch.attachTo(getFixture() as HTMLElement) instanceof MDCSwitch)
-        .toBeTruthy();
-  });
-
-  if (supportsCssVariables(window)) {
-    it('#constructor initializes the root element with a ripple', () => {
-      const {rippleSurface} = setupTest();
-      jasmine.clock().tick(1);
-      expect(rippleSurface!.classList.contains('mdc-ripple-upgraded'))
-          .toBeTruthy();
-    });
-
-    it('#destroy removes the ripple', () => {
-      const {component, rippleSurface} = setupTest();
-      jasmine.clock().tick(1);
-      component.destroy();
-      jasmine.clock().tick(1);
-      expect(rippleSurface!.classList.contains('mdc-ripple-upgraded'))
-          .toBeFalsy();
-    });
-  }
-
-  it('get/set checked updates the checked value of the native switch input element',
-     () => {
-       const {root, component} = setupTest();
-       const inputEl =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
-       component.checked = true;
-       expect(inputEl.checked).toBeTruthy();
-       expect(component.checked).toEqual(inputEl.checked);
-     });
-
-  it('get/set checked updates the component styles', () => {
-    const {root, component} = setupTest();
-    component.checked = true;
-    expect(root.classList.contains(MDCSwitchFoundation.cssClasses.CHECKED))
-        .toBeTruthy();
-    component.checked = false;
-    expect(root.classList.contains(MDCSwitchFoundation.cssClasses.CHECKED))
-        .toBeFalsy();
-  });
-
-  it('get/set disabled updates the disabled value of the native switch input element',
-     () => {
-       const {root, component} = setupTest();
-       const inputEl =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
-       component.disabled = true;
-       expect(inputEl.disabled).toBeTruthy();
-       expect(component.disabled).toEqual(inputEl.disabled);
-       component.disabled = false;
-       expect(inputEl.disabled).toBeFalsy();
-       expect(component.disabled).toEqual(inputEl.disabled);
-     });
-
-  it('get/set disabled updates the component styles', () => {
-    const {root, component} = setupTest();
-    component.disabled = true;
-    expect(root.classList.contains(MDCSwitchFoundation.cssClasses.DISABLED))
-        .toBeTruthy();
-    component.disabled = false;
-    expect(root.classList.contains(MDCSwitchFoundation.cssClasses.DISABLED))
-        .toBeFalsy();
-  });
-
-  it('get/set checked updates the aria-checked of the native switch input element',
-     () => {
-       const {root, component} = setupTest();
-       const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
-       component.checked = true;
-       expect(
-           inputEl!.getAttribute(MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR))
-           .toBe('true');
-       component.checked = false;
-       expect(
-           inputEl!.getAttribute(MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR))
-           .toBe('false');
-     });
-
-  it('get ripple returns a MDCRipple instance', () => {
     const {component} = setupTest();
-    expect(component.ripple instanceof MDCRipple).toBeTruthy();
+    expect(component instanceof MDCSwitch).toBeTruthy();
   });
 
-  function setupMockFoundationTest(root = getFixture()) {
-    const mockFoundation = createMockFoundation(MDCSwitchFoundation);
-    const component = new MDCSwitch(root, mockFoundation);
-    return {root, component, mockFoundation};
-  }
-
-  it('#initialSyncWithDOM calls foundation.setChecked', () => {
-    const root = getFixture();
-    const inputEl =
-        root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
-    inputEl.checked = true;
-    const {mockFoundation} = setupMockFoundationTest(root);
-    expect(mockFoundation.setChecked).toHaveBeenCalledWith(true);
-    expect(mockFoundation.setChecked).toHaveBeenCalledTimes(1);
+  it('#initialSyncWithDOM() calls foundation initFromDOM()', () => {
+    const {foundation} = setupTest();
+    expect(foundation.initFromDOM).toHaveBeenCalledTimes(1);
   });
 
-  it('change handler is added to the native control element', () => {
-    const {root, mockFoundation} = setupMockFoundationTest();
-
-    const inputEl =
-        root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
-    emitEvent(inputEl, 'change');
-
-    expect(mockFoundation.handleChange).toHaveBeenCalledTimes(1);
-  });
-
-  it('change handler is removed from the native control element on destroy',
+  it('#initialSyncWithDOM() adds foundation.handleClick listener to root',
      () => {
-       const {root, component, mockFoundation} = setupMockFoundationTest();
-       component.destroy();
-
-       const inputEl =
-           root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
-       emitEvent(inputEl, 'change');
-
-       expect(mockFoundation.handleChange).not.toHaveBeenCalled();
+       const {root, foundation} = setupTest();
+       root.click();
+       expect(foundation.handleClick).toHaveBeenCalledTimes(1);
      });
+
+  it('#destroy() removes foundation.handleClick listener from root', () => {
+    const {component, root, foundation} = setupTest();
+    component.destroy();
+    root.click();
+    expect(foundation.handleClick).not.toHaveBeenCalled();
+  });
+
+  it('adapter.addClass() adds classes to root', () => {
+    const {root, adapter} = setupTest();
+    expect(Array.from(root.classList)).not.toContain(CssClasses.PROCESSING);
+    adapter.addClass(CssClasses.PROCESSING);
+    expect(Array.from(root.classList)).toContain(CssClasses.PROCESSING);
+  });
+
+  it('adapter.hasClass() checks classes on root', () => {
+    const {root, adapter} = setupTest();
+    expect(adapter.hasClass(CssClasses.PROCESSING))
+        .toBe(false, 'returns false when class does not exist');
+    root.classList.add(CssClasses.PROCESSING);
+    expect(adapter.hasClass(CssClasses.PROCESSING))
+        .toBe(true, 'returns true when class exists');
+  });
+
+  it('adapter.isDisabled() returns root disabled property', () => {
+    const {root, adapter} = setupTest();
+    root.disabled = true;
+    expect(adapter.isDisabled()).toBe(true);
+  });
+
+  it('adapter.removeClass() removes classes from root', () => {
+    const {root, adapter} = setupTest();
+    root.classList.add(CssClasses.PROCESSING);
+    adapter.removeClass(CssClasses.PROCESSING);
+    expect(Array.from(root.classList)).not.toContain(CssClasses.PROCESSING);
+  });
+
+  it('adapter.setAriaChecked() sets aria-checked attribute on root', () => {
+    const {root, adapter} = setupTest();
+    adapter.setAriaChecked('true');
+    expect(root.getAttribute('aria-checked')).toBe('true');
+    adapter.setAriaChecked('false');
+    expect(root.getAttribute('aria-checked')).toBe('false');
+  });
+
+  it('adapter.state should be the component instance', () => {
+    const {adapter, component} = setupTest();
+    expect(adapter.state).toBe(component);
+  });
 });

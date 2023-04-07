@@ -1,0 +1,9 @@
+@use '../rtl';
+
+.test-pseudo-element {
+  &::before {
+    @include rtl.rtl {
+      margin-right: 0;
+    }
+  }
+}

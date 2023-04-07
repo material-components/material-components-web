@@ -20,15 +20,20 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
+@use 'sass:math';
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/list/mixins' as list-mixins;
+@use '@material/list/evolution-mixins' as list-evolution-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
-@use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/rtl/rtl';
 @use '@material/typography/mixins' as typography-mixins;
 @use './select-helper-text-theme';
 @use './select-icon-theme';
@@ -39,7 +44,84 @@
 @use './select-helper-text';
 @use './select-icon';
 
+@mixin static-styles($query: feature-targeting.all()) {
+  @include _static-styles-base($query);
+  @include select-filled.static-styles($query);
+  @include select-outlined.static-styles($query);
+}
+
+@mixin _static-styles-base($query) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select {
+    // Floating label private mixin
+    @include _floating-label($query: $query);
+
+    @include _option-side-padding(16px, $query: $query);
+    @include _option-graphic-trailing-margin(12px, $query: $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-flex;
+      position: relative; // Menu is absolutely positioned relative to this.
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    &__dropdown-icon {
+      @include _dropdown-icon-base($query: $query);
+      @include _dropdown-icon-inactive($query: $query);
+
+      @include feature-targeting.targets($feat-structure) {
+        display: inline-flex;
+        position: relative;
+        align-self: center;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        pointer-events: none;
+      }
+
+      .mdc-select--activated & {
+        @include _dropdown-icon-active($query: $query);
+      }
+    }
+  }
+
+  .mdc-select__anchor {
+    @include feature-targeting.targets($feat-structure) {
+      min-width: 0;
+      flex: 1 1 auto;
+      position: relative;
+      box-sizing: border-box;
+      overflow: hidden;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+
+  @include _text($query: $query);
+
+  .mdc-select--disabled {
+    @include _disabled($query: $query);
+  }
+
+  .mdc-select--with-leading-icon {
+    @include _option-side-padding(12px, $query: $query);
+  }
+
+  @include _list($query: $query);
+
+  @include select-filled.core-styles($query: $query);
+  @include select-outlined.core-styles($query: $query);
+  @include select-ripple.core-styles($query: $query);
+  @include select-helper-text.helper-text-core-styles($query: $query);
+  @include select-icon.icon-core-styles($query: $query);
+}
+
 @mixin core-styles($query: feature-targeting.all()) {
+  @include _static-styles-base($query);
+
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -88,7 +170,7 @@
     );
 
     // High-contrast mode support
-    @include dom-mixins.ie-high-contrast-mode() {
+    @include dom-mixins.forced-colors-mode() {
       $gray-text: (
         disabled: GrayText,
       );
@@ -109,10 +191,6 @@
       );
     }
 
-    // Floating label private mixin
-    @include _floating-label($query: $query);
-
-    // structural
     @include _padding-horizontal(
       $left: select-theme.$anchor-padding-left,
       $left-with-leading-icon:
@@ -128,35 +206,14 @@
       select-icon-theme.$icon-size,
       $query: $query
     );
-    @include _option-side-padding(16px, $query: $query);
-    @include _option-graphic-trailing-margin(12px, $query: $query);
-
-    @include feature-targeting.targets($feat-structure) {
-      display: inline-flex;
-      position: relative; // Menu is absolutely positioned relative to this.
-    }
 
     &__dropdown-icon {
-      @include _dropdown-icon-base($query: $query);
-      @include _dropdown-icon-inactive($query: $query);
-
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(
+        @include rtl.reflexive-property(
           margin,
           select-icon-theme.$icon-horizontal-margin,
           select-icon-theme.$icon-horizontal-margin
         );
-        display: inline-flex;
-        position: relative;
-        align-self: center;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        pointer-events: none;
-      }
-
-      .mdc-select--activated & {
-        @include _dropdown-icon-active($query: $query);
       }
     }
   }
@@ -169,17 +226,8 @@
 
     @include feature-targeting.targets($feat-structure) {
       width: select-theme.$default-width;
-      min-width: 0;
-      flex: 1 1 auto;
-      position: relative;
-      box-sizing: border-box;
-      overflow: hidden;
-      outline: none;
-      cursor: pointer;
     }
   }
-
-  @include _text($query: $query);
 
   .mdc-select--invalid {
     @include select-theme.label-color(
@@ -202,24 +250,75 @@
     );
   }
 
-  .mdc-select--disabled {
-    @include _disabled($query: $query);
+  @include _text-container-height($query: $query);
+}
+
+@mixin _list($query) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include dom-mixins.forced-colors-mode() {
+    .mdc-select__menu::before {
+      @include dom-mixins.transparent-border($query: $query);
+    }
   }
 
-  .mdc-select--with-leading-icon {
-    @include _option-side-padding(12px, $query: $query);
-  }
-
+  .mdc-select__menu .mdc-deprecated-list,
   .mdc-select__menu .mdc-list {
     @include select-icon-theme.icon-horizontal-margins(0, 0, $query: $query);
-    @include list-mixins.item-selected-text-color(on-surface, $query: $query);
+    @include list-mixins.deprecated-item-selected-text-color(
+      on-surface,
+      $query: $query
+    );
   }
 
-  @include select-filled.core-styles($query: $query);
-  @include select-outlined.core-styles($query: $query);
-  @include select-ripple.core-styles($query: $query);
-  @include select-helper-text.helper-text-core-styles($query: $query);
-  @include select-icon.icon-core-styles($query: $query);
+  .mdc-select__menu .mdc-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .mdc-select__option {
+    @include list-evolution-mixins.item-spacing(16px, $query: $query);
+  }
+
+  .mdc-select__one-line-option {
+    @include list-evolution-mixins.one-line-item-height(48px, $query: $query);
+  }
+
+  .mdc-select__two-line-option {
+    @include list-evolution-mixins.two-line-item-height(64px, $query: $query);
+
+    &.mdc-list-item--with-two-lines {
+      .mdc-list-item__start {
+        @include feature-targeting.targets($feat-structure) {
+          margin-top: 20px;
+        }
+      }
+
+      .mdc-list-item__primary-text {
+        @include typography-mixins.text-baseline(
+          $top: 28px,
+          $bottom: 20px,
+          $query: $query
+        );
+      }
+
+      &.mdc-list-item--with-trailing-meta .mdc-list-item__end {
+        @include typography-mixins.text-baseline($top: 36px, $query: $query);
+      }
+    }
+  }
+
+  .mdc-select__option-with-leading-content {
+    @include list-evolution-mixins.item-start-spacing(12px, 0, $query: $query);
+    @include list-evolution-mixins.item-start-size(36px, 24px, $query: $query);
+    @include list-evolution-mixins.item-spacing(0, 12px, $query: $query);
+  }
+
+  .mdc-select__option-with-meta {
+    @include list-evolution-mixins.item-end-spacing(12px, $query: $query);
+  }
 }
 
 ///
@@ -243,8 +342,8 @@
     $svg-natural-height: 5px;
 
     @include feature-targeting.targets($feat-structure) {
-      width: $svg-natural-width / select-icon-theme.$icon-size * 100%;
-      height: $svg-natural-height / select-icon-theme.$icon-size * 100%;
+      width: math.div($svg-natural-width, select-icon-theme.$icon-size) * 100%;
+      height: math.div($svg-natural-height, select-icon-theme.$icon-size) * 100%;
     }
   }
 }
@@ -316,13 +415,9 @@
 @mixin _option-side-padding($side-padding, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-select__menu .mdc-list-item {
+  .mdc-select__menu .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        padding,
-        $side-padding,
-        $side-padding
-      );
+      @include rtl.reflexive-property(padding, $side-padding, $side-padding);
     }
   }
 }
@@ -337,9 +432,9 @@
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-select__menu .mdc-list-item__graphic {
+  .mdc-select__menu .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, right, $margin-right);
+      @include rtl.reflexive-box(margin, right, $margin-right);
     }
   }
 }
@@ -352,6 +447,16 @@
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
+    }
+  }
+}
+
+@mixin _text-container-height($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__selected-text-container {
+    @include feature-targeting.targets($feat-structure) {
+      height: select-theme.$selected-text-height;
     }
   }
 }
@@ -369,7 +474,6 @@
       width: auto;
       min-width: 0;
       flex-grow: 1;
-      height: select-theme.$selected-text-height;
       border: none;
       outline: none;
       padding: 0;
@@ -388,10 +492,10 @@
     @include feature-targeting.targets($feat-structure) {
       display: block;
       width: 100%;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       text-align: left;
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: right;
       }
     }
@@ -424,17 +528,13 @@
 
   .mdc-select__anchor {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, $left, $right);
+      @include rtl.reflexive-property(padding, $left, $right);
     }
   }
 
   &.mdc-select--with-leading-icon .mdc-select__anchor {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        padding,
-        $left-with-leading-icon,
-        $right
-      );
+      @include rtl.reflexive-property(padding, $left-with-leading-icon, $right);
     }
   }
 }

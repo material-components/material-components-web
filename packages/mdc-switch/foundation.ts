@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2021 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,74 +21,119 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from '@material/base/foundation';
-import {MDCSwitchAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {MDCObserverFoundation} from '@material/base/observer-foundation';
 
-export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
-  /** The string constants used by the switch. */
-  static get strings() {
-    return strings;
+import {MDCSwitchAdapter, MDCSwitchRenderAdapter} from './adapter';
+import {CssClasses} from './constants';
+
+/**
+ * `MDCSwitchFoundation` provides a state-only foundation for a switch
+ * component.
+ *
+ * State observers and event handler entrypoints update a component's adapter's
+ * state with the logic needed for switch to function.
+ */
+export class MDCSwitchFoundation extends
+    MDCObserverFoundation<MDCSwitchAdapter> {
+  constructor(adapter: MDCSwitchAdapter) {
+    super(adapter);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  /** The CSS classes used by the switch. */
-  static get cssClasses() {
-    return cssClasses;
+  /**
+   * Initializes the foundation and starts observing state changes.
+   */
+  override init() {
+    this.observe(this.adapter.state, {
+      disabled: this.stopProcessingIfDisabled,
+      processing: this.stopProcessingIfDisabled,
+    });
   }
 
-  /** The default Adapter for the switch. */
-  static get defaultAdapter(): MDCSwitchAdapter {
-    return {
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      setNativeControlChecked: () => undefined,
-      setNativeControlDisabled: () => undefined,
-      setNativeControlAttr: () => undefined,
-    };
-  }
-
-  constructor(adapter?: Partial<MDCSwitchAdapter>) {
-    super({...MDCSwitchFoundation.defaultAdapter, ...adapter});
-  }
-
-  /** Sets the checked state of the switch. */
-  setChecked(checked: boolean) {
-    this.adapter.setNativeControlChecked(checked);
-    this.updateAriaChecked_(checked);
-    this.updateCheckedStyling_(checked);
-  }
-
-  /** Sets the disabled state of the switch. */
-  setDisabled(disabled: boolean) {
-    this.adapter.setNativeControlDisabled(disabled);
-    if (disabled) {
-      this.adapter.addClass(cssClasses.DISABLED);
-    } else {
-      this.adapter.removeClass(cssClasses.DISABLED);
+  /**
+   * Event handler for switch click events. Clicking on a switch will toggle its
+   * selected state.
+   */
+  handleClick() {
+    if (this.adapter.state.disabled) {
+      return;
     }
+
+    this.adapter.state.selected = !this.adapter.state.selected;
   }
 
-  /** Handles the change event for the switch native control. */
-  handleChange(evt: Event) {
-    const nativeControl = evt.target as HTMLInputElement;
-    this.updateAriaChecked_(nativeControl.checked);
-    this.updateCheckedStyling_(nativeControl.checked);
-  }
-
-  /** Updates the styling of the switch based on its checked state. */
-  private updateCheckedStyling_(checked: boolean) {
-    if (checked) {
-      this.adapter.addClass(cssClasses.CHECKED);
-    } else {
-      this.adapter.removeClass(cssClasses.CHECKED);
+  protected stopProcessingIfDisabled() {
+    if (this.adapter.state.disabled) {
+      this.adapter.state.processing = false;
     }
-  }
-
-  private updateAriaChecked_(checked: boolean) {
-    this.adapter.setNativeControlAttr(
-        strings.ARIA_CHECKED_ATTR, `${!!checked}`);
   }
 }
+/**
+ * `MDCSwitchRenderFoundation` provides a state and rendering foundation for a
+ * switch component.
+ *
+ * State observers and event handler entrypoints update a component's
+ * adapter's state with the logic needed for switch to function.
+ *
+ * In response to state changes, the rendering foundation uses the component's
+ * render adapter to keep the component's DOM updated with the state.
+ */
+export class MDCSwitchRenderFoundation extends MDCSwitchFoundation {
+  protected override adapter!: MDCSwitchRenderAdapter;
 
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-export default MDCSwitchFoundation;
+  /**
+   * Initializes the foundation and starts observing state changes.
+   */
+  override init() {
+    super.init();
+    this.observe(this.adapter.state, {
+      disabled: this.onDisabledChange,
+      processing: this.onProcessingChange,
+      selected: this.onSelectedChange,
+    })
+  }
+
+  /**
+   * Initializes the foundation from a server side rendered (SSR) component.
+   * This will sync the adapter's state with the current state of the DOM.
+   *
+   * This method should be called after `init()`.
+   */
+  initFromDOM() {
+    // Turn off observers while setting state
+    this.setObserversEnabled(this.adapter.state, false);
+
+    this.adapter.state.selected = this.adapter.hasClass(CssClasses.SELECTED);
+    // Ensure aria-checked is set if attribute is not present
+    this.onSelectedChange();
+    this.adapter.state.disabled = this.adapter.isDisabled();
+    this.adapter.state.processing =
+        this.adapter.hasClass(CssClasses.PROCESSING);
+
+    // Re-observe state
+    this.setObserversEnabled(this.adapter.state, true);
+    this.stopProcessingIfDisabled();
+  }
+
+  protected onDisabledChange() {
+    this.adapter.setDisabled(this.adapter.state.disabled);
+  }
+
+  protected onProcessingChange() {
+    this.toggleClass(this.adapter.state.processing, CssClasses.PROCESSING);
+  }
+
+  protected onSelectedChange() {
+    this.adapter.setAriaChecked(String(this.adapter.state.selected));
+    this.toggleClass(this.adapter.state.selected, CssClasses.SELECTED);
+    this.toggleClass(!this.adapter.state.selected, CssClasses.UNSELECTED);
+  }
+
+  private toggleClass(addClass: boolean, className: CssClasses) {
+    if (addClass) {
+      this.adapter.addClass(className);
+    } else {
+      this.adapter.removeClass(className);
+    }
+  }
+}

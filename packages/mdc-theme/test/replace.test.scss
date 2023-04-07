@@ -2,7 +2,7 @@
 @use '../theme';
 
 .simple {
-  @include theme.property(width, calc(x - y), $replace: (x: 100%, y: 20px));
+  @include theme.property(width, 'calc(x - y)', $replace: (x: 100%, y: 20px));
 }
 
 .var {
@@ -10,11 +10,26 @@
   $second: custom-properties.create(--m-bar, 8px);
   @include theme.property(
     width,
-    calc(first + second),
+    'calc(first + second)',
+    $replace: (first: $first, second: $second)
+  );
+
+  @include theme.property(
+    height,
+    'calc(first + second + first + second)',
     $replace: (first: $first, second: $second)
   );
 }
 
 .multiple {
-  @include theme.property(width, calc(x + x + x), $replace: (x: 8px));
+  @include theme.property(width, 'calc(x + x + x)', $replace: (x: 8px));
+}
+
+.list {
+  @include theme.property(padding, 0 value, $replace: (value: 16px));
+}
+
+.replace-nulls {
+  // Entire block should be dropped. This should not be emitted.
+  @include theme.property(padding, a b, $replace: (a: 16px, b: null));
 }

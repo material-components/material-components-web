@@ -27,19 +27,20 @@ import {MDCProgressIndicatorFoundation} from '@material/progress-indicator/found
 
 import {MDCLinearProgressAdapter} from './adapter';
 import {animationDimensionPercentages as percents, cssClasses, strings} from './constants';
+import {MDCResizeObserver} from './types';
 
 export class MDCLinearProgressFoundation extends
     MDCFoundation<MDCLinearProgressAdapter> implements
         MDCProgressIndicatorFoundation {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCLinearProgressAdapter {
+  static override get defaultAdapter(): MDCLinearProgressAdapter {
     return {
       addClass: () => undefined,
       attachResizeObserver: () => null,
@@ -55,25 +56,23 @@ export class MDCLinearProgressFoundation extends
     };
   }
 
-  private isDeterminate!: boolean;
-  private isReversed!: boolean;
+  private determinate!: boolean;
   private progress!: number;
   private buffer!: number;
-  private observer: ResizeObserver|null = null;
+  private observer: MDCResizeObserver|null = null;
 
   constructor(adapter?: Partial<MDCLinearProgressAdapter>) {
     super({...MDCLinearProgressFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
-    this.isDeterminate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
+  override init() {
+    this.determinate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.adapter.addClass(cssClasses.ANIMATION_READY_CLASS);
-    this.isReversed = this.adapter.hasClass(cssClasses.REVERSED_CLASS);
     this.progress = 0;
     this.buffer = 1;
 
     this.observer = this.adapter.attachResizeObserver((entries) => {
-      if (this.isDeterminate) {
+      if (this.determinate) {
         return;
       }
 
@@ -84,33 +83,24 @@ export class MDCLinearProgressFoundation extends
       }
     });
 
-    if (!this.isDeterminate && this.observer) {
+    if (!this.determinate && this.observer) {
       this.calculateAndSetDimensions(this.adapter.getWidth());
     }
   }
 
   setDeterminate(isDeterminate: boolean) {
-    this.isDeterminate = isDeterminate;
+    this.determinate = isDeterminate;
 
-    if (this.isDeterminate) {
+    if (this.determinate) {
       this.adapter.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.adapter.setAttribute(
           strings.ARIA_VALUENOW, this.progress.toString());
+      this.adapter.setAttribute(strings.ARIA_VALUEMAX, '1');
+      this.adapter.setAttribute(strings.ARIA_VALUEMIN, '0');
       this.setPrimaryBarProgress(this.progress);
       this.setBufferBarProgress(this.buffer);
 
       return;
-    }
-
-    if (this.isReversed) {
-      // Adding/removing REVERSED_CLASS starts a translate animation, while
-      // adding INDETERMINATE_CLASS starts a scale animation. Here, we reset
-      // the translate animation in order to keep it in sync with the new
-      // scale animation that will start from adding INDETERMINATE_CLASS
-      // below.
-      this.adapter.removeClass(cssClasses.REVERSED_CLASS);
-      this.adapter.forceLayout();
-      this.adapter.addClass(cssClasses.REVERSED_CLASS);
     }
 
     if (this.observer) {
@@ -119,17 +109,19 @@ export class MDCLinearProgressFoundation extends
 
     this.adapter.addClass(cssClasses.INDETERMINATE_CLASS);
     this.adapter.removeAttribute(strings.ARIA_VALUENOW);
+    this.adapter.removeAttribute(strings.ARIA_VALUEMAX);
+    this.adapter.removeAttribute(strings.ARIA_VALUEMIN);
     this.setPrimaryBarProgress(1);
     this.setBufferBarProgress(1);
   }
 
-  getDeterminate() {
-    return this.isDeterminate;
+  isDeterminate() {
+    return this.determinate;
   }
 
   setProgress(value: number) {
     this.progress = value;
-    if (this.isDeterminate) {
+    if (this.determinate) {
       this.setPrimaryBarProgress(value);
       this.adapter.setAttribute(strings.ARIA_VALUENOW, value.toString());
     }
@@ -141,38 +133,28 @@ export class MDCLinearProgressFoundation extends
 
   setBuffer(value: number) {
     this.buffer = value;
-    if (this.isDeterminate) {
+    if (this.determinate) {
       this.setBufferBarProgress(value);
     }
   }
 
-  setReverse(isReversed: boolean) {
-    this.isReversed = isReversed;
-
-    if (!this.isDeterminate) {
-      // Adding ANIMATION_READY_CLASS starts a scale animation, while
-      // adding/removing REVERSED_CLASS starts a translate animation. Here, we
-      // reset the scale animation in order to keep it in sync with the new
-      // translate animation that will start from adding/removing REVERSED_CLASS
-      // below.
-      this.restartAnimation();
-    }
-
-    if (this.isReversed) {
-      this.adapter.addClass(cssClasses.REVERSED_CLASS);
-      return;
-    }
-
-    this.adapter.removeClass(cssClasses.REVERSED_CLASS);
+  getBuffer() {
+    return this.buffer;
   }
 
   open() {
     this.adapter.removeClass(cssClasses.CLOSED_CLASS);
     this.adapter.removeClass(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
+    this.adapter.removeAttribute(strings.ARIA_HIDDEN);
   }
 
   close() {
     this.adapter.addClass(cssClasses.CLOSED_CLASS);
+    this.adapter.setAttribute(strings.ARIA_HIDDEN, 'true');
+  }
+
+  isClosed() {
+    return this.adapter.hasClass(cssClasses.CLOSED_CLASS);
   }
 
   /**
@@ -186,12 +168,18 @@ export class MDCLinearProgressFoundation extends
     }
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
 
     if (this.observer) {
       this.observer.disconnect();
     }
+  }
+
+  restartAnimation() {
+    this.adapter.removeClass(cssClasses.ANIMATION_READY_CLASS);
+    this.adapter.forceLayout();
+    this.adapter.addClass(cssClasses.ANIMATION_READY_CLASS);
   }
 
   private setPrimaryBarProgress(progressValue: number) {
@@ -208,12 +196,6 @@ export class MDCLinearProgressFoundation extends
   private setBufferBarProgress(progressValue: number) {
     const value = `${progressValue * 100}%`;
     this.adapter.setBufferBarStyle(strings.FLEX_BASIS, value);
-  }
-
-  private restartAnimation() {
-    this.adapter.removeClass(cssClasses.ANIMATION_READY_CLASS);
-    this.adapter.forceLayout();
-    this.adapter.addClass(cssClasses.ANIMATION_READY_CLASS);
   }
 
   private calculateAndSetDimensions(width: number) {

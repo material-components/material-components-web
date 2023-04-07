@@ -22,22 +22,26 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCSelectHelperTextAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelperTextAdapter> {
-  static get cssClasses() {
+/** MDC Select Helper Text Foundation */
+export class MDCSelectHelperTextFoundation extends
+    MDCFoundation<MDCSelectHelperTextAdapter> {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
-   * See {@link MDCSelectHelperTextAdapter} for typing information on parameters and return types.
+   * See {@link MDCSelectHelperTextAdapter} for typing information on parameters
+   * and return types.
    */
-  static get defaultAdapter(): MDCSelectHelperTextAdapter {
+  static override get defaultAdapter(): MDCSelectHelperTextAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -104,6 +108,24 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
       this.adapter.removeClass(
           cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
     }
+  }
+
+  /**
+   * @return Whether the helper text acts as a validation message.
+   * By default, validation messages are hidden when the select is valid and
+   * visible when the select is invalid.
+   */
+  getIsValidation() {
+    return this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+  }
+
+  /**
+   * @return Whether the validation helper text persists even if the input is
+   * valid. If it is, it will be displayed in the normal (grey) color.
+   */
+  getIsValidationMsgPersistent() {
+    return this.adapter.hasClass(
+        cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
   }
 
   /**

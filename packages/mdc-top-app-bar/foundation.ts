@@ -22,26 +22,30 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
-export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
-  static get strings() {
+/** MDC Top App Bar Base Foundation */
+export class MDCTopAppBarBaseFoundation extends
+    MDCFoundation<MDCTopAppBarAdapter> {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
   /**
-   * See {@link MDCTopAppBarAdapter} for typing information on parameters and return types.
+   * See {@link MDCTopAppBarAdapter} for typing information on parameters and
+   * return types.
    */
-  static get defaultAdapter(): MDCTopAppBarAdapter {
+  static override get defaultAdapter(): MDCTopAppBarAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -62,9 +66,9 @@ export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapte
   }
 
   /** Other variants of TopAppBar foundation overrides this method */
-  handleTargetScroll() {} // tslint:disable-line:no-empty
+  handleTargetScroll() {}  // tslint:disable-line:no-empty
   /** Other variants of TopAppBar foundation overrides this method */
-  handleWindowResize() {} // tslint:disable-line:no-empty
+  handleWindowResize() {}  // tslint:disable-line:no-empty
 
   handleNavigationClick() {
     this.adapter.notifyNavigationIconClicked();

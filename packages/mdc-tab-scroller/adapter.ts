@@ -69,8 +69,9 @@ export interface MDCTabScrollerAdapter {
   setScrollContentStyleProperty(propName: string, value: string): void;
 
   /**
-   * Returns the scroll content element's computed style value of the given css property `propertyName`.
-   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+   * Returns the scroll content element's computed style value of the given css
+   * property `propertyName`. We achieve this via
+   * `getComputedStyle(...).getPropertyValue(propertyName)`.
    */
   getScrollContentStyleValue(propertyName: string): string;
 
@@ -98,12 +99,12 @@ export interface MDCTabScrollerAdapter {
   /**
    * Returns the bounding client rect of the scroll area element.
    */
-  computeScrollAreaClientRect(): ClientRect;
+  computeScrollAreaClientRect(): DOMRect;
 
   /**
    * Returns the bounding client rect of the scroll content element.
    */
-  computeScrollContentClientRect(): ClientRect;
+  computeScrollContentClientRect(): DOMRect;
 
   /**
    * Returns the height of the browser's horizontal scrollbars (in px).

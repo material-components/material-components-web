@@ -22,6 +22,7 @@
  */
 
 import {EventType, SpecificEventListener} from '@material/base/types';
+
 import {MDCRipplePoint} from './types';
 
 /**
@@ -44,23 +45,27 @@ export interface MDCRippleAdapter {
 
   removeClass(className: string): void;
 
-  containsEventTarget(target: EventTarget | null): boolean;
+  containsEventTarget(target: EventTarget|null): boolean;
 
-  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  registerInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
-  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  deregisterInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
-  registerDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  registerDocumentInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
-  deregisterDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  deregisterDocumentInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
-  updateCssVariable(varName: string, value: string | null): void;
+  updateCssVariable(varName: string, value: string|null): void;
 
-  computeBoundingRect(): ClientRect;
+  computeBoundingRect(): DOMRect;
 
   getWindowPageOffset(): MDCRipplePoint;
 }

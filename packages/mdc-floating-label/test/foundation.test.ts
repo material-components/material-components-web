@@ -43,6 +43,7 @@ describe('MDCFloatingLabelFoundation', () => {
     verifyDefaultAdapter(MDCFloatingLabelFoundation, [
       'addClass',
       'removeClass',
+      'hasClass',
       'getWidth',
       'registerInteractionHandler',
       'deregisterInteractionHandler',
@@ -106,9 +107,9 @@ describe('MDCFloatingLabelFoundation', () => {
            .toHaveBeenCalledWith(cssClasses.LABEL_SHAKE);
      });
 
-  it('#handleShakeAnimationEnd_ should remove LABEL_SHAKE class', () => {
+  it('#handleShakeAnimationEnd should remove LABEL_SHAKE class', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation.handleShakeAnimationEnd_();
+    (foundation as any).handleShakeAnimationEnd();
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.LABEL_SHAKE);
   });
@@ -138,4 +139,27 @@ describe('MDCFloatingLabelFoundation', () => {
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(cssClasses.LABEL_REQUIRED);
      });
+
+  it('#setHideRequiredMarker called with hideRequiredMarker is true, should add hide-required-marker class',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.setHideRequiredMarker(true);
+       expect(mockAdapter.addClass)
+           .toHaveBeenCalledWith(cssClasses.LABEL_HIDE_REQUIRED_MARKER);
+     });
+
+  it('#setHideRequiredMarker called with hideRequiredMarker is false, should remove hide-required-marker class',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.setHideRequiredMarker(false);
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(cssClasses.LABEL_HIDE_REQUIRED_MARKER);
+     });
+
+  it('#getHideRequiredMarker checks for hide-required-marker class', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.and.returnValue(true);
+    expect(foundation.getHideRequiredMarker()).toBe(true);
+    expect(mockAdapter.hasClass).toHaveBeenCalled();
+  });
 });

@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:color';
 @use 'sass:map';
@@ -32,7 +32,11 @@
 @use '@material/theme/css';
 @use '@material/theme/custom-properties';
 @use '@material/theme/theme';
+@use '@material/theme/keys';
+@use '@material/theme/shadow-dom';
 @use '@material/theme/theme-color';
+
+$custom-property-prefix: 'ripple';
 
 $fade-in-duration: 75ms !default;
 $fade-out-duration: 150ms !default;
@@ -65,6 +69,74 @@ $light-ink-opacities: (
 $pressed-dark-ink-opacity: 0.16 !default;
 $pressed-light-ink-opacity: 0.32 !default;
 
+// State selector variables used for state selector mixins below.
+$_hover-selector: '&:hover';
+$_focus-selector: '&.mdc-ripple-upgraded--background-focused, &:not(.mdc-ripple-upgraded):focus';
+$_active-selector: '&:not(:disabled):active';
+
+$light-theme: (
+  focus-state-layer-color: theme-color.$on-surface,
+  focus-state-layer-opacity: map.get($dark-ink-opacities, focus),
+  hover-state-layer-color: theme-color.$on-surface,
+  hover-state-layer-opacity: map.get($dark-ink-opacities, hover),
+  pressed-state-layer-color: theme-color.$on-surface,
+  pressed-state-layer-opacity: map.get($dark-ink-opacities, press),
+);
+
+@mixin theme($theme) {
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @if shadow-dom.$css-selector-fallback-declarations {
+    .mdc-ripple-surface {
+      @include theme-styles($theme);
+    }
+  }
+}
+
+$_ripple-theme: (
+  hover-state-layer-color: null,
+  focus-state-layer-color: null,
+  pressed-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  focus-state-layer-opacity: null,
+  pressed-state-layer-opacity: null,
+);
+
+@mixin theme-styles($theme, $ripple-target: '&') {
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  // TODO(b/191298796): Support states layer color for every interactive states.
+  // Use only hover state layer color, ignoring focus and pressed color.
+  @include internal-theme-styles($theme, $ripple-target);
+}
+
+@mixin internal-theme-styles($theme, $ripple-target: '&') {
+  @include theme.validate-theme-styles($_ripple-theme, $theme);
+
+  @include states-base-color(
+    map.get($theme, hover-state-layer-color),
+    $ripple-target: $ripple-target
+  );
+  @include states-hover-opacity(
+    map.get($theme, hover-state-layer-opacity),
+    $ripple-target: $ripple-target
+  );
+  @include states-focus-opacity(
+    map.get($theme, focus-state-layer-opacity),
+    $ripple-target: $ripple-target
+  );
+  @include states-press-opacity(
+    map.get($theme, pressed-state-layer-opacity),
+    $ripple-target: $ripple-target
+  );
+}
+
 @mixin states-base-color(
   $color,
   $query: feature-targeting.all(),
@@ -72,22 +144,18 @@ $pressed-light-ink-opacity: 0.32 !default;
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @if not custom-properties.is-custom-prop($color) {
-    $color: custom-properties.create(
-      --mdc-ripple-color,
-      theme-color.get-custom-property($color)
-    );
-  }
+  @if $color {
+    @if not custom-properties.is-custom-prop($color) {
+      $color: custom-properties.create(
+        ripple-color,
+        theme-color.get-custom-property($color)
+      );
+    }
 
-  #{$ripple-target}::before,
-  #{$ripple-target}::after {
-    @include feature-targeting.targets($feat-color) {
-      @if color.alpha(theme-color.prop-value($color)) > 0 {
+    #{$ripple-target}::before,
+    #{$ripple-target}::after {
+      @include feature-targeting.targets($feat-color) {
         @include theme.property(background-color, $color);
-      } @else {
-        // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
-        // This avoids unnecessary transitions and overflow.
-        content: none;
       }
     }
   }
@@ -106,7 +174,7 @@ $pressed-light-ink-opacity: 0.32 !default;
   $query: feature-targeting.all()
 ) {
   // Ensure sufficient specificity to override base state opacities
-  @if map.has-key($opacity-map, hover) {
+  @if map.get($opacity-map, hover) {
     @include states-hover-opacity(
       map.get($opacity-map, hover),
       $ripple-target: $ripple-target,
@@ -114,7 +182,7 @@ $pressed-light-ink-opacity: 0.32 !default;
     );
   }
 
-  @if map.has-key($opacity-map, focus) {
+  @if map.get($opacity-map, focus) {
     @include states-focus-opacity(
       map.get($opacity-map, focus),
       $ripple-target: $ripple-target,
@@ -123,7 +191,7 @@ $pressed-light-ink-opacity: 0.32 !default;
     );
   }
 
-  @if map.has-key($opacity-map, press) {
+  @if map.get($opacity-map, press) {
     @include states-press-opacity(
       map.get($opacity-map, press),
       $ripple-target: $ripple-target,
@@ -139,16 +207,17 @@ $pressed-light-ink-opacity: 0.32 !default;
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
+  @if $opacity and not custom-properties.is-custom-prop($opacity) {
+    $opacity: custom-properties.create(ripple-hover-opacity, $opacity);
+  }
+
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
   &:hover,
   &.mdc-ripple-surface--hover {
-    #{$ripple-target}::before {
+    @include states-background-selector($ripple-target) {
       // Opacity falls under color because the chosen opacity is color-dependent in typical usage
       @include feature-targeting.targets($feat-color) {
-        @include theme.property(
-          opacity,
-          custom-properties.create(--mdc-ripple-hover-opacity, $opacity)
-        );
+        @include theme.property(opacity, $opacity);
       }
     }
   }
@@ -168,11 +237,10 @@ $pressed-light-ink-opacity: 0.32 !default;
   @if $has-nested-focusable-element {
     // JS-enabled selectors.
     &.mdc-ripple-upgraded--background-focused,
-    &.mdc-ripple-upgraded:focus-within,
     // CSS-only selectors.
     &:not(.mdc-ripple-upgraded):focus,
-    &:not(.mdc-ripple-upgraded):focus-within {
-      #{$ripple-target}::before {
+    &:focus-within {
+      @include states-background-selector($ripple-target) {
         @include states-focus-opacity-properties_(
           $opacity: $opacity,
           $query: $query
@@ -184,7 +252,7 @@ $pressed-light-ink-opacity: 0.32 !default;
     &.mdc-ripple-upgraded--background-focused,
     // CSS-only selectors.
     &:not(.mdc-ripple-upgraded):focus {
-      #{$ripple-target}::before {
+      @include states-background-selector($ripple-target) {
         @include states-focus-opacity-properties_(
           $opacity: $opacity,
           $query: $query
@@ -199,16 +267,19 @@ $pressed-light-ink-opacity: 0.32 !default;
   // Opacity falls under color because the chosen opacity is color-dependent in typical usage
   $feat-color: feature-targeting.create-target($query, color);
 
-  // Note that this duration is only effective on focus, not blur
-  @include feature-targeting.targets($feat-animation) {
-    transition-duration: 75ms;
-  }
+  @if $opacity {
+    @if not custom-properties.is-custom-prop($opacity) {
+      $opacity: custom-properties.create(ripple-focus-opacity, $opacity);
+    }
 
-  @include feature-targeting.targets($feat-color) {
-    @include theme.property(
-      opacity,
-      custom-properties.create(--mdc-ripple-focus-opacity, $opacity)
-    );
+    // Note that this duration is only effective on focus, not blur
+    @include feature-targeting.targets($feat-animation) {
+      transition-duration: 75ms;
+    }
+
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(opacity, $opacity);
+    }
   }
 }
 
@@ -222,34 +293,44 @@ $pressed-light-ink-opacity: 0.32 !default;
 
   // Styles for non-upgraded (CSS-only) stateful surfaces
 
-  &:not(.mdc-ripple-upgraded) {
-    // Apply press additively by using the ::after pseudo-element
-    #{$ripple-target}::after {
-      @include feature-targeting.targets($feat-animation) {
-        transition: opacity $fade-out-duration linear;
+  @if $opacity {
+    @if not custom-properties.is-custom-prop($opacity) {
+      $opacity: custom-properties.create(ripple-press-opacity, $opacity);
+    }
+
+    &:not(.mdc-ripple-upgraded) {
+      // Apply press additively by using the ::after pseudo-element
+      #{$ripple-target}::after {
+        @include feature-targeting.targets($feat-animation) {
+          transition: opacity $fade-out-duration linear;
+        }
+      }
+
+      &:active {
+        #{$ripple-target}::after {
+          @include feature-targeting.targets($feat-animation) {
+            transition-duration: $fade-in-duration;
+          }
+
+          // Opacity falls under color because the chosen opacity is color-dependent in typical usage
+          @include feature-targeting.targets($feat-color) {
+            @include theme.property(opacity, $opacity);
+          }
+        }
       }
     }
 
-    &:active {
-      #{$ripple-target}::after {
-        @include feature-targeting.targets($feat-animation) {
-          transition-duration: $fade-in-duration;
-        }
-
-        // Opacity falls under color because the chosen opacity is color-dependent in typical usage
-        @include feature-targeting.targets($feat-color) {
+    &.mdc-ripple-upgraded {
+      @include feature-targeting.targets($feat-color) {
+        // Upgraded ripple should always emit custom property, regardless of
+        // configuration, since ripple itself feature detects custom property
+        // support at runtime.
+        @include custom-properties.configure($emit-custom-properties: true) {
           @include theme.property(
-            opacity,
-            custom-properties.create(--mdc-ripple-press-opacity, $opacity)
+            custom-properties.create(ripple-fg-opacity, $opacity)
           );
         }
       }
-    }
-  }
-
-  &.mdc-ripple-upgraded {
-    @include feature-targeting.targets($feat-color) {
-      --mdc-ripple-fg-opacity: var(--mdc-ripple-press-opacity, #{$opacity});
     }
   }
 }
@@ -285,8 +366,7 @@ $pressed-light-ink-opacity: 0.32 !default;
 
   &--activated {
     // Stylelint seems to think that '&' qualifies as a type selector here?
-    // stylelint-disable-next-line selector-max-type
-    #{$ripple-target}::before {
+    @include states-background-selector($ripple-target) {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include feature-targeting.targets($feat-color) {
         @include theme.property(
@@ -321,8 +401,7 @@ $pressed-light-ink-opacity: 0.32 !default;
   $selected-opacity: states-opacity($color, selected);
 
   &--selected {
-    // stylelint-disable-next-line selector-max-type
-    #{$ripple-target}::before {
+    @include states-background-selector($ripple-target) {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include feature-targeting.targets($feat-color) {
         @include theme.property(
@@ -386,34 +465,76 @@ $pressed-light-ink-opacity: 0.32 !default;
 
 /// Selector for hover, active and focus states.
 @mixin states-selector() {
-  &:hover,
-  &:active,
-  &:focus,
-  &.mdc-ripple-upgraded--background-focused {
+  #{$_hover-selector},
+  #{$_focus-selector},
+  #{$_active-selector} {
+    @content;
+  }
+}
+
+@mixin hover() {
+  #{$_hover-selector} {
+    @content;
+  }
+}
+
+// Selector for focus state. Using ':not(.mdc-ripple-upgraded)' to continue
+// applying focus styles on JS-disabled components, and control focus
+// on JS-enabled components with '.mdc-ripple-upgraded--background-focused'.
+@mixin focus() {
+  #{$_focus-selector} {
+    @content;
+  }
+}
+
+// Selector for active state. Using `:active:active` to override focus styles.
+@mixin pressed() {
+  #{$_active-selector} {
+    @content;
+  }
+}
+
+// @deprecated Use `pressed()` mixin - renamed for consistency.
+@mixin active() {
+  @include pressed() {
     @content;
   }
 }
 
 /// Keep the ripple (State overlay) behind the content.
-@mixin behind-content($ripple-target: '&', $query: feature-targeting.all()) {
+@mixin behind-content(
+  $ripple-target,
+  $content-root-selector: '&',
+  $query: feature-targeting.all()
+) {
   // Needed for IE11. Without this, IE11 renders the state layer completely
   // underneath the container, making it invisible.
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting.targets($feat-structure) {
-    z-index: 0;
+  #{$content-root-selector} {
+    @include feature-targeting.targets($feat-structure) {
+      z-index: 0;
+    }
   }
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-structure) {
-      z-index: -1;
+      @include theme.property(
+        z-index,
+        custom-properties.create(--mdc-ripple-z-index, -1)
+      );
     }
   }
 }
 
 @function states-opacity($color, $state) {
-  $opacity-map: states-opacities_($color);
+  $color-value: theme-color.prop-value($color);
+  $opacity-map: if(
+    theme-color.tone($color-value) == 'light',
+    $light-ink-opacities,
+    $dark-ink-opacities
+  );
 
   @if not map.has-key($opacity-map, $state) {
     @error "Invalid state: '#{$state}'. Choose one of: #{map.keys($opacity-map)}";
@@ -422,13 +543,8 @@ $pressed-light-ink-opacity: 0.32 !default;
   @return map.get($opacity-map, $state);
 }
 
-@function states-opacities_($color) {
-  $color-value: theme-color.prop-value($color);
-  $opacity-map: if(
-    theme-color.tone($color-value) == 'light',
-    $light-ink-opacities,
-    $dark-ink-opacities
-  );
-
-  @return $opacity-map;
+@mixin states-background-selector($ripple-target) {
+  #{$ripple-target}::before {
+    @content;
+  }
 }

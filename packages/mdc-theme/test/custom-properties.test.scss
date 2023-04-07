@@ -1,0 +1,61 @@
+@use 'true' as test;
+
+@use '../custom-properties';
+
+@include test.describe('custom-properties') {
+  @include test.describe('get-declaration-value()') {
+    @include test.describe('when emit-custom-properties is false ') {
+      @include custom-properties.configure($emit-custom-properties: false) {
+        @include test.it('returns null when fallback is null') {
+          $input: (
+            varname: --test-property,
+            fallback: null,
+          );
+
+          @include test.assert-equal(
+            custom-properties.get-declaration-value($input),
+            null
+          );
+        }
+
+        @include test.it('dos not return a custom property') {
+          $input: (
+            varname: --test-property,
+            fallback: 'blue',
+          );
+
+          @include test.assert-equal(
+            custom-properties.get-declaration-value($input),
+            'blue'
+          );
+        }
+      }
+
+      @include test.it('return a custom property') {
+        $input: (
+          varname: --test-property,
+          fallback: 'blue',
+        );
+
+        @include test.assert-equal(
+          custom-properties.get-declaration-value($input),
+          var(--test-property, 'blue')
+        );
+      }
+
+      @include test.it(
+        'returns just the custom property when fallback is null'
+      ) {
+        $input: (
+          varname: --test-property,
+          fallback: null,
+        );
+
+        @include test.assert-equal(
+          custom-properties.get-declaration-value($input),
+          var(--test-property)
+        );
+      }
+    }
+  }
+}

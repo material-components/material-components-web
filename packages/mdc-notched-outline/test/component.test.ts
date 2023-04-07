@@ -23,20 +23,17 @@
 
 
 import {MDCNotchedOutline} from '../../mdc-notched-outline/index';
+import {createFixture, html} from '../../../testing/dom';
 
-const getFixture = () => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
+function getFixture() {
+  return createFixture(html`
     <span class="mdc-notched-outline">
       <span class="mdc-notched-outline__leading"></span>
       <span class="mdc-notched-outline__notch"></span>
       <span class="mdc-notched-outline__trailing"></span>
     </span>
-  `;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-};
+  `);
+}
 
 describe('MDCNotchedOutline', () => {
   it('attachTo returns an MDCNotchedOutline instance', () => {
@@ -60,13 +57,12 @@ describe('MDCNotchedOutline', () => {
   it('adapter#removeClass removes a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    (component.getDefaultFoundation() as any)
-        .adapter.setNotchWidthProperty(50);
+    (component.getDefaultFoundation() as any).adapter.setNotchWidthProperty(50);
     (component.getDefaultFoundation() as any)
         .adapter.removeNotchWidthProperty();
     const path =
-        root.querySelector('.mdc-notched-outline__notch') as HTMLElement;
-    expect('').toEqual(path.style.width as string);
+        root.querySelector<HTMLElement>('.mdc-notched-outline__notch')!;
+    expect(path.style.width).toEqual('');
   });
 
   it('#adapter.setNotchWidthProperty sets the width property on the notched element',
@@ -75,7 +71,7 @@ describe('MDCNotchedOutline', () => {
        (component.getDefaultFoundation() as any)
            .adapter.setNotchWidthProperty(50);
        const path =
-           root.querySelector('.mdc-notched-outline__notch') as HTMLElement;
-       expect('50px').toEqual(path.style.width as string);
+           root.querySelector<HTMLElement>('.mdc-notched-outline__notch')!;
+       expect(path.style.width).toEqual('50px');
      });
 });

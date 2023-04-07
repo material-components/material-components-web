@@ -22,30 +22,37 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {EventType, SpecificEventListener} from '@material/base/types';
+import {applyPassive} from '@material/dom/events';
+import {matches} from '@material/dom/ponyfill';
+import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple} from '@material/ripple/component';
+import {MDCRippleFoundation} from '@material/ripple/foundation';
 
 import {MDCSliderAdapter} from './adapter';
 import {cssClasses, events} from './constants';
 import {MDCSliderFoundation} from './foundation';
 import {MDCSliderChangeEventDetail, Thumb, TickMark} from './types';
 
-/** Vanilla JS implementation of slider component. */
+/** Vanilla implementation of slider component. */
 export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
-  static attachTo(root: Element, options: {skipInitialUIUpdate?:
-                                               boolean} = {}) {
+  static override attachTo(root: HTMLElement, options: {
+    skipInitialUIUpdate?: boolean
+  } = {}) {
     return new MDCSlider(root, undefined, options);
   }
 
-  root!: HTMLElement;                 // Assigned in MDCComponent constructor.
-  private thumbs!: HTMLElement[];     // Assigned in #initialize.
-  private trackActive!: HTMLElement;  // Assigned in #initialize.
+  private inputs!: HTMLInputElement[];  // Assigned in #initialize.
+  private thumbs!: HTMLElement[];       // Assigned in #initialize.
+  private trackActive!: HTMLElement;    // Assigned in #initialize.
+  private ripples!: MDCRipple[];        // Assigned in #initialize.
 
   private skipInitialUIUpdate = false;
   // Function that maps a slider value to the value of the `aria-valuetext`
   // attribute on the thumb element.
   private valueToAriaValueTextFn: ((value: number) => string)|null = null;
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same
     // order as the adapter interface.
     const adapter: MDCSliderAdapter = {
@@ -63,16 +70,24 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
         this.getThumbEl(thumb).classList.remove(className);
       },
       getAttribute: (attribute) => this.root.getAttribute(attribute),
-      getThumbAttribute: (attribute, thumb: Thumb) =>
-          this.getThumbEl(thumb).getAttribute(attribute),
-      setThumbAttribute: (attribute, value, thumb: Thumb) => {
-        this.getThumbEl(thumb).setAttribute(attribute, value);
+      getInputValue: (thumb: Thumb) => this.getInput(thumb).value,
+      setInputValue: (value: string, thumb: Thumb) => {
+        this.getInput(thumb).value = value;
       },
-      isThumbFocused: (thumb: Thumb) =>
-          this.getThumbEl(thumb) === document.activeElement,
-      focusThumb: (thumb: Thumb) => {
-        this.getThumbEl(thumb).focus();
+      getInputAttribute: (attribute, thumb: Thumb) =>
+          this.getInput(thumb).getAttribute(attribute),
+      setInputAttribute: (attribute, value, thumb: Thumb) => {
+        this.getInput(thumb).setAttribute(attribute, value);
       },
+      removeInputAttribute: (attribute, thumb: Thumb) => {
+        this.getInput(thumb).removeAttribute(attribute);
+      },
+      focusInput: (thumb: Thumb) => {
+        this.getInput(thumb).focus();
+      },
+      isInputFocused: (thumb: Thumb) =>
+          this.getInput(thumb) === document.activeElement,
+      shouldHideFocusStylesForPointerEvents: () => false,
       getThumbKnobWidth: (thumb: Thumb) => {
         return this.getThumbEl(thumb)
             .querySelector<HTMLElement>(`.${cssClasses.THUMB_KNOB}`)!
@@ -82,6 +97,13 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       getThumbBoundingClientRect: (thumb: Thumb) =>
           this.getThumbEl(thumb).getBoundingClientRect(),
       getBoundingClientRect: () => this.root.getBoundingClientRect(),
+      getValueIndicatorContainerWidth: (thumb: Thumb) => {
+        return this.getThumbEl(thumb)
+            .querySelector<HTMLElement>(
+                `.${cssClasses.VALUE_INDICATOR_CONTAINER}`)!
+            .getBoundingClientRect()
+            .width;
+      },
       isRTL: () => getComputedStyle(this.root).direction === 'rtl',
       setThumbStyleProperty: (propertyName, value, thumb: Thumb) => {
         this.getThumbEl(thumb).style.setProperty(propertyName, value);
@@ -114,7 +136,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
         }
 
         if (tickMarks.length !== tickMarksContainer.children.length) {
-          tickMarksContainer.innerHTML = '';
+          while (tickMarksContainer.firstChild) {
+            tickMarksContainer.removeChild(tickMarksContainer.firstChild);
+          }
           this.addTickMarks(tickMarksContainer, tickMarks);
         } else {
           this.updateTickMarks(tickMarksContainer, tickMarks);
@@ -129,13 +153,19 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       emitInputEvent: (value, thumb: Thumb) => {
         this.emit<MDCSliderChangeEventDetail>(events.INPUT, {value, thumb});
       },
-      emitDragStartEvent: () => {
-        // Not yet implemented. See issue:
+      // tslint:disable-next-line:enforce-name-casing
+      emitDragStartEvent: (_, thumb: Thumb) => {
+        // Emitting event is not yet implemented. See issue:
         // https://github.com/material-components/material-components-web/issues/6448
+
+        this.getRipple(thumb).activate();
       },
-      emitDragEndEvent: () => {
-        // Not yet implemented. See issue:
+      // tslint:disable-next-line:enforce-name-casing
+      emitDragEndEvent: (_, thumb: Thumb) => {
+        // Emitting event is not yet implemented. See issue:
         // https://github.com/material-components/material-components-web/issues/6448
+
+        this.getRipple(thumb).deactivate();
       },
       registerEventHandler: (evtType, handler) => {
         this.listen(evtType, handler);
@@ -148,6 +178,12 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       },
       deregisterThumbEventHandler: (thumb, evtType, handler) => {
         this.getThumbEl(thumb).removeEventListener(evtType, handler);
+      },
+      registerInputEventHandler: (thumb, evtType, handler) => {
+        this.getInput(thumb).addEventListener(evtType, handler);
+      },
+      deregisterInputEventHandler: (thumb, evtType, handler) => {
+        this.getInput(thumb).removeEventListener(evtType, handler);
       },
       registerBodyEventHandler: (evtType, handler) => {
         document.body.addEventListener(evtType, handler);
@@ -172,20 +208,22 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
    *   syncing with the DOM. This should be enabled when the slider position
    *   is set before component initialization.
    */
-  initialize({skipInitialUIUpdate}: {skipInitialUIUpdate?: boolean} = {}) {
-    this.thumbs =
-        [].slice.call(this.root.querySelectorAll(`.${cssClasses.THUMB}`)) as
-        HTMLElement[];
+  override initialize({skipInitialUIUpdate}: {skipInitialUIUpdate?:
+                                                  boolean} = {}) {
+    this.inputs = Array.from(
+        this.root.querySelectorAll<HTMLInputElement>(`.${cssClasses.INPUT}`));
+    this.thumbs = Array.from(
+        this.root.querySelectorAll<HTMLElement>(`.${cssClasses.THUMB}`));
     this.trackActive =
-        this.root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+        this.root.querySelector<HTMLElement>(`.${cssClasses.TRACK_ACTIVE}`)!;
+    this.ripples = this.createRipples();
 
     if (skipInitialUIUpdate) {
       this.skipInitialUIUpdate = true;
     }
   }
 
-  initialSyncWithDOM() {
-    this.createRipples();
+  override initialSyncWithDOM() {
     this.foundation.layout({skipUpdateUI: this.skipInitialUIUpdate});
   }
 
@@ -233,6 +271,16 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
                                  this.thumbs[0];
   }
 
+  private getInput(thumb: Thumb) {
+    return thumb === Thumb.END ? this.inputs[this.inputs.length - 1] :
+                                 this.inputs[0];
+  }
+
+  private getRipple(thumb: Thumb) {
+    return thumb === Thumb.END ? this.ripples[this.ripples.length - 1] :
+                                 this.ripples[0];
+  }
+
   /** Adds tick mark elements to the given container. */
   private addTickMarks(tickMarkContainer: HTMLElement, tickMarks: TickMark[]) {
     const fragment = document.createDocumentFragment();
@@ -263,13 +311,46 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   }
 
   /** Initializes thumb ripples. */
-  private createRipples() {
-    const rippleSurfaces =
-        [].slice.call(
-            this.root.querySelectorAll(`.${cssClasses.THUMB}`));
-    for (const rippleSurface of rippleSurfaces) {
-      const ripple = new MDCRipple(rippleSurface);
+  private createRipples(): MDCRipple[] {
+    const ripples = [];
+    const rippleSurfaces = Array.from(
+        this.root.querySelectorAll<HTMLElement>(`.${cssClasses.THUMB}`));
+    for (let i = 0; i < rippleSurfaces.length; i++) {
+      const rippleSurface = rippleSurfaces[i];
+      // Use the corresponding input as the focus source for the ripple (i.e.
+      // when the input is focused, the ripple is in the focused state).
+      const input = this.inputs[i];
+
+      const adapter: MDCRippleAdapter = {
+        ...MDCRipple.createAdapter(this),
+        addClass: (className: string) => {
+          rippleSurface.classList.add(className);
+        },
+        computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
+        deregisterInteractionHandler: <K extends EventType>(
+            evtType: K, handler: SpecificEventListener<K>) => {
+          input.removeEventListener(evtType, handler);
+        },
+        isSurfaceActive: () => matches(input, ':active'),
+        isUnbounded: () => true,
+        registerInteractionHandler: <K extends EventType>(
+            evtType: K, handler: SpecificEventListener<K>) => {
+          input.addEventListener(evtType, handler, applyPassive());
+        },
+        removeClass: (className: string) => {
+          rippleSurface.classList.remove(className);
+        },
+        updateCssVariable: (varName: string, value: string) => {
+          rippleSurface.style.setProperty(varName, value);
+        },
+      };
+
+      const ripple =
+          new MDCRipple(rippleSurface, new MDCRippleFoundation(adapter));
       ripple.unbounded = true;
+      ripples.push(ripple);
     }
+
+    return ripples;
   }
 }
