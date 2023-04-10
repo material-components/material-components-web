@@ -950,6 +950,27 @@ describe(
                .toHaveBeenCalledWith(0, 'tabindex', '0');
          });
 
+      it('#handleKeydown selects the list item when alt + enter key is triggered, singleSelection=true',
+         () => {
+           const {foundation, mockAdapter} = setupTest();
+           const target = {classList: ['mdc-list-item']};
+           const event = createMockKeyboardEvent('Enter', ['Alt'], target);
+
+           mockAdapter.getFocusedElementIndex.and.returnValue(0);
+           mockAdapter.getListItemCount.and.returnValue(3);
+           mockAdapter.getAttributeForElementIndex
+               .withArgs(0, strings.ARIA_CURRENT)
+               .and.returnValue(null);
+           foundation.setSingleSelection(true);
+           foundation.handleKeydown(event, true, 0);
+
+           expect(event.preventDefault).toHaveBeenCalledTimes(1);
+           expect(mockAdapter.setAttributeForElementIndex)
+               .toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'true');
+           expect(mockAdapter.setAttributeForElementIndex)
+               .toHaveBeenCalledWith(0, 'tabindex', '0');
+         });
+
       it('#handleKeydown does not select the list item when' +
              'enter key is triggered, singleSelection=true, #adapter.isListItemDisabled=true',
          () => {

@@ -430,7 +430,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
               [] :
               this.selectedIndex as number[],
           true);
-    } else if ((isEnter || isSpace) && eventHasModifiers([])) {
+    } else if (
+        (isEnter || isSpace) &&
+        (eventHasModifiers([]) || eventHasModifiers(['Alt']))) {
       if (isRootListItem) {
         // Return early if enter key is pressed on anchor element which triggers
         // synthetic MouseEvent event.
