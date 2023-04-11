@@ -44,6 +44,10 @@
     linear-progress-theme.$height,
     $query: $query
   );
+  @include linear-progress-theme.buffering-keyframes(
+    linear-progress-theme.$height,
+    $query: $query
+  );
   @include static-styles($query);
 }
 

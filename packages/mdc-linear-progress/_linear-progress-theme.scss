@@ -59,7 +59,7 @@ $light-theme: (
     $prefix: $custom-property-prefix
   );
 
-  @include _buffering-keyframes(map.get($theme, track-height));
+  @include buffering-keyframes(map.get($theme, track-height));
   @include bar-color(map.get($theme, active-indicator-color));
   @include buffer-color(map.get($theme, track-color));
   @include track-height(map.get($theme, track-height));
@@ -134,18 +134,22 @@ $light-theme: (
   }
 }
 
-@mixin _buffering-keyframes($track-height) {
-  @keyframes mdc-linear-progress-buffering {
-    from {
-      // Normally the buffer dots start from the left and overflow to the right.
-      // We rotate by 180deg so that the buffer dots start on the right when
-      // in non-reversed mode and overflow to the left.
-      @include rtl.ignore-next-line();
-      @include theme.property(
-        transform,
-        'rotate(180deg) translateX(calc(track-height * -2.5))',
-        $replace: (track-height: $track-height)
-      );
+@mixin buffering-keyframes($track-height, $query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    @keyframes mdc-linear-progress-buffering {
+      from {
+        // Normally the buffer dots start from the left and overflow to the right.
+        // We rotate by 180deg so that the buffer dots start on the right when
+        // in non-reversed mode and overflow to the left.
+        @include rtl.ignore-next-line();
+        @include theme.property(
+          transform,
+          'rotate(180deg) translateX(calc(track-height * -2.5))',
+          $replace: (track-height: $track-height)
+        );
+      }
     }
   }
 }
