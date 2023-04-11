@@ -31,9 +31,7 @@
 @use '@material/theme/theme';
 @use './linear-progress-theme';
 
-///
-/// Linear progress core styles.
-///
+/// @deprecated Use static-styles() and theme-styles() instead.
 @mixin core-styles($query: feature-targeting.all()) {
   @include linear-progress-theme.bar-color(primary, $query: $query);
   @include linear-progress-theme.buffer-color(

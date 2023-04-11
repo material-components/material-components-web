@@ -51,7 +51,7 @@ $light-theme: (
   );
 }
 
-@mixin theme-styles($theme) {
+@mixin theme-styles($theme, $query: feature-targeting.all()) {
   @include theme.validate-theme-styles($light-theme, $theme);
 
   $theme: keys.create-theme-properties(
@@ -59,10 +59,10 @@ $light-theme: (
     $prefix: $custom-property-prefix
   );
 
-  @include buffering-keyframes(map.get($theme, track-height));
-  @include bar-color(map.get($theme, active-indicator-color));
-  @include buffer-color(map.get($theme, track-color));
-  @include track-height(map.get($theme, track-height));
+  @include buffering-keyframes(map.get($theme, track-height), $query);
+  @include bar-color(map.get($theme, active-indicator-color), $query);
+  @include buffer-color(map.get($theme, track-color), $query);
+  @include track-height(map.get($theme, track-height), $query);
   // TODO(b/155129310): Add styles for 4-color linear progress once this variant
   // is supported.
 }

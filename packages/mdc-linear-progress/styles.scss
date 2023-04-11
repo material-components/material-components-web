@@ -21,4 +21,7 @@
 //
 
 @use './linear-progress';
-@include linear-progress.core-styles;
+@use './linear-progress-theme';
+
+@include linear-progress.static-styles();
+@include linear-progress-theme.theme-styles(linear-progress-theme.$light-theme);
