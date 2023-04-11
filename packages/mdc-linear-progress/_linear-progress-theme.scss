@@ -27,6 +27,7 @@
 @use 'sass:string';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
+@use '@material/theme/custom-properties';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/theme/keys';
@@ -81,9 +82,12 @@ $light-theme: (
 
 @mixin buffer-color($color, $query: feature-targeting.all()) {
   // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
-  $color-value-for-css: theme-color.prop-value($color);
-  $color-value-for-svg: str-replace_(
-    string.unquote('#{$color-value-for-css}'),
+  $concrete-color: $color;
+  @if custom-properties.is-custom-prop($color) {
+    $concrete-color: custom-properties.get-fallback($color);
+  }
+  $concrete-color-for-svg: str-replace_(
+    string.unquote('#{$concrete-color}'),
     '#',
     '%23'
   );
@@ -95,8 +99,8 @@ $light-theme: (
       // SVG is optimized for data URI (https://codepen.io/tigt/post/optimizing-svgs-in-data-uris)
       @include theme.property(
         background-image,
-        url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='color-value-for-svg'/%3E%3C/svg%3E"),
-        $replace: (color-value-for-svg: $color-value-for-svg)
+        url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='concrete-color-for-svg'/%3E%3C/svg%3E"),
+        $replace: (concrete-color-for-svg: $concrete-color-for-svg)
       );
       // stylelint-enable function-url-quotes
     }
@@ -104,7 +108,7 @@ $light-theme: (
 
   .mdc-linear-progress__buffer-bar {
     @include feature-targeting.targets($feat-color) {
-      @include theme.property(background-color, $color-value-for-css);
+      @include theme.property(background-color, $concrete-color);
     }
   }
 }
