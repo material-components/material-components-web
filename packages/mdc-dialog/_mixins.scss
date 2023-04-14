@@ -491,7 +491,7 @@
   }
 
   .mdc-dialog--sheet {
-    .mdc-dialog__close {
+    .mdc-dialog__container .mdc-dialog__close {
       @include feature-targeting.targets($feat-structure) {
         right: variables.$sheet-close-icon-right;
         top: variables.$sheet-close-icon-top;
