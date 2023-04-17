@@ -422,9 +422,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   private handleClickEvent(evt: MouseEvent) {
     const index = this.getListItemIndex(evt.target as Element);
     const target = evt.target as Element;
-    // Toggle the checkbox only if it's not the target of the event, or the
-    // checkbox will have 2 change events.
-    const toggleCheckbox = !matches(target, strings.CHECKBOX_RADIO_SELECTOR);
-    this.foundation.handleClick(index, toggleCheckbox, evt);
+    this.foundation.handleClick(
+        index, matches(target, strings.CHECKBOX_RADIO_SELECTOR), evt);
   }
 }
