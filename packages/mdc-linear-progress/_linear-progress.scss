@@ -38,7 +38,7 @@
     linear-progress-theme.$baseline-buffer-color,
     $query: $query
   );
-  @include linear-progress-theme.track-height(
+  @include linear-progress-theme.bar-and-track-height(
     linear-progress-theme.$height,
     $query: $query
   );

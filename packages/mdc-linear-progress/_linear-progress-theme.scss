@@ -63,7 +63,7 @@ $light-theme: (
   @include buffering-keyframes(map.get($theme, track-height), $query);
   @include bar-color(map.get($theme, active-indicator-color), $query);
   @include buffer-color(map.get($theme, track-color), $query);
-  @include track-height(map.get($theme, track-height), $query);
+  @include bar-and-track-height(map.get($theme, track-height), $query);
   // TODO(b/155129310): Add styles for 4-color linear progress once this variant
   // is supported.
 }
@@ -113,7 +113,12 @@ $light-theme: (
   }
 }
 
+/// @deprecated Use `bar-and-track-height()` mixin instead.
 @mixin track-height($height, $query: feature-targeting.all()) {
+  @include bar-and-track-height($height, $query);
+}
+
+@mixin bar-and-track-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   .mdc-linear-progress {
     @include feature-targeting.targets($feat-structure) {
