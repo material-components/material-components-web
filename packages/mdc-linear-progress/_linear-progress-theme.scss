@@ -123,11 +123,6 @@ $light-theme: (
   }
 }
 
-/// @deprecated Use `bar-and-track-height()` mixin instead.
-@mixin track-height($height, $query: feature-targeting.all()) {
-  @include bar-and-track-height($height, $query);
-}
-
 @mixin bar-and-track-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   .mdc-linear-progress {
