@@ -97,11 +97,6 @@
       table-layout: fixed;
     }
   }
-
-  @include data-table-header-cell.static-styles($query);
-  @include data-table-cell.static-styles($query);
-  @include data-table-pagination.static-styles($query);
-  @include data-table-progress-indicator.static-styles($query);
 }
 
 // This API includes only the table styles without the sorting, pagination and
@@ -190,6 +185,10 @@
   }
 
   @include static-styles($query);
+  @include data-table-header-cell.static-styles($query);
+  @include data-table-cell.static-styles($query);
+  @include data-table-pagination.static-styles($query);
+  @include data-table-progress-indicator.static-styles($query);
 }
 
 @mixin theme-baseline($query: feature-targeting.all()) {
