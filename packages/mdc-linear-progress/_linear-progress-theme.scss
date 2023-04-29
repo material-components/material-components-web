@@ -123,31 +123,18 @@ $light-theme: (
   }
 }
 
+/// @deprecated Use Theming API instead.
 @mixin bar-and-track-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
+
   .mdc-linear-progress {
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(height, $height);
     }
-
-    &__bar-inner {
-      @include feature-targeting.targets($feat-structure) {
-        @include theme.property(border-top-width, $height);
-      }
-    }
-
-    &__buffer-dots {
-      @include feature-targeting.targets($feat-structure) {
-        @include dom.ie11-support() {
-          @include theme.property(
-            background-size,
-            10px height,
-            $replace: (height: $height)
-          );
-        }
-      }
-    }
   }
+
+  @include _bar-height($height, $query);
+  @include _track-height($height, $query);
 }
 
 @mixin buffering-keyframes($track-height, $query: feature-targeting.all()) {
@@ -186,4 +173,38 @@ $light-theme: (
   }
 
   @return $string;
+}
+
+@mixin _bar-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-linear-progress__bar {
+      @include theme.property(height, $height);
+    }
+
+    .mdc-linear-progress__bar-inner {
+      @include theme.property(border-top-width, $height);
+    }
+  }
+}
+
+@mixin _track-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-linear-progress__buffer {
+      @include theme.property(height, $height);
+    }
+
+    .mdc-linear-progress__buffer-dots {
+      @include dom.ie11-support() {
+        @include theme.property(
+          background-size,
+          10px height,
+          $replace: (height: $height)
+        );
+      }
+    }
+  }
 }

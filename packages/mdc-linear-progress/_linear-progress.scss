@@ -70,7 +70,7 @@
       transform: translateZ(0);
       // Create a border around the bar in Windows High Contrast Mode.
       outline: 1px solid transparent;
-      overflow: hidden;
+      overflow-x: hidden;
 
       @include dom.forced-colors-mode($exclude-ie11: true) {
         outline-color: CanvasText;
@@ -84,8 +84,10 @@
     &__bar {
       @include feature-targeting.targets($feat-structure) {
         position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0; // Vertically center
         width: 100%;
-        height: 100%;
         animation: none;
         transform-origin: top left;
       }
@@ -111,8 +113,10 @@
       @include feature-targeting.targets($feat-structure) {
         display: flex;
         position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0; // Vertically center
         width: 100%;
-        height: 100%;
       }
     }
 
