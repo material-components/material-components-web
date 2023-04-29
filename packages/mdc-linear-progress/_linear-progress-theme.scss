@@ -41,11 +41,20 @@ $custom-property-prefix: 'linear-progress';
 // TODO(b/254889918): Support all linear progress tokens.
 $light-theme: (
   active-indicator-color: theme-color.$primary,
+  // TODO(b/254889918): Clean up after migrating clients to separate tokens
+  bar-and-track-height: 4px,
   track-color: $baseline-buffer-color,
   track-height: 4px,
 );
 
 @mixin theme($theme) {
+  // TODO(b/254889918): Clean up after migrating clients to separate tokens
+  $bar-and-track-height: map.get($theme, 'bar-and-track-height');
+  @if $bar-and-track-height {
+    $theme: map.set($theme, 'track-height', $bar-and-track-height);
+    $theme: map.remove($theme, 'bar-and-track-height');
+  }
+
   @include theme.validate-theme($light-theme, $theme);
   @include keys.declare-custom-properties(
     $theme,
@@ -54,6 +63,13 @@ $light-theme: (
 }
 
 @mixin theme-styles($theme, $query: feature-targeting.all()) {
+  // TODO(b/254889918): Clean up after migrating clients to separate tokens
+  $bar-and-track-height: map.get($theme, 'bar-and-track-height');
+  @if $bar-and-track-height {
+    $theme: map.set($theme, 'track-height', $bar-and-track-height);
+    $theme: map.remove($theme, 'bar-and-track-height');
+  }
+
   @include theme.validate-theme-styles($light-theme, $theme);
 
   $theme: keys.create-theme-properties(
