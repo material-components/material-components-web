@@ -135,6 +135,7 @@
       pointer-events: auto; // Override from `.mdc-dialog__container`.
       // IE 11: Otherwise, scrolling content in `mdc-dialog__content` overflows.
       overflow-y: auto;
+      outline: 0;
 
       @include rtl.rtl {
         @include rtl.ignore-next-line();
