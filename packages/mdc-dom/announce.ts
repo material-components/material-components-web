@@ -94,8 +94,7 @@ class Announcer {
     }
 
     const existingLiveRegion = documentLiveRegions.get(priority);
-    if (existingLiveRegion &&
-        ownerDocument.body.contains(existingLiveRegion as Node)) {
+    if (existingLiveRegion && ownerDocument.body.contains(existingLiveRegion)) {
       return existingLiveRegion;
     }
 
@@ -105,7 +104,7 @@ class Announcer {
   }
 
   private createLiveRegion(
-      priority: AnnouncerPriority, ownerDocument: Document): Element {
+      priority: AnnouncerPriority, ownerDocument: Document): HTMLDivElement {
     const el = ownerDocument.createElement('div');
     el.style.position = 'absolute';
     el.style.top = '-9999px';
