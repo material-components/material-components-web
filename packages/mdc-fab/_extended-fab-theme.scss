@@ -49,7 +49,7 @@ $extended-icon-padding: 12px !default;
 $extended-label-padding: 20px !default;
 $extended-height: 48px !default;
 
-$_extended-light-theme: (
+$extended-light-theme: (
   container-color: theme-color.$surface,
   container-elevation: 3,
   container-height: 56px,
@@ -94,7 +94,7 @@ $custom-property-prefix: 'extended-fab';
 /// Applies the given theme as custom properties without any selectors.
 ///
 @mixin theme($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_extended-light-theme, $theme);
+  @include theme.validate-theme($extended-light-theme, $theme);
   $resolved-theme: fab-theme.resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
     $resolved-theme,
@@ -103,7 +103,7 @@ $custom-property-prefix: 'extended-fab';
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme($_extended-light-theme, $theme);
+  @include theme.validate-theme($extended-light-theme, $theme);
 
   $theme: keys.create-theme-properties(
     $theme,
