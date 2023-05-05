@@ -26,77 +26,79 @@
 
 @use 'sass:list';
 @use '@material/animation/functions';
-@use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/icon-button/icon-button-theme';
 @use '@material/rtl/rtl';
-@use '@material/typography/typography';
-@use './data-table-cell';
-@use './data-table-header-cell-checkbox-sorting';
 @use './data-table-theme';
 
-@mixin core-styles($query: feature-targeting.all()) {
-  .mdc-data-table__header-cell {
-    @include typography.typography(subtitle2, $query: $query);
-  }
-
-  @include static-styles($query);
-  @include data-table-header-cell-checkbox-sorting.static-styles($query);
-}
-
+/// Styles related to checkbox and sorting for the header cell.
 @mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  .mdc-data-table__header-cell {
+  .mdc-data-table__header-cell--checkbox {
     @include feature-targeting.targets($feat-structure) {
-      box-sizing: border-box;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      outline: none;
+      // Set to lowest width to adapt to cell content. Cell width should adapt
+      // to row checkbox size when it is dense.
+      // NOTE: `min-width` does not seem to work on table cells.
+      width: 1px;
+    }
+  }
 
+  .mdc-data-table__sort-icon-button {
+    @include icon-button-theme.density(
+      $density-scale: data-table-theme.$sort-icon-density-scale,
+      $query: $query
+    );
+
+    @include feature-targeting.targets($feat-structure) {
+      // Apply dummy `transform` to avoid pixel shift on sort down animation.
       @include rtl.ignore-next-line();
-      text-align: left;
+      transform: rotate(0.0001deg);
+    }
 
-      @include rtl.rtl {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-box(margin, left, 4px);
+    }
+
+    .mdc-data-table__header-cell--numeric & {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-box(margin, right, 4px);
+      }
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: functions.standard(transform, $duration: 150ms);
+    }
+
+    .mdc-data-table__header-cell--sorted-descending & {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl.ignore-next-line();
-        text-align: right;
+        transform: rotate(-180deg);
+      }
+    }
+
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 0;
+    }
+
+    &:focus,
+    .mdc-data-table__header-cell:hover &,
+    .mdc-data-table__header-cell--sorted & {
+      @include feature-targeting.targets($feat-structure) {
+        opacity: 1;
       }
     }
   }
 
-  .mdc-data-table__header-cell--numeric {
+  .mdc-data-table__header-cell--with-sort {
     @include feature-targeting.targets($feat-structure) {
-      text-align: right;
-    }
-
-    @include feature-targeting.targets($feat-structure) {
-      @include rtl.rtl {
-        @include rtl.ignore-next-line();
-        text-align: left;
-      }
+      cursor: pointer;
     }
   }
 
-  .mdc-data-table__header-cell-wrapper {
-    @include feature-targeting.targets($feat-structure) {
-      align-items: center;
-      display: inline-flex;
-      vertical-align: middle;
-    }
-  }
-}
-
-/// Sets header cell in sticky position on table content vertical scroll.
-@mixin header-cell-sticky($query: $query) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  .mdc-data-table__header-cell {
-    @include feature-targeting.targets($feat-structure) {
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
+  .mdc-data-table__sort-status-label {
+    @include dom.visually-hidden($query: $query);
   }
 }

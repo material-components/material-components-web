@@ -24,50 +24,18 @@
 // NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
 // selectors.
 
-@use 'sass:list';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/rtl';
-@use '@material/typography/typography';
-@use './data-table-cell-checkbox';
 
-@mixin core-styles($query: feature-targeting.all()) {
-  .mdc-data-table__cell {
-    @include typography.typography(body2, $query: $query);
-  }
-
-  @include static-styles($query);
-  @include data-table-cell-checkbox.static-styles($query);
-}
-
+/// Styles related to checkbox for cell.
 @mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $feat-typography: feature-targeting.create-target($query, typography);
-  $feat-animation: feature-targeting.create-target($query, animation);
 
-  .mdc-data-table__cell {
+  .mdc-data-table__cell--checkbox {
     @include feature-targeting.targets($feat-structure) {
-      box-sizing: border-box;
-      overflow: hidden;
-      text-align: left;
-      text-overflow: ellipsis;
-
-      @include rtl.rtl {
-        @include rtl.ignore-next-line();
-        text-align: right;
-      }
-    }
-  }
-
-  .mdc-data-table__cell--numeric {
-    @include feature-targeting.targets($feat-structure) {
-      text-align: right;
-    }
-
-    @include feature-targeting.targets($feat-structure) {
-      @include rtl.rtl {
-        @include rtl.ignore-next-line();
-        text-align: left;
-      }
+      // Set to lowest width to adapt to cell content. Cell width should adapt
+      // to row checkbox size when it is dense.
+      // NOTE: `min-width` does not seem to work on table cells.
+      width: 1px;
     }
   }
 }
