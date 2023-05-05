@@ -24,6 +24,7 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use 'sass:map';
+@use 'sass:math';
 @use 'sass:string';
 @use '@material/dom/dom';
 @use '@material/feature-targeting/feature-targeting';
@@ -41,6 +42,7 @@ $custom-property-prefix: 'linear-progress';
 // TODO(b/254889918): Support all linear progress tokens.
 $light-theme: (
   active-indicator-color: theme-color.$primary,
+  active-indicator-height: 4px,
   // TODO(b/254889918): Clean up after migrating clients to separate tokens
   bar-and-track-height: 4px,
   track-color: $baseline-buffer-color,
@@ -52,6 +54,7 @@ $light-theme: (
   $bar-and-track-height: map.get($theme, 'bar-and-track-height');
   @if $bar-and-track-height {
     $theme: map.set($theme, 'track-height', $bar-and-track-height);
+    $theme: map.set($theme, 'active-indicator-height', $bar-and-track-height);
     $theme: map.remove($theme, 'bar-and-track-height');
   }
 
@@ -67,9 +70,11 @@ $light-theme: (
   $bar-and-track-height: map.get($theme, 'bar-and-track-height');
   @if $bar-and-track-height {
     $theme: map.set($theme, 'track-height', $bar-and-track-height);
+    $theme: map.set($theme, 'active-indicator-height', $bar-and-track-height);
     $theme: map.remove($theme, 'bar-and-track-height');
   }
 
+  $feat-structure: feature-targeting.create-target($query, structure);
   @include theme.validate-theme-styles($light-theme, $theme);
 
   $theme: keys.create-theme-properties(
@@ -80,7 +85,47 @@ $light-theme: (
   @include buffering-keyframes(map.get($theme, track-height), $query);
   @include bar-color(map.get($theme, active-indicator-color), $query);
   @include buffer-color(map.get($theme, track-color), $query);
-  @include bar-and-track-height(map.get($theme, track-height), $query);
+
+  .mdc-linear-progress {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(
+        height,
+        'max(track-height, bar-height)',
+        $replace: (
+          track-height: map.get($theme, track-height),
+          bar-height: map.get($theme, active-indicator-height)
+        )
+      );
+
+      @include dom.ie11-support() {
+        $track-height: map.get($theme, track-height);
+        $track-height: if(
+          custom-properties.is-custom-prop($track-height),
+          custom-properties.get-fallback($track-height),
+          $track-height
+        );
+
+        $bar-height: map.get($theme, active-indicator-height);
+        $bar-height: if(
+          custom-properties.is-custom-prop($bar-height),
+          custom-properties.get-fallback($bar-height),
+          $bar-height
+        );
+
+        @if ($track-height != null) and
+          ($bar-height != null) and
+          (not custom-properties.is-custom-prop-string($track-height)) and
+          (not custom-properties.is-custom-prop-string($bar-height))
+        {
+          @include theme.property(height, math.max($track-height, $bar-height));
+        }
+      }
+    }
+  }
+
+  @include _bar-height(map.get($theme, active-indicator-height), $query);
+  @include _track-height(map.get($theme, track-height), $query);
+
   // TODO(b/155129310): Add styles for 4-color linear progress once this variant
   // is supported.
 }
