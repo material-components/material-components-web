@@ -70,17 +70,11 @@
   }
 
   .mdc-data-table__cell--checkbox {
-    @include adaptive-width($query: $query);
-  }
-}
-
-@mixin adaptive-width($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    // Set to lowest width to adapt to cell content. Cell width should adapt
-    // to row checkbox size when it is dense.
-    // NOTE: `min-width` does not seem to work on table cells.
-    width: 1px;
+    @include feature-targeting.targets($feat-structure) {
+      // Set to lowest width to adapt to cell content. Cell width should adapt
+      // to row checkbox size when it is dense.
+      // NOTE: `min-width` does not seem to work on table cells.
+      width: 1px;
+    }
   }
 }
