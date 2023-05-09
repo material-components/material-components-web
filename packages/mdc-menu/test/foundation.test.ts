@@ -329,39 +329,6 @@ describe('MDCMenuFoundation', () => {
                jasmine.any(Number), cssClasses.MENU_SELECTED_LIST_ITEM);
      });
 
-  it('handleItemAction adds class to the correct child element of a selection group when menu has mutated',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       const itemEl = document.createElement('li');
-       mockAdapter.elementContainsClass
-           .withArgs(itemEl, listClasses.LIST_ITEM_CLASS)
-           .and.returnValue(true);
-       mockAdapter.getElementIndex.withArgs(itemEl).and.returnValue(1);
-       mockAdapter.elementContainsClass
-           .withArgs(itemEl, cssClasses.MENU_SELECTION_GROUP)
-           .and.returnValue(true);
-
-       mockAdapter.isSelectableItemAtIndex.withArgs(1).and.returnValue(true);
-       mockAdapter.getSelectedSiblingOfItemAtIndex.withArgs(1).and.returnValue(
-           -1);
-       mockAdapter.getMenuItemCount.and.returnValue(2);
-
-       foundation.handleItemAction(itemEl);
-
-       // Element at index 1 is now at index 0
-       mockAdapter.getElementIndex.withArgs(itemEl).and.returnValue(0);
-       mockAdapter.isSelectableItemAtIndex.withArgs(0).and.returnValue(true);
-       mockAdapter.getSelectedSiblingOfItemAtIndex.withArgs(0).and.returnValue(
-           -1);
-       mockAdapter.getMenuItemCount.and.returnValue(1);
-
-       jasmine.clock().tick(numbers.TRANSITION_CLOSE_DURATION);
-
-       expect(mockAdapter.addClassToElementAtIndex)
-           .toHaveBeenCalledWith(0, cssClasses.MENU_SELECTED_LIST_ITEM);
-       expect(mockAdapter.addClassToElementAtIndex).toHaveBeenCalledTimes(1);
-     });
-
   it('handleMenuSurfaceOpened menu focuses the list root element by default on menu surface opened',
      () => {
        const {foundation, mockAdapter} = setupTest();

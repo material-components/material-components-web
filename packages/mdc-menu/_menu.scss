@@ -36,6 +36,7 @@
 @use '@material/theme/custom-properties';
 @use './menu-custom-properties';
 @use './variables';
+@use '@material/menu-surface/menusurface-theme';
 
 /// @deprecated Use static-styles() instead.
 @mixin core-styles($query: feature-targeting.all()) {
@@ -124,16 +125,21 @@
       }
     }
 
-    // Extra specificity required to override `display` property on `mdc-deprecated-list-item__graphic`.
     .mdc-menu__selection-group-icon {
       @include feature-targeting.targets($feat-structure) {
         @include rtl.reflexive-position(left, 16px);
 
-        display: none;
+        visibility: hidden;
         position: absolute;
         // IE11 requires the icon to be vertically centered due to its absolute positioning
         top: 50%;
         transform: translateY(-50%);
+        // This is an instant transition with a delay that ensures the checkmark
+        // appears when menu is closed. Visibility property was used on purpose to
+        // indicate that there is no actual transition, but instant shift from start
+        // to end state with a delay.
+        transition-property: visibility;
+        transition-delay: menusurface-theme.$fade-out-duration;
       }
     }
   }
@@ -142,6 +148,7 @@
   .mdc-menu-item--selected .mdc-menu__selection-group-icon {
     @include feature-targeting.targets($feat-structure) {
       display: inline;
+      visibility: visible;
     }
   }
 }

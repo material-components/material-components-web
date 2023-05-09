@@ -23,7 +23,6 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {cssClasses as listCssClasses} from '@material/list/constants';
-import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, DefaultFocusState, numbers, strings} from './constants';
@@ -42,7 +41,6 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     return numbers;
   }
 
-  private closeAnimationEndTimerId = 0;
   private defaultFocusState = DefaultFocusState.LIST_ROOT;
   private selectedIndex = -1;
 
@@ -75,10 +73,6 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   }
 
   override destroy() {
-    if (this.closeAnimationEndTimerId) {
-      clearTimeout(this.closeAnimationEndTimerId);
-    }
-
     this.adapter.closeSurface();
   }
 
@@ -102,16 +96,9 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
                                  index, strings.SKIP_RESTORE_FOCUS) === 'true';
     this.adapter.closeSurface(skipRestoreFocus);
 
-    // Wait for the menu to close before adding/removing classes that affect
-    // styles.
-    this.closeAnimationEndTimerId = setTimeout(() => {
-      // Recompute the index in case the menu contents have changed.
-      const recomputedIndex = this.adapter.getElementIndex(listItem);
-      if (recomputedIndex >= 0 &&
-          this.adapter.isSelectableItemAtIndex(recomputedIndex)) {
-        this.setSelectedIndex(recomputedIndex);
-      }
-    }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
+    if (this.adapter.isSelectableItemAtIndex(index)) {
+      this.setSelectedIndex(index);
+    }
   }
 
   handleMenuSurfaceOpened() {
