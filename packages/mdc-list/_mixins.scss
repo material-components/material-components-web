@@ -533,51 +533,6 @@
     @include deprecated-item-interactive-ripple_($query);
   }
 
-  // Set styles only for focus state on disabled list item.
-  .mdc-deprecated-list-item--disabled {
-    @include ripple.surface(
-      $ripple-target: variables.$deprecated-ripple-target,
-      $query: $query
-    );
-    @include ripple.surface(
-      $ripple-target: variables.$deprecated-temporary-ripple-target,
-      $query: $query
-    );
-    @include ripple.radius-bounded(
-      $ripple-target: variables.$deprecated-ripple-target,
-      $query: $query
-    );
-    @include ripple.radius-bounded(
-      $ripple-target: variables.$deprecated-temporary-ripple-target,
-      $query: $query
-    );
-    @include ripple-theme.states-base-color(
-      theme-color.prop-value(on-surface),
-      $ripple-target: variables.$deprecated-ripple-target,
-      $query: $query
-    );
-    @include ripple-theme.states-base-color(
-      theme-color.prop-value(on-surface),
-      $ripple-target: variables.$deprecated-temporary-ripple-target,
-      $query: $query
-    );
-    @include ripple-theme.states-focus-opacity(
-      ripple-theme.states-opacity(primary, focus),
-      $ripple-target: variables.$deprecated-ripple-target,
-      $query: $query
-    );
-    @include ripple-theme.states-focus-opacity(
-      ripple-theme.states-opacity(primary, focus),
-      $ripple-target: variables.$deprecated-temporary-ripple-target,
-      $query: $query
-    );
-
-    #{variables.$deprecated-ripple-target},
-    #{variables.$deprecated-temporary-ripple-target} {
-      @include ripple.target-common($query: $query);
-    }
-  }
-
   @include evolution-mixins.with-ripple($query: $query);
 }
 
