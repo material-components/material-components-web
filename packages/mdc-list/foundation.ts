@@ -928,7 +928,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return i === listSize ? numbers.UNSET_INDEX : i;
   }
 
-  private isIndexValid(index: MDCListIndex, validateListType: boolean = true) {
+  private isIndexValid(index: MDCListIndex, validateListType = true) {
     if (index instanceof Array) {
       if (!this.isCheckboxList && validateListType) {
         throw new Error(
