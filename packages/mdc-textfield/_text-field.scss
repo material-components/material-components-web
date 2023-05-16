@@ -1380,7 +1380,9 @@ $_density-config: map.merge(
 @mixin input-font-size($font-size, $query: feature-targeting.all()) {
   $feat-typography: feature-targeting.create-target($query, typography);
 
-  .mdc-text-field__input {
+  .mdc-text-field__input,
+  .mdc-text-field__affix--suffix,
+  .mdc-text-field__affix--prefix {
     @include feature-targeting.targets($feat-typography) {
       font-size: $font-size;
     }
@@ -1815,7 +1817,9 @@ $_density-config: map.merge(
   );
 
   + .mdc-text-field-helper-line
-    .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
+    .mdc-text-field-helper-text:not(
+      .mdc-text-field-helper-text--validation-msg
+    ) {
     @include feature-targeting.targets($feat-structure) {
       opacity: 1;
     }
