@@ -123,7 +123,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
     return this.isOpened;
   }
 
-  handlePrimaryActionClick(disableAutoClose: boolean = false) {
+  handlePrimaryActionClick(disableAutoClose = false) {
     if (disableAutoClose) {
       this.adapter.notifyActionClicked(Action.PRIMARY);
     } else {
@@ -131,7 +131,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
     }
   }
 
-  handleSecondaryActionClick(disableAutoClose: boolean = false) {
+  handleSecondaryActionClick(disableAutoClose = false) {
     if (disableAutoClose) {
       this.adapter.notifyActionClicked(Action.SECONDARY);
 

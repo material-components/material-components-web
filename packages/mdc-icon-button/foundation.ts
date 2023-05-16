@@ -33,7 +33,7 @@ export class MDCIconButtonToggleFoundation extends
    * Whether the icon button has an aria label that changes depending on
    * toggled state.
    */
-  private hasToggledAriaLabel: boolean = false;
+  private hasToggledAriaLabel = false;
 
   static override get cssClasses() {
     return cssClasses;
