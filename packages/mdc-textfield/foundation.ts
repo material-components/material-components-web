@@ -261,6 +261,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   activateFocus() {
     this.isFocused = true;
     this.styleFocused(this.isFocused);
+    this.styleValidity(this.valid);
     this.adapter.activateLineRipple();
     if (this.adapter.hasLabel()) {
       this.notchOutline(this.shouldFloat);
