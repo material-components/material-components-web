@@ -157,7 +157,6 @@ $custom-property-prefix: 'filled-select';
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-styles($_light-theme, $theme);
-  $unprocessed-theme: $theme;
   $theme: select-shared-theme.resolve-theme($theme, $resolvers);
   $theme: keys.create-theme-properties(
     $theme,
@@ -165,13 +164,7 @@ $custom-property-prefix: 'filled-select';
   );
   @include select-theme.theme-styles($theme, $resolvers: $resolvers);
 
-  @include _container-height-and-shape($unprocessed-theme);
-}
-
-@mixin _container-height-and-shape($theme) {
   @if map.get($theme, text-field-container-height) {
-    // Note: This is not dynamic because this token is planned to be removed.
-    // see b/242856144 and b/244747640
     @include select-theme.filled-height(
       map.get($theme, text-field-container-height)
     );

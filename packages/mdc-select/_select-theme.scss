@@ -46,6 +46,7 @@
 @use '@material/rtl/rtl';
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/css';
 @use '@material/theme/custom-properties';
 @use '@material/theme/gss';
 @use '@material/theme/keys';
@@ -61,8 +62,16 @@
 $ripple-target: '.mdc-select__ripple';
 
 @function get-outlined-label-position-y($select-anchor-height) {
-  @return math.div($select-anchor-height, 2) +
-    math.div(notched-outline-variables.$label-box-height, 2);
+  @if custom-properties.is-custom-prop($select-anchor-height) {
+    $value: custom-properties.get-declaration-value($select-anchor-height);
+    @return calc(
+      calc($value / 2) +
+        math.div(notched-outline-variables.$label-box-height, 2)
+    );
+  } @else {
+    @return math.div($select-anchor-height, 2) +
+      math.div(notched-outline-variables.$label-box-height, 2);
+  }
 }
 
 $arrow-padding: 52px !default;
@@ -855,7 +864,8 @@ $error-color: error !default;
   $rtl-reflexive: false,
   $query: feature-targeting.all()
 ) {
-  @if (meta.type-of($radius) == 'list' and list.length($radius) > 2) and
+  @if (meta.type-of($radius) == 'list') and
+    (list.length($radius) > 2) and
     (
       (list.nth($radius, 3) != 0 and list.nth($radius, 3) != 0px) or
         (list.nth($radius, 4) != 0 and list.nth($radius, 4) != 0px)
@@ -871,6 +881,42 @@ $error-color: error !default;
   );
 
   $masked-radius: shape-functions.mask-radius($radius, 1 1 0 0);
+
+  $fallback: if(
+    custom-properties.is-custom-prop($radius),
+    custom-properties.get-fallback($radius),
+    null
+  );
+
+  @if meta.type-of($fallback) == 'list' {
+    $fallback: css.unpack-value($fallback);
+    $first: list.nth($masked-radius, 1);
+    $second: list.nth($masked-radius, 2);
+    $third: list.nth($masked-radius, 3);
+    $fourth: list.nth($masked-radius, 4);
+    $masked-radius: (
+      if(
+        custom-properties.is-custom-prop($first),
+        custom-properties.set-fallback($first, list.nth($fallback, 1)),
+        $first
+      ),
+      if(
+        custom-properties.is-custom-prop($second),
+        custom-properties.set-fallback($second, list.nth($fallback, 2)),
+        $second
+      ),
+      if(
+        custom-properties.is-custom-prop($third),
+        custom-properties.set-fallback($third, list.nth($fallback, 3)),
+        $third
+      ),
+      if(
+        custom-properties.is-custom-prop($fourth),
+        custom-properties.set-fallback($fourth, list.nth($fallback, 4)),
+        $fourth
+      )
+    );
+  }
 
   .mdc-select__anchor {
     @include shape-mixins.radius(
@@ -1108,7 +1154,7 @@ $error-color: error !default;
 
   .mdc-select__anchor {
     @include feature-targeting.targets($feat-structure) {
-      height: $new-height;
+      @include theme.property(height, $new-height);
     }
 
     // Filled variant is aligned to baseline...
@@ -1118,7 +1164,8 @@ $error-color: error !default;
       $query: $query
     );
     // ...unless it is too small to display a label
-    @if $new-height < $minimum-height-for-filled-label {
+    // TODO(b/283457421): Account for dynamic height
+    @if _is-less-than($new-height, $minimum-height-for-filled-label) {
       @include center-aligned($query: $query);
 
       @include feature-targeting.targets($feat-structure) {
@@ -1134,7 +1181,8 @@ $error-color: error !default;
     @include center-aligned($query: $query);
   }
 
-  @if $new-height < $height {
+  // TODO(b/283457421): Account for dynamic height
+  @if _is-less-than($new-height, $height) {
     @include dropdown-icon-size(
       select-icon-theme.$dense-icon-size,
       $query: $query
@@ -1175,7 +1223,8 @@ $error-color: error !default;
     $query: $query
   );
 
-  @if $new-height < $height {
+  // TODO(b/283457421): Account for dynamic height
+  @if _is-less-than($new-height, $height) {
     @include select-icon-theme.size(
       select-icon-theme.$dense-icon-size,
       $query: $query
@@ -1218,11 +1267,19 @@ $error-color: error !default;
 ///
 @mixin outlined-height(
   $new-height,
-  $keyframe-suffix: select-outlined-#{$new-height},
+  $keyframe-suffix: null,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $positionY: get-outlined-label-position-y($new-height);
+
+  @if $keyframe-suffix == null {
+    $modifier: $new-height;
+    @if custom-properties.is-custom-prop($modifier) {
+      $modifier: custom-properties.get-fallback($modifier);
+    }
+    $keyframe-suffix: select-outlined-#{$modifier};
+  }
 
   .mdc-select__anchor {
     // Floating label position
@@ -1245,11 +1302,12 @@ $error-color: error !default;
     }
 
     @include feature-targeting.targets($feat-structure) {
-      height: $new-height;
+      @include theme.property(height, $new-height);
     }
   }
 
-  @if $new-height < $height {
+  // TODO(b/283457421): Account for dynamic height
+  @if _is-less-than($new-height, $height) {
     @include dropdown-icon-size(
       select-icon-theme.$dense-icon-size,
       $query: $query
@@ -1280,7 +1338,8 @@ $error-color: error !default;
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__anchor {
-    @if $new-height < $height {
+    // TODO(b/283457421): Account for dynamic height
+    @if _is-less-than($new-height, $height) {
       @include dropdown-icon-size(
         select-icon-theme.$dense-icon-size,
         $query: $query
@@ -1301,11 +1360,12 @@ $error-color: error !default;
     }
 
     @include feature-targeting.targets($feat-structure) {
-      height: $new-height;
+      @include theme.property(height, $new-height);
     }
   }
 
-  @if $new-height < $height {
+  // TODO(b/283457421): Account for dynamic height
+  @if _is-less-than($new-height, $height) {
     .mdc-deprecated-list-item__graphic {
       width: select-icon-theme.$dense-icon-size;
       height: select-icon-theme.$dense-icon-size;
@@ -1705,4 +1765,24 @@ $error-color: error !default;
       }
     }
   }
+}
+
+///
+/// Compare the two inputs even if they're custom-prop objects.
+/// @access private
+///
+@function _is-less-than($subject, $object) {
+  $fallback-subject: if(
+    custom-properties.is-custom-prop($subject),
+    custom-properties.get-fallback($subject),
+    $subject
+  );
+
+  $fallback-object: if(
+    custom-properties.is-custom-prop($object),
+    custom-properties.get-fallback($object),
+    $object
+  );
+
+  @return $fallback-subject < $fallback-object;
 }
