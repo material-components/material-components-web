@@ -45,6 +45,7 @@ $light-theme: (
   active-indicator-height: 4px,
   track-color: $baseline-buffer-color,
   track-height: 4px,
+  track-shape: 0px,
 );
 
 @mixin theme($theme) {
@@ -107,6 +108,7 @@ $light-theme: (
 
   @include _bar-height(map.get($theme, active-indicator-height), $query);
   @include _track-height(map.get($theme, track-height), $query);
+  @include _track-shape(map.get($theme, track-shape), $query);
 
   // TODO(b/155129310): Add styles for 4-color linear progress once this variant
   // is supported.
@@ -248,6 +250,16 @@ $light-theme: (
           $replace: (height: $height)
         );
       }
+    }
+  }
+}
+
+@mixin _track-shape($shape, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-linear-progress__buffer {
+      @include theme.property(border-radius, $shape);
     }
   }
 }
