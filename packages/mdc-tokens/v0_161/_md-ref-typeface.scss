@@ -1,0 +1,17 @@
+//
+// !!! THIS FILE WAS AUTOMATICALLY GENERATED !!!
+// !!! DO NOT MODIFY IT BY HAND !!!
+// Design system display name: Google Material 3
+// Design system version: v0.161
+// User-configured context group "Audience": "3P"
+//
+
+@function values($exclude-hardcoded-values: false) {
+  @return (
+    'brand': if($exclude-hardcoded-values, null, (Roboto)),
+    'plain': if($exclude-hardcoded-values, null, (Roboto)),
+    'weight-bold': if($exclude-hardcoded-values, null, 700),
+    'weight-medium': if($exclude-hardcoded-values, null, 500),
+    'weight-regular': if($exclude-hardcoded-values, null, 400)
+  );
+}
