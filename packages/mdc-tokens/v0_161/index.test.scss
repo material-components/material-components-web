@@ -1,0 +1,580 @@
+//
+// !!! THIS FILE WAS AUTOMATICALLY GENERATED !!!
+// !!! DO NOT MODIFY IT BY HAND !!!
+//
+
+@use 'true' as test;
+
+@use './index';
+
+@include test.describe('index') {
+  @include test.describe('index.md-comp-assist-chip-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-assist-chip-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-badge-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-badge-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-banner-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-banner-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-bottom-app-bar-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-bottom-app-bar-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-carousel-item-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-carousel-item-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-checkbox-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-checkbox-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-circular-progress-indicator-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(
+        index.md-comp-circular-progress-indicator-values()
+      );
+    }
+  }
+
+  @include test.describe('index.md-comp-data-table-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-data-table-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-date-input-modal-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-date-input-modal-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-date-picker-docked-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-date-picker-docked-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-date-picker-modal-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-date-picker-modal-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-dialog-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-dialog-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-divider-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-divider-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-elevated-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-elevated-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-elevated-card-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-elevated-card-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-extended-fab-branded-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-extended-fab-branded-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-extended-fab-primary-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-extended-fab-primary-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-extended-fab-secondary-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-extended-fab-secondary-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-extended-fab-surface-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-extended-fab-surface-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-extended-fab-tertiary-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-extended-fab-tertiary-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-branded-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-branded-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-branded-large-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-branded-large-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-primary-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-primary-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-primary-large-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-primary-large-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-primary-small-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-primary-small-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-secondary-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-secondary-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-secondary-large-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-secondary-large-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-secondary-small-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-secondary-small-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-surface-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-surface-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-surface-large-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-surface-large-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-surface-small-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-surface-small-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-tertiary-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-tertiary-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-tertiary-large-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-tertiary-large-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-fab-tertiary-small-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-fab-tertiary-small-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-autocomplete-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filled-autocomplete-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filled-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-card-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filled-card-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-icon-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filled-icon-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-menu-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filled-menu-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-select-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filled-select-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-text-field-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filled-text-field-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-tonal-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filled-tonal-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-filled-tonal-icon-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(
+        index.md-comp-filled-tonal-icon-button-values()
+      );
+    }
+  }
+
+  @include test.describe('index.md-comp-filter-chip-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-filter-chip-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-full-screen-dialog-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-full-screen-dialog-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-icon-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-icon-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-input-chip-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-input-chip-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-linear-progress-indicator-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(
+        index.md-comp-linear-progress-indicator-values()
+      );
+    }
+  }
+
+  @include test.describe('index.md-comp-list-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-list-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-menu-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-menu-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-navigation-bar-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-navigation-bar-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-navigation-drawer-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-navigation-drawer-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-navigation-rail-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-navigation-rail-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-outlined-autocomplete-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-outlined-autocomplete-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-outlined-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-outlined-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-outlined-card-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-outlined-card-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-outlined-icon-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-outlined-icon-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-outlined-menu-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-outlined-menu-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-outlined-segmented-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(
+        index.md-comp-outlined-segmented-button-values()
+      );
+    }
+  }
+
+  @include test.describe('index.md-comp-outlined-select-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-outlined-select-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-outlined-text-field-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-outlined-text-field-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-plain-tooltip-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-plain-tooltip-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-primary-navigation-tab-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-primary-navigation-tab-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-radio-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-radio-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-rich-tooltip-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-rich-tooltip-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-scrim-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-scrim-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-search-bar-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-search-bar-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-search-view-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-search-view-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-secondary-navigation-tab-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(
+        index.md-comp-secondary-navigation-tab-values()
+      );
+    }
+  }
+
+  @include test.describe('index.md-comp-sheet-bottom-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-sheet-bottom-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-sheet-floating-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-sheet-floating-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-sheet-side-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-sheet-side-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-slider-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-slider-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-snackbar-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-snackbar-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-standard-menu-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-standard-menu-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-suggestion-chip-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-suggestion-chip-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-switch-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-switch-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-text-button-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-text-button-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-time-input-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-time-input-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-time-picker-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-time-picker-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-top-app-bar-large-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-top-app-bar-large-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-top-app-bar-medium-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-top-app-bar-medium-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-top-app-bar-small-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-comp-top-app-bar-small-values());
+    }
+  }
+
+  @include test.describe('index.md-comp-top-app-bar-small-centered-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(
+        index.md-comp-top-app-bar-small-centered-values()
+      );
+    }
+  }
+
+  @include test.describe('index.md-ref-palette-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-ref-palette-values());
+    }
+  }
+
+  @include test.describe('index.md-ref-typeface-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-ref-typeface-values());
+    }
+  }
+
+  @include test.describe('index.md-sys-color-values-dark') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-sys-color-values-dark());
+    }
+  }
+
+  @include test.describe('index.md-sys-color-values-light') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-sys-color-values-light());
+    }
+  }
+
+  @include test.describe('index.md-sys-elevation-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-sys-elevation-values());
+    }
+  }
+
+  @include test.describe('index.md-sys-motion-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-sys-motion-values());
+    }
+  }
+
+  @include test.describe('index.md-sys-shape-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-sys-shape-values());
+    }
+  }
+
+  @include test.describe('index.md-sys-state-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-sys-state-values());
+    }
+  }
+
+  @include test.describe('index.md-sys-typescale-values') {
+    @include test.it('should forward non-empty map') {
+      @include test.assert-true(index.md-sys-typescale-values());
+    }
+  }
+}
