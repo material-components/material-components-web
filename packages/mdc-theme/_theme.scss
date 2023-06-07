@@ -264,8 +264,8 @@
 }
 
 // @deprecated use the `property()` mixin instead
-@mixin prop($property, $style, $important: false) {
-  @include property($property, $style, $important: $important);
+@mixin prop($property, $style) {
+  @include property($property, $style);
 }
 
 /// Validates theme configuration keys by comparing it with original theme
