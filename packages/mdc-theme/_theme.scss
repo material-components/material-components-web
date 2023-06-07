@@ -48,7 +48,7 @@
     @if $style != 'background' and $style != 'surface' {
       .mdc-theme--#{$style} {
         @include feature-targeting.targets($feat-color) {
-          @include property(color, $style, $important: true);
+          @include property(color, $style);
         }
       }
     } @else {
@@ -64,7 +64,7 @@
   @each $style in ('primary', 'secondary') {
     .mdc-theme--#{$style}-bg {
       @include feature-targeting.targets($feat-color) {
-        @include property(background-color, $style, $important: true);
+        @include property(background-color, $style);
       }
     }
   }
