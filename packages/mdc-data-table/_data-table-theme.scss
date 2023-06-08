@@ -401,7 +401,7 @@ $custom-property-prefix: 'data-table';
     }
   }
 
-  .mdc-data-table__row:last-child .mdc-data-table__cell {
+  .mdc-data-table__row:last-child > .mdc-data-table__cell {
     @include feature-targeting.targets($feat-structure) {
       border-bottom: none;
     }
@@ -507,7 +507,7 @@ $custom-property-prefix: 'data-table';
 
   &.mdc-data-table--without-footer
     .mdc-data-table__row:last-child
-    .mdc-data-table__cell:first-child {
+    > .mdc-data-table__cell:first-child {
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(border-bottom-left-radius, $bottom-left-radius);
 
@@ -524,7 +524,7 @@ $custom-property-prefix: 'data-table';
 
   &.mdc-data-table--without-footer
     .mdc-data-table__row:last-child
-    .mdc-data-table__cell:last-child {
+    > .mdc-data-table__cell:last-child {
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(border-bottom-right-radius, $bottom-right-radius);
 
