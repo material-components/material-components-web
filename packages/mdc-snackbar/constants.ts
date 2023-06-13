@@ -38,6 +38,7 @@ const strings = {
   OPENING_EVENT: 'MDCSnackbar:opening',
   REASON_ACTION: 'action',
   REASON_DISMISS: 'dismiss',
+  REASON_SECONDARY_ACTION: 'secondary-action',
   SURFACE_SELECTOR: '.mdc-snackbar__surface',
 };
 
