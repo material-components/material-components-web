@@ -30,6 +30,8 @@
 @use '@material/theme/theme';
 @use '@material/typography/typography';
 
+@use './text-field';
+
 $_light-theme: (
   active-indicator-color: null,
   active-indicator-height: null,
@@ -266,6 +268,9 @@ $_light-theme: (
       tracking: map.get($theme, supporting-text-tracking),
       weight: map.get($theme, supporting-text-weight),
     )
+  );
+  @include text-field.placeholder-color(
+    map.get($theme, input-text-placeholder-color)
   );
 }
 
