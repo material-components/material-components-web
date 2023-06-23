@@ -82,7 +82,7 @@
   $unsupported-tokens: ();
 
   @each $token, $value in $theme {
-    @if list.index($valid-tokens, $token) == null {
+    @if $token != null and list.index($valid-tokens, $token) == null {
       $unsupported-tokens: list.append(
         $unsupported-tokens,
         $token,

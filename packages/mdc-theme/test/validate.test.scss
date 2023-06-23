@@ -1,0 +1,18 @@
+@use 'true' as test;
+
+@use '../validate';
+
+@include test.describe('theme-styles') {
+  @include test.describe('with `$require-all: false`') {
+    @include test.it('returns null when passed in null') {
+      $reference-theme: (
+        'test-token': blue,
+      );
+
+      @include test.assert-equal(
+        validate.theme-styles($reference-theme, null, $require-all: false),
+        null
+      );
+    }
+  }
+}
