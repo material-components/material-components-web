@@ -108,7 +108,9 @@ $light-theme: (
 
 @mixin _size($size) {
   .mdc-circular-progress {
+    // TODO(b/286293822): Remove !important from css styles
     @include theme.property(width, $size, $important: true);
+    // TODO(b/286293822): Remove !important from css styles
     @include theme.property(height, $size, $important: true);
   }
 }
