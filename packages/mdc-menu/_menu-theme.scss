@@ -105,7 +105,11 @@ $light-theme: (
   @include elevation-theme.overlay-container-color(
     map.get($theme, 'container-surface-tint-layer-color')
   );
-  @include elevation-theme.theme-styles(map.get($theme, 'container-elevation'));
+  @if map.get($theme, 'container-elevation') {
+    @include elevation-theme.theme-styles(
+      map.get($theme, 'container-elevation')
+    );
+  }
 
   .mdc-menu-item--selected {
     @include theme.property(
