@@ -85,7 +85,7 @@
     "sass": "^1.41.1",
     "sass-loader": "^7.1.0",
     "semver": "^5.3.0",
-    "stylelint": "^13.8.0",
+    "stylelint": "^15.10.1",
     "stylelint-config-standard": "^18.0.0",
     "stylelint-order": "^2.0.0",
     "stylelint-prettier": "^1.1.2",
