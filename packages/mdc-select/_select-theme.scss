@@ -864,23 +864,17 @@ $error-color: error !default;
   $rtl-reflexive: false,
   $query: feature-targeting.all()
 ) {
-  @if (meta.type-of($radius) == 'list') and
-    (list.length($radius) > 2) and
-    (
-      (list.nth($radius, 3) != 0 and list.nth($radius, 3) != 0px) or
-        (list.nth($radius, 4) != 0 and list.nth($radius, 4) != 0px)
-    )
-  {
-    @error "mdc-select: Invalid radius #{$radius}. Only top-left and top-right corners may be customized.";
-  }
-
   $height: density-functions.prop-value(
     $density-config: $density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  $masked-radius: shape-functions.mask-radius($radius, 1 1 0 0);
+  $masked-radius: if(
+    (meta.type-of($radius) == 'list') and (list.length($radius) > 2),
+    shape-functions.mask-radius($radius, 1 1 1 1),
+    shape-functions.mask-radius($radius, 1 1 0 0)
+  );
 
   $fallback: if(
     custom-properties.is-custom-prop($radius),
