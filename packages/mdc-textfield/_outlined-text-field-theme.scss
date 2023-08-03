@@ -36,7 +36,7 @@
 
 $custom-property-prefix: 'outlined-text-field';
 
-$_light-theme: (
+$light-theme: (
   caret-color: null,
   container-height: null,
   container-shape: null,
@@ -125,7 +125,7 @@ $_light-theme: (
 );
 
 @mixin theme($theme) {
-  $theme: validate.theme($_light-theme, $theme);
+  $theme: validate.theme($light-theme, $theme);
 
   @include keys.declare-custom-properties(
     $theme,
@@ -134,7 +134,7 @@ $_light-theme: (
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  $theme: validate.theme-styles($_light-theme, $theme, false);
+  $theme: validate.theme-styles($light-theme, $theme, false);
 
   $theme: keys.create-theme-properties(
     $theme,
@@ -157,7 +157,10 @@ $_light-theme: (
         'text-field-outlined-#{custom-properties.get-fallback($container-height)}',
         'text-field-outlined-#{$container-height}'
       );
-      @include mixins.outlined-height($container-height-value, $keyframe-suffix);
+      @include mixins.outlined-height(
+        $container-height-value,
+        $keyframe-suffix
+      );
 
       &.mdc-text-field--with-leading-icon {
         $with-leading-icon-keyframe-suffix: if(
@@ -165,7 +168,10 @@ $_light-theme: (
           'text-field-outlined-with-leading-icon-#{custom-properties.get-fallback($container-height)}',
           'text-field-outlined-with-leading-icon-#{$container-height}'
         );
-        @include mixins.outlined-with-leading-icon-height($container-height-value, $with-leading-icon-keyframe-suffix);
+        @include mixins.outlined-with-leading-icon-height(
+          $container-height-value,
+          $with-leading-icon-keyframe-suffix
+        );
       }
     }
   }

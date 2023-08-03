@@ -32,7 +32,7 @@
 
 @use './text-field';
 
-$_light-theme: (
+$light-theme: (
   active-indicator-color: null,
   active-indicator-height: null,
   caret-color: null,
@@ -144,7 +144,7 @@ $_light-theme: (
 );
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  @include theme.validate-theme-styles($_light-theme, $theme);
+  @include theme.validate-theme-styles($light-theme, $theme);
 
   // TODO(b/261633818): Remove support for extraneous `*-caret-color` tokens.
   @include _caret-color(
