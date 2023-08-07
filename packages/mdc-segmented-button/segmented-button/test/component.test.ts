@@ -201,14 +201,12 @@ describe('MDCSegmentedButton', () => {
 
       adapter.selectSegment(testIndices.NOT_PRESENT);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(testCssClasses.SELECTED))
-            .toBeFalse();
+        expect(segments[i]).not.toHaveClass(testCssClasses.SELECTED);
       }
 
       adapter.selectSegment(testSegmentIds.NOT_PRESENT_SEGMENT_ID);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(testCssClasses.SELECTED))
-            .toBeFalse();
+        expect(segments[i]).not.toHaveClass(testCssClasses.SELECTED);
       }
 
       component.destroy();
@@ -249,14 +247,12 @@ describe('MDCSegmentedButton', () => {
 
          adapter.unselectSegment(testIndices.NOT_PRESENT);
          for (let i = 0; i < segments.length; i++) {
-           expect(segments[i].classList.contains(testCssClasses.SELECTED))
-               .toBeTrue();
+           expect(segments[i]).toHaveClass(testCssClasses.SELECTED);
          }
 
          adapter.unselectSegment(testSegmentIds.NOT_PRESENT_SEGMENT_ID);
          for (let i = 0; i < segments.length; i++) {
-           expect(segments[i].classList.contains(testCssClasses.SELECTED))
-               .toBeTrue();
+           expect(segments[i]).toHaveClass(testCssClasses.SELECTED);
          }
 
          component.destroy();
@@ -318,13 +314,11 @@ describe('MDCSegmentedButton', () => {
 
     setAllUnselected(segments);
     component.selectSegment(testIndices.SELECTED);
-    expect(selectedSegment.classList.contains(testCssClasses.SELECTED))
-        .toBeTrue();
+    expect(selectedSegment).toHaveClass(testCssClasses.SELECTED);
 
     setAllUnselected(segments);
     component.selectSegment(testSegmentIds.SELECTED_SEGMENT_ID);
-    expect(selectedSegment.classList.contains(testCssClasses.SELECTED))
-        .toBeTrue();
+    expect(selectedSegment).toHaveClass(testCssClasses.SELECTED);
 
     component.destroy();
   });
@@ -339,13 +333,11 @@ describe('MDCSegmentedButton', () => {
 
     setAllSelected(segments);
     component.unselectSegment(testIndices.UNSELECTED);
-    expect(unselectedSegment.classList.contains(testCssClasses.SELECTED))
-        .toBeFalse();
+    expect(unselectedSegment).not.toHaveClass(testCssClasses.SELECTED);
 
     setAllSelected(segments);
     component.unselectSegment(testSegmentIds.UNSELECTED_SEGMENT_ID);
-    expect(unselectedSegment.classList.contains(testCssClasses.SELECTED))
-        .toBeFalse();
+    expect(unselectedSegment).not.toHaveClass(testCssClasses.SELECTED);
 
     component.destroy();
   });

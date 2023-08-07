@@ -75,7 +75,7 @@ describe('MDCCheckbox', () => {
     it('#constructor initializes the root element with a ripple', () => {
       const {root} = setupTest();
       jasmine.clock().tick(1);
-      expect(root.classList.contains('mdc-ripple-upgraded')).toBeTruthy();
+      expect(root).toHaveClass('mdc-ripple-upgraded');
     });
 
     it('#destroy removes the ripple', () => {
@@ -83,7 +83,7 @@ describe('MDCCheckbox', () => {
       jasmine.clock().tick(1);
       component.destroy();
       jasmine.clock().tick(1);
-      expect(root.classList.contains('mdc-ripple-upgraded')).toBeFalsy();
+      expect(root).not.toHaveClass('mdc-ripple-upgraded');
     });
 
     it('(regression) activates ripple on keydown when the input element surface is active',
@@ -96,13 +96,11 @@ describe('MDCCheckbox', () => {
          fakeMatches.and.returnValue(true);
          input.matches = fakeMatches;
 
-         expect(root.classList.contains('mdc-ripple-upgraded')).toBe(true);
+         expect(root).toHaveClass('mdc-ripple-upgraded');
          emitEvent(input, 'keydown');
          jasmine.clock().tick(1);
 
-         expect(root.classList.contains(
-                    'mdc-ripple-upgraded--foreground-activation'))
-             .toBe(true);
+         expect(root).toHaveClass('mdc-ripple-upgraded--foreground-activation');
        });
   }
 
@@ -208,14 +206,14 @@ describe('MDCCheckbox', () => {
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBeTruthy();
+    expect(root).toHaveClass('foo');
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBeFalsy();
+    expect(root).not.toHaveClass('foo');
   });
 
   it('adapter#setNativeControlAttr sets an attribute on the input element',

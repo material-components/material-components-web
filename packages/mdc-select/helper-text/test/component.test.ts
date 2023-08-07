@@ -46,14 +46,14 @@ describe('MDCSelectHelperText', () => {
   it('#adapter.addClass adds a class to the element', () => {
     const {root, adapter} = setupTest();
     adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('#adapter.removeClass removes a class from the element', () => {
     const {root, adapter} = setupTest();
     root.classList.add('foo');
     adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
 
   it('#adapter.hasClass returns whether or not the element contains a certain class',

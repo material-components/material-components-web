@@ -563,6 +563,6 @@ describe('MDCChipSet', () => {
 
     const chip0 = root.querySelector<HTMLElement>('#c0')!;
     component.addChip(0);
-    expect(chip0.classList.contains(MDCChipCssClasses.ENTER)).toBeTrue();
+    expect(chip0).toHaveClass(MDCChipCssClasses.ENTER);
   });
 });

@@ -295,7 +295,7 @@ describe('MDCSlider', () => {
       for (let i = 0; i < tickMarks.length; i++) {
         const tickMarkClass = i === 0 ? cssClasses.TICK_MARK_ACTIVE :
                                         cssClasses.TICK_MARK_INACTIVE;
-        expect(tickMarks[i].classList.contains(tickMarkClass)).toBe(true);
+        expect(tickMarks[i]).toHaveClass(tickMarkClass);
       }
     });
 
@@ -307,7 +307,7 @@ describe('MDCSlider', () => {
       for (let i = 0; i < tickMarks.length; i++) {
         const tickMarkClass = i === 0 ? cssClasses.TICK_MARK_ACTIVE :
                                         cssClasses.TICK_MARK_INACTIVE;
-        expect(tickMarks[i].classList.contains(tickMarkClass)).toBe(true);
+        expect(tickMarks[i]).toHaveClass(tickMarkClass);
       }
 
       const downEvent = createEventFrom('pointer', 'down', {clientX: 55.3});
@@ -321,7 +321,7 @@ describe('MDCSlider', () => {
         // 55.3 rounds up to 60, since step value is 10.
         const tickMarkClass = i <= 6 ? cssClasses.TICK_MARK_ACTIVE :
                                        cssClasses.TICK_MARK_INACTIVE;
-        expect(tickMarks[i].classList.contains(tickMarkClass)).toBe(true);
+        expect(tickMarks[i]).toHaveClass(tickMarkClass);
       }
     });
   });
@@ -382,15 +382,15 @@ describe('MDCSlider', () => {
 
     it('updates disabled class when setting disabled state', () => {
       ({root, component} = setUpTest());
-      expect(root.classList.contains(cssClasses.DISABLED)).toBe(false);
+      expect(root).not.toHaveClass(cssClasses.DISABLED);
 
       component.setDisabled(true);
       expect(component.getDisabled()).toBe(true);
-      expect(root.classList.contains(cssClasses.DISABLED)).toBe(true);
+      expect(root).toHaveClass(cssClasses.DISABLED);
 
       component.setDisabled(false);
       expect(component.getDisabled()).toBe(false);
-      expect(root.classList.contains(cssClasses.DISABLED)).toBe(false);
+      expect(root).not.toHaveClass(cssClasses.DISABLED);
     });
 
     it('updates input attrs when setting disabled state', () => {

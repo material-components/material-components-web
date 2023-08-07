@@ -129,8 +129,7 @@ describe('MDCCircularProgress', () => {
     const {root, component} = setupTest();
 
     component.determinate = false;
-    expect(root.classList.contains('mdc-circular-progress--indeterminate'))
-        .toBeTruthy();
+    expect(root).toHaveClass('mdc-circular-progress--indeterminate');
     expect(
         root.getAttribute(MDCCircularProgressFoundation.strings.ARIA_VALUENOW))
         .toEqual(null);
@@ -157,13 +156,11 @@ describe('MDCCircularProgress', () => {
     const {root, component} = setupTest();
 
     component.close();
-    expect(root.classList.contains('mdc-circular-progress--closed'))
-        .toBeTruthy();
+    expect(root).toHaveClass('mdc-circular-progress--closed');
     expect(component.isClosed).toBe(true);
 
     component.open();
-    expect(root.classList.contains('mdc-circular-progress--closed'))
-        .toBeFalsy();
+    expect(root).not.toHaveClass('mdc-circular-progress--closed');
     expect(component.isClosed).toBe(false);
   });
 });

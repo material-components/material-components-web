@@ -79,14 +79,14 @@ describe('MDCRipple', () => {
   it(`set unbounded() adds ${cssClasses.UNBOUNDED} when truthy`, () => {
     const {root, component} = setupTest();
     component.unbounded = true;
-    expect(root.classList.contains(cssClasses.UNBOUNDED)).toBeTruthy();
+    expect(root).toHaveClass(cssClasses.UNBOUNDED);
   });
 
   it(`set unbounded() removes ${cssClasses.UNBOUNDED} when falsy`, () => {
     const {root, component} = setupTest();
     root.classList.add(cssClasses.UNBOUNDED);
     component.unbounded = false;
-    expect(root.classList.contains(cssClasses.UNBOUNDED)).toBeFalsy();
+    expect(root).not.toHaveClass(cssClasses.UNBOUNDED);
   });
 
   it('activate() delegates to the foundation', () => {
@@ -136,14 +136,14 @@ describe('MDCRipple', () => {
   it('adapter#addClass adds a class to the root', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('adapter#removeClass removes a class from the root', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
 
   it('adapter#containsEventTarget returns true if the passed element is a descendant of the root element',
@@ -261,7 +261,7 @@ describe('MDCRipple', () => {
     const {root, component} = setupTest();
     component['foundation'].handleFocus();
     jasmine.clock().tick(1);
-    expect(root.classList.contains(cssClasses.BG_FOCUSED)).toBe(true);
+    expect(root).toHaveClass(cssClasses.BG_FOCUSED);
   });
 
   it(`handleBlur() removes class ${cssClasses.BG_FOCUSED}`, () => {
@@ -269,6 +269,6 @@ describe('MDCRipple', () => {
     root.classList.add(cssClasses.BG_FOCUSED);
     component['foundation'].handleBlur();
     jasmine.clock().tick(1);
-    expect(root.classList.contains(cssClasses.BG_FOCUSED)).toBe(false);
+    expect(root).not.toHaveClass(cssClasses.BG_FOCUSED);
   });
 });

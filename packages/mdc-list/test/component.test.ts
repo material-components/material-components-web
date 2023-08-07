@@ -281,9 +281,9 @@ describe('MDCList', () => {
        (component.getDefaultFoundation() as any)
            .adapter.addClassForElementIndex(
                1, cssClasses.LIST_ITEM_ACTIVATED_CLASS);
-       expect(selectedNode.classList.contains(
-                  deprecatedClassNameMap[cssClasses.LIST_ITEM_ACTIVATED_CLASS]))
-           .toBe(true);
+       expect(selectedNode)
+           .toHaveClass(
+               deprecatedClassNameMap[cssClasses.LIST_ITEM_ACTIVATED_CLASS]);
        document.body.removeChild(root);
      });
 
@@ -312,9 +312,9 @@ describe('MDCList', () => {
        (component.getDefaultFoundation() as any)
            .adapter.removeClassForElementIndex(
                1, cssClasses.LIST_ITEM_ACTIVATED_CLASS);
-       expect(selectedNode.classList.contains(
-                  deprecatedClassNameMap[cssClasses.LIST_ITEM_ACTIVATED_CLASS]))
-           .toBe(false);
+       expect(selectedNode)
+           .not.toHaveClass(
+               deprecatedClassNameMap[cssClasses.LIST_ITEM_ACTIVATED_CLASS]);
        document.body.removeChild(root);
      });
 

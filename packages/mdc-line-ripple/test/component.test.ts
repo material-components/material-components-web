@@ -47,7 +47,7 @@ describe('MDCLineRipple', () => {
   it('#adapter.addClass adds a class to the element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('#adapter.removeClass removes a class from the element', () => {
@@ -55,7 +55,7 @@ describe('MDCLineRipple', () => {
 
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
   it('#adapter.hasClass returns true if a class is on the element', () => {
     const {root, component} = setupTest();

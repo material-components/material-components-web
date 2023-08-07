@@ -272,6 +272,6 @@ describe('MDCChipAction', () => {
     });
 
     component.startAnimation(MDCChipAnimation.ENTER);
-    expect(root.classList.contains(MDCChipCssClasses.ENTER)).toBeTrue();
+    expect(root).toHaveClass(MDCChipCssClasses.ENTER);
   });
 });

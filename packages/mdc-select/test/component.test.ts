@@ -317,7 +317,7 @@ describe('MDCSelect', () => {
 
     component.required = true;
     expect(component.required).toBe(true);
-    expect(fixture.classList.contains(cssClasses.REQUIRED)).toBe(true);
+    expect(fixture).toHaveClass(cssClasses.REQUIRED);
     expect(anchor.getAttribute('aria-required')).toBe('true');
   });
 
@@ -327,7 +327,7 @@ describe('MDCSelect', () => {
 
     component.required = false;
     expect(component.required).toBe(false);
-    expect(fixture.classList.contains(cssClasses.REQUIRED)).toBe(false);
+    expect(fixture).not.toHaveClass(cssClasses.REQUIRED);
     expect(anchor.getAttribute('aria-required')).toBe('false');
   });
 
@@ -732,8 +732,7 @@ describe('MDCSelect', () => {
     expect((component as any).ripple).toEqual(jasmine.any(MDCRipple));
     const anchor =
         fixture.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!;
-    expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.ROOT))
-        .toBe(true);
+    expect(anchor).toHaveClass(MDCRippleFoundation.cssClasses.ROOT);
   });
 
   it(`#constructor instantiates an outline on the ${
@@ -761,8 +760,7 @@ describe('MDCSelect', () => {
     emitEvent(anchor, 'focus');
     jasmine.clock().tick(1);
 
-    expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.BG_FOCUSED))
-        .toBe(true);
+    expect(anchor).toHaveClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
   });
 
   it('#destroy removes the ripple', () => {
@@ -778,12 +776,10 @@ describe('MDCSelect', () => {
     const anchor =
         fixture.querySelector<HTMLElement>(strings.SELECT_ANCHOR_SELECTOR)!;
 
-    expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.ROOT))
-        .toBe(true);
+    expect(anchor).toHaveClass(MDCRippleFoundation.cssClasses.ROOT);
     component.destroy();
     jasmine.clock().tick(1);
-    expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.ROOT))
-        .toBe(false);
+    expect(anchor).not.toHaveClass(MDCRippleFoundation.cssClasses.ROOT);
   });
 
   it('#destroy cleans up the outline if present', () => {
@@ -806,14 +802,14 @@ describe('MDCSelect', () => {
   it('adapter#addClass adds a class to the root element', () => {
     const {component, fixture} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(fixture.classList.contains('foo')).toBe(true);
+    expect(fixture).toHaveClass('foo');
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {component, fixture} = setupTest();
     fixture.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(fixture.classList.contains('foo')).toBe(false);
+    expect(fixture).not.toHaveClass('foo');
   });
 
   it('adapter#hasClass returns true if a class exists on the root element',
@@ -1514,7 +1510,7 @@ describe('MDCSelect', () => {
        const component = new MDCSelect(root);
        expect((component as any).leadingIcon)
            .toEqual(jasmine.any(MDCSelectIcon));
-       expect(root.classList.contains(cssClasses.WITH_LEADING_ICON)).toBe(true);
+       expect(root).toHaveClass(cssClasses.WITH_LEADING_ICON);
      });
 
   it('#constructor instantiates the helper text if present', () => {

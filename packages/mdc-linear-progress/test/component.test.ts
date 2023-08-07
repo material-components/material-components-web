@@ -88,8 +88,7 @@ describe('MDCLinearProgress', () => {
     const {root, component} = setupTest();
 
     component.determinate = false;
-    expect(root.classList.contains('mdc-linear-progress--indeterminate'))
-        .toBeTruthy();
+    expect(root).toHaveClass('mdc-linear-progress--indeterminate');
     expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUENOW))
         .toEqual(null);
     expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUEMAX))
@@ -128,15 +127,13 @@ describe('MDCLinearProgress', () => {
     const {root, component} = setupTest();
 
     component.close();
-    expect(root.classList.contains('mdc-linear-progress--closed')).toBeTrue();
+    expect(root).toHaveClass('mdc-linear-progress--closed');
     emitEvent(root, 'transitionend');
-    expect(root.classList.contains('mdc-linear-progress--closed-animation-off'))
-        .toBeTrue();
+    expect(root).toHaveClass('mdc-linear-progress--closed-animation-off');
 
     component.open();
-    expect(root.classList.contains('mdc-linear-progress--closed')).toBeFalse();
-    expect(root.classList.contains('mdc-linear-progress--closed-animation-off'))
-        .toBeFalse();
+    expect(root).not.toHaveClass('mdc-linear-progress--closed');
+    expect(root).not.toHaveClass('mdc-linear-progress--closed-animation-off');
   });
 
   describe('attach to dom', () => {

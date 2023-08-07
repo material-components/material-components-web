@@ -487,17 +487,17 @@ describe('MDCTextField', () => {
   it('get/set disabled updates the component styles', () => {
     const {root, component} = setupTest();
     component.disabled = true;
-    expect(root.classList.contains(cssClasses.DISABLED)).toBeTruthy();
+    expect(root).toHaveClass(cssClasses.DISABLED);
     component.disabled = false;
-    expect(root.classList.contains(cssClasses.DISABLED)).toBeFalsy();
+    expect(root).not.toHaveClass(cssClasses.DISABLED);
   });
 
   it('set valid updates the component styles', () => {
     const {root, component} = setupTest();
     component.valid = false;
-    expect(root.classList.contains(cssClasses.INVALID)).toBeTruthy();
+    expect(root).toHaveClass(cssClasses.INVALID);
     component.valid = true;
-    expect(root.classList.contains(cssClasses.INVALID)).toBeFalsy();
+    expect(root).not.toHaveClass(cssClasses.INVALID);
   });
 
   it('set helperTextContent has no effect when no helper text element is present',
@@ -543,7 +543,7 @@ describe('MDCTextField', () => {
   it('#adapter.addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBeTruthy();
+    expect(root).toHaveClass('foo');
   });
 
   it('layout calls foundation notchOutline', () => {
@@ -557,7 +557,7 @@ describe('MDCTextField', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBeFalsy();
+    expect(root).not.toHaveClass('foo');
   });
 
   it('#adapter.setInputAttr sets attribute on input element', () => {

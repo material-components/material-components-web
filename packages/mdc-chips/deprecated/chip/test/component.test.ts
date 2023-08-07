@@ -242,14 +242,14 @@ describe('MDCChip', () => {
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
 
   it('adapter#addClassToLeadingIcon adds a class to the leading icon element',
@@ -260,7 +260,7 @@ describe('MDCChip', () => {
 
        (component.getDefaultFoundation() as any)
            .adapter.addClassToLeadingIcon('foo');
-       expect(leadingIcon.classList.contains('foo')).toBe(true);
+       expect(leadingIcon).toHaveClass('foo');
      });
 
   it('adapter#addClassToLeadingIcon does nothing if no leading icon element is present',
@@ -281,7 +281,7 @@ describe('MDCChip', () => {
        leadingIcon.classList.add('foo');
        (component.getDefaultFoundation() as any)
            .adapter.removeClassFromLeadingIcon('foo');
-       expect(leadingIcon.classList.contains('foo')).toBe(false);
+       expect(leadingIcon).not.toHaveClass('foo');
      });
 
   it('adapter#removeClassFromLeadingIcon does nothing if no leading icon element is present',

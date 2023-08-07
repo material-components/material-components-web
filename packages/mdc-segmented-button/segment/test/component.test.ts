@@ -120,7 +120,7 @@ describe('MDCSegmentedButtonSegment', () => {
 
       root.classList.remove(testStrings.CLASS);
       adapter.addClass(testStrings.CLASS);
-      expect(root.classList.contains(testStrings.CLASS)).toBeTrue();
+      expect(root).toHaveClass(testStrings.CLASS);
 
       component.destroy();
     });
@@ -130,7 +130,7 @@ describe('MDCSegmentedButtonSegment', () => {
 
       root.classList.add(testStrings.CLASS);
       adapter.removeClass(testStrings.CLASS);
-      expect(root.classList.contains(testStrings.CLASS)).toBeFalse();
+      expect(root).not.toHaveClass(testStrings.CLASS);
 
       component.destroy();
     });
@@ -194,14 +194,14 @@ describe('MDCSegmentedButtonSegment', () => {
     root.setAttribute(attributes.ARIA_PRESSED, booleans.FALSE);
     component.setIsSingleSelect(false);
     component.setSelected();
-    expect(root.classList.contains(cssClasses.SELECTED)).toBeTrue();
+    expect(root).toHaveClass(cssClasses.SELECTED);
     expect(root.getAttribute(attributes.ARIA_PRESSED)).toEqual(booleans.TRUE);
 
     root.classList.remove(cssClasses.SELECTED);
     root.setAttribute(attributes.ARIA_CHECKED, booleans.FALSE);
     component.setIsSingleSelect(true);
     component.setSelected();
-    expect(root.classList.contains(cssClasses.SELECTED)).toBeTrue();
+    expect(root).toHaveClass(cssClasses.SELECTED);
     expect(root.getAttribute(attributes.ARIA_CHECKED)).toEqual(booleans.TRUE);
 
     component.destroy();
@@ -211,20 +211,20 @@ describe('MDCSegmentedButtonSegment', () => {
     const {root, component} = setupTest();
 
     component.setUnselected();
-    expect(root.classList.contains(cssClasses.SELECTED)).toBeFalse();
+    expect(root).not.toHaveClass(cssClasses.SELECTED);
 
     root.classList.add(cssClasses.SELECTED);
     root.setAttribute(attributes.ARIA_PRESSED, booleans.TRUE);
     component.setIsSingleSelect(false);
     component.setUnselected();
-    expect(root.classList.contains(cssClasses.SELECTED)).toBeFalse();
+    expect(root).not.toHaveClass(cssClasses.SELECTED);
     expect(root.getAttribute(attributes.ARIA_PRESSED)).toEqual(booleans.FALSE);
 
     root.classList.add(cssClasses.SELECTED);
     root.setAttribute(attributes.ARIA_CHECKED, booleans.TRUE);
     component.setIsSingleSelect(true);
     component.setUnselected();
-    expect(root.classList.contains(cssClasses.SELECTED)).toBeFalse();
+    expect(root).not.toHaveClass(cssClasses.SELECTED);
     expect(root.getAttribute(attributes.ARIA_CHECKED)).toEqual(booleans.FALSE);
 
     component.destroy();

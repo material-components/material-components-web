@@ -65,8 +65,7 @@ describe('MDCSwitch', () => {
     it('#constructor initializes the root element with a ripple', () => {
       const {rippleSurface} = setupTest();
       jasmine.clock().tick(1);
-      expect(rippleSurface!.classList.contains('mdc-ripple-upgraded'))
-          .toBeTruthy();
+      expect(rippleSurface).toHaveClass('mdc-ripple-upgraded');
     });
 
     it('#destroy removes the ripple', () => {
@@ -74,8 +73,7 @@ describe('MDCSwitch', () => {
       jasmine.clock().tick(1);
       component.destroy();
       jasmine.clock().tick(1);
-      expect(rippleSurface!.classList.contains('mdc-ripple-upgraded'))
-          .toBeFalsy();
+      expect(rippleSurface).not.toHaveClass('mdc-ripple-upgraded');
     });
   }
 
@@ -92,11 +90,9 @@ describe('MDCSwitch', () => {
   it('get/set checked updates the component styles', () => {
     const {root, component} = setupTest();
     component.checked = true;
-    expect(root.classList.contains(MDCSwitchFoundation.cssClasses.CHECKED))
-        .toBeTruthy();
+    expect(root).toHaveClass(MDCSwitchFoundation.cssClasses.CHECKED);
     component.checked = false;
-    expect(root.classList.contains(MDCSwitchFoundation.cssClasses.CHECKED))
-        .toBeFalsy();
+    expect(root).not.toHaveClass(MDCSwitchFoundation.cssClasses.CHECKED);
   });
 
   it('get/set disabled updates the disabled value of the native switch input element',
@@ -115,11 +111,9 @@ describe('MDCSwitch', () => {
   it('get/set disabled updates the component styles', () => {
     const {root, component} = setupTest();
     component.disabled = true;
-    expect(root.classList.contains(MDCSwitchFoundation.cssClasses.DISABLED))
-        .toBeTruthy();
+    expect(root).toHaveClass(MDCSwitchFoundation.cssClasses.DISABLED);
     component.disabled = false;
-    expect(root.classList.contains(MDCSwitchFoundation.cssClasses.DISABLED))
-        .toBeFalsy();
+    expect(root).not.toHaveClass(MDCSwitchFoundation.cssClasses.DISABLED);
   });
 
   it('get/set checked updates the aria-checked of the native switch input element',

@@ -59,7 +59,7 @@ describe('MDCRadio', () => {
     it('#constructor initializes the root element with a ripple', () => {
       const {root} = setupTest();
       jasmine.clock().tick(1);
-      expect(root.classList.contains('mdc-ripple-upgraded')).toBeTruthy();
+      expect(root).toHaveClass('mdc-ripple-upgraded');
     });
 
     it('#destroy removes the ripple', () => {
@@ -67,7 +67,7 @@ describe('MDCRadio', () => {
       jasmine.clock().tick(1);
       component.destroy();
       jasmine.clock().tick(1);
-      expect(root.classList.contains('mdc-ripple-upgraded')).toBeFalsy();
+      expect(root).not.toHaveClass('mdc-ripple-upgraded');
     });
   }
 
@@ -111,14 +111,14 @@ describe('MDCRadio', () => {
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
 
   it('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to true',

@@ -73,20 +73,20 @@ describe('MDCTabScroller', () => {
   it('#adapter.addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('#adapter.removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
 
   it('#adapter.addScrollAreaClass adds a class to the area element', () => {
     const {component, area} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addScrollAreaClass('foo');
-    expect(area.classList.contains('foo')).toBe(true);
+    expect(area).toHaveClass('foo');
   });
 
   it('#adapter.setScrollAreaStyleProperty sets a style property on the area element',

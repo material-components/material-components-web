@@ -222,7 +222,7 @@ describe('MDCDrawer', () => {
   it('adapter#addClass adds class to drawer', () => {
     const {component, drawer} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('test-class');
-    expect(drawer.classList.contains('test-class')).toBe(true);
+    expect(drawer).toHaveClass('test-class');
   });
 
   it('adapter#removeClass removes class from drawer', () => {
@@ -230,7 +230,7 @@ describe('MDCDrawer', () => {
     (component.getDefaultFoundation() as any).adapter.addClass('test-class');
 
     (component.getDefaultFoundation() as any).adapter.removeClass('test-class');
-    expect(drawer.classList.contains('test-class')).toBe(false);
+    expect(drawer).not.toHaveClass('test-class');
   });
 
   it('adapter#hasClass returns true when class is on drawer element', () => {

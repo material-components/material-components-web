@@ -83,20 +83,20 @@ describe('MDCTab', () => {
     jasmine.clock().tick(1);
     component.destroy();
     jasmine.clock().tick(1);
-    expect(root.classList.contains('mdc-ripple-upgraded')).toBeFalsy();
+    expect(root).not.toHaveClass('mdc-ripple-upgraded');
   });
 
   it('#adapter.addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('#adapter.removeClass removes a class to the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
 
   it('#adapter.hasClass returns true if a class exists on the root element',
@@ -118,18 +118,16 @@ describe('MDCTab', () => {
   it('#adapter.activateIndicator activates the indicator subcomponent', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.activateIndicator();
-    expect((root.querySelector<HTMLElement>('.mdc-tab-indicator') as Element)
-               .classList.contains('mdc-tab-indicator--active'))
-        .toBeTruthy();
+    expect(root.querySelector<HTMLElement>('.mdc-tab-indicator'))
+        .toHaveClass('mdc-tab-indicator--active');
   });
 
   it('#adapter.deactivateIndicator deactivates the indicator subcomponent',
      () => {
        const {root, component} = setupTest();
        (component.getDefaultFoundation() as any).adapter.deactivateIndicator();
-       expect((root.querySelector<HTMLElement>('.mdc-tab-indicator') as Element)
-                  .classList.contains('mdc-tab-indicator--active'))
-           .toBeFalsy();
+       expect(root.querySelector<HTMLElement>('.mdc-tab-indicator'))
+           .not.toHaveClass('mdc-tab-indicator--active');
      });
 
   it('#adapter.getOffsetWidth() returns the offsetWidth of the root element',

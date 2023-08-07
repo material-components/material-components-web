@@ -182,9 +182,9 @@ describe('MDCDialog', () => {
     const {yesButton, noButton, cancelButton} = setupTest();
     jasmine.clock().tick(1);
 
-    expect(yesButton.classList.contains('mdc-ripple-upgraded')).toBe(true);
-    expect(noButton.classList.contains('mdc-ripple-upgraded')).toBe(true);
-    expect(cancelButton.classList.contains('mdc-ripple-upgraded')).toBe(true);
+    expect(yesButton).toHaveClass('mdc-ripple-upgraded');
+    expect(noButton).toHaveClass('mdc-ripple-upgraded');
+    expect(cancelButton).toHaveClass('mdc-ripple-upgraded');
   });
 
   it('#destroy cleans up all ripples on footer buttons', () => {
@@ -198,9 +198,9 @@ describe('MDCDialog', () => {
     component.destroy();
     jasmine.clock().tick(1);
 
-    expect(yesButton.classList.contains('mdc-ripple-upgraded')).toBe(false);
-    expect(noButton.classList.contains('mdc-ripple-upgraded')).toBe(false);
-    expect(cancelButton.classList.contains('mdc-ripple-upgraded')).toBe(false);
+    expect(yesButton).not.toHaveClass('mdc-ripple-upgraded');
+    expect(noButton).not.toHaveClass('mdc-ripple-upgraded');
+    expect(cancelButton).not.toHaveClass('mdc-ripple-upgraded');
   });
 
   it('#open forwards to MDCDialogFoundation#open', () => {
@@ -297,7 +297,7 @@ describe('MDCDialog', () => {
       jasmine.clock().tick(1);
       jasmine.clock().tick(1);
 
-      expect(root.classList.contains('mdc-dialog--scrollable')).toBe(true);
+      expect(root).toHaveClass('mdc-dialog--scrollable');
     } finally {
       document.body.removeChild(fixture);
     }
@@ -306,14 +306,14 @@ describe('MDCDialog', () => {
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
 
   it('adapter#hasClass returns whether a class exists on the root element',
@@ -331,9 +331,8 @@ describe('MDCDialog', () => {
     const {component} = setupTest();
     (component.getDefaultFoundation() as any)
         .adapter.addBodyClass('mdc-dialog--scroll-lock');
-    expect((document.querySelector<HTMLElement>('body')!
-            ).classList.contains('mdc-dialog--scroll-lock'))
-        .toBe(true);
+    expect((document.querySelector<HTMLElement>('body')!))
+        .toHaveClass('mdc-dialog--scroll-lock');
   });
 
   it('adapter#removeBodyClass removes a class from the body', () => {
@@ -343,7 +342,7 @@ describe('MDCDialog', () => {
     body.classList.add('mdc-dialog--scroll-lock');
     (component.getDefaultFoundation() as any)
         .adapter.removeBodyClass('mdc-dialog--scroll-lock');
-    expect(body.classList.contains('mdc-dialog--scroll-lock')).toBe(false);
+    expect(body).not.toHaveClass('mdc-dialog--scroll-lock');
   });
 
   it('adapter#eventTargetMatches returns whether or not the target matches the selector',

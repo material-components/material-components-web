@@ -352,8 +352,7 @@ describe('MDCDataTable', () => {
     const {component, adapter} = setupTest();
 
     adapter.addClassAtRowIndex(1, 'test-class-name');
-    expect(component.getRows()[1].classList.contains('test-class-name'))
-        .toBe(true);
+    expect(component.getRows()[1]).toHaveClass('test-class-name');
 
     component.destroy();
   });
@@ -364,9 +363,7 @@ describe('MDCDataTable', () => {
 
        adapter.addClassAtRowIndex(1, 'test-remove-class-name');
        adapter.removeClassAtRowIndex(1, 'test-remove-class-name');
-       expect(
-           component.getRows()[1].classList.contains('test-remove-class-name'))
-           .toBe(false);
+       expect(component.getRows()[1]).not.toHaveClass('test-remove-class-name');
 
        component.destroy();
      });
@@ -778,7 +775,7 @@ describe('MDCDataTable', () => {
 
          component.showProgress();
          expect(progressIndicator!.style.cssText).toMatch(/(height|top)/);
-         expect(root.classList.contains(cssClasses.IN_PROGRESS)).toBe(true);
+         expect(root).toHaveClass(cssClasses.IN_PROGRESS);
 
          destroyProgress(component, root);
          component.destroy();
@@ -789,7 +786,7 @@ describe('MDCDataTable', () => {
 
       component.showProgress();
       component.hideProgress();
-      expect(root.classList.contains(cssClasses.IN_PROGRESS)).toBe(false);
+      expect(root).not.toHaveClass(cssClasses.IN_PROGRESS);
 
       destroyProgress(component, root);
       component.destroy();

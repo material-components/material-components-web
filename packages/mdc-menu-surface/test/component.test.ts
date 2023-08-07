@@ -197,14 +197,14 @@ describe('MDCMenuSurface', () => {
   it('setFixedPosition is true', () => {
     const {root, component, mockFoundation} = setupTest();
     component.setFixedPosition(true);
-    expect(root.classList.contains(cssClasses.FIXED)).toBe(true);
+    expect(root).toHaveClass(cssClasses.FIXED);
     expect(mockFoundation.setFixedPosition).toHaveBeenCalledWith(true);
   });
 
   it('setFixedPosition is false', () => {
     const {root, component, mockFoundation} = setupTest();
     component.setFixedPosition(false);
-    expect(root.classList.contains(cssClasses.FIXED)).toBe(false);
+    expect(root).not.toHaveClass(cssClasses.FIXED);
     expect(mockFoundation.setFixedPosition).toHaveBeenCalledWith(false);
   });
 
@@ -245,14 +245,14 @@ describe('MDCMenuSurface', () => {
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.addClass('foo');
-    expect(root.classList.contains('foo')).toBe(true);
+    expect(root).toHaveClass('foo');
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter.removeClass('foo');
-    expect(root.classList.contains('foo')).toBe(false);
+    expect(root).not.toHaveClass('foo');
   });
 
   it('adapter#hasClass returns true if the root element has specified class',

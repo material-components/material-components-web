@@ -389,9 +389,7 @@ describe('MDCMenu', () => {
     root.dispatchEvent(event);
 
     // TODO(b/182902089): use list constants once this code has been migrated.
-    expect((document.activeElement as HTMLElement)
-               .classList.contains('mdc-deprecated-list'))
-        .toBe(true);
+    expect(document.activeElement).toHaveClass('mdc-deprecated-list');
     document.body.removeChild(root);
   });
 
@@ -456,7 +454,7 @@ describe('MDCMenu', () => {
            root.querySelector<HTMLElement>('.mdc-deprecated-list-item')!;
        (component.getDefaultFoundation() as any)
            .adapter.addClassToElementAtIndex(0, 'foo');
-       expect(firstItem.classList.contains('foo')).toBe(true);
+       expect(firstItem).toHaveClass('foo');
      });
 
   it('adapter#removeClassFromElementAtIndex adds a class to the element at the index provided',
@@ -467,7 +465,7 @@ describe('MDCMenu', () => {
        firstItem.classList.add('foo');
        (component.getDefaultFoundation() as any)
            .adapter.removeClassFromElementAtIndex(0, 'foo');
-       expect(firstItem.classList.contains('foo')).toBe(false);
+       expect(firstItem).not.toHaveClass('foo');
      });
 
   it('adapter#addAttributeToElementAtIndex adds a class to the element at the index provided',
