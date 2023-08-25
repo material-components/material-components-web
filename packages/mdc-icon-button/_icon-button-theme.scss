@@ -34,6 +34,7 @@
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
 @use '@material/dom/dom';
+@use '@material/theme/custom-properties';
 @use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
@@ -311,6 +312,13 @@ $light-theme: (
 @mixin _state-layer-size($size) {
   @include theme.property(height, $size);
   @include theme.property(width, $size);
+
+  @if $size {
+    $value: custom-properties.get-declaration-value($size);
+    @if type-of($value) == 'number' {
+      @include size($value);
+    }
+  }
 }
 
 @mixin _icon-size($size) {
