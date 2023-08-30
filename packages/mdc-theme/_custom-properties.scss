@@ -33,6 +33,7 @@ $_config: (
   emit-custom-properties: true,
   emit-fallback-values: true,
   emit-fallback-vars: true,
+  emit-declaration-fallback: true,
   varname-prefix: 'mdc',
 );
 
@@ -250,7 +251,11 @@ $_config: (
 @function get-declaration-fallback($custom-prop) {
   $emit-custom-properties: map.get($_config, emit-custom-properties);
   $emit-fallback-values: map.get($_config, emit-fallback-values);
-  @if not $emit-custom-properties or not $emit-fallback-values {
+  $emit-declaration-fallback: map.get($_config, emit-declaration-fallback);
+  @if (not $emit-custom-properties) or
+    (not $emit-fallback-values) or
+    (not $emit-declaration-fallback)
+  {
     @return null;
   }
 
