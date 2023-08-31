@@ -496,6 +496,20 @@ $disabled-container-color: rgba(
     $query: $query
   );
 
+  $radius-value: $radius;
+  @if custom-properties.is-custom-prop($radius) {
+    $radius-value: custom-properties.get-declaration-value($radius);
+  }
+
+  @if $radius-value != 0 and type-of($radius-value) == 'number' {
+    .mdc-button__focus-ring {
+      @include focus-ring.focus-ring-radius(
+        $ring-radius: $radius-value,
+        $query: $query
+      );
+    }
+  }
+
   #{button-ripple.$ripple-target} {
     @include shape-mixins.radius(
       $radius,
