@@ -180,6 +180,9 @@ $disabled-container-color: rgba(
     $shadow-color: map.get($theme, container-shadow-color),
     $query: $query
   );
+
+  @include _focus-ring-color(map.get($theme, focus-ring-color), $query);
+  @include _focus-ring-offset(map.get($theme, focus-ring-offset), $query);
 }
 
 @function resolve-theme-elevation-keys($theme, $resolver) {
@@ -496,20 +499,6 @@ $disabled-container-color: rgba(
     $query: $query
   );
 
-  $radius-value: $radius;
-  @if custom-properties.is-custom-prop($radius) {
-    $radius-value: custom-properties.get-declaration-value($radius);
-  }
-
-  @if $radius-value != 0 and type-of($radius-value) == 'number' {
-    .mdc-button__focus-ring {
-      @include focus-ring.focus-ring-radius(
-        $ring-radius: $radius-value,
-        $query: $query
-      );
-    }
-  }
-
   #{button-ripple.$ripple-target} {
     @include shape-mixins.radius(
       $radius,
@@ -518,6 +507,8 @@ $disabled-container-color: rgba(
       $query: $query
     );
   }
+
+  @include _focus-ring-shape($radius, $query);
 }
 
 ///
@@ -761,6 +752,57 @@ $disabled-container-color: rgba(
           $query: $query
         );
       }
+    }
+  }
+}
+
+@mixin _focus-ring-shape($radius, $query: feature-targeting.all()) {
+  $radius-value: if(
+    custom-properties.is-custom-prop($radius),
+    custom-properties.get-declaration-value($radius),
+    $radius
+  );
+
+  .mdc-button__focus-ring {
+    @if $radius-value != 0 and type-of($radius-value) == 'number' {
+      @include focus-ring.focus-ring-radius(
+        $ring-radius: $radius-value,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _focus-ring-color($color, $query: feature-targeting.all()) {
+  $color-value: if(
+    custom-properties.is-custom-prop($color),
+    custom-properties.get-declaration-value($color),
+    $color
+  );
+
+  .mdc-button__focus-ring {
+    @if $color != null {
+      @include focus-ring.focus-ring-color(
+        $inner-ring-color: $color-value,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _focus-ring-offset($offset, $query: feature-targeting.all()) {
+  $offset-value: if(
+    custom-properties.is-custom-prop($offset),
+    custom-properties.get-declaration-value($offset),
+    $offset
+  );
+
+  .mdc-button__focus-ring {
+    @if $offset-value != 0 and type-of($offset-value) == 'number' {
+      @include focus-ring.focus-ring-offset(
+        $offset: $offset-value,
+        $query: $query
+      );
     }
   }
 }

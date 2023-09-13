@@ -38,8 +38,10 @@ $container-outer-padding-default: 2px !default;
 /// @param $inner-ring-color [$inner-ring-color-default] - Inner focus ring color.
 /// @param $outer-ring-width [$outer-ring-width-default] - Outer focus ring width.
 /// @param $outer-ring-color [$outer-ring-color-default] - Outer focus ring color.
-/// @param $container-outer-padding [$container-outer-padding-default] - The
-///     distance between the focus ring and the container.
+/// @param $container-outer-padding-vertical [$container-outer-padding-default]
+////    - The vertical distance between the focus ring and the container.
+/// @param $container-outer-padding-horizontal [$container-outer-padding-default]
+////    - The horizontal distance between the focus ring and the container.
 @mixin focus-ring(
   $query: feature-targeting.all(),
   $ring-radius: $ring-radius-default,
@@ -51,22 +53,12 @@ $container-outer-padding-default: 2px !default;
   $container-outer-padding-horizontal: $container-outer-padding-default
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $container-size-vertical: 100%;
-  @if $container-outer-padding-vertical != 0 {
-    $container-size-vertical: calc(
-      100% + #{$container-outer-padding-vertical * 2}
-    );
-  }
-  $container-size-horizontal: 100%;
-  @if $container-outer-padding-horizontal != 0 {
-    $container-size-horizontal: calc(
-      100% + #{$container-outer-padding-horizontal * 2}
-    );
-  }
+
   $outer-ring-size: 100%;
   @if $outer-ring-width > 0 {
     $outer-ring-size: calc(100% + #{$outer-ring-width * 2});
   }
+
   @include feature-targeting.targets($feat-structure) {
     pointer-events: none;
     border: $inner-ring-width solid $inner-ring-color;
@@ -78,8 +70,6 @@ $container-outer-padding-default: 2px !default;
     left: 50%;
     @include rtl.ignore-next-line();
     transform: translate(-50%, -50%);
-    height: $container-size-vertical;
-    width: $container-size-horizontal;
 
     @include dom.forced-colors-mode($exclude-ie11: true) {
       border-color: CanvasText;
@@ -104,19 +94,66 @@ $container-outer-padding-default: 2px !default;
       }
     }
   }
+
+  @include focus-ring-offset(
+    $container-outer-padding-vertical,
+    $container-outer-padding-horizontal,
+    $query: $query
+  );
 }
-/// Customizes the color of the button focus ring.
+
+/// Customizes the color of the focus ring.
 ///
 /// @param $inner-ring-color [$inner-ring-color-default] - Inner focus ring color.
 /// @param $outer-ring-width [$outer-ring-width-default] - Outer focus ring width.
 @mixin focus-ring-color(
   $inner-ring-color: $inner-ring-color-default,
-  $outer-ring-color: $outer-ring-color-default
+  $outer-ring-color: $outer-ring-color-default,
+  $query: feature-targeting.all()
 ) {
-  border-color: $inner-ring-color;
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  &::after {
-    border-color: $outer-ring-color;
+  @include feature-targeting.targets($feat-structure) {
+    border-color: $inner-ring-color;
+
+    &::after {
+      border-color: $outer-ring-color;
+    }
+  }
+}
+
+/// Customizes the offset of the focus ring.
+///
+/// @param $container-outer-padding-vertical [$container-outer-padding-default]
+////    - The vertical distance between the focus ring and the container.
+/// @param $container-outer-padding-horizontal [$container-outer-padding-default]
+////    - The horizontal distance between the focus ring and the container.
+@mixin focus-ring-offset(
+  $container-outer-padding-vertical: $container-outer-padding-default,
+  $container-outer-padding-horizontal: $container-outer-padding-default,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $container-size-vertical: 100%;
+  $container-size-vertical-offset: $container-outer-padding-vertical + $offset *
+    2;
+  @if $container-size-vertical-offset != 0 {
+    $container-size-vertical: calc(100% + $container-size-vertical-offset * 2);
+  }
+  $container-size-horizontal: 100%;
+  $container-size-horizontal-offset: $container-outer-padding-horizontal +
+    $offset * 2;
+  @if $container-size-horizontal-offset != 0 {
+    $container-size-horizontal: calc(
+      100% + $container-size-horizontal-offset * 2
+    );
+  }
+
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    height: $container-size-vertical;
+    width: $container-size-horizontal;
   }
 }
 
