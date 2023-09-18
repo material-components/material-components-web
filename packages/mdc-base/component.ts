@@ -97,15 +97,15 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
    * This is most useful when listening for custom events.
    */
   listen<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>,
+      eventType: K, handler: SpecificEventListener<K>,
       options?: AddEventListenerOptions|boolean): void;
   listen<E extends Event>(
-      evtType: string, handler: CustomEventListener<E>,
+      eventType: string, handler: CustomEventListener<E>,
       options?: AddEventListenerOptions|boolean): void;
   listen(
-      evtType: string, handler: EventListener,
+      eventType: string, handler: EventListener,
       options?: AddEventListenerOptions|boolean) {
-    this.root.addEventListener(evtType, handler, options);
+    this.root.addEventListener(eventType, handler, options);
   }
 
   /**
@@ -113,34 +113,34 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
    * This is most useful when unlistening for custom events.
    */
   unlisten<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>,
+      eventType: K, handler: SpecificEventListener<K>,
       options?: AddEventListenerOptions|boolean): void;
   unlisten<E extends Event>(
-      evtType: string, handler: CustomEventListener<E>,
+      eventType: string, handler: CustomEventListener<E>,
       options?: AddEventListenerOptions|boolean): void;
   unlisten(
-      evtType: string, handler: EventListener,
+      eventType: string, handler: EventListener,
       options?: AddEventListenerOptions|boolean) {
-    this.root.removeEventListener(evtType, handler, options);
+    this.root.removeEventListener(eventType, handler, options);
   }
 
   /**
    * Fires a cross-browser-compatible custom event from the component root of
    * the given type, with the given data.
    */
-  emit<T extends object>(evtType: string, evtData: T, shouldBubble = false) {
-    let evt: CustomEvent<T>;
+  emit<T extends object>(eventType: string, eventData: T, shouldBubble = false) {
+    let event: CustomEvent<T>;
     if (typeof CustomEvent === 'function') {
-      evt = new CustomEvent<T>(evtType, {
+      event = new CustomEvent<T>(eventType, {
         bubbles: shouldBubble,
-        detail: evtData,
+        detail: eventData,
       });
     } else {
-      evt = document.createEvent('CustomEvent');
-      evt.initCustomEvent(evtType, shouldBubble, false, evtData);
+      event = document.createEvent('CustomEvent');
+      event.initCustomEvent(eventType, shouldBubble, false, eventData);
     }
 
-    this.root.dispatchEvent(evt);
+    this.root.dispatchEvent(event);
   }
 
   /**

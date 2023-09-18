@@ -67,23 +67,23 @@ export class MDCTextFieldIconFoundation extends
   constructor(adapter?: Partial<MDCTextFieldIconAdapter>) {
     super({...MDCTextFieldIconFoundation.defaultAdapter, ...adapter});
 
-    this.interactionHandler = (evt) => {
-      this.handleInteraction(evt);
+    this.interactionHandler = (event) => {
+      this.handleInteraction(event);
     };
   }
 
   override init() {
     this.savedTabIndex = this.adapter.getAttr('tabindex');
 
-    for (const evtType of INTERACTION_EVENTS) {
-      this.adapter.registerInteractionHandler(evtType, this.interactionHandler);
+    for (const eventType of INTERACTION_EVENTS) {
+      this.adapter.registerInteractionHandler(eventType, this.interactionHandler);
     }
   }
 
   override destroy() {
-    for (const evtType of INTERACTION_EVENTS) {
+    for (const eventType of INTERACTION_EVENTS) {
       this.adapter.deregisterInteractionHandler(
-          evtType, this.interactionHandler);
+          eventType, this.interactionHandler);
     }
   }
 
@@ -109,12 +109,12 @@ export class MDCTextFieldIconFoundation extends
     this.adapter.setContent(content);
   }
 
-  handleInteraction(evt: MouseEvent|KeyboardEvent) {
-    const isEnterKey = (evt as KeyboardEvent).key === 'Enter' ||
-        (evt as KeyboardEvent).keyCode === 13;
-    const isSpaceKey = (evt as KeyboardEvent).key === ' ';
-    if (evt.type === 'click' || isEnterKey || isSpaceKey) {
-      evt.preventDefault();  // stop click from causing host label to focus
+  handleInteraction(event: MouseEvent|KeyboardEvent) {
+    const isEnterKey = (event as KeyboardEvent).key === 'Enter' ||
+        (event as KeyboardEvent).keyCode === 13;
+    const isSpaceKey = (event as KeyboardEvent).key === ' ';
+    if (event.type === 'click' || isEnterKey || isSpaceKey) {
+      event.preventDefault();  // stop click from causing host label to focus
                              // input
       this.adapter.notifyIconAction();
     }

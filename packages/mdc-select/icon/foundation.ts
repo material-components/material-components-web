@@ -65,23 +65,23 @@ export class MDCSelectIconFoundation extends
   constructor(adapter?: Partial<MDCSelectIconAdapter>) {
     super({...MDCSelectIconFoundation.defaultAdapter, ...adapter});
 
-    this.interactionHandler = (evt) => {
-      this.handleInteraction(evt);
+    this.interactionHandler = (event) => {
+      this.handleInteraction(event);
     };
   }
 
   override init() {
     this.savedTabIndex = this.adapter.getAttr('tabindex');
 
-    for (const evtType of INTERACTION_EVENTS) {
-      this.adapter.registerInteractionHandler(evtType, this.interactionHandler);
+    for (const eventType of INTERACTION_EVENTS) {
+      this.adapter.registerInteractionHandler(eventType, this.interactionHandler);
     }
   }
 
   override destroy() {
-    for (const evtType of INTERACTION_EVENTS) {
+    for (const eventType of INTERACTION_EVENTS) {
       this.adapter.deregisterInteractionHandler(
-          evtType, this.interactionHandler);
+          eventType, this.interactionHandler);
     }
   }
 
@@ -107,10 +107,10 @@ export class MDCSelectIconFoundation extends
     this.adapter.setContent(content);
   }
 
-  handleInteraction(evt: MouseEvent|KeyboardEvent) {
-    const isEnterKey = (evt as KeyboardEvent).key === 'Enter' ||
-        (evt as KeyboardEvent).keyCode === 13;
-    if (evt.type === 'click' || isEnterKey) {
+  handleInteraction(event: MouseEvent|KeyboardEvent) {
+    const isEnterKey = (event as KeyboardEvent).key === 'Enter' ||
+        (event as KeyboardEvent).keyCode === 13;
+    if (event.type === 'click' || isEnterKey) {
       this.adapter.notifyIconAction();
     }
   }

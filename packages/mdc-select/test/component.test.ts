@@ -1324,19 +1324,19 @@ describe('MDCSelect', () => {
        document.body.appendChild(fixture);
        component.destroy();
 
-       const evtType = MDCMenuFoundation.strings.SELECTED_EVENT;
+       const eventType = MDCMenuFoundation.strings.SELECTED_EVENT;
        const detail = {index: 1};
-       let evt;
+       let event;
        if (typeof CustomEvent === 'function') {
-         evt = new CustomEvent(evtType, {
+         event = new CustomEvent(eventType, {
            detail,
            bubbles: false,
          });
        } else {
-         evt = document.createEvent('CustomEvent');
-         evt.initCustomEvent(evtType, false, false, detail);
+         event = document.createEvent('CustomEvent');
+         event.initCustomEvent(eventType, false, false, detail);
        }
-       menuSurface.dispatchEvent(evt);
+       menuSurface.dispatchEvent(event);
        expect(mockFoundation.setSelectedIndex).not.toHaveBeenCalledWith(1);
 
        document.body.removeChild(fixture);
@@ -1461,19 +1461,19 @@ describe('MDCSelect', () => {
     const {fixture, menuSurface, mockFoundation} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const evtType = MDCMenuFoundation.strings.SELECTED_EVENT;
+    const eventType = MDCMenuFoundation.strings.SELECTED_EVENT;
     const detail = {index: 1};
-    let evt;
+    let event;
     if (typeof CustomEvent === 'function') {
-      evt = new CustomEvent(evtType, {
+      event = new CustomEvent(eventType, {
         detail,
         bubbles: false,
       });
     } else {
-      evt = document.createEvent('CustomEvent');
-      evt.initCustomEvent(evtType, false, false, detail);
+      event = document.createEvent('CustomEvent');
+      event.initCustomEvent(eventType, false, false, detail);
     }
-    menuSurface.dispatchEvent(evt);
+    menuSurface.dispatchEvent(event);
     expect(mockFoundation.handleMenuItemAction).toHaveBeenCalledWith(1);
     expect(mockFoundation.handleMenuItemAction).toHaveBeenCalledTimes(1);
 
@@ -1488,17 +1488,17 @@ describe('MDCSelect', () => {
     const {fixture, menuSurface, mockFoundation} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const evtType = MDCMenuSurfaceFoundation.strings.CLOSING_EVENT;
-    let evt;
+    const eventType = MDCMenuSurfaceFoundation.strings.CLOSING_EVENT;
+    let event;
     if (typeof CustomEvent === 'function') {
-      evt = new CustomEvent(evtType, {
+      event = new CustomEvent(eventType, {
         bubbles: false,
       });
     } else {
-      evt = document.createEvent('CustomEvent');
-      evt.initCustomEvent(evtType, false, false, null);
+      event = document.createEvent('CustomEvent');
+      event.initCustomEvent(eventType, false, false, null);
     }
-    menuSurface.dispatchEvent(evt);
+    menuSurface.dispatchEvent(event);
     expect(mockFoundation.handleMenuClosing).toHaveBeenCalledTimes(1);
 
     document.body.removeChild(fixture);

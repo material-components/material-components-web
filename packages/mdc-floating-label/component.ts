@@ -83,11 +83,11 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
       },
       hasClass: (className) => this.root.classList.contains(className),
       getWidth: () => estimateScrollWidth(this.root),
-      registerInteractionHandler: (evtType, handler) => {
-        this.listen(evtType, handler);
+      registerInteractionHandler: (eventType, handler) => {
+        this.listen(eventType, handler);
       },
-      deregisterInteractionHandler: (evtType, handler) => {
-        this.unlisten(evtType, handler);
+      deregisterInteractionHandler: (eventType, handler) => {
+        this.unlisten(eventType, handler);
       },
     };
     // tslint:enable:object-literal-sort-keys

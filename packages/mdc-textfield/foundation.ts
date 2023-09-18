@@ -148,8 +148,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.inputInputHandler = () => {
       this.handleInput();
     };
-    this.setPointerXOffset = (evt) => {
-      this.setTransformOrigin(evt);
+    this.setPointerXOffset = (event) => {
+      this.setTransformOrigin(event);
     };
     this.textFieldInteractionHandler = () => {
       this.handleTextFieldInteraction();
@@ -177,13 +177,13 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.adapter.registerInputInteractionHandler('blur', this.inputBlurHandler);
     this.adapter.registerInputInteractionHandler(
         'input', this.inputInputHandler);
-    for (const evtType of POINTERDOWN_EVENTS) {
+    for (const eventType of POINTERDOWN_EVENTS) {
       this.adapter.registerInputInteractionHandler(
-          evtType, this.setPointerXOffset);
+          eventType, this.setPointerXOffset);
     }
-    for (const evtType of INTERACTION_EVENTS) {
+    for (const eventType of INTERACTION_EVENTS) {
       this.adapter.registerTextFieldInteractionHandler(
-          evtType, this.textFieldInteractionHandler);
+          eventType, this.textFieldInteractionHandler);
     }
     this.validationObserver =
         this.adapter.registerValidationAttributeChangeHandler(
@@ -198,13 +198,13 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
         'blur', this.inputBlurHandler);
     this.adapter.deregisterInputInteractionHandler(
         'input', this.inputInputHandler);
-    for (const evtType of POINTERDOWN_EVENTS) {
+    for (const eventType of POINTERDOWN_EVENTS) {
       this.adapter.deregisterInputInteractionHandler(
-          evtType, this.setPointerXOffset);
+          eventType, this.setPointerXOffset);
     }
-    for (const evtType of INTERACTION_EVENTS) {
+    for (const eventType of INTERACTION_EVENTS) {
       this.adapter.deregisterTextFieldInteractionHandler(
-          evtType, this.textFieldInteractionHandler);
+          eventType, this.textFieldInteractionHandler);
     }
     this.adapter.deregisterValidationAttributeChangeHandler(
         this.validationObserver);
@@ -279,13 +279,13 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * Sets the line ripple's transform origin, so that the line ripple activate
    * animation will animate out from the user's click location.
    */
-  setTransformOrigin(evt: TouchEvent|MouseEvent): void {
+  setTransformOrigin(event: TouchEvent|MouseEvent): void {
     if (this.isDisabled() || this.adapter.hasOutline()) {
       return;
     }
 
-    const touches = (evt as TouchEvent).touches;
-    const targetEvent = touches ? touches[0] : evt;
+    const touches = (event as TouchEvent).touches;
+    const targetEvent = touches ? touches[0] : event;
     const targetClientRect =
         (targetEvent.target as Element).getBoundingClientRect();
     const normalizedX =

@@ -571,14 +571,14 @@ describe('MDCDialogFoundation', () => {
          strings.SCRIM_SELECTOR} selector matches`,
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const evt = {type: 'click', target: {}} as MouseEvent;
+       const event = {type: 'click', target: {}} as MouseEvent;
        foundation.close = jasmine.createSpy('close');
        mockAdapter.eventTargetMatches
-           .withArgs(evt.target, strings.SCRIM_SELECTOR)
+           .withArgs(event.target, strings.SCRIM_SELECTOR)
            .and.returnValue(true);
 
        foundation.open();
-       foundation.handleClick(evt);
+       foundation.handleClick(event);
 
        expect(foundation.close)
            .toHaveBeenCalledWith(foundation.getScrimClickAction());
@@ -589,15 +589,15 @@ describe('MDCDialogFoundation', () => {
     empty string`,
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const evt = {type: 'click', target: {}} as MouseEvent;
+       const event = {type: 'click', target: {}} as MouseEvent;
        foundation.close = jasmine.createSpy('close');
        mockAdapter.eventTargetMatches
-           .withArgs(evt.target, strings.SCRIM_SELECTOR)
+           .withArgs(event.target, strings.SCRIM_SELECTOR)
            .and.returnValue(true);
 
        foundation.setScrimClickAction('');
        foundation.open();
-       foundation.handleClick(evt);
+       foundation.handleClick(event);
 
        expect(foundation.close).not.toHaveBeenCalledWith(jasmine.any(String));
      });

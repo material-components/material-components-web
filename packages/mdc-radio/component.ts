@@ -97,12 +97,12 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      registerInteractionHandler: (evtType, handler) => {
-        this.nativeControl.addEventListener(evtType, handler, applyPassive());
+      registerInteractionHandler: (eventType, handler) => {
+        this.nativeControl.addEventListener(eventType, handler, applyPassive());
       },
-      deregisterInteractionHandler: (evtType, handler) => {
+      deregisterInteractionHandler: (eventType, handler) => {
         this.nativeControl.removeEventListener(
-            evtType, handler, applyPassive());
+            eventType, handler, applyPassive());
       },
       // Radio buttons technically go "active" whenever there is *any* keyboard
       // interaction. This is not the UI we desire.

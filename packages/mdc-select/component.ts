@@ -142,15 +142,15 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.handleBlur = () => {
       this.foundation.handleBlur();
     };
-    this.handleClick = (evt) => {
+    this.handleClick = (event) => {
       this.selectAnchor.focus();
-      this.foundation.handleClick(this.getNormalizedXCoordinate(evt));
+      this.foundation.handleClick(this.getNormalizedXCoordinate(event));
     };
-    this.handleKeydown = (evt) => {
-      this.foundation.handleKeydown(evt);
+    this.handleKeydown = (event) => {
+      this.foundation.handleKeydown(event);
     };
-    this.handleMenuItemAction = (evt) => {
-      this.foundation.handleMenuItemAction(evt.detail.index);
+    this.handleMenuItemAction = (event) => {
+      this.foundation.handleMenuItemAction(event.detail.index);
     };
     this.handleMenuOpened = () => {
       this.foundation.handleMenuOpened();
@@ -373,11 +373,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter({root: this.selectAnchor}),
-      registerInteractionHandler: (evtType, handler) => {
-        this.selectAnchor.addEventListener(evtType, handler);
+      registerInteractionHandler: (eventType, handler) => {
+        this.selectAnchor.addEventListener(eventType, handler);
       },
-      deregisterInteractionHandler: (evtType, handler) => {
-        this.selectAnchor.removeEventListener(evtType, handler);
+      deregisterInteractionHandler: (eventType, handler) => {
+        this.selectAnchor.removeEventListener(eventType, handler);
       },
     };
     // tslint:enable:object-literal-sort-keys
@@ -519,15 +519,15 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    * Calculates where the line ripple should start based on the x coordinate
    * within the component.
    */
-  private getNormalizedXCoordinate(evt: MouseEvent|TouchEvent): number {
-    const targetClientRect = (evt.target as Element).getBoundingClientRect();
+  private getNormalizedXCoordinate(event: MouseEvent|TouchEvent): number {
+    const targetClientRect = (event.target as Element).getBoundingClientRect();
     const xCoordinate =
-        this.isTouchEvent(evt) ? evt.touches[0].clientX : evt.clientX;
+        this.isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
     return xCoordinate - targetClientRect.left;
   }
 
-  private isTouchEvent(evt: MouseEvent|TouchEvent): evt is TouchEvent {
-    return Boolean((evt as TouchEvent).touches);
+  private isTouchEvent(event: MouseEvent|TouchEvent): event is TouchEvent {
+    return Boolean((event as TouchEvent).touches);
   }
 
   /**

@@ -673,10 +673,10 @@ Method Signature | Description
 `getSelectedIndex() => MDCListIndex` | Gets the current selection state by returning selected index or list of indexes for checkbox based list. See [types.ts](./types.ts) for `MDCListIndex` type definition.
 `setSelectedIndex(index: MDCListIndex) => void` | Sets the selection state to given index or list of indexes if it is checkbox based list. See [types.ts](./types.ts) for `MDCListIndex` type definition.
 `setUseActivatedClass(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-deprecated-list-item--activated` class.
-`handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all button and anchor elements when a list item receives focus.
-`handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all button and anchor elements when a list item loses focus.
-`handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered.
-`handleClick(evt: Event) => void` | Handles toggling the selected/deselected state for a list item when clicked. This method is only used by the single selection list.
+`handleFocusIn(event: Event) => void` | Handles the changing of `tabindex` to `0` for all button and anchor elements when a list item receives focus.
+`handleFocusOut(event: Event) => void` | Handles the changing of `tabindex` to `-1` for all button and anchor elements when a list item loses focus.
+`handleKeydown(event: Event) => void` | Handles determining if a focus action should occur when a key event is triggered.
+`handleClick(event: Event) => void` | Handles toggling the selected/deselected state for a list item when clicked. This method is only used by the single selection list.
 `focusNextElement(index: number) => number` | Handles focusing the next element using the current `index`. Returns focused element index.
 `focusPrevElement(index: number) => number` | Handles focusing the previous element using the current `index`. Returns focused element index.
 `focusFirstElement() => number` | Handles focusing the first element in a list. Returns focused element index.

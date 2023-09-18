@@ -123,15 +123,15 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements
       },
       computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
       deregisterInteractionHandler: <K extends EventType>(
-          evtType: K, handler: SpecificEventListener<K>) => {
+          eventType: K, handler: SpecificEventListener<K>) => {
         this.nativeControl.removeEventListener(
-            evtType, handler, applyPassive());
+            eventType, handler, applyPassive());
       },
       isSurfaceActive: () => matches(this.nativeControl, ':active'),
       isUnbounded: () => true,
       registerInteractionHandler: <K extends EventType>(
-          evtType: K, handler: SpecificEventListener<K>) => {
-        this.nativeControl.addEventListener(evtType, handler, applyPassive());
+          eventType: K, handler: SpecificEventListener<K>) => {
+        this.nativeControl.addEventListener(eventType, handler, applyPassive());
       },
       removeClass: (className: string) => {
         rippleSurface.classList.remove(className);

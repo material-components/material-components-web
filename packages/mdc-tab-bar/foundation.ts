@@ -116,9 +116,9 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
     this.adapter.notifyTabActivated(index);
   }
 
-  handleKeyDown(evt: KeyboardEvent) {
+  handleKeyDown(event: KeyboardEvent) {
     // Get the key from the event
-    const key = this.getKeyFromEvent(evt);
+    const key = this.getKeyFromEvent(event);
 
     // Early exit if the event key isn't one of the keyboard navigation keys
     if (key === undefined) {
@@ -128,7 +128,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
     // Prevent default behavior for movement keys, but not for activation keys,
     // since :active is used to apply ripple
     if (!this.isActivationKey(key)) {
-      evt.preventDefault();
+      event.preventDefault();
     }
 
     if (this.useAutomaticActivation && this.isActivationKey(key)) {
@@ -150,8 +150,8 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   /**
    * Handles the MDCTab:interacted event
    */
-  handleTabInteraction(evt: MDCTabInteractionEvent) {
-    this.adapter.setActiveTab(this.adapter.getIndexOfTabById(evt.detail.tabId));
+  handleTabInteraction(event: MDCTabInteractionEvent) {
+    this.adapter.setActiveTab(this.adapter.getIndexOfTabById(event.detail.tabId));
   }
 
   /**
@@ -373,13 +373,13 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
 
   /**
    * Returns the key associated with a keydown event
-   * @param evt The keydown event
+   * @param event The keydown event
    */
-  private getKeyFromEvent(evt: KeyboardEvent): string {
-    if (ACCEPTABLE_KEYS.has(evt.key)) {
-      return evt.key;
+  private getKeyFromEvent(event: KeyboardEvent): string {
+    if (ACCEPTABLE_KEYS.has(event.key)) {
+      return event.key;
     }
-    return KEYCODE_MAP.get(evt.keyCode)!;
+    return KEYCODE_MAP.get(event.keyCode)!;
   }
 
   private isActivationKey(key: string) {

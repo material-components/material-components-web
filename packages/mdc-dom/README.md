@@ -69,8 +69,8 @@ The `keyboard` utility provides helper methods for normalizing `KeyboardEvent` k
 
 Method Signature | Description
 --- | ---
-`normalizeKey(evt: KeyboardEvent) => string` | Returns a normalized string derived from `KeyboardEvent`'s `keyCode` property to be standard across browsers.
-`isNavigationEvent(evt: KeyboardEvent) => boolean` | Returns `true` if the event is a navigation event (Page Up, Page Down, Home, End, Left, Up, Right, Down).
+`normalizeKey(event: KeyboardEvent) => string` | Returns a normalized string derived from `KeyboardEvent`'s `keyCode` property to be standard across browsers.
+`isNavigationEvent(event: KeyboardEvent) => boolean` | Returns `true` if the event is a navigation event (Page Up, Page Down, Home, End, Left, Up, Right, Down).
 
 ## Mixins
 

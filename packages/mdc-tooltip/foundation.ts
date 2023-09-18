@@ -132,16 +132,16 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     super({...MDCTooltipFoundation.defaultAdapter, ...adapter});
     this.animFrame = new AnimationFrame();
 
-    this.anchorBlurHandler = (evt) => {
-      this.handleAnchorBlur(evt);
+    this.anchorBlurHandler = (event) => {
+      this.handleAnchorBlur(event);
     };
 
-    this.documentClickHandler = (evt) => {
-      this.handleDocumentClick(evt);
+    this.documentClickHandler = (event) => {
+      this.handleDocumentClick(event);
     };
 
-    this.documentKeydownHandler = (evt) => {
-      this.handleKeydown(evt);
+    this.documentKeydownHandler = (event) => {
+      this.handleKeydown(event);
     };
 
     this.tooltipMouseEnterHandler = () => {
@@ -152,8 +152,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       this.handleTooltipMouseLeave();
     };
 
-    this.richTooltipFocusOutHandler = (evt) => {
-      this.handleRichTooltipFocusOut(evt);
+    this.richTooltipFocusOutHandler = (event) => {
+      this.handleRichTooltipFocusOut(event);
     };
 
     this.windowScrollHandler = () => {
@@ -216,8 +216,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         'contextmenu', this.preventContextMenuOnLongTouch);
   }
 
-  private preventContextMenuOnLongTouch(evt: MouseEvent) {
-    evt.preventDefault();
+  private preventContextMenuOnLongTouch(event: MouseEvent) {
+    event.preventDefault();
   }
 
   /**
@@ -250,7 +250,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
   }
 
-  handleAnchorFocus(evt: FocusEvent) {
+  handleAnchorFocus(event: FocusEvent) {
     // TODO(b/157075286): Need to add some way to distinguish keyboard
     // navigation focus events from other focus events, and only show the
     // tooltip on the former of these events.
@@ -258,7 +258,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // Do not show tooltip if the previous focus was on a tooltip element. This
     // occurs when a rich tooltip is closed and focus is restored to the anchor
     // or when user tab-navigates back into the anchor from the rich tooltip.
-    if (this.tooltipContainsRelatedTargetElement(evt.relatedTarget)) {
+    if (this.tooltipContainsRelatedTargetElement(event.relatedTarget)) {
       return;
     }
     this.showTimeout = setTimeout(() => {
@@ -281,7 +281,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
   }
 
-  handleDocumentClick(evt: MouseEvent) {
+  handleDocumentClick(event: MouseEvent) {
     // For persistent rich tooltips, we will not hide if:
     // - The click target is within the anchor element. Otherwise, both
     //   the anchor element's click handler and this handler will handle the
@@ -290,16 +290,16 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // - The click target is within the tooltip element, since clicks
     //   on the tooltip do not close the tooltip.
     if (this.richTooltip && this.persistentTooltip &&
-        this.anchorOrTooltipContainsTargetElement(evt.target)) {
+        this.anchorOrTooltipContainsTargetElement(event.target)) {
       return;
     }
     // Hide the tooltip immediately on click.
     this.hide();
   }
 
-  handleKeydown(evt: KeyboardEvent) {
+  handleKeydown(event: KeyboardEvent) {
     // Hide the tooltip immediately on ESC key.
-    const key = normalizeKey(evt);
+    const key = normalizeKey(event);
     if (key === KEY.ESCAPE) {
       const activeElement = this.adapter.getActiveElement();
       let tooltipContainsActiveElement = false;
@@ -313,21 +313,21 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       }
       this.hide();
       // prevent event from bubbling
-      evt.stopPropagation();
+      event.stopPropagation();
       return false;
     }
     return true;
   }
 
-  private handleAnchorBlur(evt: FocusEvent) {
+  private handleAnchorBlur(event: FocusEvent) {
     if (this.richTooltip) {
-      if (evt.relatedTarget === null ||
-          this.tooltipContainsRelatedTargetElement(evt.relatedTarget)) {
+      if (event.relatedTarget === null ||
+          this.tooltipContainsRelatedTargetElement(event.relatedTarget)) {
         // There are two scenarios where a blur event on a rich tooltip anchor
         // should leave the tooltip open.
-        // 1. When the `evt.relatedTarget` contains the tooltip element. This
+        // 1. When the `event.relatedTarget` contains the tooltip element. This
         // indicates that focus has moved off the anchor and onto the tooltip.
-        // 2. When the `evt.relatedTarget` is null. This occurs because focus is
+        // 2. When the `event.relatedTarget` is null. This occurs because focus is
         // moving to an element that is not focusable. This should only occur in
         // instances of a screen reader in browse mode/linear navigation mode.
         // We allow linear navigation over the contents of all rich tooltips to
@@ -351,14 +351,14 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }, this.hideDelayMs);
   }
 
-  private handleRichTooltipFocusOut(evt: FocusEvent) {
+  private handleRichTooltipFocusOut(event: FocusEvent) {
     // If the focus is still within the anchor or the tooltip, do not hide the
     // tooltip.
-    if (this.anchorOrTooltipContainsTargetElement(evt.relatedTarget)) {
+    if (this.anchorOrTooltipContainsTargetElement(event.relatedTarget)) {
       return;
     }
-    if (evt.relatedTarget === null && this.interactiveTooltip) {
-      // If evt.relatedTarget is null, it is because focus is moving to an
+    if (event.relatedTarget === null && this.interactiveTooltip) {
+      // If event.relatedTarget is null, it is because focus is moving to an
       // element that is not focusable. This should only occur in instances
       // of a screen reader in browse mode/linear navigation mode. If the
       // tooltip is interactive (and so the entire content is not read by

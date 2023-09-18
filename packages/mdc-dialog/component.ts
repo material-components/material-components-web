@@ -181,12 +181,12 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       },
       eventTargetMatches: (target, selector) =>
           target ? matches(target as Element, selector) : false,
-      getActionFromEvent: (evt: Event) => {
-        if (!evt.target) {
+      getActionFromEvent: (event: Event) => {
+        if (!event.target) {
           return '';
         }
         const element =
-            closest(evt.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
+            closest(event.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
       },
       getInitialFocusEl: () => this.getInitialFocusEl(),
@@ -224,14 +224,14 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       trapFocus: () => {
         this.focusTrap.trapFocus();
       },
-      registerContentEventHandler: (evt, handler) => {
+      registerContentEventHandler: (event, handler) => {
         if (this.content instanceof HTMLElement) {
-          this.content.addEventListener(evt, handler);
+          this.content.addEventListener(event, handler);
         }
       },
-      deregisterContentEventHandler: (evt, handler) => {
+      deregisterContentEventHandler: (event, handler) => {
         if (this.content instanceof HTMLElement) {
-          this.content.removeEventListener(evt, handler);
+          this.content.removeEventListener(event, handler);
         }
       },
       isScrollableContentAtTop: () => {
@@ -240,11 +240,11 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       isScrollableContentAtBottom: () => {
         return util.isScrollAtBottom(this.content);
       },
-      registerWindowEventHandler: (evt, handler) => {
-        window.addEventListener(evt, handler);
+      registerWindowEventHandler: (event, handler) => {
+        window.addEventListener(event, handler);
       },
-      deregisterWindowEventHandler: (evt, handler) => {
-        window.removeEventListener(evt, handler);
+      deregisterWindowEventHandler: (event, handler) => {
+        window.removeEventListener(event, handler);
       },
     };
     return new MDCDialogFoundation(adapter);

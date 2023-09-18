@@ -74,11 +74,11 @@ export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
       setStyle: (propertyName, value) => {
         this.root.style.setProperty(propertyName, value);
       },
-      registerEventHandler: (evtType, handler) => {
-        this.listen(evtType, handler);
+      registerEventHandler: (eventType, handler) => {
+        this.listen(eventType, handler);
       },
-      deregisterEventHandler: (evtType, handler) => {
-        this.unlisten(evtType, handler);
+      deregisterEventHandler: (eventType, handler) => {
+        this.unlisten(eventType, handler);
       },
     };
     // tslint:enable:object-literal-sort-keys

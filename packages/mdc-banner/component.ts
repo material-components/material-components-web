@@ -58,8 +58,8 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
         this.root.querySelector<HTMLElement>(selectors.SECONDARY_ACTION)!;
     this.focusTrapFactory = focusTrapFactory;
 
-    this.handleContentClick = (evt) => {
-      const target = evt.target as Element;
+    this.handleContentClick = (event) => {
+      const target = event.target as Element;
       if (closest(target, selectors.PRIMARY_ACTION)) {
         this.foundation.handlePrimaryActionClick();
       } else if (closest(target, selectors.SECONDARY_ACTION)) {

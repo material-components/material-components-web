@@ -92,8 +92,8 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the label element.
 `removeClass(className: string) => void` | Removes a class from the label element.
 `getWidth() => number` | Returns the width of the label element.
-`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event.
-`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener for a given event.
+`registerInteractionHandler(eventType: string, handler: EventListener) => void` | Registers an event listener for a given event.
+`deregisterInteractionHandler(eventType: string, handler: EventListener) => void` | Deregisters an event listener for a given event.
 
 ### `MDCFloatingLabelFoundation`
 

@@ -165,22 +165,22 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     this.closeOnEscape = closeOnEscape;
   }
 
-  handleKeyDown(evt: KeyboardEvent) {
-    const isEscapeKey = evt.key === 'Escape' || evt.keyCode === 27;
+  handleKeyDown(event: KeyboardEvent) {
+    const isEscapeKey = event.key === 'Escape' || event.keyCode === 27;
     if (isEscapeKey && this.getCloseOnEscape()) {
       this.close(REASON_DISMISS);
     }
   }
 
-  handleActionButtonClick(_evt: MouseEvent) {
+  handleActionButtonClick(_event: MouseEvent) {
     this.close(REASON_ACTION);
   }
 
-  handleActionIconClick(_evt: MouseEvent) {
+  handleActionIconClick(_event: MouseEvent) {
     this.close(REASON_DISMISS);
   }
 
-  handleSecondaryActionButtonClick(_evt: MouseEvent) {
+  handleSecondaryActionButtonClick(_event: MouseEvent) {
     this.close(REASON_SECONDARY_ACTION);
   }
 

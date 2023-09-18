@@ -182,8 +182,8 @@ Method Signature | Description
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the icon element.
 `removeAttr(attr: string) => void` | Removes an attribute from the icon element.
 `setContent(content: string) => void` | Sets the text content of the icon element.
-`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event.
-`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener for a given event.
+`registerInteractionHandler(eventType: string, handler: EventListener) => void` | Registers an event listener for a given event.
+`deregisterInteractionHandler(eventType: string, handler: EventListener) => void` | Deregisters an event listener for a given event.
 `notifyIconAction() => void` | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon, which bubbles to the top-level text field element.
 
 ### `MDCTextFieldIconFoundation`
@@ -193,4 +193,4 @@ Method Signature | Description
 `setDisabled(disabled: boolean) => void` | Updates the icon's disabled state.
 `setAriaLabel(label: string) => void` | Updates the icon's aria-label.
 `setContent(content: string) => void` | Updates the icon's text content.
-`handleInteraction(evt: Event) => void` | Handles a text field interaction event.
+`handleInteraction(event: Event) => void` | Handles a text field interaction event.

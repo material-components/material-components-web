@@ -23,11 +23,11 @@
 
 export type EventType = keyof GlobalEventHandlersEventMap;
 export type SpecificEventListener<K extends EventType> =
-    (evt: GlobalEventHandlersEventMap[K]) => void;
-export type CustomEventListener<E extends Event> = (evt: E) => void;
+    (event: GlobalEventHandlersEventMap[K]) => void;
+export type CustomEventListener<E extends Event> = (event: E) => void;
 export type WindowEventType = keyof WindowEventMap;
 export type SpecificWindowEventListener<K extends WindowEventType> =
-    (evt: WindowEventMap[K]) => void;
+    (event: WindowEventMap[K]) => void;
 
 // `any` is required for mixin constructors
 // tslint:disable:no-any

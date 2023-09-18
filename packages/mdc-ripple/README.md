@@ -164,10 +164,10 @@ Method Signature | Description
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
 | `removeClass(className: string) => void` | Removes a class from the ripple surface |
 | `containsEventTarget(target: EventTarget) => boolean` | Whether or not the ripple surface contains the given event target |
-| `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the ripple surface |
-| `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler on the ripple surface |
-| `registerDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the documentElement |
-| `deregisterDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler on the documentElement |
+| `registerInteractionHandler(eventType: string, handler: EventListener) => void` | Registers an event handler on the ripple surface |
+| `deregisterInteractionHandler(eventType: string, handler: EventListener) => void` | Unregisters an event handler on the ripple surface |
+| `registerDocumentInteractionHandler(eventType: string, handler: EventListener) => void` | Registers an event handler on the documentElement |
+| `deregisterDocumentInteractionHandler(eventType: string, handler: EventListener) => void` | Unregisters an event handler on the documentElement |
 | `registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the ripple surface (or its viewport) resizes |
 | `deregisterResizeHandler(handler: Function) => void` | Unregisters a handler to be called when the ripple surface (or its viewport) resizes |
 | `updateCssVariable(varName: string, value: (string or null)) => void` | Sets the CSS property `varName` on the ripple surface to the value specified |
@@ -253,13 +253,13 @@ class MyComponent {
   constructor(element) {
     this.root = element;
     this.active = false;
-    this.root.addEventListener('keydown', evt => {
-      if (isSpace(evt)) {
+    this.root.addEventListener('keydown', event => {
+      if (isSpace(event)) {
         this.active = true;
       }
     });
-    this.root.addEventListener('keyup', evt => {
-      if (isSpace(evt)) {
+    this.root.addEventListener('keyup', event => {
+      if (isSpace(event)) {
         this.active = false;
       }
     });

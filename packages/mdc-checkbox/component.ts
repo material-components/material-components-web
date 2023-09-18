@@ -153,15 +153,15 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements
     // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      deregisterInteractionHandler: (evtType, handler) => {
+      deregisterInteractionHandler: (eventType, handler) => {
         this.getNativeControl().removeEventListener(
-            evtType, handler, applyPassive());
+            eventType, handler, applyPassive());
       },
       isSurfaceActive: () => matches(this.getNativeControl(), ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler: (evtType, handler) => {
+      registerInteractionHandler: (eventType, handler) => {
         this.getNativeControl().addEventListener(
-            evtType, handler, applyPassive());
+            eventType, handler, applyPassive());
       },
     };
     return new MDCRipple(this.root, new MDCRippleFoundation(adapter));

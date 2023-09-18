@@ -154,24 +154,24 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements
       this.foundation.handleTrailingActionInteraction();
     };
     this.handleTrailingActionNavigation =
-        (evt: MDCChipTrailingActionNavigationEvent) => {
-          this.foundation.handleTrailingActionNavigation(evt);
+        (event: MDCChipTrailingActionNavigationEvent) => {
+          this.foundation.handleTrailingActionNavigation(event);
         };
     // Native events
     this.handleClick = () => {
       this.foundation.handleClick();
     };
-    this.handleKeydown = (evt: KeyboardEvent) => {
-      this.foundation.handleKeydown(evt);
+    this.handleKeydown = (event: KeyboardEvent) => {
+      this.foundation.handleKeydown(event);
     };
-    this.handleTransitionEnd = (evt: TransitionEvent) => {
-      this.foundation.handleTransitionEnd(evt);
+    this.handleTransitionEnd = (event: TransitionEvent) => {
+      this.foundation.handleTransitionEnd(event);
     };
-    this.handleFocusIn = (evt: FocusEvent) => {
-      this.foundation.handleFocusIn(evt);
+    this.handleFocusIn = (event: FocusEvent) => {
+      this.foundation.handleFocusIn(event);
     };
-    this.handleFocusOut = (evt: FocusEvent) => {
-      this.foundation.handleFocusOut(evt);
+    this.handleFocusOut = (event: FocusEvent) => {
+      this.foundation.handleFocusOut(event);
     };
 
 

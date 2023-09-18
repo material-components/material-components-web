@@ -57,15 +57,15 @@ export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
       setContent: (content) => {
         this.root.textContent = content;
       },
-      registerInteractionHandler: (evtType, handler) => {
-        this.listen(evtType, handler);
+      registerInteractionHandler: (eventType, handler) => {
+        this.listen(eventType, handler);
       },
-      deregisterInteractionHandler: (evtType, handler) => {
-        this.unlisten(evtType, handler);
+      deregisterInteractionHandler: (eventType, handler) => {
+        this.unlisten(eventType, handler);
       },
       notifyIconAction: () => {
         this.emit(
-            MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */,
+            MDCSelectIconFoundation.strings.ICON_EVENT, {} /* eventData */,
             true /* shouldBubble */);
       },
     };

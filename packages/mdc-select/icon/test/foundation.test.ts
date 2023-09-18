@@ -142,7 +142,7 @@ describe('MDCSelectIconFoundation', () => {
 
   it('on click notifies custom icon event', () => {
     const {foundation, mockAdapter} = setupTest();
-    const evt = {
+    const event = {
       target: {},
       type: 'click',
     };
@@ -150,12 +150,12 @@ describe('MDCSelectIconFoundation', () => {
 
     mockAdapter.registerInteractionHandler
         .withArgs('click', jasmine.any(Function))
-        .and.callFake((_evtType: string, handler: Function) => {
+        .and.callFake((_eventType: string, handler: Function) => {
           click = handler;
         });
 
     foundation.init();
-    (click as unknown as Function)(evt);
+    (click as unknown as Function)(event);
     expect(mockAdapter.notifyIconAction).toHaveBeenCalled();
   });
 });

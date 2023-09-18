@@ -152,21 +152,21 @@ describe('MDCComponent', () => {
     const root = document.createElement('div');
     const f = new FakeComponent(root);
     const handler = jasmine.createSpy('eventHandler');
-    let evt: any = null;
+    let event: any = null;
     handler.withArgs(jasmine.any(Object)).and.callFake((e: any) => {
-      evt = e;
+      event = e;
     });
-    const data = {evtData: true};
+    const data = {eventData: true};
     const type = 'customeventtype';
 
     root.addEventListener(type, handler);
     f.emit(type, data);
 
-    expect(evt !== null).toBeTruthy();
-    // assertion above ensures non-null evt, but compiler doesn't know this
+    expect(event !== null).toBeTruthy();
+    // assertion above ensures non-null event, but compiler doesn't know this
     // tslint:disable:no-unnecessary-type-assertion
-    expect(evt!.type).toEqual(type);
-    expect(evt!.detail).toEqual(data);
+    expect(event!.type).toEqual(type);
+    expect(event!.detail).toEqual(data);
     // tslint:enable:no-unnecessary-type-assertion
   });
 
@@ -175,11 +175,11 @@ describe('MDCComponent', () => {
        const root = document.createElement('div');
        const f = new FakeComponent(root);
        const handler = jasmine.createSpy('eventHandler');
-       let evt: any = null;
+       let event: any = null;
        handler.withArgs(jasmine.any(Object)).and.callFake((e: any) => {
-         evt = e;
+         event = e;
        });
-       const data = {evtData: true};
+       const data = {eventData: true};
        const type = 'customeventtype';
 
        root.addEventListener(type, handler);
@@ -192,11 +192,11 @@ describe('MDCComponent', () => {
          (window as any).CustomEvent = CustomEvent;
        }
 
-       expect(evt !== null).toBeTruthy();
-       // assertion above ensures non-null evt, but compiler doesn't know this
+       expect(event !== null).toBeTruthy();
+       // assertion above ensures non-null event, but compiler doesn't know this
        // tslint:disable:no-unnecessary-type-assertion
-       expect(evt!.type).toEqual(type);
-       expect(evt!.detail).toEqual(data);
+       expect(event!.type).toEqual(type);
+       expect(event!.detail).toEqual(data);
        // tslint:enable:no-unnecessary-type-assertion
      });
 

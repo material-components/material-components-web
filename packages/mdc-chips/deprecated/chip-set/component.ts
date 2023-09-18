@@ -57,13 +57,13 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   private chipsList!: MDCChip[];  // assigned in initialize()
   private chipFactory!:
       (el: HTMLElement) => MDCChip;  // assigned in initialize()
-  private handleChipInteraction!: (evt: MDCChipInteractionEvent) =>
+  private handleChipInteraction!: (event: MDCChipInteractionEvent) =>
       void;  // assigned in initialSyncWithDOM()
   private handleChipSelection!:
-      (evt: MDCChipSelectionEvent) => void;  // assigned in initialSyncWithDOM()
+      (event: MDCChipSelectionEvent) => void;  // assigned in initialSyncWithDOM()
   private handleChipRemoval!:
-      (evt: MDCChipRemovalEvent) => void;  // assigned in initialSyncWithDOM()
-  private handleChipNavigation!: (evt: MDCChipNavigationEvent) =>
+      (event: MDCChipRemovalEvent) => void;  // assigned in initialSyncWithDOM()
+  private handleChipNavigation!: (event: MDCChipNavigationEvent) =>
       void;  // assigned in initialSyncWithDOM()
 
   /**
@@ -81,17 +81,17 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       }
     }
 
-    this.handleChipInteraction = (evt) => {
-      this.foundation.handleChipInteraction(evt.detail);
+    this.handleChipInteraction = (event) => {
+      this.foundation.handleChipInteraction(event.detail);
     };
-    this.handleChipSelection = (evt) => {
-      this.foundation.handleChipSelection(evt.detail);
+    this.handleChipSelection = (event) => {
+      this.foundation.handleChipSelection(event.detail);
     };
-    this.handleChipRemoval = (evt) => {
-      this.foundation.handleChipRemoval(evt.detail);
+    this.handleChipRemoval = (event) => {
+      this.foundation.handleChipRemoval(event.detail);
     };
-    this.handleChipNavigation = (evt) => {
-      this.foundation.handleChipNavigation(evt.detail);
+    this.handleChipNavigation = (event) => {
+      this.foundation.handleChipNavigation(event.detail);
     };
     this.listen(INTERACTION_EVENT, this.handleChipInteraction);
     this.listen(SELECTION_EVENT, this.handleChipSelection);

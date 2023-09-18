@@ -167,35 +167,35 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
 
         this.getRipple(thumb).deactivate();
       },
-      registerEventHandler: (evtType, handler) => {
-        this.listen(evtType, handler);
+      registerEventHandler: (eventType, handler) => {
+        this.listen(eventType, handler);
       },
-      deregisterEventHandler: (evtType, handler) => {
-        this.unlisten(evtType, handler);
+      deregisterEventHandler: (eventType, handler) => {
+        this.unlisten(eventType, handler);
       },
-      registerThumbEventHandler: (thumb, evtType, handler) => {
-        this.getThumbEl(thumb).addEventListener(evtType, handler);
+      registerThumbEventHandler: (thumb, eventType, handler) => {
+        this.getThumbEl(thumb).addEventListener(eventType, handler);
       },
-      deregisterThumbEventHandler: (thumb, evtType, handler) => {
-        this.getThumbEl(thumb).removeEventListener(evtType, handler);
+      deregisterThumbEventHandler: (thumb, eventType, handler) => {
+        this.getThumbEl(thumb).removeEventListener(eventType, handler);
       },
-      registerInputEventHandler: (thumb, evtType, handler) => {
-        this.getInput(thumb).addEventListener(evtType, handler);
+      registerInputEventHandler: (thumb, eventType, handler) => {
+        this.getInput(thumb).addEventListener(eventType, handler);
       },
-      deregisterInputEventHandler: (thumb, evtType, handler) => {
-        this.getInput(thumb).removeEventListener(evtType, handler);
+      deregisterInputEventHandler: (thumb, eventType, handler) => {
+        this.getInput(thumb).removeEventListener(eventType, handler);
       },
-      registerBodyEventHandler: (evtType, handler) => {
-        document.body.addEventListener(evtType, handler);
+      registerBodyEventHandler: (eventType, handler) => {
+        document.body.addEventListener(eventType, handler);
       },
-      deregisterBodyEventHandler: (evtType, handler) => {
-        document.body.removeEventListener(evtType, handler);
+      deregisterBodyEventHandler: (eventType, handler) => {
+        document.body.removeEventListener(eventType, handler);
       },
-      registerWindowEventHandler: (evtType, handler) => {
-        window.addEventListener(evtType, handler);
+      registerWindowEventHandler: (eventType, handler) => {
+        window.addEventListener(eventType, handler);
       },
-      deregisterWindowEventHandler: (evtType, handler) => {
-        window.removeEventListener(evtType, handler);
+      deregisterWindowEventHandler: (eventType, handler) => {
+        window.removeEventListener(eventType, handler);
       },
       // tslint:enable:object-literal-sort-keys
     };
@@ -328,14 +328,14 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
         },
         computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
         deregisterInteractionHandler: <K extends EventType>(
-            evtType: K, handler: SpecificEventListener<K>) => {
-          input.removeEventListener(evtType, handler);
+            eventType: K, handler: SpecificEventListener<K>) => {
+          input.removeEventListener(eventType, handler);
         },
         isSurfaceActive: () => matches(input, ':active'),
         isUnbounded: () => true,
         registerInteractionHandler: <K extends EventType>(
-            evtType: K, handler: SpecificEventListener<K>) => {
-          input.addEventListener(evtType, handler, applyPassive());
+            eventType: K, handler: SpecificEventListener<K>) => {
+          input.addEventListener(eventType, handler, applyPassive());
         },
         removeClass: (className: string) => {
           rippleSurface.classList.remove(className);

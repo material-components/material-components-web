@@ -56,8 +56,8 @@ export class MDCLineRippleFoundation extends
   constructor(adapter?: Partial<MDCLineRippleAdapter>) {
     super({...MDCLineRippleFoundation.defaultAdapter, ...adapter});
 
-    this.transitionEndHandler = (evt) => {
-      this.handleTransitionEnd(evt);
+    this.transitionEndHandler = (event) => {
+      this.handleTransitionEnd(event);
     };
   }
 
@@ -84,13 +84,13 @@ export class MDCLineRippleFoundation extends
     this.adapter.addClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
   }
 
-  handleTransitionEnd(evt: TransitionEvent) {
+  handleTransitionEnd(event: TransitionEvent) {
     // Wait for the line ripple to be either transparent or opaque
     // before emitting the animation end event
     const isDeactivating =
         this.adapter.hasClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
 
-    if (evt.propertyName === 'opacity') {
+    if (event.propertyName === 'opacity') {
       if (isDeactivating) {
         this.adapter.removeClass(cssClasses.LINE_RIPPLE_ACTIVE);
         this.adapter.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING);

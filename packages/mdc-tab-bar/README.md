@@ -159,6 +159,6 @@ Method Signature | Description
 --- | ---
 `activateTab(index: number) => void` | Activates the tab at the given index.
 `setUseAutomaticActivation(useAutomaticActivation: boolean) => void` | Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as a tab is focused with arrow keys; manual (`false`) activates only when the user presses space/enter.
-`handleKeyDown(evt: Event) => void` | Handles the logic for the `"keydown"` event.
-`handleTabInteraction(evt: Event) => void` | Handles the logic for the `"MDCTab:interacted"` event.
+`handleKeyDown(event: Event) => void` | Handles the logic for the `"keydown"` event.
+`handleTabInteraction(event: Event) => void` | Handles the logic for the `"MDCTab:interacted"` event.
 `scrollIntoView(index: number) => void` | Scrolls the Tab at the given index into view.

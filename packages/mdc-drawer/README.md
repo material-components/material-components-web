@@ -504,9 +504,9 @@ Mixin | Description
 
 Signature | Description
 --- | ---
-`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
-`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
-`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`emit(eventType: string, eventData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(eventType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(eventType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
 #### Properties
 
@@ -548,8 +548,8 @@ Signature | Description
 Signature | Description
 --- | ---
 `close() => void` | Closes the drawer from the open state.
-`handleKeydown(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
-`handleTransitionEnd(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+`handleKeydown(event: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
+`handleTransitionEnd(event: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
 `closed_() => void` | Extension point for when drawer finishes close animation.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
@@ -564,9 +564,9 @@ Signature | Description
 Signature | Description
 --- | ---
 `close() => void` | Closes the drawer from the open state.
-`handleKeydown(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
+`handleKeydown(event: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
 `handleScrimClick() => void` | Handles click event on scrim.
-`handleTransitionEnd(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+`handleTransitionEnd(event: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
 `closed_() => void` | Called when drawer finishes close animation.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.

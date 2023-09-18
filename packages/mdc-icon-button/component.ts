@@ -64,9 +64,9 @@ export class MDCIconButtonToggle extends
         this.root.classList.add(className);
       },
       hasClass: (className) => this.root.classList.contains(className),
-      notifyChange: (evtData) => {
+      notifyChange: (eventData) => {
         this.emit<MDCIconButtonToggleEventDetail>(
-            strings.CHANGE_EVENT, evtData);
+            strings.CHANGE_EVENT, eventData);
       },
       removeClass: (className) => {
         this.root.classList.remove(className);

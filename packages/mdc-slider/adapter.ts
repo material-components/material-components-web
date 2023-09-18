@@ -236,59 +236,59 @@ export interface MDCSliderAdapter {
    * Registers an event listener on the root element.
    */
   registerEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the root element.
    */
   deregisterEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener on the given thumb element.
    */
   registerThumbEventHandler<K extends EventType>(
-      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+      thumb: Thumb, eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the given thumb element.
    */
   deregisterThumbEventHandler<K extends EventType>(
-      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+      thumb: Thumb, eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener on the given input element.
    */
   registerInputEventHandler<K extends EventType>(
-      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+      thumb: Thumb, eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the given input element.
    */
   deregisterInputEventHandler<K extends EventType>(
-      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+      thumb: Thumb, eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener on the body element.
    */
   registerBodyEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the body element.
    */
   deregisterBodyEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener on the window.
    */
   registerWindowEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the window.
    */
   deregisterWindowEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 }

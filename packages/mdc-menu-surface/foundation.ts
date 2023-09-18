@@ -325,8 +325,8 @@ export class MDCMenuSurfaceFoundation extends
   }
 
   /** Handle clicks and close if not within menu-surface element. */
-  handleBodyClick(evt: MouseEvent) {
-    const el = evt.target as Element;
+  handleBodyClick(event: MouseEvent) {
+    const el = event.target as Element;
     if (this.adapter.isElementInContainer(el)) {
       return;
     }
@@ -334,8 +334,8 @@ export class MDCMenuSurfaceFoundation extends
   }
 
   /** Handle keys that close the surface. */
-  handleKeydown(evt: KeyboardEvent) {
-    const {keyCode, key} = evt;
+  handleKeydown(event: KeyboardEvent) {
+    const {keyCode, key} = event;
 
     const isEscape = key === 'Escape' || keyCode === 27;
     if (isEscape) {

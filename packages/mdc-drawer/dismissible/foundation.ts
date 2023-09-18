@@ -130,8 +130,8 @@ export class MDCDismissibleDrawerFoundation extends
   /**
    * Keydown handler to close drawer when key is escape.
    */
-  handleKeydown(evt: KeyboardEvent) {
-    const {keyCode, key} = evt;
+  handleKeydown(event: KeyboardEvent) {
+    const {keyCode, key} = event;
     const isEscape = key === 'Escape' || keyCode === 27;
     if (isEscape) {
       this.close();
@@ -141,13 +141,13 @@ export class MDCDismissibleDrawerFoundation extends
   /**
    * Handles the `transitionend` event when the drawer finishes opening/closing.
    */
-  handleTransitionEnd(evt: TransitionEvent) {
+  handleTransitionEnd(event: TransitionEvent) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
 
     // In Edge, transitionend on ripple pseudo-elements yields a target without
     // classList, so check for Element first.
-    const isRootElement = this.isElement(evt.target) &&
-        this.adapter.elementHasClass(evt.target, ROOT);
+    const isRootElement = this.isElement(event.target) &&
+        this.adapter.elementHasClass(event.target, ROOT);
     if (!isRootElement) {
       return;
     }

@@ -2416,7 +2416,7 @@ describe('MDCTooltipFoundation', () => {
         //  @ts-ignore(go/unfork-jasmine-typings): Argument of type '(ev:
         //  string, handler: EventListener) => void' is not assignable to
         //  parameter of type '<K extends keyof
-        //  GlobalEventHandlersEventMap>(evtType: K, handler:
+        //  GlobalEventHandlersEventMap>(eventType: K, handler:
         //  SpecificEventListener<K>) => void'.
         (ev: string, handler: EventListener) => {
           window.addEventListener(ev, handler);
@@ -2491,7 +2491,7 @@ describe('MDCTooltipFoundation', () => {
            //  @ts-ignore(go/unfork-jasmine-typings): Argument of type '(ev:
            //  string, handler: EventListener) => void' is not assignable to
            //  parameter of type '<K extends keyof
-           //  GlobalEventHandlersEventMap>(evtType: K, handler:
+           //  GlobalEventHandlersEventMap>(eventType: K, handler:
            //  SpecificEventListener<K>) => void'.
            (ev: string, handler: EventListener) => {
              window.addEventListener(ev, handler);
@@ -2558,7 +2558,7 @@ describe('MDCTooltipFoundation', () => {
            //  @ts-ignore(go/unfork-jasmine-typings): Argument of type '(ev:
            //  string, handler: EventListener) => void' is not assignable to
            //  parameter of type '<K extends keyof
-           //  GlobalEventHandlersEventMap>(evtType: K, handler:
+           //  GlobalEventHandlersEventMap>(eventType: K, handler:
            //  SpecificEventListener<K>) => void'.
            (ev: string, handler: EventListener) => {
              window.addEventListener(ev, handler);
@@ -2594,8 +2594,8 @@ describe('MDCTooltipFoundation', () => {
     document.body.appendChild(scrollableAncestor);
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
 
-    foundation.attachScrollHandler((evt, handler) => {
-      scrollableAncestor.addEventListener(evt, handler);
+    foundation.attachScrollHandler((event, handler) => {
+      scrollableAncestor.addEventListener(event, handler);
     });
     foundation.show();
 
@@ -2613,11 +2613,11 @@ describe('MDCTooltipFoundation', () => {
 
     spyOn(foundation, 'hide').and.callThrough();
 
-    foundation.attachScrollHandler((evt, handler) => {
-      scrollableAncestor.addEventListener(evt, handler);
+    foundation.attachScrollHandler((event, handler) => {
+      scrollableAncestor.addEventListener(event, handler);
     });
-    foundation.removeScrollHandler((evt, handler) => {
-      scrollableAncestor.removeEventListener(evt, handler);
+    foundation.removeScrollHandler((event, handler) => {
+      scrollableAncestor.removeEventListener(event, handler);
     });
     foundation.show();
     foundation.hide();
@@ -2637,8 +2637,8 @@ describe('MDCTooltipFoundation', () => {
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {isPersistent: true});
 
-       foundation.attachScrollHandler((evt, handler) => {
-         scrollableAncestor.addEventListener(evt, handler);
+       foundation.attachScrollHandler((event, handler) => {
+         scrollableAncestor.addEventListener(event, handler);
        });
        foundation.show();
        expectTooltipToHaveBeenShown(foundation, mockAdapter);

@@ -76,8 +76,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.adapter.closeSurface();
   }
 
-  handleKeydown(evt: KeyboardEvent) {
-    const {key, keyCode} = evt;
+  handleKeydown(event: KeyboardEvent) {
+    const {key, keyCode} = event;
     const isTab = key === 'Tab' || keyCode === 9;
 
     if (isTab) {

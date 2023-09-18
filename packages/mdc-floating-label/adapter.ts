@@ -55,11 +55,11 @@ export interface MDCFloatingLabelAdapter {
    * Registers an event listener on the root element for a given event.
    */
   registerInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the root element for a given event.
    */
   deregisterInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 }

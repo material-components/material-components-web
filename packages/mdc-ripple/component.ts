@@ -56,12 +56,12 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
       browserSupportsCssVars: () => util.supportsCssVariables(window),
       computeBoundingRect: () => instance.root.getBoundingClientRect(),
       containsEventTarget: (target) => instance.root.contains(target as Node),
-      deregisterDocumentInteractionHandler: (evtType, handler) => {
+      deregisterDocumentInteractionHandler: (eventType, handler) => {
         document.documentElement.removeEventListener(
-            evtType, handler, applyPassive());
+            eventType, handler, applyPassive());
       },
-      deregisterInteractionHandler: (evtType, handler) => {
-        instance.root.removeEventListener(evtType, handler, applyPassive());
+      deregisterInteractionHandler: (eventType, handler) => {
+        instance.root.removeEventListener(eventType, handler, applyPassive());
       },
       deregisterResizeHandler: (handler) => {
         window.removeEventListener('resize', handler);
@@ -71,12 +71,12 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
       isSurfaceActive: () => matches(instance.root, ':active'),
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
-      registerDocumentInteractionHandler: (evtType, handler) => {
+      registerDocumentInteractionHandler: (eventType, handler) => {
         document.documentElement.addEventListener(
-            evtType, handler, applyPassive());
+            eventType, handler, applyPassive());
       },
-      registerInteractionHandler: (evtType, handler) => {
-        instance.root.addEventListener(evtType, handler, applyPassive());
+      registerInteractionHandler: (eventType, handler) => {
+        instance.root.addEventListener(eventType, handler, applyPassive());
       },
       registerResizeHandler: (handler) => {
         window.addEventListener('resize', handler);

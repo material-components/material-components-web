@@ -412,7 +412,7 @@ describe('MDCMenu', () => {
     let detail: any;
     component.listen(
         MDCMenuFoundation.strings.SELECTED_EVENT,
-        (evt: any) => detail = evt.detail);
+        (event: any) => detail = event.detail);
 
     document.body.appendChild(root);
     (component as any)

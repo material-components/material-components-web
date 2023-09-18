@@ -327,9 +327,9 @@ describe('MDCTabBarFoundation', () => {
         MDCTabBarFoundation.strings.ARROW_RIGHT_KEY,
         MDCTabBarFoundation.strings.HOME_KEY,
         MDCTabBarFoundation.strings.END_KEY,
-       ].forEach((evtName) => {
+       ].forEach((eventName) => {
          const {foundation} = setupKeyDownTest();
-         const {fakeEvent, preventDefault} = mockKeyDownEvent({key: evtName});
+         const {fakeEvent, preventDefault} = mockKeyDownEvent({key: eventName});
          foundation.handleKeyDown(fakeEvent);
          expect(preventDefault).toHaveBeenCalled();
        });
@@ -339,10 +339,10 @@ describe('MDCTabBarFoundation', () => {
      () => {
        [MDCTabBarFoundation.strings.SPACE_KEY,
         MDCTabBarFoundation.strings.ENTER_KEY]
-           .forEach((evtName) => {
+           .forEach((eventName) => {
              const {foundation} = setupKeyDownTest();
              const {fakeEvent, preventDefault} =
-                 mockKeyDownEvent({key: evtName});
+                 mockKeyDownEvent({key: eventName});
              foundation.handleKeyDown(fakeEvent);
              expect(preventDefault).not.toHaveBeenCalled();
            });

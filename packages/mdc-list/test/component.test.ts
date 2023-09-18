@@ -626,7 +626,7 @@ describe('MDCList', () => {
     const {component} = setupTest();
 
     let detail = null;
-    const handler = (evt: any) => detail = evt.detail;
+    const handler = (event: any) => detail = event.detail;
 
     component.listen(strings.ACTION_EVENT, handler);
     (component.getDefaultFoundation() as any).adapter.notifyAction(3);
@@ -639,7 +639,7 @@ describe('MDCList', () => {
     const {component} = setupTest();
 
     let detail = null;
-    const handler = (evt: any) => detail = evt.detail;
+    const handler = (event: any) => detail = event.detail;
 
     component.listen(strings.SELECTION_CHANGE_EVENT, handler);
     (component.getDefaultFoundation() as any).adapter.notifySelectionChange([

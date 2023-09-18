@@ -75,9 +75,9 @@ export interface MDCMenuSurfaceAdapter {
 
   /** Registers an event listener on the window. */
   registerWindowEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /** Deregisters an event listener on the window. */
   deregisterWindowEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 }

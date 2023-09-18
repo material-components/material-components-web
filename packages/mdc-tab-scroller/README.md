@@ -125,7 +125,7 @@ Method Signature | Description
 `getRTLScroller() => MDCTabScrollerRTL` | Creates an RTL Scroller instance for the current browser.
 `getScrollPosition() => number` | Returns the current visual scroll position.
 `handleInteraction() => void` | Responds to mouse, pointer, touch, and keyboard events.
-`handleTransitionEnd(evt: Event) => void` | Responds to a `transitionend` event on the `mdc-tab-scroller__scroll-content` element.
+`handleTransitionEnd(event: Event) => void` | Responds to a `transitionend` event on the `mdc-tab-scroller__scroll-content` element.
 `incrementScroll(scrollX: number) => void` | Increments the current scroll value by the `scrollX` value.
 `scrollTo(scrollX: number) => void` | Scrolls to the `scrollX` value.
 

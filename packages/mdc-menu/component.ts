@@ -82,11 +82,11 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       this.list = null;
     }
 
-    this.handleKeydown = (evt) => {
-      this.foundation.handleKeydown(evt);
+    this.handleKeydown = (event) => {
+      this.foundation.handleKeydown(event);
     };
-    this.handleItemAction = (evt) => {
-      this.foundation.handleItemAction(this.items[evt.detail.index]);
+    this.handleItemAction = (event) => {
+      this.foundation.handleItemAction(this.items[event.detail.index]);
     };
     this.handleMenuSurfaceOpened = () => {
       this.foundation.handleMenuSurfaceOpened();
@@ -342,10 +342,10 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         this.menuSurface.close(skipRestoreFocus);
       },
       getElementIndex: (element) => this.items.indexOf(element),
-      notifySelected: (evtData) => {
+      notifySelected: (eventData) => {
         this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
-          index: evtData.index,
-          item: this.items[evtData.index],
+          index: eventData.index,
+          item: this.items[eventData.index],
         });
       },
       getMenuItemCount: () => this.items.length,

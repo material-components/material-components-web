@@ -60,11 +60,11 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
           this.input.ripple.deactivate();
         }
       },
-      deregisterInteractionHandler: (evtType, handler) => {
-        this.labelEl()?.removeEventListener(evtType, handler);
+      deregisterInteractionHandler: (eventType, handler) => {
+        this.labelEl()?.removeEventListener(eventType, handler);
       },
-      registerInteractionHandler: (evtType, handler) => {
-        this.labelEl()?.addEventListener(evtType, handler);
+      registerInteractionHandler: (eventType, handler) => {
+        this.labelEl()?.addEventListener(eventType, handler);
       },
     };
     return new MDCFormFieldFoundation(adapter);

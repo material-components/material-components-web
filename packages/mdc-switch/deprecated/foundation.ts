@@ -71,8 +71,8 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   }
 
   /** Handles the change event for the switch native control. */
-  handleChange(evt: Event) {
-    const nativeControl = evt.target as HTMLInputElement;
+  handleChange(event: Event) {
+    const nativeControl = event.target as HTMLInputElement;
     this.updateAriaChecked(nativeControl.checked);
     this.updateCheckedStyling(nativeControl.checked);
   }

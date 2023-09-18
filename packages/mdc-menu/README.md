@@ -272,7 +272,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
+`handleKeydown(event: Event) => void` | Event handler for the `keydown` events within the menu.
 `handleItemAction(listItem: Element) => void` | Event handler for list's action event.
 `handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.

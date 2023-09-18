@@ -140,49 +140,49 @@ export interface MDCTooltipAdapter {
    * Registers an event listener to the root element.
    */
   registerEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener to the root element.
    */
   deregisterEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener to the anchor element.
    */
   registerAnchorEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener to the anchor element.
    */
   deregisterAnchorEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener to the document body.
    */
   registerDocumentEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener to the document body.
    */
   deregisterDocumentEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener to the window.
    */
   registerWindowEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener to the window.
    */
   deregisterWindowEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Notification that the tooltip element has been fully hidden. Typically used

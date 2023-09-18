@@ -238,12 +238,12 @@ describe('MDCChipFoundation', () => {
 
   it('#handleKeydown does not emit event on invalid key', () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEvt = {
+    const mockevent = {
       type: 'keydown',
       key: 'Shift',
     } as KeyboardEvent;
 
-    foundation.handleKeydown(mockEvt);
+    foundation.handleKeydown(mockevent);
     expect(mockAdapter.notifyInteraction).not.toHaveBeenCalled();
     expect(mockAdapter.notifyNavigation).not.toHaveBeenCalled();
   });
@@ -300,18 +300,18 @@ describe('MDCChipFoundation', () => {
     } as KeyboardEvent,
   ];
 
-  for (const evt of validKeyDownTable) {
-    it(`#handleKeydown(${evt.key}) notifies interaction`, () => {
+  for (const event of validKeyDownTable) {
+    it(`#handleKeydown(${event.key}) notifies interaction`, () => {
       const {foundation, mockAdapter} = setupTest();
 
-      foundation.handleKeydown(evt);
+      foundation.handleKeydown(event);
       expect(mockAdapter.notifyInteraction).toHaveBeenCalled();
     });
 
-    it(`#handleKeydown(${evt.key}) focuses the primary action`, () => {
+    it(`#handleKeydown(${event.key}) focuses the primary action`, () => {
       const {foundation, mockAdapter} = setupTest();
 
-      foundation.handleKeydown(evt);
+      foundation.handleKeydown(event);
       expect(mockAdapter.setPrimaryActionAttr)
           .toHaveBeenCalledWith(strings.TAB_INDEX, '0');
       expect(mockAdapter.removeTrailingActionFocus).toHaveBeenCalled();
@@ -319,12 +319,12 @@ describe('MDCChipFoundation', () => {
     });
 
     it(`#handleKeydown(${
-           evt.key}) does not focus the primary action when configured`,
+           event.key}) does not focus the primary action when configured`,
        () => {
          const {foundation, mockAdapter} = setupTest();
          foundation.setShouldFocusPrimaryActionOnClick(false);
 
-         foundation.handleKeydown(evt);
+         foundation.handleKeydown(event);
          expect(mockAdapter.focusPrimaryAction).not.toHaveBeenCalled();
        });
   }
@@ -332,14 +332,14 @@ describe('MDCChipFoundation', () => {
   it('#handleTransitionEnd notifies removal of chip on width transition end',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'transitionend',
          target: {},
          propertyName: 'width',
        } as TransitionEvent;
        mockAdapter.eventTargetHasClass.and.returnValue(true);
 
-       foundation.handleTransitionEnd(mockEvt);
+       foundation.handleTransitionEnd(mockevent);
 
        expect(mockAdapter.notifyRemoval).toHaveBeenCalled();
      });
@@ -347,7 +347,7 @@ describe('MDCChipFoundation', () => {
   it('#handleTransitionEnd notifies removal of chip with removal announcement if present',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'transitionend',
          target: {},
          propertyName: 'width',
@@ -355,7 +355,7 @@ describe('MDCChipFoundation', () => {
        mockAdapter.eventTargetHasClass.and.returnValue(true);
        mockAdapter.getAttribute.and.returnValue('Removed foo');
 
-       foundation.handleTransitionEnd(mockEvt);
+       foundation.handleTransitionEnd(mockevent);
 
        expect(mockAdapter.notifyRemoval).toHaveBeenCalledWith('Removed foo');
      });
@@ -363,7 +363,7 @@ describe('MDCChipFoundation', () => {
   it('#handleTransitionEnd animates width if chip is exiting on chip opacity transition end',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
@@ -371,7 +371,7 @@ describe('MDCChipFoundation', () => {
        mockAdapter.eventTargetHasClass.and.returnValue(true);
        mockAdapter.getComputedStyleValue.and.returnValue('100px');
 
-       foundation.handleTransitionEnd(mockEvt);
+       foundation.handleTransitionEnd(mockevent);
 
        jasmine.clock().tick(1);
        expect(mockAdapter.setStyleProperty)
@@ -389,20 +389,20 @@ describe('MDCChipFoundation', () => {
          'on leading icon opacity transition end, if chip is selected',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
        } as TransitionEvent;
        mockAdapter.eventTargetHasClass
-           .withArgs(mockEvt.target, cssClasses.CHIP_EXIT)
+           .withArgs(mockevent.target, cssClasses.CHIP_EXIT)
            .and.returnValue(false);
        mockAdapter.eventTargetHasClass
-           .withArgs(mockEvt.target, cssClasses.LEADING_ICON)
+           .withArgs(mockevent.target, cssClasses.LEADING_ICON)
            .and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.SELECTED).and.returnValue(true);
 
-       foundation.handleTransitionEnd(mockEvt);
+       foundation.handleTransitionEnd(mockevent);
 
        expect(mockAdapter.addClassToLeadingIcon)
            .toHaveBeenCalledWith(cssClasses.HIDDEN_LEADING_ICON);
@@ -412,14 +412,14 @@ describe('MDCChipFoundation', () => {
          'if chip is not selected',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
        } as TransitionEvent;
        mockAdapter.eventTargetHasClass.and.returnValue(true);
 
-       foundation.handleTransitionEnd(mockEvt);
+       foundation.handleTransitionEnd(mockevent);
 
        expect(mockAdapter.addClassToLeadingIcon)
            .not.toHaveBeenCalledWith(cssClasses.HIDDEN_LEADING_ICON);
@@ -430,16 +430,16 @@ describe('MDCChipFoundation', () => {
          'on checkmark opacity transition end, if chip is not selected',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
        } as TransitionEvent;
        mockAdapter.eventTargetHasClass
-           .withArgs(mockEvt.target, cssClasses.CHECKMARK)
+           .withArgs(mockevent.target, cssClasses.CHECKMARK)
            .and.returnValue(true);
 
-       foundation.handleTransitionEnd(mockEvt);
+       foundation.handleTransitionEnd(mockevent);
 
        expect(mockAdapter.removeClassFromLeadingIcon)
            .toHaveBeenCalledWith(cssClasses.HIDDEN_LEADING_ICON);
@@ -448,7 +448,7 @@ describe('MDCChipFoundation', () => {
   it('#handleTransitionEnd does nothing on checkmark opacity transition end, if chip is selected',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
@@ -456,7 +456,7 @@ describe('MDCChipFoundation', () => {
        mockAdapter.eventTargetHasClass.and.returnValue(true);
        mockAdapter.hasClass.and.returnValue(true);
 
-       foundation.handleTransitionEnd(mockEvt);
+       foundation.handleTransitionEnd(mockevent);
 
        expect(mockAdapter.removeClassFromLeadingIcon)
            .not.toHaveBeenCalledWith(cssClasses.HIDDEN_LEADING_ICON);
@@ -465,13 +465,13 @@ describe('MDCChipFoundation', () => {
   it('#handleTransitionEnd does nothing for width property when not exiting',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'transitionend',
          target: {},
          propertyName: 'width',
        } as TransitionEvent;
 
-       foundation.handleTransitionEnd(mockEvt);
+       foundation.handleTransitionEnd(mockevent);
 
        expect(mockAdapter.notifyRemoval).not.toHaveBeenCalled();
        expect(mockAdapter.addClassToLeadingIcon)
@@ -522,12 +522,12 @@ describe('MDCChipFoundation', () => {
   for (const key of navigationKeyTable) {
     it(`#handleKeydown emits custom event for key ${key}`, () => {
       const {foundation, mockAdapter} = setupTest();
-      const mockEvt = {
+      const mockevent = {
         type: 'keydown',
         preventDefault: jasmine.createSpy('.preventDefault') as Function,
         key,
       } as KeyboardEvent;
-      foundation.handleKeydown(mockEvt);
+      foundation.handleKeydown(mockevent);
       expect(mockAdapter.notifyNavigation)
           .toHaveBeenCalledWith(key, EventSource.PRIMARY);
     });
@@ -535,25 +535,25 @@ describe('MDCChipFoundation', () => {
 
   it('#handleKeydown calls preventDefault on navigation events', () => {
     const {foundation} = setupTest();
-    const mockEvt = {
+    const mockevent = {
       type: 'keydown',
       key: strings.ARROW_LEFT_KEY,
       preventDefault: jasmine.createSpy('.preventDefault') as Function,
     } as KeyboardEvent;
 
-    foundation.handleKeydown(mockEvt);
-    expect(mockEvt.preventDefault).toHaveBeenCalledTimes(1);
+    foundation.handleKeydown(mockevent);
+    expect(mockevent.preventDefault).toHaveBeenCalledTimes(1);
   });
 
   it('#handleKeydown does not emit a custom event for inappropriate keys',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const mockEvt = {
+       const mockevent = {
          type: 'keydown',
          key: ' ',
        } as KeyboardEvent;
 
-       foundation.handleKeydown(mockEvt);
+       foundation.handleKeydown(mockevent);
        expect(mockAdapter.notifyNavigation)
            // TODO: Wait until b/208710526 is fixed, then remove this
            // autogenerated error suppression.

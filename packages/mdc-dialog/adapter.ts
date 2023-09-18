@@ -40,7 +40,7 @@ export interface MDCDialogAdapter {
 
   isContentScrollable(): boolean;
   areButtonsStacked(): boolean;
-  getActionFromEvent(evt: Event): string|null;
+  getActionFromEvent(event: Event): string|null;
 
   trapFocus(focusElement: HTMLElement|null): void;
   releaseFocus(): void;
@@ -59,13 +59,13 @@ export interface MDCDialogAdapter {
    * with the 'mdc-dialog__content' class).
    */
   registerContentEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the dialog's content element.
    */
   deregisterContentEventHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * @return true if the content has been scrolled (that is, for
@@ -87,11 +87,11 @@ export interface MDCDialogAdapter {
    * Registers an event listener to the window.
    */
   registerWindowEventHandler<K extends WindowEventType>(
-      evtType: K, handler: SpecificWindowEventListener<K>): void;
+      eventType: K, handler: SpecificWindowEventListener<K>): void;
 
   /**
    * Deregisters an event listener to the window.
    */
   deregisterWindowEventHandler<K extends WindowEventType>(
-      evtType: K, handler: SpecificWindowEventListener<K>): void;
+      eventType: K, handler: SpecificWindowEventListener<K>): void;
 }

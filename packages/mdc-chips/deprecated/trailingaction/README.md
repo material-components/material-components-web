@@ -111,8 +111,8 @@ Method Signature | Description
 `removeFocus() => void` | Removes focus from the trailing action
 `focus() => void` | Gives focus to the trailing action
 `isNavigable() => boolean` | Returns the navigability of the trailing action
-`handleClick(evt: MouseEvent) => void` | Handles a click event on the root element
-`handleKeydown(evt: KeyboardEvent) => void` | Handles a keydown event on the root element
+`handleClick(event: MouseEvent) => void` | Handles a click event on the root element
+`handleKeydown(event: KeyboardEvent) => void` | Handles a keydown event on the root element
 
 #### `MDCChipTrailingActionFoundation` Event Handlers
 

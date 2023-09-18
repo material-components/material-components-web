@@ -110,15 +110,15 @@ navigationKeys.add(KEY.ARROW_DOWN);
 /**
  * normalizeKey returns the normalized string for a navigational action.
  */
-export function normalizeKey(evt: KeyboardEvent): string {
-  const {key} = evt;
+export function normalizeKey(event: KeyboardEvent): string {
+  const {key} = event;
   // If the event already has a normalized key, return it
   if (normalizedKeys.has(key)) {
     return key;
   }
 
   // tslint:disable-next-line:deprecation
-  const mappedKey = mappedKeyCodes.get(evt.keyCode);
+  const mappedKey = mappedKeyCodes.get(event.keyCode);
   if (mappedKey) {
     return mappedKey;
   }
@@ -128,6 +128,6 @@ export function normalizeKey(evt: KeyboardEvent): string {
 /**
  * isNavigationEvent returns whether the event is a navigation event
  */
-export function isNavigationEvent(evt: KeyboardEvent): boolean {
-  return navigationKeys.has(normalizeKey(evt));
+export function isNavigationEvent(event: KeyboardEvent): boolean {
+  return navigationKeys.has(normalizeKey(event));
 }

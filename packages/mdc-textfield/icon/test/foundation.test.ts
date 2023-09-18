@@ -145,7 +145,7 @@ describe('MDCTextFieldIconFoundation', () => {
 
   it('on click notifies custom icon event', () => {
     const {foundation, mockAdapter} = setupTest();
-    const evt = {
+    const event = {
       target: {},
       type: 'click',
       preventDefault: () => {},
@@ -154,15 +154,15 @@ describe('MDCTextFieldIconFoundation', () => {
 
     mockAdapter.registerInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'click') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'click') {
             click = handler;
           }
         });
 
     foundation.init();
     if (click !== undefined) {
-      click(evt);
+      click(event);
     }
     expect(mockAdapter.notifyIconAction).toHaveBeenCalled();
   });

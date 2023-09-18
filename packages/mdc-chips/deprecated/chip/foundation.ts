@@ -186,12 +186,12 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   /**
    * Handles a transition end event on the root element.
    */
-  handleTransitionEnd(evt: TransitionEvent) {
+  handleTransitionEnd(event: TransitionEvent) {
     // Handle transition end event on the chip when it is about to be removed.
     const shouldHandle =
-        this.adapter.eventTargetHasClass(evt.target, cssClasses.CHIP_EXIT);
-    const widthIsAnimating = evt.propertyName === 'width';
-    const opacityIsAnimating = evt.propertyName === 'opacity';
+        this.adapter.eventTargetHasClass(event.target, cssClasses.CHIP_EXIT);
+    const widthIsAnimating = event.propertyName === 'width';
+    const opacityIsAnimating = event.propertyName === 'opacity';
 
     if (shouldHandle && opacityIsAnimating) {
       // See:
@@ -233,10 +233,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
 
     const shouldHideLeadingIcon =
-        this.adapter.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON) &&
+        this.adapter.eventTargetHasClass(event.target, cssClasses.LEADING_ICON) &&
         this.adapter.hasClass(cssClasses.SELECTED);
     const shouldShowLeadingIcon =
-        this.adapter.eventTargetHasClass(evt.target, cssClasses.CHECKMARK) &&
+        this.adapter.eventTargetHasClass(event.target, cssClasses.CHECKMARK) &&
         !this.adapter.hasClass(cssClasses.SELECTED);
 
     if (shouldHideLeadingIcon) {
@@ -250,18 +250,18 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
   }
 
-  handleFocusIn(evt: FocusEvent) {
+  handleFocusIn(event: FocusEvent) {
     // Early exit if the event doesn't come from the primary action
-    if (!this.eventFromPrimaryAction(evt)) {
+    if (!this.eventFromPrimaryAction(event)) {
       return;
     }
 
     this.adapter.addClass(cssClasses.PRIMARY_ACTION_FOCUSED);
   }
 
-  handleFocusOut(evt: FocusEvent) {
+  handleFocusOut(event: FocusEvent) {
     // Early exit if the event doesn't come from the primary action
-    if (!this.eventFromPrimaryAction(evt)) {
+    if (!this.eventFromPrimaryAction(event)) {
       return;
     }
 
@@ -284,10 +284,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   /**
    * Handles a keydown event from the root element.
    */
-  handleKeydown(evt: KeyboardEvent) {
+  handleKeydown(event: KeyboardEvent) {
     if (this.isEditing()) {
-      if (this.shouldFinishEditing(evt)) {
-        evt.preventDefault();
+      if (this.shouldFinishEditing(event)) {
+        event.preventDefault();
         this.finishEditing();
       }
       // When editing, the foundation should only handle key events that finish
@@ -296,36 +296,36 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
 
     if (this.isEditable()) {
-      if (this.shouldStartEditing(evt)) {
-        evt.preventDefault();
+      if (this.shouldStartEditing(event)) {
+        event.preventDefault();
         this.startEditing();
       }
     }
 
-    if (this.shouldNotifyInteraction(evt)) {
+    if (this.shouldNotifyInteraction(event)) {
       this.adapter.notifyInteraction();
       this.setPrimaryActionFocusable(this.getFocusBehavior());
       return;
     }
 
-    if (this.isDeleteAction(evt)) {
-      evt.preventDefault();
+    if (this.isDeleteAction(event)) {
+      event.preventDefault();
       this.removeChip();
       return;
     }
 
     // Early exit if the key is not usable
-    if (!navigationKeys.has(evt.key)) {
+    if (!navigationKeys.has(event.key)) {
       return;
     }
 
     // Prevent default behavior for movement keys which could include scrolling
-    evt.preventDefault();
-    this.focusNextAction(evt.key, EventSource.PRIMARY);
+    event.preventDefault();
+    this.focusNextAction(event.key, EventSource.PRIMARY);
   }
 
-  handleTrailingActionNavigation(evt: MDCChipTrailingActionNavigationEvent) {
-    this.focusNextAction(evt.detail.key, EventSource.TRAILING);
+  handleTrailingActionNavigation(event: MDCChipTrailingActionNavigationEvent) {
+    this.focusNextAction(event.detail.key, EventSource.TRAILING);
   }
 
   /**
@@ -416,23 +416,23 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
   }
 
-  private shouldStartEditing(evt: KeyboardEvent): boolean {
-    return this.eventFromPrimaryAction(evt) && evt.key === strings.ENTER_KEY;
+  private shouldStartEditing(event: KeyboardEvent): boolean {
+    return this.eventFromPrimaryAction(event) && event.key === strings.ENTER_KEY;
   }
 
-  private shouldFinishEditing(evt: KeyboardEvent): boolean {
-    return evt.key === strings.ENTER_KEY;
+  private shouldFinishEditing(event: KeyboardEvent): boolean {
+    return event.key === strings.ENTER_KEY;
   }
 
-  private shouldNotifyInteraction(evt: KeyboardEvent): boolean {
-    return evt.key === strings.ENTER_KEY || evt.key === strings.SPACEBAR_KEY;
+  private shouldNotifyInteraction(event: KeyboardEvent): boolean {
+    return event.key === strings.ENTER_KEY || event.key === strings.SPACEBAR_KEY;
   }
 
-  private isDeleteAction(evt: KeyboardEvent): boolean {
+  private isDeleteAction(event: KeyboardEvent): boolean {
     const isDeletable = this.adapter.hasClass(cssClasses.DELETABLE);
     return isDeletable &&
-        (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY ||
-         evt.key === strings.IE_DELETE_KEY);
+        (event.key === strings.BACKSPACE_KEY || event.key === strings.DELETE_KEY ||
+         event.key === strings.IE_DELETE_KEY);
   }
 
   private setSelectedImpl(selected: boolean) {
@@ -453,9 +453,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.adapter.notifySelection(selected, true);
   }
 
-  private eventFromPrimaryAction(evt: Event) {
+  private eventFromPrimaryAction(event: Event) {
     return this.adapter.eventTargetHasClass(
-        evt.target, cssClasses.PRIMARY_ACTION);
+        event.target, cssClasses.PRIMARY_ACTION);
   }
 
   private startEditing() {

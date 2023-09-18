@@ -267,9 +267,9 @@ function renderComponent(props: RenderComponentProps): HTMLElement {
     </div>
   `;
 
-  const prevTable = document.querySelector<HTMLElement>(`.${cssClasses.ROOT}`);
-  if (prevTable) {
-    document.body.removeChild(prevTable.parentElement as HTMLElement);
+  const preventable = document.querySelector<HTMLElement>(`.${cssClasses.ROOT}`);
+  if (preventable) {
+    document.body.removeChild(preventable.parentElement as HTMLElement);
   }
 
   return createFixture(blobHtml);

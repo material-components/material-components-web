@@ -110,11 +110,11 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
           util.createFocusTrapInstance(this.root, this.focusTrapFactory);
     }
 
-    this.handleKeydown = (evt) => {
-      this.foundation.handleKeydown(evt);
+    this.handleKeydown = (event) => {
+      this.foundation.handleKeydown(event);
     };
-    this.handleTransitionEnd = (evt) => {
-      this.foundation.handleTransitionEnd(evt);
+    this.handleTransitionEnd = (event) => {
+      this.foundation.handleTransitionEnd(event);
     };
     this.listen('keydown', this.handleKeydown);
     this.listen('transitionend', this.handleTransitionEnd);

@@ -69,15 +69,15 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     this.labelEl = this.root.querySelector<HTMLElement>(LABEL_SELECTOR)!;
     this.actionEl = this.root.querySelector<HTMLElement>(ACTION_SELECTOR)!;
 
-    this.handleKeyDown = (evt) => {
-      this.foundation.handleKeyDown(evt);
+    this.handleKeyDown = (event) => {
+      this.foundation.handleKeyDown(event);
     };
-    this.handleSurfaceClick = (evt) => {
-      const target = evt.target as Element;
+    this.handleSurfaceClick = (event) => {
+      const target = event.target as Element;
       if (this.isActionButton(target)) {
-        this.foundation.handleActionButtonClick(evt);
+        this.foundation.handleActionButtonClick(event);
       } else if (this.isActionIcon(target)) {
-        this.foundation.handleActionIconClick(evt);
+        this.foundation.handleActionIconClick(event);
       }
     };
 

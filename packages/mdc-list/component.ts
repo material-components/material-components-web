@@ -387,8 +387,8 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    * Used to figure out which element was clicked before sending the event to
    * the foundation.
    */
-  private handleFocusInEvent(evt: FocusEvent) {
-    const index = this.getListItemIndex(evt.target as Element);
+  private handleFocusInEvent(event: FocusEvent) {
+    const index = this.getListItemIndex(event.target as Element);
     this.foundation.handleFocusIn(index);
   }
 
@@ -396,8 +396,8 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    * Used to figure out which element was clicked before sending the event to
    * the foundation.
    */
-  private handleFocusOutEvent(evt: FocusEvent) {
-    const index = this.getListItemIndex(evt.target as Element);
+  private handleFocusOutEvent(event: FocusEvent) {
+    const index = this.getListItemIndex(event.target as Element);
     this.foundation.handleFocusOut(index);
   }
 
@@ -405,11 +405,11 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    * Used to figure out which element was focused when keydown event occurred
    * before sending the event to the foundation.
    */
-  private handleKeydownEvent(evt: KeyboardEvent) {
-    const index = this.getListItemIndex(evt.target as Element);
-    const target = evt.target as Element;
+  private handleKeydownEvent(event: KeyboardEvent) {
+    const index = this.getListItemIndex(event.target as Element);
+    const target = event.target as Element;
     this.foundation.handleKeydown(
-        evt,
+        event,
         target.classList.contains(
             this.classNameMap[cssClasses.LIST_ITEM_CLASS]),
         index);
@@ -419,10 +419,10 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    * Used to figure out which element was clicked before sending the event to
    * the foundation.
    */
-  private handleClickEvent(evt: MouseEvent) {
-    const index = this.getListItemIndex(evt.target as Element);
-    const target = evt.target as Element;
+  private handleClickEvent(event: MouseEvent) {
+    const index = this.getListItemIndex(event.target as Element);
+    const target = event.target as Element;
     this.foundation.handleClick(
-        index, matches(target, strings.CHECKBOX_RADIO_SELECTOR), evt);
+        index, matches(target, strings.CHECKBOX_RADIO_SELECTOR), event);
   }
 }

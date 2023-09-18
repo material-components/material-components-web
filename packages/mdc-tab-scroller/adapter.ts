@@ -49,10 +49,10 @@ export interface MDCTabScrollerAdapter {
 
   /**
    * Returns whether the event target matches given className.
-   * @param evtTarget The event target
+   * @param eventTarget The event target
    * @param selector The selector to check
    */
-  eventTargetMatchesSelector(evtTarget: EventTarget, selector: string): boolean;
+  eventTargetMatchesSelector(eventTarget: EventTarget, selector: string): boolean;
 
   /**
    * Sets a style property of the area element to the passed value.

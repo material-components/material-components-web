@@ -458,10 +458,10 @@ Method Signature | Description
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 `getDimensions() => ClientRect` | Returns the dimensions of the chip. This is used for applying ripple to the chip.
 `beginExit() => void` | Begins the exit animation which leads to removal of the chip
-`handleInteraction(evt: Event) => void` | Handles an interaction event on the root element
-`handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
-`handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
-`handleKeydown(evt: Event) => void` | Handles a keydown event on the root element
+`handleInteraction(event: Event) => void` | Handles an interaction event on the root element
+`handleTransitionEnd(event: Event) => void` | Handles a transition end event on the root element
+`handleTrailingIconInteraction(event: Event) => void` | Handles an interaction event on the trailing icon element
+`handleKeydown(event: Event) => void` | Handles a keydown event on the root element
 `removeFocus() => void` | Removes focusability from the chip
 
 #### `MDCChipFoundation` Event Handlers

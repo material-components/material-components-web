@@ -70,11 +70,11 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   }
 
   override initialSyncWithDOM() {
-    this.handleTabInteraction = (evt) => {
-      this.foundation.handleTabInteraction(evt);
+    this.handleTabInteraction = (event) => {
+      this.foundation.handleTabInteraction(event);
     };
-    this.handleKeyDown = (evt) => {
-      this.foundation.handleKeyDown(evt);
+    this.handleKeyDown = (event) => {
+      this.foundation.handleKeyDown(event);
     };
 
     this.listen(

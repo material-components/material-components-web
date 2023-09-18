@@ -45,19 +45,19 @@ const registry: InternalComponentRegistry = {};
 const CONSOLE_WARN = console.warn.bind(console);
 
 function emit<T extends object>(
-    evtType: string, evtData: T, shouldBubble = false) {
-  let evt;
+    eventType: string, eventData: T, shouldBubble = false) {
+  let event;
   if (typeof CustomEvent === 'function') {
-    evt = new CustomEvent<T>(evtType, {
+    event = new CustomEvent<T>(eventType, {
       bubbles: shouldBubble,
-      detail: evtData,
+      detail: eventData,
     });
   } else {
-    evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent(evtType, shouldBubble, false, evtData);
+    event = document.createEvent('CustomEvent');
+    event.initCustomEvent(eventType, shouldBubble, false, eventData);
   }
 
-  document.dispatchEvent(evt);
+  document.dispatchEvent(event);
 }
 
 /* istanbul ignore next: optional argument is not a branch statement */

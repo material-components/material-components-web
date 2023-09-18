@@ -75,8 +75,8 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       this.foundation.handleAnchorMouseEnter();
     };
 
-    this.handleFocus = (evt) => {
-      this.foundation.handleAnchorFocus(evt);
+    this.handleFocus = (event) => {
+      this.foundation.handleAnchorFocus(event);
     };
 
     this.handleMouseLeave = () => {
@@ -243,33 +243,33 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       focusAnchorElement: () => {
         this.anchorElem?.focus();
       },
-      registerEventHandler: (evt, handler) => {
+      registerEventHandler: (event, handler) => {
         if (this.root instanceof HTMLElement) {
-          this.root.addEventListener(evt, handler);
+          this.root.addEventListener(event, handler);
         }
       },
-      deregisterEventHandler: (evt, handler) => {
+      deregisterEventHandler: (event, handler) => {
         if (this.root instanceof HTMLElement) {
-          this.root.removeEventListener(evt, handler);
+          this.root.removeEventListener(event, handler);
         }
       },
-      registerAnchorEventHandler: (evt, handler) => {
-        this.anchorElem?.addEventListener(evt, handler);
+      registerAnchorEventHandler: (event, handler) => {
+        this.anchorElem?.addEventListener(event, handler);
       },
-      deregisterAnchorEventHandler: (evt, handler) => {
-        this.anchorElem?.removeEventListener(evt, handler);
+      deregisterAnchorEventHandler: (event, handler) => {
+        this.anchorElem?.removeEventListener(event, handler);
       },
-      registerDocumentEventHandler: (evt, handler) => {
-        document.body.addEventListener(evt, handler);
+      registerDocumentEventHandler: (event, handler) => {
+        document.body.addEventListener(event, handler);
       },
-      deregisterDocumentEventHandler: (evt, handler) => {
-        document.body.removeEventListener(evt, handler);
+      deregisterDocumentEventHandler: (event, handler) => {
+        document.body.removeEventListener(event, handler);
       },
-      registerWindowEventHandler: (evt, handler) => {
-        window.addEventListener(evt, handler);
+      registerWindowEventHandler: (event, handler) => {
+        window.addEventListener(event, handler);
       },
-      deregisterWindowEventHandler: (evt, handler) => {
-        window.removeEventListener(evt, handler);
+      deregisterWindowEventHandler: (event, handler) => {
+        window.removeEventListener(event, handler);
       },
       notifyHidden: () => {
         this.emit(events.HIDDEN, {});

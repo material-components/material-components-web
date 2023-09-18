@@ -798,8 +798,8 @@ describe('MDCTextFieldFoundation', () => {
        mockAdapter.hasLabel.and.returnValue(true);
        mockAdapter.registerInputInteractionHandler
            .withArgs(jasmine.any(String), jasmine.any(Function))
-           .and.callFake((evtType: string, handler: Function) => {
-             if (evtType === 'input') {
+           .and.callFake((eventType: string, handler: Function) => {
+             if (eventType === 'input') {
                input = handler;
              }
            });
@@ -823,8 +823,8 @@ describe('MDCTextFieldFoundation', () => {
        let input: Function|undefined;
        mockAdapter.registerInputInteractionHandler
            .withArgs(jasmine.any(String), jasmine.any(Function))
-           .and.callFake((evtType: string, handler: Function) => {
-             if (evtType === 'input') {
+           .and.callFake((eventType: string, handler: Function) => {
+             if (eventType === 'input') {
                input = handler;
              }
            });
@@ -842,7 +842,7 @@ describe('MDCTextFieldFoundation', () => {
 
   it('on input does nothing if input event preceded by keydown event', () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEvt = {
+    const mockevent = {
       type: 'keydown',
       key: 'Enter',
     };
@@ -856,16 +856,16 @@ describe('MDCTextFieldFoundation', () => {
     mockAdapter.getNativeInput.and.returnValue(mockInput);
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'input') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'input') {
             input = handler;
-          } else if (evtType === 'keydown') {
+          } else if (eventType === 'keydown') {
             keydown = handler;
           }
         });
     foundation.init();
     if (keydown !== undefined) {
-      keydown(mockEvt);
+      keydown(mockevent);
     }
     if (input !== undefined) {
       input();
@@ -881,8 +881,8 @@ describe('MDCTextFieldFoundation', () => {
     let focus: Function|undefined;
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'focus') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'focus') {
             focus = handler;
           }
         });
@@ -898,8 +898,8 @@ describe('MDCTextFieldFoundation', () => {
     let focus: Function|undefined;
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'focus') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'focus') {
             focus = handler;
           }
         });
@@ -916,8 +916,8 @@ describe('MDCTextFieldFoundation', () => {
     mockAdapter.hasLabel.and.returnValue(true);
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'focus') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'focus') {
             focus = handler;
           }
         });
@@ -936,8 +936,8 @@ describe('MDCTextFieldFoundation', () => {
     let focus: Function|undefined;
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'focus') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'focus') {
             focus = handler;
           }
         });
@@ -957,8 +957,8 @@ describe('MDCTextFieldFoundation', () => {
     let focus: Function|undefined;
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'focus') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'focus') {
             focus = handler;
           }
         });
@@ -975,8 +975,8 @@ describe('MDCTextFieldFoundation', () => {
     let blur: Function|undefined;
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'blur') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'blur') {
             blur = handler;
           }
         });
@@ -1154,8 +1154,8 @@ describe('MDCTextFieldFoundation', () => {
     let keydown: Function|undefined;
     mockAdapter.registerTextFieldInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'keydown') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'keydown') {
             keydown = handler;
           }
         });
@@ -1173,7 +1173,7 @@ describe('MDCTextFieldFoundation', () => {
 
   it('on click does not set receivedUserInput if input is disabled', () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEvt = {
+    const mockevent = {
       type: 'click',
     };
     const mockInput = {
@@ -1185,22 +1185,22 @@ describe('MDCTextFieldFoundation', () => {
     mockAdapter.getNativeInput.and.returnValue(mockInput);
     mockAdapter.registerTextFieldInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'click') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'click') {
             click = handler;
           }
         });
     foundation.init();
     expect(foundation['receivedUserInput']).toEqual(false);
     if (click !== undefined) {
-      click(mockEvt);
+      click(mockevent);
     }
     expect(foundation['receivedUserInput']).toEqual(false);
   });
 
   it('mousedown on the input sets the line ripple origin', () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEvt = {
+    const mockevent = {
       target: {
         getBoundingClientRect: () => {
           return {};
@@ -1214,15 +1214,15 @@ describe('MDCTextFieldFoundation', () => {
 
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'mousedown') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'mousedown') {
             clickHandler = handler;
           }
         });
 
     foundation.init();
     if (clickHandler !== undefined) {
-      clickHandler(mockEvt);
+      clickHandler(mockevent);
     }
 
     expect(mockAdapter.setLineRippleTransformOrigin)
@@ -1249,8 +1249,8 @@ describe('MDCTextFieldFoundation', () => {
 
     mockAdapter.registerInputInteractionHandler
         .withArgs(jasmine.any(String), jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
-          if (evtType === 'touchstart') {
+        .and.callFake((eventType: string, handler: Function) => {
+          if (eventType === 'touchstart') {
             clickHandler = handler;
           }
         });

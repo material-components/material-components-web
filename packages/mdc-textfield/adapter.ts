@@ -58,13 +58,13 @@ export interface MDCTextFieldRootAdapter {
    * Registers an event handler on the root element for a given event.
    */
   registerTextFieldInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event handler on the root element for a given event.
    */
   deregisterTextFieldInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers a validation attribute change listener on the input element.
@@ -107,14 +107,14 @@ export interface MDCTextFieldInputAdapter {
    * Registers an event listener on the native input element for a given event.
    */
   registerInputInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the native input element for a given
    * event.
    */
   deregisterInputInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 }
 
 export interface MDCTextFieldLabelAdapter {

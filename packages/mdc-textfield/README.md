@@ -489,10 +489,10 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given class name.
-`registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event.
-`deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event.
-`registerInputInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native input element for a given event.
-`deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native input element for a given event.
+`registerTextFieldInteractionHandler(eventType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event.
+`deregisterTextFieldInteractionHandler(eventType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event.
+`registerInputInteractionHandler(eventType: string, handler: EventListener) => void` | Registers an event listener on the native input element for a given event.
+`deregisterInputInteractionHandler(eventType: string, handler: EventListener) => void` | Deregisters an event listener on the native input element for a given event.
 `registerValidationAttributeChangeHandler(handler: (attributeNames: string[]) => void) => MutationObserver` | Registers a validation attribute change listener on the input element. Handler accepts list of attribute changes.
 `deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
 `getNativeInput() => NativeInputType \| null` | Returns an object representing the native text input element, with a similar API shape. See [types.ts](types.ts).
@@ -532,7 +532,7 @@ Method Signature | Description
 `isValid() => boolean` | Returns the component's current validity state (either native or custom, depending on how `setUseNativeValidation()` was configured).
 `isDisabled() => boolean` | Returns whether or not the input is disabled.
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state.
-`handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component.
+`handleTextFieldInteraction(event: Event) => void` | Handles click and keydown events originating from inside the Text Field component.
 `handleInput() => void` | Handles text input and textarea input event.
 `handleValidationAttributeChange(attributesList: !Array<string>) => void` | Handles validation attribute changes.
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
@@ -543,7 +543,7 @@ Method Signature | Description
 `setTrailingIconAriaLabel(label: string) => void` | Sets the aria label of the trailing icon.
 `setTrailingIconContent(content: string) => void` | Sets the text content of the trailing icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
-`setTransformOrigin(evt: TouchEvent \| MouseEvent) => void` | Sets the line ripple's transform origin, so that the line ripple activate animation will animate out from the user's click location.
+`setTransformOrigin(event: TouchEvent \| MouseEvent) => void` | Sets the line ripple's transform origin, so that the line ripple activate animation will animate out from the user's click location.
 `autoCompleteFocus() => void` | Activates the Text Field's focus state in cases when the input value is changed programmatically (i.e., without user action).
 `setAutovalidate(shouldAutovalidate: boolean) => void` | Sets whether or not the textfield should validate its input when `value` changes.
 `getAutovalidate() => boolean` | Whether or not the textfield should validate its input when `value` changes. `true` by default.

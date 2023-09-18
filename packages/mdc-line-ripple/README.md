@@ -86,8 +86,8 @@ Method Signature | Description
 `removeClass(className: string) => void` | Removes a class from the root element.
 `hasClass(className: string) => boolean` | Determines whether the root element has the given CSS class name.
 `setStyle(propertyName: string, value: string) => void` | Sets the style property with `propertyName` to `value` on the root element.
-`registerEventHandler(evtType: EventType, handler: EventListener) => void` | Registers an event listener on the root element for a given event.
-`deregisterEventHandler(evtType: EventType, handler: EventListener) => void` | Deregisters an event listener on the root element for a given event.
+`registerEventHandler(eventType: EventType, handler: EventListener) => void` | Registers an event listener on the root element for a given event.
+`deregisterEventHandler(eventType: EventType, handler: EventListener) => void` | Deregisters an event listener on the root element for a given event.
 
 ### `MDCLineRippleFoundation`
 
@@ -96,4 +96,4 @@ Method Signature | Description
 `activate() => void` | Activates the line ripple.
 `deactivate() => void` |  Deactivates the line ripple.
 `setRippleCenter(xCoordinate: number) => void` | Sets the center of the ripple to the `xCoordinate` given.
-`handleTransitionEnd(evt: Event) => void` | Handles a `transitionend` event.
+`handleTransitionEnd(event: Event) => void` | Handles a `transitionend` event.

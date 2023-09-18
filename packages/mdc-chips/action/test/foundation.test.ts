@@ -222,18 +222,18 @@ describe('MDCChipActionFoundation', () => {
              MDCChipActionEvents.INTERACTION} with detail`,
          () => {
            const {foundation, mockAdapter} = setupTest();
-           const evt = {
+           const event = {
              preventDefault: jasmine.createSpy('preventDefault') as Function,
              key,
            } as KeyboardEvent;
-           foundation.handleKeydown(evt);
+           foundation.handleKeydown(event);
            expect(mockAdapter.emitEvent)
                .toHaveBeenCalledWith(MDCChipActionEvents.INTERACTION, {
                  actionID: '',
                  source: MDCChipActionType.UNSPECIFIED,
                  trigger,
                });
-           expect(evt.preventDefault).toHaveBeenCalled();
+           expect(event.preventDefault).toHaveBeenCalled();
          });
     }
 
@@ -275,18 +275,18 @@ describe('MDCChipActionFoundation', () => {
              MDCChipActionEvents.INTERACTION} with detail`,
          () => {
            const {foundation, mockAdapter} = setupTest();
-           const evt = {
+           const event = {
              preventDefault: jasmine.createSpy('preventDefault') as Function,
              key,
            } as KeyboardEvent;
-           foundation.handleKeydown(evt);
+           foundation.handleKeydown(event);
            expect(mockAdapter.emitEvent)
                .toHaveBeenCalledWith(MDCChipActionEvents.INTERACTION, {
                  actionID: '',
                  source: MDCChipActionType.UNSPECIFIED,
                  trigger,
                });
-           expect(evt.preventDefault).toHaveBeenCalled();
+           expect(event.preventDefault).toHaveBeenCalled();
          });
     }
   });

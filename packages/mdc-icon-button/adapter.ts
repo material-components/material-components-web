@@ -42,5 +42,5 @@ export interface MDCIconButtonToggleAdapter {
 
   setAttr(attrName: string, attrValue: string): void;
 
-  notifyChange(evtData: MDCIconButtonToggleEventDetail): void;
+  notifyChange(eventData: MDCIconButtonToggleEventDetail): void;
 }

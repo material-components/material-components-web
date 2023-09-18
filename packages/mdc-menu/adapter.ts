@@ -77,7 +77,7 @@ export interface MDCMenuAdapter {
   /**
    * Emit an event when a menu item is selected.
    */
-  notifySelected(evtData: MDCMenuItemEventDetail): void;
+  notifySelected(eventData: MDCMenuItemEventDetail): void;
 
   /** @return Returns the menu item count. */
   getMenuItemCount(): number;

@@ -57,9 +57,9 @@ export function supportsCssVariables(
 }
 
 export function getNormalizedEventCoords(
-    evt: Event|undefined, pageOffset: MDCRipplePoint,
+    event: Event|undefined, pageOffset: MDCRipplePoint,
     clientRect: DOMRect): MDCRipplePoint {
-  if (!evt) {
+  if (!event) {
     return {x: 0, y: 0};
   }
   const {x, y} = pageOffset;
@@ -69,12 +69,12 @@ export function getNormalizedEventCoords(
   let normalizedX;
   let normalizedY;
   // Determine touch point relative to the ripple container.
-  if (evt.type === 'touchstart') {
-    const touchEvent = evt as TouchEvent;
+  if (event.type === 'touchstart') {
+    const touchEvent = event as TouchEvent;
     normalizedX = touchEvent.changedTouches[0].pageX - documentX;
     normalizedY = touchEvent.changedTouches[0].pageY - documentY;
   } else {
-    const mouseEvent = evt as MouseEvent;
+    const mouseEvent = event as MouseEvent;
     normalizedX = mouseEvent.pageX - documentX;
     normalizedY = mouseEvent.pageY - documentY;
   }

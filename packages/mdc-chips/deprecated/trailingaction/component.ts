@@ -70,11 +70,11 @@ export class MDCChipTrailingAction extends
   }
 
   override initialSyncWithDOM() {
-    this.handleClick = (evt: MouseEvent) => {
-      this.foundation.handleClick(evt);
+    this.handleClick = (event: MouseEvent) => {
+      this.foundation.handleClick(event);
     };
-    this.handleKeydown = (evt: KeyboardEvent) => {
-      this.foundation.handleKeydown(evt);
+    this.handleKeydown = (event: KeyboardEvent) => {
+      this.foundation.handleKeydown(event);
     };
 
     this.listen('click', this.handleClick);

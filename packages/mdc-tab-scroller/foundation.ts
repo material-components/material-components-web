@@ -123,13 +123,13 @@ export class MDCTabScrollerFoundation extends
   /**
    * Handles the transitionend event
    */
-  handleTransitionEnd(evt: Event) {
+  handleTransitionEnd(event: Event) {
     // Early exit if we aren't animating or the event was triggered by a
     // different element.
-    const evtTarget = evt.target as Element;
+    const eventTarget = event.target as Element;
     if (!this.isAnimating ||
         !this.adapter.eventTargetMatchesSelector(
-            evtTarget, MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)) {
+            eventTarget, MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)) {
       return;
     }
 

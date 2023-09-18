@@ -48,16 +48,16 @@ export interface MDCRippleAdapter {
   containsEventTarget(target: EventTarget|null): boolean;
 
   registerInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   deregisterInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   registerDocumentInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   deregisterDocumentInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+      eventType: K, handler: SpecificEventListener<K>): void;
 
   registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
