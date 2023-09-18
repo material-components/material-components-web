@@ -74,6 +74,8 @@ $light-theme: (
   pressed-state-layer-color: theme-color.$primary,
   pressed-state-layer-opacity: 0.12,
   state-layer-size: $size,
+  focus-ring-color: null,
+  focus-ring-offset: 0,
 );
 
 @mixin theme($theme) {
@@ -118,6 +120,9 @@ $light-theme: (
     ),
     $ripple-target: $ripple-target
   );
+
+  @include _focus-ring-color(map.get($theme, 'focus-ring-color'));
+  @include _focus-ring-offset(map.get($theme, 'focus-ring-offset'));
 }
 
 ///
@@ -149,13 +154,6 @@ $light-theme: (
     width: $size;
     height: $size;
     padding: calc(($size - $icon-size) / 2);
-  }
-
-  .mdc-icon-button__focus-ring {
-    @include feature-targeting.targets($feat-structure) {
-      max-height: $size;
-      max-width: $size;
-    }
   }
 
   &.mdc-icon-button--reduced-size {
@@ -389,6 +387,40 @@ $light-theme: (
       $color: $hover,
       $ripple-target: $ripple-target
     );
+  }
+}
+
+@mixin _focus-ring-color($color, $query: feature-targeting.all()) {
+  $color-value: if(
+    custom-properties.is-custom-prop($color),
+    custom-properties.get-declaration-value($color),
+    $color
+  );
+
+  @if $color != null {
+    .mdc-icon-button__focus-ring {
+      @include focus-ring.focus-ring-color(
+        $inner-ring-color: $color-value,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _focus-ring-offset($offset, $query: feature-targeting.all()) {
+  $offset-value: if(
+    custom-properties.is-custom-prop($offset),
+    custom-properties.get-declaration-value($offset),
+    $offset
+  );
+
+  @if type-of($offset-value) == 'number' {
+    .mdc-icon-button__focus-ring {
+      @include focus-ring.focus-ring-offset(
+        $offset: $offset-value,
+        $query: $query
+      );
+    }
   }
 }
 
