@@ -112,7 +112,6 @@
       justify-content: space-around; // Ensure Safari centers the dialog (because it treats the container's width oddly)
       box-sizing: border-box;
       height: 100%;
-      transform: scale(0.8);
       opacity: 0;
       // This element is necessary for IE 11 and needs to have `height: 100%`.
       // Let clicks on element fall through to scrim element underneath.
@@ -136,6 +135,8 @@
       // IE 11: Otherwise, scrolling content in `mdc-dialog__content` overflows.
       overflow-y: auto;
       outline: 0;
+      // Dialog scales up as it opens.
+      transform: scale(0.8);
 
       @include rtl.rtl {
         @include rtl.ignore-next-line();
@@ -410,6 +411,12 @@
 
     .mdc-dialog__container {
       @include feature-targeting.targets($feat-structure) {
+        transform: none;
+      }
+    }
+
+    .mdc-dialog__surface {
+      @include feature-targeting.targets($feat-structure) {
         // Dialog container scales up while opening, but should remain scaled up while closing
         transform: none;
       }
@@ -425,8 +432,13 @@
 
     .mdc-dialog__container {
       @include feature-targeting.targets($feat-structure) {
-        transform: none;
         opacity: 1;
+      }
+    }
+
+    .mdc-dialog__surface {
+      @include feature-targeting.targets($feat-structure) {
+        transform: none;
       }
     }
 
