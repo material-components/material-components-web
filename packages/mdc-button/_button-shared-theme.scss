@@ -204,7 +204,7 @@ $disabled-container-color: rgba(
     $elevation: map.get($theme, $key);
     @if $elevation != null {
       $resolved-value: meta.call(
-        $resolver,
+        $elevation-resolver,
         $elevation: $elevation,
         $shadow-color: $shadow-color
       );
