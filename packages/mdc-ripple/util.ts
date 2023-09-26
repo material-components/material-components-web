@@ -20,20 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 import {MDCRipplePoint} from './types';
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to
  * detect CSS custom variable support.
  */
-let supportsCssVariables_: boolean|undefined;
+let supportsCssVariablesCache: boolean|undefined;
 
+/** Checks if the window supports CSS Variables */
 export function supportsCssVariables(
     windowObj: typeof globalThis, forceRefresh = false): boolean {
   const {CSS} = windowObj;
-  let supportsCssVars = supportsCssVariables_;
-  if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-    return supportsCssVariables_;
+  let supportsCssVars = supportsCssVariablesCache;
+  if (typeof supportsCssVariablesCache === 'boolean' && !forceRefresh) {
+    return supportsCssVariablesCache;
   }
 
   const supportsFunctionPresent = CSS && typeof CSS.supports === 'function';
@@ -51,11 +53,12 @@ export function supportsCssVariables(
       explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus;
 
   if (!forceRefresh) {
-    supportsCssVariables_ = supportsCssVars;
+    supportsCssVariablesCache = supportsCssVars;
   }
   return supportsCssVars;
 }
 
+/** Gets the normalized events coordinates */
 export function getNormalizedEventCoords(
     event: Event|undefined, pageOffset: MDCRipplePoint,
     clientRect: DOMRect): MDCRipplePoint {
