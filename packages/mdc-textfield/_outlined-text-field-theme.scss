@@ -145,6 +145,11 @@ $light-theme: (
 
   &:not(.mdc-text-field--textarea) {
     $container-height: map.get($theme, container-height);
+    $label-font-size: if(
+      map.has-key($theme, label-text-size),
+      map.get($theme, label-text-size),
+      undefined
+    );
 
     @if $container-height {
       $container-height-value: if(
@@ -157,9 +162,16 @@ $light-theme: (
         'text-field-outlined-#{custom-properties.get-fallback($container-height)}',
         'text-field-outlined-#{$container-height}'
       );
+      $label-font-size-value: if(
+        custom-properties.is-custom-prop($label-font-size),
+        custom-properties.get-declaration-value($label-font-size),
+        $label-font-size
+      );
+
       @include mixins.outlined-height(
         $container-height-value,
-        $keyframe-suffix
+        $keyframe-suffix,
+        $label-font-size-value
       );
 
       &.mdc-text-field--with-leading-icon {
@@ -170,7 +182,8 @@ $light-theme: (
         );
         @include mixins.outlined-with-leading-icon-height(
           $container-height-value,
-          $with-leading-icon-keyframe-suffix
+          $with-leading-icon-keyframe-suffix,
+          $label-font-size-value
         );
       }
     }

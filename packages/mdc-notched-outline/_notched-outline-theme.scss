@@ -271,6 +271,7 @@ $label-adjust-absolute: 2.5px !default;
   $positionY,
   $positionX: 0,
   $scale: 0.75,
+  $font-size: 1rem,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -289,7 +290,7 @@ $label-adjust-absolute: 2.5px !default;
 
   .mdc-floating-label--float-above {
     @include feature-targeting.targets($feat-structure) {
-      font-size: ($scale * 1rem);
+      font-size: calc($scale * $font-size);
     }
   }
 
@@ -305,7 +306,7 @@ $label-adjust-absolute: 2.5px !default;
 
     .mdc-floating-label--float-above {
       @include feature-targeting.targets($feat-structure) {
-        font-size: 1rem;
+        font-size: $font-size;
       }
     }
   }
