@@ -170,7 +170,10 @@ $forced-colors-theme: (
   }
 
   @include ripple-color(
-    $color: map.get($theme, unselected-hover-state-layer-color),
+    $color-map: (
+      hover: map.get($theme, unselected-hover-state-layer-color),
+      press: map.get($theme, unselected-pressed-state-layer-color),
+    ),
     $opacity-map: (
       hover: map.get($theme, unselected-hover-state-layer-opacity),
       focus: map.get($theme, unselected-focus-state-layer-opacity),
@@ -633,16 +636,30 @@ $light-theme-deprecated: (
 
 /// Sets ripple color when checkbox is not in checked state.
 @mixin ripple-color(
-  $color,
+  $color: null,
+  $color-map: null,
   $opacity-map: null,
   $query: feature-targeting.all()
 ) {
+  @if $color == null {
+    // deprecated approach - always use 'hover' color.
+    $color: map.get($color-map, hover);
+  }
+
   @include ripple-theme.states(
     $color: $color,
     $opacity-map: $opacity-map,
     $query: $query,
     $ripple-target: $ripple-target
   );
+
+  @if $color-map {
+    @include ripple-theme.states-colors(
+      $color-map: $color-map,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+  }
 }
 
 /// Sets focus indicator color when checkbox is in checked state.
@@ -703,7 +720,9 @@ $light-theme-deprecated: (
 /// @access private
 ///
 @mixin if-unmarked-enabled_ {
-  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate='true'])
+  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not(
+      [data-indeterminate='true']
+    )
     ~ {
     @content;
   }
@@ -718,7 +737,9 @@ $light-theme-deprecated: (
   // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
   // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
   // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
-  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate):not([data-indeterminate='true'])
+  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate):not(
+      [data-indeterminate='true']
+    )
     ~ {
     @content;
   }
