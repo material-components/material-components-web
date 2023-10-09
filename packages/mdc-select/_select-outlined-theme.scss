@@ -168,11 +168,13 @@ $custom-property-prefix: 'outlined-select';
 
   @if map.get($theme, text-field-container-height) {
     @include select-theme.outlined-height(
-      map.get($theme, text-field-container-height)
+      map.get($theme, text-field-container-height),
+      $label-font-size: map.get($theme, text-field-label-text-size)
     );
     &.mdc-select--with-leading-icon {
       @include select-theme.outlined-with-leading-icon-height(
-        map.get($theme, text-field-container-height)
+        map.get($theme, text-field-container-height),
+        $label-font-size: map.get($theme, text-field-label-text-size)
       );
     }
   }

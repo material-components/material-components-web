@@ -24,4 +24,5 @@
 @forward './notched-outline' show core-styles, base_;
 @forward './notched-outline-theme' show color, stroke-width, notch-offset,
   shape-radius, floating-label-float-position,
-  floating-label-float-position-absolute, notch-max-width;
+  floating-label-float-position-absolute, notch-max-width,
+  floating-label-float-font-size;

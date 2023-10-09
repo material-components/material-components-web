@@ -263,6 +263,7 @@ $label-adjust-absolute: 2.5px !default;
 /// @param {Number} $positionY Absolute Y-axis position in `px`.
 /// @param {Number} $positionX Absolute X-axis position in `px`. Defaults to `0`.
 /// @param {Number} $scale Defaults to `.75`.
+/// @param {Number} $font-size Defaults to `1rem`.
 ///
 /// @todo Replace mixin `mdc-notched-outline-floating-label-float-position` with this mixin when floating label is
 ///     center aligned in all the places.
@@ -288,12 +289,6 @@ $label-adjust-absolute: 2.5px !default;
     $query: $query
   );
 
-  .mdc-floating-label--float-above {
-    @include feature-targeting.targets($feat-structure) {
-      font-size: calc($scale * $font-size);
-    }
-  }
-
   // Two selectors to ensure we select the appropriate class when applied from this component or a parent component.
   &.mdc-notched-outline--upgraded,
   .mdc-notched-outline--upgraded {
@@ -303,10 +298,56 @@ $label-adjust-absolute: 2.5px !default;
       $scale,
       $query: $query
     );
+  }
 
+  @include floating-label-float-font-size(
+    $scale: $scale,
+    $font-size: $font-size,
+    $query: $query
+  );
+}
+
+///
+/// Sets floating label font size in notched outline when label is afloat.
+///
+/// @param {Number} $scale Defaults to `.75`.
+/// @param {Number} $font-size Defaults to `1rem`.
+///
+@mixin floating-label-float-font-size(
+  $scale: 0.75,
+  $font-size: 1rem,
+  $query: feature-targeting.all()
+) {
+  $font-size-value: if(
+    custom-properties.is-custom-prop($font-size),
+    custom-properties.get-declaration-value($font-size),
+    $font-size
+  );
+  // Check if $font-size-value is null. This mixin is typically called from a
+  // component's `theme-styles` mixin, meaning the $font-size value will be
+  // passed in via a call to map.get(...). When the value is missing from the
+  // theme map, a `null` value will be passed in -- which does NOT result in
+  // the default 1rem value we've set in the mixin definition being used. Due
+  // to our call to `calc()` in this mixin, $font-size values of `null` results
+  // in BUILD errors. To avoid having to perform null checks in all the mixin
+  // calls that eventually lead down to this one, we just do a null check in
+  // this mixin.
+  $font-size-value: if($font-size-value, $font-size-value, 1rem);
+
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-floating-label--float-above {
+    @include feature-targeting.targets($feat-structure) {
+      font-size: calc($scale * $font-size-value);
+    }
+  }
+
+  // Two selectors to ensure we select the appropriate class when applied from
+  // this component or a parent component.
+  &.mdc-notched-outline--upgraded,
+  .mdc-notched-outline--upgraded {
     .mdc-floating-label--float-above {
       @include feature-targeting.targets($feat-structure) {
-        font-size: $font-size;
+        font-size: $font-size-value;
       }
     }
   }

@@ -448,6 +448,14 @@ $error-color: error !default;
   .mdc-floating-label {
     @include typography.theme-styles($typography-theme);
   }
+
+  @if map.get($typography-theme, 'size') {
+    &.mdc-select--outlined .mdc-select__anchor {
+      @include notched-outline-mixins.floating-label-float-font-size(
+        $font-size: map.get($typography-theme, 'size')
+      );
+    }
+  }
 }
 
 @mixin _error-outline-color($color) {
@@ -1258,10 +1266,12 @@ $error-color: error !default;
 /// @param {Number} $new-height
 /// @param {String} $keyframe-suffix - Optional suffix to use for generated
 ///     floating label keyframes
+/// @param {Number} $label-font-size - Defaults to 1rem.
 ///
 @mixin outlined-height(
   $new-height,
   $keyframe-suffix: null,
+  $label-font-size: 1rem,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -1279,6 +1289,7 @@ $error-color: error !default;
     // Floating label position
     @include notched-outline-mixins.floating-label-float-position-absolute(
       $positionY,
+      $font-size: $label-font-size,
       $query: $query
     );
 
@@ -1323,10 +1334,12 @@ $error-color: error !default;
 /// @param {Number} $new-height
 /// @param {String} $keyframe-suffix - Optional suffix to use for generated
 ///     floating label keyframes
+/// @param {Number} $label-font-size - Font size for floating label. Defaults to 1rem.
 ///
 @mixin outlined-with-leading-icon-height(
   $new-height,
   $keyframe-suffix: null,
+  $label-font-size: 1rem,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -1342,6 +1355,7 @@ $error-color: error !default;
         $new-height,
         select-icon-theme.$dense-icon-size,
         $keyframe-suffix,
+        $label-font-size,
         $query: $query
       );
     } @else {
@@ -1349,6 +1363,7 @@ $error-color: error !default;
         $new-height,
         select-icon-theme.$icon-size,
         $keyframe-suffix,
+        $label-font-size,
         $query: $query
       );
     }
@@ -1514,11 +1529,13 @@ $error-color: error !default;
 /// outlined select with leaing icon.
 /// @param {number} $icon-size - The size of the leading icon.
 /// @param {string} $keyframe-suffix - The suffix for the newly generated keyframes.
+/// @param {number} $font-size - The size of the label font. Defaults to 1rem.
 ///
 @mixin outlined-with-leading-icon-floating-label-position-animation(
   $height,
   $icon-size,
   $keyframe-suffix: select-outlined-leading-icon-#{$height},
+  $font-size: 1rem,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -1541,6 +1558,7 @@ $error-color: error !default;
   @include notched-outline-mixins.floating-label-float-position-absolute(
     $float-position-y,
     $float-position-x,
+    $font-size: $font-size,
     $query: $query
   );
 

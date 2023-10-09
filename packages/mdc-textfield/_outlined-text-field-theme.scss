@@ -33,6 +33,7 @@
 @use '@material/tokens/resolvers';
 @use './text-field-theme';
 @use './mixins';
+@use './variables';
 
 $custom-property-prefix: 'outlined-text-field';
 
@@ -188,6 +189,15 @@ $light-theme: (
       }
     }
   }
+
+  @if map.get($theme, label-text-size) {
+    &.mdc-text-field--textarea.mdc-text-field--outlined {
+      @include notched-outline-mixins.floating-label-float-font-size(
+        $font-size: map.get($theme, label-text-size)
+      );
+    }
+  }
+
   @if map.get($theme, container-shape) {
     @include mixins.outline-shape-radius(map.get($theme, container-shape));
   }

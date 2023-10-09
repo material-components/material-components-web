@@ -374,15 +374,24 @@ $_density-config: map.merge(
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+/// @param {Number} $label-font-size - Font-size for the textfield's floating label. If the label size is being customized, it is necessary to specify this value to ensure that the notched outline does not cut-off the label when floated, see b/302340517 for more info. Defaults to 1rem.
 ///
-@mixin outlined-density($density-scale, $query: feature-targeting.all()) {
+@mixin outlined-density(
+  $density-scale,
+  $label-font-size: 1rem,
+  $query: feature-targeting.all()
+) {
   $height: density-functions.prop-value(
     $density-config: $_density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include outlined-height($height, $query: $query);
+  @include outlined-height(
+    $height,
+    $label-font-size: $label-font-size,
+    $query: $query
+  );
   // TODO(b/151839219): resize icons and adjust label position
   // @if $density-scale < 0 {
   //   @include icon-mixins.size(icon-variables.$dense-icon-size);
@@ -394,9 +403,11 @@ $_density-config: map.merge(
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+/// @param {Number} $label-font-size - Font-size for the textfield's floating label. It is necessary tto specify this value to ensure that the notched outline does not cut-off the label when floated, see b/302340517 for more info.
 ///
 @mixin outlined-with-leading-icon-density(
   $density-scale,
+  $label-font-size: 1rem,
   $query: feature-targeting.all()
 ) {
   $height: density-functions.prop-value(
@@ -405,7 +416,11 @@ $_density-config: map.merge(
     $property-name: height,
   );
 
-  @include outlined-with-leading-icon-height($height, $query: $query);
+  @include outlined-with-leading-icon-height(
+    $height,
+    $label-font-size: $label-font-size,
+    $query: $query
+  );
   // TODO(b/151839219): resize icons and adjust label position
   // @if $density-scale < 0 {
   //   @include icon-mixins.size(icon-variables.$dense-icon-size);
@@ -680,12 +695,13 @@ $_density-config: map.merge(
 /// @param {Number} $height
 /// @param {String} $keyframe-suffix - Optional suffix to use for generated
 ///     floating label keyframes
+/// @param {Number} label-font-size - font size for the floating label. Defaults to 1rem.
 /// @access public
 ///
 @mixin outlined-height(
   $height,
   $keyframe-suffix: text-field-outlined-#{$height},
-  $font-size: 1rem,
+  $label-font-size: 1rem,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -694,7 +710,7 @@ $_density-config: map.merge(
   // Floating label position
   @include notched-outline-mixins.floating-label-float-position-absolute(
     $positionY,
-    $font-size: $font-size,
+    $font-size: $label-font-size,
     $query: $query
   );
 
@@ -722,12 +738,13 @@ $_density-config: map.merge(
 /// @param {Number} $height
 /// @param {String} $keyframe-suffix - Optional suffix to use for generated
 ///     floating label keyframes
+/// @param {Number} $label-font-size - Font-size for the textfield's floating label. It is necessary tto specify this value to ensure that the notched outline does not cut-off the label when floated, see b/302340517 for more info.
 /// @access public
 ///
 @mixin outlined-with-leading-icon-height(
   $height,
   $keyframe-suffix: null,
-  $font-size: 1rem,
+  $label-font-size: 1rem,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -739,7 +756,7 @@ $_density-config: map.merge(
     @include _outlined-with-leading-icon-floating-label-position-animation(
       $height,
       $keyframe-suffix,
-      $font-size,
+      $label-font-size,
       $query
     );
   }
