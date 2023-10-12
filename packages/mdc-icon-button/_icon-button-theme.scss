@@ -121,6 +121,14 @@ $light-theme: (
     $ripple-target: $ripple-target
   );
 
+  @include ripple-theme.states-colors(
+    (
+      hover: map.get($theme, hover-state-layer-color),
+      press: map.get($theme, pressed-state-layer-color),
+    ),
+    $ripple-target: $ripple-target
+  );
+
   @include _focus-ring-color(map.get($theme, 'focus-ring-color'));
   @include _focus-ring-offset(map.get($theme, 'focus-ring-offset'));
 }

@@ -113,6 +113,7 @@ $_ripple-theme: (
 
   // TODO(b/191298796): Support states layer color for every interactive states.
   // Use only hover state layer color, ignoring focus and pressed color.
+  // Consider replacing states-base-color with states-colors.
   @include internal-theme-styles($theme, $ripple-target);
 }
 
@@ -137,6 +138,7 @@ $_ripple-theme: (
   );
 }
 
+/// @deprecated Use states-colors instead.
 @mixin states-base-color(
   $color,
   $query: feature-targeting.all(),
@@ -156,6 +158,35 @@ $_ripple-theme: (
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-color) {
         @include theme.property(background-color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Customizes ripple color in `hover` and `press` states
+/// @param {map} $color-map - map specifying custom opacity of zero or more states
+/// @param {string} $ripple-target - the optional selector for the ripple element
+///
+@mixin states-colors(
+  $color-map: (),
+  $ripple-target: '&',
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if map.get($color-map, hover) {
+    @include hover-state-layer-selector($ripple-target) {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(background-color, map.get($color-map, hover));
+      }
+    }
+  }
+
+  @if map.get($color-map, press) {
+    @include press-state-layer-selector($ripple-target) {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(background-color, map.get($color-map, press));
       }
     }
   }
@@ -299,15 +330,14 @@ $_ripple-theme: (
     }
 
     &:not(.mdc-ripple-upgraded) {
-      // Apply press additively by using the ::after pseudo-element
-      #{$ripple-target}::after {
+      @include press-state-layer-selector($ripple-target) {
         @include feature-targeting.targets($feat-animation) {
           transition: opacity $fade-out-duration linear;
         }
       }
 
       &:active {
-        #{$ripple-target}::after {
+        @include press-state-layer-selector($ripple-target) {
           @include feature-targeting.targets($feat-animation) {
             transition-duration: $fade-in-duration;
           }
@@ -543,8 +573,21 @@ $_ripple-theme: (
   @return map.get($opacity-map, $state);
 }
 
+/// @deprecated Use hover-state-layer-selector instead.
 @mixin states-background-selector($ripple-target) {
+  @include hover-state-layer-selector($ripple-target) {
+    @content;
+  }
+}
+
+@mixin hover-state-layer-selector($ripple-target) {
   #{$ripple-target}::before {
+    @content;
+  }
+}
+
+@mixin press-state-layer-selector($ripple-target) {
+  #{$ripple-target}::after {
     @content;
   }
 }

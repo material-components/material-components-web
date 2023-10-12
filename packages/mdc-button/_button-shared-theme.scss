@@ -112,12 +112,12 @@ $disabled-container-color: rgba(
   $icon-size: map.get($theme, with-icon-icon-size);
   @include _icon-size($icon-size, $query: $query);
 
-  @include _states-colors(
-    (
-      focus: map.get($theme, focus-state-layer-color),
+  @include ripple-theme.states-colors(
+    $color-map: (
       hover: map.get($theme, hover-state-layer-color),
-      pressed: map.get($theme, pressed-state-layer-color),
+      press: map.get($theme, pressed-state-layer-color),
     ),
+    $ripple-target: button-ripple.$ripple-target,
     $query: $query
   );
 
@@ -644,25 +644,6 @@ $disabled-container-color: rgba(
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
-  }
-}
-
-@mixin _states-colors($color-map, $query: feature-targeting.all()) {
-  $hover: map.get($color-map, hover);
-
-  $hover-value: if(
-    custom-properties.is-custom-prop($hover),
-    custom-properties.get-fallback($hover),
-    $hover
-  );
-  // TODO(b/191298796): support focused & pressed key colors.
-
-  @if $hover-value != null {
-    @include ripple-theme.states-base-color(
-      $color: $hover,
-      $ripple-target: button-ripple.$ripple-target,
-      $query: $query
-    );
   }
 }
 
