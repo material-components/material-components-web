@@ -54,6 +54,7 @@ $light-theme: (
   action-pressed-state-layer-opacity: null,
   container-color: null,
   container-elevation: null,
+  container-max-height: null,
   container-shadow-color: null,
   container-shape: null,
   container-surface-tint-layer-color: null,
@@ -145,6 +146,10 @@ $light-theme: (
       )
     );
   }
+
+  @include tooltip-theme.rich-max-height(
+    map.get($theme, 'container-max-height')
+  );
 }
 
 @mixin _container-elevation($elevation-resolver, $theme) {
