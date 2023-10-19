@@ -44,6 +44,8 @@ $rich-background-color: theme-color.prop-value(surface);
 $rich-title-text-color: text-primary-on-light;
 $rich-content-text-color: rgba(black, theme-color.text-emphasis(medium));
 $rich-content-link-color: primary;
+$rich-content-overflow-x: unset;
+$rich-content-overflow-y: auto;
 
 // Use a custom property so IE11 does not use "normal" and instead uses provided
 // fall-back value.
@@ -254,5 +256,25 @@ $z-index: 9;
     -webkit-line-clamp: $num-line-clamp;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+}
+
+// Sets the overflow behavior on interactive rich tooltip content. Note that
+// this is only applied to INTERACTIVE rich tooltips, as the content of non-
+// interactive rich tooltip is not focusable. This means keyboard users cannot
+// scroll the tooltip content and is an a11y violation. Non-interactive rich
+// tooltips should, therefore, utilize the `max-height` mixin above to increase
+// the tooltip height.
+@mixin content-scroll(
+  $content-overflow-x,
+  $content-overflow-y,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-tooltip__interactive-content {
+      @include theme.property(overflow-x, $content-overflow-x);
+      @include theme.property(overflow-y, $content-overflow-y);
+    }
   }
 }

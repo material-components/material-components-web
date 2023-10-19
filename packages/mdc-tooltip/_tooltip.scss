@@ -264,6 +264,12 @@ $_caret-size: 24px;
     $query: $query
   );
 
+  @include tooltip-theme.content-scroll(
+    tooltip-theme.$rich-content-overflow-x,
+    tooltip-theme.$rich-content-overflow-y,
+    $query: $query
+  );
+
   .mdc-tooltip {
     @include tooltip-theme.rich-fill-color(
       tooltip-theme.$rich-background-color,

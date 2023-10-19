@@ -57,6 +57,8 @@ $light-theme: (
   container-shadow-color: null,
   container-shape: null,
   container-surface-tint-layer-color: null,
+  content-overflow-y: null,
+  content-overflow-x: null,
   subhead-color: null,
   subhead-font: null,
   subhead-line-height: null,
@@ -133,6 +135,10 @@ $light-theme: (
   }
 
   @include _container-elevation(map.get($resolvers, 'elevation'), $theme);
+  @include tooltip-theme.content-scroll(
+    map.get($theme, 'content-overflow-x'),
+    map.get($theme, 'content-overflow-y')
+  );
 
   .mdc-tooltip__surface .mdc-tooltip__title {
     @include typography.theme-styles(
