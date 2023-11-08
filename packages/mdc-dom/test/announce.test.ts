@@ -71,6 +71,15 @@ describe('announce', () => {
     expect(liveRegion!.textContent).toEqual('Baz');
   });
 
+  it('appends an invisible space for a repeated message', () => {
+    announce('Baz');
+    jasmine.clock().tick(1);
+    announce('Baz');
+    jasmine.clock().tick(1);
+    const liveRegion = document.querySelector(LIVE_REGION_SELECTOR);
+    expect(liveRegion!.textContent).toEqual(`Baz${String.fromCharCode(0xa0)}`);
+  });
+
   it('reuses same live region on successive calls per document', () => {
     const secondDocument = document.implementation.createHTMLDocument('Title');
     announce('aaa');

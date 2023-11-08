@@ -41,6 +41,7 @@ export interface AnnouncerMessageOptions {
  * Data attribute added to live region element.
  */
 export const DATA_MDC_DOM_ANNOUNCE = 'data-mdc-dom-announce';
+const NBSP = String.fromCharCode(0xa0);
 
 /**
  * Announces the given message with optional priority, defaulting to "polite"
@@ -70,12 +71,17 @@ class Announcer {
     const priority = options?.priority ?? AnnouncerPriority.POLITE;
     const ownerDocument = options?.ownerDocument ?? document;
     const liveRegion = this.getLiveRegion(priority, ownerDocument);
-    // Reset the region to pick up the message, even if the message is the
-    // exact same as before.
-    liveRegion.textContent = '';
+    // Tweak the message if it's identical to what was last announced, to
+    // ensure it is announced.
+    const lastMessageAnnounced = liveRegion.textContent;
+    const announceMessage =
+        lastMessageAnnounced && lastMessageAnnounced === message ?
+        message + NBSP :
+        message;
+
     // Timeout is necessary for screen readers like NVDA and VoiceOver.
     setTimeout(() => {
-      liveRegion.textContent = message;
+      liveRegion.textContent = announceMessage;
       ownerDocument.addEventListener('click', clearLiveRegion);
     }, 1);
 
