@@ -82,9 +82,7 @@
   }
 }
 
-@at-root {
-  @include mixins.short-shape-radius(24px);
-}
+@include mixins.short-shape-radius(24px);
 
 .mdc-top-app-bar--short {
   top: 0;
