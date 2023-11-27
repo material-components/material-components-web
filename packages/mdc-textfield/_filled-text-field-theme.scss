@@ -34,7 +34,7 @@
 @use './text-field-theme';
 @use './mixins';
 
-$_custom-property-prefix: 'filled-text-field';
+$custom-property-prefix: 'filled-text-field';
 
 $light-theme: (
   active-indicator-color: null,
@@ -135,7 +135,7 @@ $light-theme: (
 
   @include keys.declare-custom-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
 }
 
@@ -144,7 +144,7 @@ $light-theme: (
 
   $theme: keys.create-theme-properties(
     $theme,
-    $prefix: $_custom-property-prefix
+    $prefix: $custom-property-prefix
   );
 
   @include text-field-theme.theme-styles($theme, $resolvers: $resolvers);
