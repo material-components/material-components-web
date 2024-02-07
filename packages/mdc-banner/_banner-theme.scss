@@ -80,6 +80,8 @@ $light-theme: (
   supporting-text-weight: typography.get-weight(body2),
   with-image-image-shape: $graphic-shape-radius,
   with-image-image-size: 40px,
+  with-image-image-color: $graphic-color,
+  with-image-image-container-color: $graphic-background-color,
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
@@ -132,6 +134,15 @@ $light-theme: (
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $custom-property-prefix
+  );
+
+  @include graphic-color(
+    map.get($theme, 'with-image-image-color'),
+    $query: $query
+  );
+  @include graphic-background-color(
+    map.get($theme, 'with-image-image-container-color'),
+    $query: $query
   );
 
   @include text-color(map.get($theme, supporting-text-color), $query: $query);

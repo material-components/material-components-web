@@ -47,14 +47,6 @@ $_exit-duration: 250ms;
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  @include banner-theme.graphic-color(
-    banner-theme.$graphic-color,
-    $query: $query
-  );
-  @include banner-theme.graphic-background-color(
-    banner-theme.$graphic-background-color,
-    $query: $query
-  );
   @include banner-theme.min-width($_min-width, $query: $query);
   @include banner-theme.max-width($_max-width, $query: $query);
   @include static-styles($query: $query);
