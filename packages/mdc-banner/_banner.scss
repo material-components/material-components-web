@@ -34,7 +34,6 @@
 
 $_text-type-scale: body2;
 $_min-width: 344px;
-$_max-width: 720px;
 // Minimum banner height minus standard text height, divided by 2 for both top
 // and bottom padding. This is used to support two/three line banners.
 $_text-padding-top-bottom: math.div(52px - 20px, 2);
@@ -48,7 +47,6 @@ $_exit-duration: 250ms;
   $feat-animation: feature-targeting.create-target($query, animation);
 
   @include banner-theme.min-width($_min-width, $query: $query);
-  @include banner-theme.max-width($_max-width, $query: $query);
   @include static-styles($query: $query);
 
   .mdc-banner {
@@ -70,8 +68,6 @@ $_exit-duration: 250ms;
   $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-banner {
-    @include banner-theme.z-index(banner-theme.$z-index, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       // Mobile view styles.
       @media (max-width: banner-theme.$mobile-breakpoint) {

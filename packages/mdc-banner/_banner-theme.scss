@@ -47,7 +47,6 @@ $primary-action-text-color: primary;
 $secondary-action-text-color: primary;
 
 $mobile-breakpoint: 480px;
-$z-index: 1;
 $custom-property-prefix: 'banner';
 
 $light-theme: (
@@ -70,6 +69,7 @@ $light-theme: (
   container-elevation: null,
   container-shadow-color: null,
   container-shape: 0,
+  content-max-width: 720px,
   divider-color: $divider-color,
   divider-height: 1px,
   supporting-text-color: theme-color.$on-surface,
@@ -82,6 +82,7 @@ $light-theme: (
   with-image-image-size: 40px,
   with-image-image-color: $graphic-color,
   with-image-image-container-color: $graphic-background-color,
+  z-index: 1,
 );
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
@@ -135,6 +136,10 @@ $light-theme: (
     $theme,
     $prefix: $custom-property-prefix
   );
+
+  @include z-index(map.get($theme, 'z-index'), $query: $query);
+
+  @include max-width(map.get($theme, 'content-max-width'), $query: $query);
 
   @include graphic-color(
     map.get($theme, 'with-image-image-color'),
@@ -348,7 +353,7 @@ $light-theme: (
 
   .mdc-banner__content {
     @include feature-targeting.targets($feat-structure) {
-      max-width: $max-width;
+      @include theme.property(max-width, $max-width);
     }
   }
 }
@@ -401,7 +406,7 @@ $light-theme: (
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    z-index: $z-index;
+    @include theme.property(z-index, $z-index);
   }
 }
 
