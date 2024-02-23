@@ -806,6 +806,7 @@ $ripple-target: variables.$ripple-target;
 @mixin list-primary-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
+  .mdc-list-item__content,
   .mdc-list-item__primary-text {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
