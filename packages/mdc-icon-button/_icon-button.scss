@@ -42,7 +42,8 @@
   // postcss-bem-linter: define icon-button
   .mdc-icon-button {
     @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
+      display: inline-flex;
+      place-items: center;
       position: relative;
       box-sizing: border-box;
       border: none;

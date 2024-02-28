@@ -234,7 +234,8 @@
 @mixin _icon-structure {
   @include rtl.reflexive-box(margin, right, 8px);
 
-  display: inline-block;
+  display: inline-flex;
+  place-items: center;
   position: relative;
   vertical-align: top;
 }
