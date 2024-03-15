@@ -395,7 +395,8 @@
 
     .mdc-dialog__container {
       @include feature-targeting.targets($feat-animation) {
-        transition: opacity 75ms linear,
+        transition:
+          opacity 75ms linear,
           animation-functions.enter(transform, 150ms);
       }
     }
@@ -420,6 +421,16 @@
         // Dialog container scales up while opening, but should remain scaled up while closing
         transform: none;
       }
+    }
+  }
+
+  // Override the above transitions when chaining dialogs.
+  .mdc-dialog--chaining .mdc-dialog__scrim {
+    @include feature-targeting.targets($feat-animation) {
+      transition: none;
+    }
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 1;
     }
   }
 
