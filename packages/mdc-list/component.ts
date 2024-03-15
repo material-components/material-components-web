@@ -277,9 +277,9 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
             listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_SELECTOR);
         return toggleEl!.checked;
       },
-      isFocusInsideList: () => {
-        return this.root !== document.activeElement &&
-            this.root.contains(document.activeElement);
+      isFocusInsideList: (focusedElement) => {
+        return focusedElement instanceof HTMLElement &&
+          this.root !== focusedElement && this.root.contains(focusedElement);
       },
       isRootFocused: () => document.activeElement === this.root,
       listItemAtIndexHasClass: (index, className) =>
