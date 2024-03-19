@@ -30,6 +30,7 @@
 @use '@material/checkbox/variables' as checkbox-variables;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/density/functions' as density-functions;
+@use '@material/dom';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/focus-ring/focus-ring';
 @use '@material/ripple/ripple';
@@ -724,6 +725,20 @@ $ripple-target: '.mdc-chip__ripple';
   .mdc-chip__touch {
     @include feature-targeting.targets($feat-structure) {
       display: none;
+    }
+  }
+}
+
+@mixin high-contrast-border($width: 1px, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include dom.forced-colors-mode {
+    #{$ripple-target} {
+      @include feature-targeting.targets($feat-structure) {
+        top: -$width;
+        left: -$width;
+        border: $width solid transparent;
+      }
     }
   }
 }
