@@ -311,9 +311,11 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
    ```js
    {
      test: /\.js$/,
-     loader: 'babel-loader',
-     query: {
-       presets: ['@babel/preset-env'],
+     use: {
+       loader: 'babel-loader',
+       options: {
+         presets: ['@babel/preset-env']
+       }
      },
    }
    ```
