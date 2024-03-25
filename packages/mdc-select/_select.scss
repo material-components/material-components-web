@@ -31,6 +31,7 @@
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/list/mixins' as list-mixins;
 @use '@material/list/evolution-mixins' as list-evolution-mixins;
+@use '@material/touch-target/touch-target';
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
 @use '@material/rtl/rtl';
@@ -98,6 +99,10 @@
       outline: none;
       cursor: pointer;
     }
+  }
+
+  .mdc-select__touch {
+    @include touch-target.touch-target($query: $query, $height: 48px);
   }
 
   @include _text($query: $query);
