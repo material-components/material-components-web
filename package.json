@@ -73,7 +73,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-tap": "^4.0.0",
     "karma-typescript": "^5.4.0",
-    "karma-webpack": "^3.0.0",
+    "karma-webpack": "^5.0.1",
     "lerna": "^3.20.2",
     "mini-css-extract-plugin": "^0.7.0",
     "mkdirp": "^0.5.1",
