@@ -1,7 +1,7 @@
 {
   "name": "@material/theme",
   "description": "The Material Components for the web theming system",
-  "version": "14.0.0",
+  "version": "14.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,7 +15,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@material/feature-targeting": "^14.0.0",
+    "@material/feature-targeting": "^14.1.0",
     "tslib": "^2.1.0"
   }
 }
