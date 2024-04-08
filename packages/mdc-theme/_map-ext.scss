@@ -130,7 +130,7 @@
 ///
 /// @param {Map} $map - the map that contains the key.
 /// @param {String} $key - the key the value of which we want to retrieve.
-@function map-get-or-err($map, $key) {
+@function get($map, $key) {
   @if not map.has-key($map, $key) {
     @error 'Key #{$key} expected but not found in argument map.';
   }
