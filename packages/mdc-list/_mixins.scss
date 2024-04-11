@@ -102,6 +102,14 @@
     }
   }
 
+  // Always remove the focus ring element from flexbox layout; even if it's
+  // not visible initially.
+  .mdc-deprecated-list-item__focus-ring {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
+    }
+  }
+
   .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       @include deprecated-item-base_;
