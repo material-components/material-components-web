@@ -19,7 +19,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
+@use 'sass:list';
+@use 'sass:math';
+@use 'sass:meta';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
 @use '@material/dom/dom';
@@ -33,7 +35,8 @@ $container-outer-padding-default: 2px !default;
 
 /// Styles applied to the component's inner focus ring element.
 ///
-/// @param $ring-radius [$ring-radius-default] - Focus ring radius.
+/// @param $ring-radius [$ring-radius-default] - Focus ring radius, either a
+///     single value or a list of radius values to apply.
 /// @param $inner-ring-width [$inner-ring-width-default] - Inner focus ring width.
 /// @param $inner-ring-color [$inner-ring-color-default] - Inner focus ring color.
 /// @param $outer-ring-width [$outer-ring-width-default] - Outer focus ring width.
@@ -62,7 +65,7 @@ $container-outer-padding-default: 2px !default;
   @include feature-targeting.targets($feat-structure) {
     pointer-events: none;
     border: $inner-ring-width solid $inner-ring-color;
-    border-radius: calc($ring-radius - $outer-ring-width);
+    border-radius: _inner-ring-radius($ring-radius, $outer-ring-width);
     box-sizing: content-box;
     position: absolute;
     top: 50%;
@@ -159,7 +162,8 @@ $container-outer-padding-default: 2px !default;
 
 /// Customizes the border radius of the button focus ring.
 ///
-/// @param {Number} $ring-radius - The border radius of the focus ring.
+/// @param {Number|List} $ring-radius - The border radius of the focus ring,
+///.    either a single value or a list of radius values to apply.
 /// @param {Number} $outer-ring-width [$outer-ring-width] - Width of the outer
 ///     ring, required to compute the radius for the inner ring.
 @mixin focus-ring-radius(
@@ -170,10 +174,34 @@ $container-outer-padding-default: 2px !default;
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    border-radius: calc($ring-radius - $outer-ring-width);
-
+    border-radius: _inner-ring-radius($ring-radius, $outer-ring-width);
     &::after {
       border-radius: $ring-radius;
     }
   }
+}
+
+/// Returns the inner focus ring's border radius given the outer ring's radius.
+///
+/// @param {Number|List} $ring-radius - The border radius of the focus ring,
+///.    either a single value or a list of radius values to apply.
+/// @param {Number} $outer-ring-width [$outer-ring-width] - Width of the outer
+///     ring, required to compute the radius for the inner ring.
+/// @return {Number|List} the inner focus ring's border radius.
+@function _inner-ring-radius($ring-radius, $outer-ring-width) {
+  $inner-ring-radius: null;
+  @if (meta.type-of($ring-radius) == 'list') {
+    $inner-ring-radius: ();
+    @each $radius in $ring-radius {
+      $inner-radius: math.max($radius - $outer-ring-width, 0);
+      $inner-ring-radius: list.append(
+        $inner-ring-radius,
+        $inner-radius,
+        $separator: space
+      );
+    }
+  } @else {
+    $inner-ring-radius: calc($ring-radius - $outer-ring-width);
+  }
+  @return $inner-ring-radius;
 }
