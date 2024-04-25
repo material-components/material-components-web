@@ -21,6 +21,8 @@
   "dependencies": {
     "@material/dom": "^14.0.0",
     "@material/feature-targeting": "^14.0.0",
-    "@material/rtl": "^14.0.0"
+    "@material/rtl": "^14.0.0",
+    "@material/shape": "^14.0.0",
+    "@material/theme": "^14.0.0"
   }
 }

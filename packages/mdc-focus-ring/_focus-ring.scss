@@ -25,6 +25,8 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
 @use '@material/dom/dom';
+@use '@material/shape/shape';
+@use '@material/theme/gss';
 
 $ring-radius-default: 8px !default;
 $inner-ring-width-default: 2px !default;
@@ -36,7 +38,7 @@ $container-outer-padding-default: 2px !default;
 /// Styles applied to the component's inner focus ring element.
 ///
 /// @param $ring-radius [$ring-radius-default] - Focus ring radius, either a
-///     single value or a list of radius values to apply.
+////     single value or a list of radius values to apply.
 /// @param $inner-ring-width [$inner-ring-width-default] - Inner focus ring width.
 /// @param $inner-ring-color [$inner-ring-color-default] - Inner focus ring color.
 /// @param $outer-ring-width [$outer-ring-width-default] - Outer focus ring width.
@@ -45,6 +47,7 @@ $container-outer-padding-default: 2px !default;
 ////    - The vertical distance between the focus ring and the container.
 /// @param $container-outer-padding-horizontal [$container-outer-padding-default]
 ////    - The horizontal distance between the focus ring and the container.
+/// @param $rtl-reflexive [false] - Whether to flip ring radius corners in RTL.
 @mixin focus-ring(
   $query: feature-targeting.all(),
   $ring-radius: $ring-radius-default,
@@ -53,7 +56,8 @@ $container-outer-padding-default: 2px !default;
   $outer-ring-width: $outer-ring-width-default,
   $outer-ring-color: $outer-ring-color-default,
   $container-outer-padding-vertical: $container-outer-padding-default,
-  $container-outer-padding-horizontal: $container-outer-padding-default
+  $container-outer-padding-horizontal: $container-outer-padding-default,
+  $rtl-reflexive: false
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
@@ -65,7 +69,10 @@ $container-outer-padding-default: 2px !default;
   @include feature-targeting.targets($feat-structure) {
     pointer-events: none;
     border: $inner-ring-width solid $inner-ring-color;
-    border-radius: _inner-ring-radius($ring-radius, $outer-ring-width);
+    @include _border-radius(
+      _inner-ring-radius($ring-radius, $outer-ring-width),
+      $rtl-reflexive: $rtl-reflexive
+    );
     box-sizing: content-box;
     position: absolute;
     top: 50%;
@@ -81,7 +88,7 @@ $container-outer-padding-default: 2px !default;
     &::after {
       content: '';
       border: $outer-ring-width solid $outer-ring-color;
-      border-radius: $ring-radius;
+      @include _border-radius($ring-radius, $rtl-reflexive: $rtl-reflexive);
       display: block;
       position: absolute;
       top: 50%;
@@ -163,20 +170,52 @@ $container-outer-padding-default: 2px !default;
 /// Customizes the border radius of the button focus ring.
 ///
 /// @param {Number|List} $ring-radius - The border radius of the focus ring,
-///.    either a single value or a list of radius values to apply.
+///     either a single value or a list of radius values to apply.
 /// @param {Number} $outer-ring-width [$outer-ring-width] - Width of the outer
 ///     ring, required to compute the radius for the inner ring.
+/// @param $rtl-reflexive [false] - Whether to flip ring radius corners in RTL.
 @mixin focus-ring-radius(
   $ring-radius,
   $outer-ring-width: $outer-ring-width-default,
-  $query: feature-targeting.all()
+  $query: feature-targeting.all(),
+  $rtl-reflexive: false
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    border-radius: _inner-ring-radius($ring-radius, $outer-ring-width);
+    @include _border-radius(
+      _inner-ring-radius($ring-radius, $outer-ring-width),
+      $rtl-reflexive: $rtl-reflexive
+    );
     &::after {
-      border-radius: $ring-radius;
+      @include _border-radius($ring-radius, $rtl-reflexive: $rtl-reflexive);
+    }
+  }
+}
+
+/// Generates a border radius property.
+/// @param $radius - The border radius
+/// @param $rtl-reflexive - Whether to generate an RTL border radius if needed.
+@mixin _border-radius($radius, $rtl-reflexive) {
+  $has-multiple-corners: meta.type-of($radius) == 'list' and
+    list.length($radius) > 1;
+  // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily
+  // tell that the given radius is symmetrical
+  $needs-flip: $rtl-reflexive and $has-multiple-corners;
+  @include gss.annotate(
+    (
+      noflip: $needs-flip,
+    )
+  );
+  border-radius: $radius;
+  @if $needs-flip {
+    @include rtl.rtl {
+      @include gss.annotate(
+        (
+          noflip: true,
+        )
+      );
+      border-radius: shape.flip-radius($radius);
     }
   }
 }
@@ -190,7 +229,7 @@ $container-outer-padding-default: 2px !default;
 /// @return {Number|List} the inner focus ring's border radius.
 @function _inner-ring-radius($ring-radius, $outer-ring-width) {
   $inner-ring-radius: null;
-  @if (meta.type-of($ring-radius) == 'list') {
+  @if meta.type-of($ring-radius) == 'list' {
     $inner-ring-radius: ();
     @each $radius in $ring-radius {
       $inner-radius: math.max($radius - $outer-ring-width, 0);
