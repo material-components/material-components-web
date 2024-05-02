@@ -124,16 +124,3 @@
   }
   @return $out;
 }
-
-/// Useful to avoid typos in the key string when accessing a map where the
-/// key is expected to exist.
-///
-/// @param {Map} $map - the map that contains the key.
-/// @param {String} $key - the key the value of which we want to retrieve.
-@function get($map, $key) {
-  @if not map.has-key($map, $key) {
-    @error 'Key #{$key} expected but not found in argument map.';
-  }
-
-  @return map.get($map, $key);
-}
