@@ -317,6 +317,7 @@ Mixin | Description
 `show-transition($enter-duration)` | Sets the duration for the animation that shows the tooltip.
 `exit-transition($exit-duration)` | Sets the duration for the animation that hides the tooltip.
 `rich-max-height($max-height)` | Sets the max-height of a rich tooltip.
+`rich-max-width($max-width)` | Sets the max-width of a rich tooltip.
 
 ### `MDCTooltip` Methods
 
