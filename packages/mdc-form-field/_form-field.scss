@@ -64,7 +64,6 @@
         @include rtl.reflexive-property(padding, variables.$item-spacing, 0);
 
         order: 0;
-        cursor: inherit;
       }
     }
   }
