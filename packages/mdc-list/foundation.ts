@@ -285,15 +285,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       this.adapter.setTabIndexForListItemChildren(listItemIndex, '-1');
     }
 
-    /**
-     * Between Focusout & Focusin some browsers do not have focus on any
-     * element. Setting a delay to wait till the focus is moved to next element.
-     */
-    setTimeout(() => {
-      if (!this.adapter.isFocusInsideList()) {
-        this.setTabindexToFirstSelectedOrFocusedItem();
-      }
-    }, 0);
+    if (!this.adapter.isFocusInsideList(evt.relatedTarget)) {
+            this.setTabindexToFirstSelectedOrFocusedItem();
+        }
   }
 
   private isIndexDisabled(index: number) {
