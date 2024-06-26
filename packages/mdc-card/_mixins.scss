@@ -53,6 +53,7 @@ $ripple-target: '.mdc-card__ripple';
   .mdc-card {
     @include feature-targeting.targets($feat-structure) {
       @include container-layout_;
+      position: relative;
     }
 
     // Transparent card border for high-contrast mode.
@@ -78,6 +79,12 @@ $ripple-target: '.mdc-card__ripple';
     @include feature-targeting.targets($feat-structure) {
       border-radius: inherit;
       height: 100%;
+    }
+  }
+
+  .mdc-card__focus-ring {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
     }
   }
 
