@@ -68,6 +68,7 @@
       @include rtl.ignore-next-line();
       direction: ltr;
       line-height: 0;
+      overflow: hidden;
     }
 
     @include feature-targeting.targets($feat-animation) {
