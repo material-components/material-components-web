@@ -209,7 +209,7 @@ We also need to configure sass-loader to understand the `@material` imports used
 In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS.
 
 You'll need all of these Node dependencies:
-- [autoprefixer](https://www.npmjs.com/package/autoprefixer): Parses CSS and adds vendor prefixes to CSS rules
+- [autoprefixer](https://www.npmjs.com/package/autoprefixer) ([available as an online tool](https://goonlinetools.com/autoprefixer/)): Parses CSS and adds vendor prefixes to CSS rules
 - [postcss-loader](https://github.com/postcss/postcss-loader): Loader for Webpack used in conjunction with autoprefixer
 
 You can install all of them by running this command:
