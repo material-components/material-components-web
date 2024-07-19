@@ -312,7 +312,7 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
    {
      test: /\.js$/,
      loader: 'babel-loader',
-     query: {
+     options: {
        presets: ['@babel/preset-env'],
      },
    }
@@ -369,7 +369,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        query: {
+        options: {
           presets: ['@babel/preset-env'],
         },
       }
