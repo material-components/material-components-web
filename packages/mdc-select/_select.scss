@@ -180,12 +180,7 @@
         disabled: GrayText,
       );
       @include select-theme.ink-color($gray-text, $query: $query);
-      @include select-theme.dropdown-icon-color(
-        (
-          disabled: red,
-        ),
-        $query: $query
-      );
+      @include select-theme.dropdown-icon-color($gray-text, $query: $query);
       @include select-theme.label-color($gray-text, $query: $query);
       @include select-theme.bottom-line-color($gray-text, $query: $query);
       @include select-theme.outline-color($gray-text, $query: $query);
