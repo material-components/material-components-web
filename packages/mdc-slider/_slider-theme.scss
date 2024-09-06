@@ -407,6 +407,10 @@ $light-theme: (
       @include _set-tick-mark-active-color($_disabled-color, $opacity, $query);
     }
   }
+
+  @media (forced-colors: active) {
+    @include _set-tick-mark-active-color(Canvas, 1, $query);
+  }
 }
 
 @mixin _set-tick-mark-active-color($color, $opacity, $query) {
@@ -450,6 +454,10 @@ $light-theme: (
         $query
       );
     }
+  }
+
+  @media (forced-colors: active) {
+    @include _set-tick-mark-inactive-color(CanvasText, 1, $query);
   }
 }
 
