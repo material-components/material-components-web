@@ -61,7 +61,7 @@ class MockMDCSwitch extends MDCSwitch {
   }
 
   adapter!: jasmine.SpyObj<MDCSwitchRenderAdapter>;
-  override foundation!: jasmine.SpyObj<MDCSwitchRenderFoundation>;
+  declare foundation: jasmine.SpyObj<MDCSwitchRenderFoundation>;
 
   override getDefaultFoundation() {
     const foundation = spyOnAllPrototypeFunctions(super.getDefaultFoundation())
