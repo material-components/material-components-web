@@ -33,8 +33,7 @@ import {CssClasses} from './constants';
  * State observers and event handler entrypoints update a component's adapter's
  * state with the logic needed for switch to function.
  */
-export class MDCSwitchFoundation extends
-    MDCObserverFoundation<MDCSwitchAdapter> {
+export class MDCSwitchFoundation extends MDCObserverFoundation<MDCSwitchAdapter> {
   constructor(adapter: MDCSwitchAdapter) {
     super(adapter);
     this.handleClick = this.handleClick.bind(this);
@@ -79,7 +78,7 @@ export class MDCSwitchFoundation extends
  * render adapter to keep the component's DOM updated with the state.
  */
 export class MDCSwitchRenderFoundation extends MDCSwitchFoundation {
-  protected override adapter!: MDCSwitchRenderAdapter;
+  protected declare adapter: MDCSwitchRenderAdapter;
 
   /**
    * Initializes the foundation and starts observing state changes.
@@ -90,7 +89,7 @@ export class MDCSwitchRenderFoundation extends MDCSwitchFoundation {
       disabled: this.onDisabledChange,
       processing: this.onProcessingChange,
       selected: this.onSelectedChange,
-    })
+    });
   }
 
   /**
@@ -107,8 +106,9 @@ export class MDCSwitchRenderFoundation extends MDCSwitchFoundation {
     // Ensure aria-checked is set if attribute is not present
     this.onSelectedChange();
     this.adapter.state.disabled = this.adapter.isDisabled();
-    this.adapter.state.processing =
-        this.adapter.hasClass(CssClasses.PROCESSING);
+    this.adapter.state.processing = this.adapter.hasClass(
+      CssClasses.PROCESSING,
+    );
 
     // Re-observe state
     this.setObserversEnabled(this.adapter.state, true);
