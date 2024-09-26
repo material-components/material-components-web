@@ -22,7 +22,10 @@
  */
 
 import {createFixture, html} from '../../../testing/dom';
-import {spyOnAllFunctions, spyOnAllPrototypeFunctions} from '../../../testing/helpers/jasmine';
+import {
+  spyOnAllFunctions,
+  spyOnAllPrototypeFunctions,
+} from '../../../testing/helpers/jasmine';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCSwitchRenderAdapter} from '../adapter';
 import {MDCSwitch} from '../component';
@@ -61,11 +64,12 @@ class MockMDCSwitch extends MDCSwitch {
   }
 
   adapter!: jasmine.SpyObj<MDCSwitchRenderAdapter>;
-  override foundation!: jasmine.SpyObj<MDCSwitchRenderFoundation>;
+  declare foundation: jasmine.SpyObj<MDCSwitchRenderFoundation>;
 
   override getDefaultFoundation() {
-    const foundation = spyOnAllPrototypeFunctions(super.getDefaultFoundation())
-                           .and.callThrough();
+    const foundation = spyOnAllPrototypeFunctions(
+      super.getDefaultFoundation(),
+    ).and.callThrough();
     this.foundation = this.foundation || foundation;
     return foundation;
   }
@@ -101,12 +105,11 @@ describe('MDCSwitch', () => {
     expect(foundation.initFromDOM).toHaveBeenCalledTimes(1);
   });
 
-  it('#initialSyncWithDOM() adds foundation.handleClick listener to root',
-     () => {
-       const {root, foundation} = setupTest();
-       root.click();
-       expect(foundation.handleClick).toHaveBeenCalledTimes(1);
-     });
+  it('#initialSyncWithDOM() adds foundation.handleClick listener to root', () => {
+    const {root, foundation} = setupTest();
+    root.click();
+    expect(foundation.handleClick).toHaveBeenCalledTimes(1);
+  });
 
   it('#destroy() removes foundation.handleClick listener from root', () => {
     const {component, root, foundation} = setupTest();
@@ -124,11 +127,15 @@ describe('MDCSwitch', () => {
 
   it('adapter.hasClass() checks classes on root', () => {
     const {root, adapter} = setupTest();
-    expect(adapter.hasClass(CssClasses.PROCESSING))
-        .toBe(false, 'returns false when class does not exist');
+    expect(adapter.hasClass(CssClasses.PROCESSING)).toBe(
+      false,
+      'returns false when class does not exist',
+    );
     root.classList.add(CssClasses.PROCESSING);
-    expect(adapter.hasClass(CssClasses.PROCESSING))
-        .toBe(true, 'returns true when class exists');
+    expect(adapter.hasClass(CssClasses.PROCESSING)).toBe(
+      true,
+      'returns true when class exists',
+    );
   });
 
   it('adapter.isDisabled() returns root disabled property', () => {
