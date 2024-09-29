@@ -244,3 +244,18 @@ $container-outer-padding-default: 2px !default;
   }
   @return $inner-ring-radius;
 }
+
+/// Customizes the color of the button focus ring.
+///
+/// @param $inner-ring-color [$inner-ring-color] - Inner focus ring color.
+/// @param $outer-ring-width [$outer-ring-width] - Outer focus ring width.
+@mixin focus-ring-color(
+  $inner-ring-color: $inner-ring-color,
+  $outer-ring-color: $outer-ring-color
+) {
+  border-color: $inner-ring-color;
+
+  &::after {
+    border-color: $outer-ring-color;
+  }
+}
