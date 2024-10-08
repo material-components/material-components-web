@@ -29,11 +29,18 @@ import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {safeAttrPrefix} from 'safevalues';
-import {safeElement} from 'safevalues/dom';
+import {setElementPrefixedAttribute} from 'safevalues/dom';
 
 import {MDCChipActionAdapter} from './adapter';
-import {computePrimaryActionRippleClientRect, GRAPHIC_SELECTED_WIDTH_STYLE_PROP} from './component-ripple';
-import {MDCChipActionCssClasses, MDCChipActionFocusBehavior, MDCChipActionType} from './constants';
+import {
+  computePrimaryActionRippleClientRect,
+  GRAPHIC_SELECTED_WIDTH_STYLE_PROP,
+} from './component-ripple';
+import {
+  MDCChipActionCssClasses,
+  MDCChipActionFocusBehavior,
+  MDCChipActionType,
+} from './constants';
 import {MDCChipActionFoundation} from './foundation';
 import {MDCChipPrimaryActionFoundation} from './primary-foundation';
 import {MDCChipTrailingActionFoundation} from './trailing-foundation';
@@ -42,9 +49,10 @@ import {MDCChipTrailingActionFoundation} from './trailing-foundation';
  * MDCChipActionFactory is used by the parent MDCChip component to initialize
  * chip actions.
  */
-export type MDCChipActionFactory =
-    (el: HTMLElement, foundation?: MDCChipActionFoundation) => MDCChipAction;
-
+export type MDCChipActionFactory = (
+  el: HTMLElement,
+  foundation?: MDCChipActionFoundation,
+) => MDCChipAction;
 
 const ALLOWED_ATTR_PREFIXES = [
   safeAttrPrefix`aria-`,
@@ -58,8 +66,10 @@ const ALLOWED_ATTR_PREFIXES = [
  * MDCChipAction provides component encapsulation of the different foundation
  * implementations.
  */
-export class MDCChipAction extends
-    MDCComponent<MDCChipActionFoundation> implements MDCRippleCapableSurface {
+export class MDCChipAction
+  extends MDCComponent<MDCChipActionFoundation>
+  implements MDCRippleCapableSurface
+{
   static override attachTo(root: HTMLElement): MDCChipAction {
     return new MDCChipAction(root);
   }
@@ -77,14 +87,17 @@ export class MDCChipAction extends
   }
 
   override initialize(
-      rippleFactory: MDCRippleFactory = (el, foundation) =>
-          new MDCRipple(el, foundation)) {
+    rippleFactory: MDCRippleFactory = (el, foundation) =>
+      new MDCRipple(el, foundation),
+  ) {
     const rippleAdapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       computeBoundingRect: () => this.computeRippleClientRect(),
     };
-    this.rippleInstance =
-        rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
+    this.rippleInstance = rippleFactory(
+      this.root,
+      new MDCRippleFoundation(rippleAdapter),
+    );
   }
 
   override initialSyncWithDOM() {
@@ -124,8 +137,12 @@ export class MDCChipAction extends
         this.root.removeAttribute(name);
       },
       setAttribute: (name, value) => {
-        safeElement.setPrefixedAttribute(
-            ALLOWED_ATTR_PREFIXES, this.root, name, value);
+        setElementPrefixedAttribute(
+          ALLOWED_ATTR_PREFIXES,
+          this.root,
+          name,
+          value,
+        );
       },
     };
 
@@ -171,14 +188,19 @@ export class MDCChipAction extends
 
   private computeRippleClientRect(): DOMRect {
     if (this.root.classList.contains(MDCChipActionCssClasses.PRIMARY_ACTION)) {
-      const chipRoot =
-          closest(this.root, `.${MDCChipActionCssClasses.CHIP_ROOT}`);
+      const chipRoot = closest(
+        this.root,
+        `.${MDCChipActionCssClasses.CHIP_ROOT}`,
+      );
       // Return the root client rect since it's better than nothing
       if (!chipRoot) return this.root.getBoundingClientRect();
-      const graphicWidth = window.getComputedStyle(chipRoot).getPropertyValue(
-          GRAPHIC_SELECTED_WIDTH_STYLE_PROP);
+      const graphicWidth = window
+        .getComputedStyle(chipRoot)
+        .getPropertyValue(GRAPHIC_SELECTED_WIDTH_STYLE_PROP);
       return computePrimaryActionRippleClientRect(
-          chipRoot.getBoundingClientRect(), graphicWidth);
+        chipRoot.getBoundingClientRect(),
+        graphicWidth,
+      );
     }
 
     return this.root.getBoundingClientRect();

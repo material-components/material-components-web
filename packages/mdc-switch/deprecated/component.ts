@@ -30,14 +30,16 @@ import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {safeAttrPrefix} from 'safevalues';
-import {safeElement} from 'safevalues/dom';
+import {setElementPrefixedAttribute} from 'safevalues/dom';
 
 import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
 
 /** MDC Switch */
-export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements
-    MDCRippleCapableSurface {
+export class MDCSwitch
+  extends MDCComponent<MDCSwitchFoundation>
+  implements MDCRippleCapableSurface
+{
   static override attachTo(root: HTMLElement) {
     return new MDCSwitch(root);
   }
@@ -76,13 +78,17 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements
       removeClass: (className) => {
         this.root.classList.remove(className);
       },
-      setNativeControlChecked: (checked) => this.nativeControl.checked =
-          checked,
-      setNativeControlDisabled: (disabled) => this.nativeControl.disabled =
-          disabled,
+      setNativeControlChecked: (checked) =>
+        (this.nativeControl.checked = checked),
+      setNativeControlDisabled: (disabled) =>
+        (this.nativeControl.disabled = disabled),
       setNativeControlAttr: (attr, value) => {
-        safeElement.setPrefixedAttribute(
-            [safeAttrPrefix`aria-`], this.nativeControl, attr, value);
+        setElementPrefixedAttribute(
+          [safeAttrPrefix`aria-`],
+          this.nativeControl,
+          attr,
+          value,
+        );
       },
     };
     return new MDCSwitchFoundation(adapter);
@@ -110,8 +116,9 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements
 
   private createRipple(): MDCRipple {
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
-    const rippleSurface =
-        this.root.querySelector<HTMLElement>(RIPPLE_SURFACE_SELECTOR)!;
+    const rippleSurface = this.root.querySelector<HTMLElement>(
+      RIPPLE_SURFACE_SELECTOR,
+    )!;
 
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
@@ -123,14 +130,21 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements
       },
       computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
       deregisterInteractionHandler: <K extends EventType>(
-          eventType: K, handler: SpecificEventListener<K>) => {
+        eventType: K,
+        handler: SpecificEventListener<K>,
+      ) => {
         this.nativeControl.removeEventListener(
-            eventType, handler, applyPassive());
+          eventType,
+          handler,
+          applyPassive(),
+        );
       },
       isSurfaceActive: () => matches(this.nativeControl, ':active'),
       isUnbounded: () => true,
       registerInteractionHandler: <K extends EventType>(
-          eventType: K, handler: SpecificEventListener<K>) => {
+        eventType: K,
+        handler: SpecificEventListener<K>,
+      ) => {
         this.nativeControl.addEventListener(eventType, handler, applyPassive());
       },
       removeClass: (className: string) => {

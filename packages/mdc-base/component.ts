@@ -22,7 +22,7 @@
  */
 
 import {safeAttrPrefix} from 'safevalues';
-import {safeElement} from 'safevalues/dom';
+import {setElementPrefixedAttribute} from 'safevalues/dom';
 
 import {MDCFoundation} from './foundation';
 import {CustomEventListener, EventType, SpecificEventListener} from './types';
@@ -46,14 +46,16 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   protected foundation: FoundationType;
 
   constructor(
-      public root: HTMLElement, foundation?: FoundationType,
-      ...args: unknown[]) {
+    public root: HTMLElement,
+    foundation?: FoundationType,
+    ...args: unknown[]
+  ) {
     this.initialize(...args);
     // Note that we initialize foundation here and not within the constructor's
     // default param so that this.root is defined and can be used within the
     // foundation class.
     this.foundation =
-        foundation === undefined ? this.getDefaultFoundation() : foundation;
+      foundation === undefined ? this.getDefaultFoundation() : foundation;
     this.foundation.init();
     this.initialSyncWithDOM();
   }
@@ -72,8 +74,9 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     // Subclasses must override this method to return a properly configured
     // foundation class for the component.
     throw new Error(
-        'Subclasses must override getDefaultFoundation to return a properly configured ' +
-        'foundation class');
+      'Subclasses must override getDefaultFoundation to return a properly configured ' +
+        'foundation class',
+    );
   }
 
   initialSyncWithDOM() {
@@ -97,14 +100,20 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
    * This is most useful when listening for custom events.
    */
   listen<K extends EventType>(
-      eventType: K, handler: SpecificEventListener<K>,
-      options?: AddEventListenerOptions|boolean): void;
+    eventType: K,
+    handler: SpecificEventListener<K>,
+    options?: AddEventListenerOptions | boolean,
+  ): void;
   listen<E extends Event>(
-      eventType: string, handler: CustomEventListener<E>,
-      options?: AddEventListenerOptions|boolean): void;
+    eventType: string,
+    handler: CustomEventListener<E>,
+    options?: AddEventListenerOptions | boolean,
+  ): void;
   listen(
-      eventType: string, handler: EventListener,
-      options?: AddEventListenerOptions|boolean) {
+    eventType: string,
+    handler: EventListener,
+    options?: AddEventListenerOptions | boolean,
+  ) {
     this.root.addEventListener(eventType, handler, options);
   }
 
@@ -113,14 +122,20 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
    * This is most useful when unlistening for custom events.
    */
   unlisten<K extends EventType>(
-      eventType: K, handler: SpecificEventListener<K>,
-      options?: AddEventListenerOptions|boolean): void;
+    eventType: K,
+    handler: SpecificEventListener<K>,
+    options?: AddEventListenerOptions | boolean,
+  ): void;
   unlisten<E extends Event>(
-      eventType: string, handler: CustomEventListener<E>,
-      options?: AddEventListenerOptions|boolean): void;
+    eventType: string,
+    handler: CustomEventListener<E>,
+    options?: AddEventListenerOptions | boolean,
+  ): void;
   unlisten(
-      eventType: string, handler: EventListener,
-      options?: AddEventListenerOptions|boolean) {
+    eventType: string,
+    handler: EventListener,
+    options?: AddEventListenerOptions | boolean,
+  ) {
     this.root.removeEventListener(eventType, handler, options);
   }
 
@@ -128,7 +143,11 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
    * Fires a cross-browser-compatible custom event from the component root of
    * the given type, with the given data.
    */
-  emit<T extends object>(eventType: string, eventData: T, shouldBubble = false) {
+  emit<T extends object>(
+    eventType: string,
+    eventData: T,
+    shouldBubble = false,
+  ) {
     let event: CustomEvent<T>;
     if (typeof CustomEvent === 'function') {
       event = new CustomEvent<T>(eventType, {
@@ -153,9 +172,9 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
    * caller can't set any attribute.
    */
   protected safeSetAttribute(
-      element: HTMLElement,
-      attribute: string,
-      value: string,
+    element: HTMLElement,
+    attribute: string,
+    value: string,
   ) {
     if (attribute.toLowerCase() === 'tabindex') {
       element.tabIndex = Number(value);
@@ -163,11 +182,11 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
       const dataKey = toCamelCase(attribute.replace(/^data-/, ''));
       element.dataset[dataKey] = value;
     } else {
-      safeElement.setPrefixedAttribute(
-          [safeAttrPrefix`aria-`, safeAttrPrefix`role`],
-          element,
-          attribute,
-          value,
+      setElementPrefixedAttribute(
+        [safeAttrPrefix`aria-`, safeAttrPrefix`role`],
+        element,
+        attribute,
+        value,
       );
     }
   }
