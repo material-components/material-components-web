@@ -1,5 +1,6 @@
 [![Version](https://img.shields.io/npm/v/material-components-web.svg)](https://www.npmjs.com/package/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
+[![GitHub issues by-label](https://img.shields.io/github/issues-raw/material-components/material-components-web/bug)](https://github.com/material-components/material-components-web/issues?q=is%3Aissue+is%3Aopen+label%3A%22bug%22)
 
 # Material Components for the web
 
