@@ -11,6 +11,7 @@ path: /docs/framework-wrappers/
 Material Components for the web are architected to be adaptable to various major web frameworks. The following wrapper libraries are available:
 
   - [Material Web Components](https://github.com/material-components/material-components-web-components): MDC Web integration for Web Components (using [vanilla components](./integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
+  - [Angular](https://angular.io/): MDC Web integration for Angular (see [Angular Material documentation](https://material.angular.io/))
   - [Material Components for React](https://github.com/material-components/material-components-web-react): MDC Web integration for React (using [foundations/adapters](./integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters)). *Please note that this project is no longer under active development.*
   - Additional third-party integrations
     - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
