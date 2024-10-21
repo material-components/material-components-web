@@ -38,11 +38,6 @@ function setupTestWithMockFoundation(fixture: HTMLElement) {
   return {anchorElem, tooltipElem, mockFoundation, component};
 }
 
-function isIE() {
-  return navigator.userAgent.indexOf('MSIE') !== -1 ||
-      navigator.userAgent.indexOf('Trident') !== -1;
-}
-
 describe('MDCTooltip', () => {
   let fixture: HTMLElement;
   setUpMdcTestEnvironment();
@@ -383,11 +378,6 @@ describe('MDCTooltip', () => {
 
     it('aria-expanded becomes false on anchor when anchor blurs and non-tooltip element is focused',
        () => {
-         // FocusEvent is not supported on IE11 so this test will not be run on
-         // it.
-         if (isIE()) {
-           return;
-         }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
              fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
@@ -404,11 +394,6 @@ describe('MDCTooltip', () => {
 
     it('aria-expanded remains true on anchor when anchor blurs and rich tooltip focuses',
        () => {
-         // FocusEvent is not supported on IE11 so this test will not be run on
-         // it.
-         if (isIE()) {
-           return;
-         }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
              fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
@@ -425,11 +410,6 @@ describe('MDCTooltip', () => {
 
     it('aria-expanded becomes false on anchor when rich tooltip focuses out and anchor does not receive focus',
        () => {
-         // FocusEvent is not supported on IE11 so this test will not be run on
-         // it.
-         if (isIE()) {
-           return;
-         }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
              fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
@@ -446,11 +426,6 @@ describe('MDCTooltip', () => {
 
     it('aria-expanded remains true on anchor when rich tooltip focuses out and anchor receives focus',
        () => {
-         // FocusEvent is not supported on IE11 so this test will not be run on
-         // it.
-         if (isIE()) {
-           return;
-         }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
              fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
@@ -467,11 +442,6 @@ describe('MDCTooltip', () => {
 
     it('aria-expanded remains true on anchor when rich tooltip focuses out and element within tooltip receives focus',
        () => {
-         // FocusEvent is not supported on IE11 so this test will not be run on
-         // it.
-         if (isIE()) {
-           return;
-         }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const tooltipContent =
              fixture.querySelector<HTMLElement>('.mdc-tooltip__content')!;
@@ -636,11 +606,6 @@ describe('MDCTooltip', () => {
 
     it('aria-hidden becomes true on tooltip when anchor blurs and non-tooltip element is focused',
        () => {
-         // FocusEvent is not supported on IE11 so this test will not be run on
-         // it.
-         if (isIE()) {
-           return;
-         }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
              fixture.querySelector<HTMLElement>('[aria-describedby]')!;
@@ -657,11 +622,6 @@ describe('MDCTooltip', () => {
 
     it('aria-hidden remains false on tooltip when anchor blurs and rich tooltip focuses',
        () => {
-         // FocusEvent is not supported on IE11 so this test will not be run on
-         // it.
-         if (isIE()) {
-           return;
-         }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
              fixture.querySelector<HTMLElement>('[aria-describedby]')!;

@@ -708,12 +708,7 @@ function createEventFrom(
       if (phase !== 'down') {
         type = phase === 'move' ? 'pointermove' : 'pointerup';
       }
-      // PointerEvent constructor is not supported in IE. Use a MouseEvent in
-      // IE, since PointerEvent inherits from MouseEvent.
-      const isIe = navigator.userAgent.indexOf('MSIE') !== -1 ||
-          navigator.userAgent.indexOf('Trident') !== -1;
-      event = isIe ? createMouseEvent(type, {clientX}) :
-                     new PointerEvent(type, {clientX, pointerId: 1});
+      event = new PointerEvent(type, {clientX, pointerId: 1});
       break;
     case 'mouse':
       type = 'mousedown';
