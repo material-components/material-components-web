@@ -229,7 +229,7 @@
       }
     }
 
-    .mdc-dialog__close {
+    .mdc-dialog__close-tooltip-wrapper {
       @include feature-targeting.targets($feat-structure) {
         top: 5px;
       }
@@ -253,13 +253,13 @@
 
   // Needed so that close affordance is aligned as if there was a title.
   .mdc-dialog--fullscreen--titleless {
-    .mdc-dialog__close {
+    .mdc-dialog__close-tooltip-wrapper {
       @include feature-targeting.targets($feat-structure) {
         margin-top: 4px;
       }
     }
 
-    &.mdc-dialog--scrollable .mdc-dialog__close {
+    &.mdc-dialog--scrollable .mdc-dialog__close-tooltip-wrapper {
       @include feature-targeting.targets($feat-structure) {
         margin-top: 0;
       }
@@ -515,7 +515,7 @@
   }
 
   .mdc-dialog--sheet {
-    .mdc-dialog__container .mdc-dialog__close {
+    .mdc-dialog__container .mdc-dialog__close-tooltip-wrapper {
       @include feature-targeting.targets($feat-structure) {
         right: variables.$sheet-close-icon-right;
         top: variables.$sheet-close-icon-top;
@@ -1051,7 +1051,8 @@
 /// @param  {Number} $title-side-padding - Space between the edge of the close
 ///   icon button and edge of the title.
 @mixin _fullscreen-header($close-icon-padding, $title-side-padding) {
-  .mdc-dialog__close {
+  .mdc-dialog__close-tooltip-wrapper {
+    position: relative;
     order: -1;
     @include theme.property(left, -#{$close-icon-padding});
   }
@@ -1072,7 +1073,8 @@
 /// Defines styles for the header bar when a dialog is modal.
 /// @param  {Number} $close-icon-padding - Padding on close icon button.
 @mixin _modal-header($close-icon-padding) {
-  .mdc-dialog__close {
+  .mdc-dialog__close-tooltip-wrapper {
+    position: relative;
     @include theme.property(right, -#{$close-icon-padding});
   }
 }

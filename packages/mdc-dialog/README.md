@@ -257,10 +257,11 @@ Full-screen dialogs group a series of tasks, such as creating a calendar entry w
         <h2 class="mdc-dialog__title" id="my-dialog-title">
           Full-Screen Dialog Title
         </h2>
-        <button class="mdc-icon-button material-icons mdc-dialog__close"
-                data-mdc-dialog-action="close">
-          close
-        </button>
+        <div class="mdc-dialog__close-tooltip-wrapper">
+          <button class="mdc-icon-button material-icons mdc-dialog__close" data-mdc-dialog-action="close">
+            close
+          </button>
+        </div>
       </div>
       <div class="mdc-dialog__content" id="my-dialog-content">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -308,9 +309,11 @@ absolutely positioned. Sheet content can have no default padding by using the
   <div class="mdc-dialog__scrim" data-mdc-dialog-action="cancel"></div>
   <div class="mdc-dialog__container">
     <div class="mdc-dialog__surface" tabindex="-1">
-      <button class="mdc-icon-button material-icons mdc-dialog__close" data-mdc-dialog-action="close">
-        close
-      </button>
+      <div class="mdc-dialog__close-tooltip-wrapper">
+        <button class="mdc-icon-button material-icons mdc-dialog__close" data-mdc-dialog-action="close">
+          close
+        </button>
+      </div>
       <div class="mdc-dialog__content test-dialog__content">
         <div class="test-sheet__content">
           <h3>Sheets</h3>
