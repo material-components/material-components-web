@@ -136,6 +136,13 @@ $_caret-size: 24px;
         min-width: $_min-width;
         max-width: $_rich_max-width;
         position: relative;
+
+        @include rtl.ignore-next-line();
+        text-align: left;
+        @include rtl.rtl {
+          @include rtl.ignore-next-line();
+          text-align: right;
+        }
       }
     }
 
@@ -160,12 +167,6 @@ $_caret-size: 24px;
       @include feature-targeting.targets($feat-structure) {
         max-width: calc(#{$_max-width} - (2 * #{$_content-margin}));
         margin: $_content-margin;
-        @include rtl.ignore-next-line();
-        text-align: left;
-        @include rtl.rtl {
-          @include rtl.ignore-next-line();
-          text-align: right;
-        }
       }
 
       .mdc-tooltip--rich & {
