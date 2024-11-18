@@ -1,6 +1,17 @@
 [![Version](https://img.shields.io/npm/v/material-components-web.svg)](https://www.npmjs.com/package/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
 
+Note:
+
+This project is no longer actively maintained. While automated updates may
+still occur, the team will not be prioritizing new features or bug fixes, and
+those updates will be turned off in the future.
+
+For Angular users, our friends at Angular Material moved away from this
+library, and they expect that this may actually allow for faster iteration - see
+their [blog post](https://blog.angular.dev/the-future-of-material-support-in-angular-7fa0662ecc4b)
+for more information.
+
 # Material Components for the web
 
 Material Components for the web helps developers execute [Material Design](https://www.material.io).
