@@ -35,7 +35,7 @@
     "@material/tokens": "^14.0.0",
     "@material/touch-target": "^14.0.0",
     "@material/typography": "^14.0.0",
-    "safevalues": "^0.3.4",
+    "safevalues": "^0.7.0",
     "tslib": "^2.1.0"
   }
 }
