@@ -305,7 +305,7 @@ $_property-values-copy: $property-values;
   }
 
   @return meta.type-of($style) == 'color' or $style == 'currentColor' or
-    str_slice($style, 1, 4) == 'var(' or $style == 'inherit' or $style ==
+    string.slice($style, 1, 4) == 'var(' or $style == 'inherit' or $style ==
     'transparent' or
     // NOTE: `GrayText` is deprecated, but is the only feasible way to convey the
     // correct high-contrast mode colors in alignment with Windows system colors.
