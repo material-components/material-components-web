@@ -39,7 +39,7 @@
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
-@use './button-ripple';
+@use 'button-ripple';
 
 $height: 36px !default;
 $horizontal-padding: 8px !default;
@@ -526,6 +526,7 @@ $disabled-container-color: rgba(
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
+    // stylelint-disable-next-line shorthand-property-no-redundant-values --
     // $padding should be a single value; enforce it by specifying all 4 sides in the output
     padding: 0 $padding 0 $padding;
   }
@@ -745,7 +746,7 @@ $disabled-container-color: rgba(
   );
 
   .mdc-button__focus-ring {
-    @if $radius-value != 0 and type-of($radius-value) == 'number' {
+    @if $radius-value != 0 and meta.type-of($radius-value) == 'number' {
       @include focus-ring.focus-ring-radius(
         $ring-radius: $radius-value,
         $query: $query
@@ -779,7 +780,7 @@ $disabled-container-color: rgba(
   );
 
   .mdc-button__focus-ring {
-    @if $offset-value != 0 and type-of($offset-value) == 'number' {
+    @if $offset-value != 0 and meta.type-of($offset-value) == 'number' {
       @include focus-ring.focus-ring-offset(
         $offset: $offset-value,
         $query: $query
