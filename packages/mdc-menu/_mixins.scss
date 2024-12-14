@@ -21,4 +21,4 @@
 //
 
 /// @deprecated Import '_menu.scss' instead.
-@forward './menu' show core-styles, open-item-opacity, width, min-width;
+@forward './menu' hide static-styles;
