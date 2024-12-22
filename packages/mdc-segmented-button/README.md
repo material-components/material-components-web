@@ -1,6 +1,6 @@
 # Segmented Buttons
 
-[Segmented buttons](https://material.io/components/buttons#toggle-button) allow users to toggle the selected states of grouped buttons.
+[Segmented buttons](https://m3.material.io/components/segmented-buttons/overview) allow users to toggle the selected states of grouped buttons.
 
 ## Using segmented buttons
 
