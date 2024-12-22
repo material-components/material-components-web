@@ -657,21 +657,21 @@ export class MDCMenuSurfaceFoundation extends
    * closed.
    */
   private maybeRestoreFocus() {
-    const isRootFocused = this.adapter.isFocused();
-    const ownerDocument = this.adapter.getOwnerDocument ?
-        this.adapter.getOwnerDocument() :
-        document;
-    const childHasFocus = ownerDocument.activeElement &&
-        this.adapter.isElementInContainer(ownerDocument.activeElement);
-    if (isRootFocused || childHasFocus) {
-      // Wait before restoring focus when closing the menu surface. This is
-      // important because if a touch event triggered the menu close, and the
-      // subsequent mouse event occurs after focus is restored, then the
-      // restored focus would be lost.
-      setTimeout(() => {
+    // Wait before restoring focus when closing the menu surface. This is
+    // important because if a touch event triggered the menu close, and the
+    // subsequent mouse event occurs after focus is restored, then the
+    // restored focus would be lost.
+    setTimeout(() => {
+      const isRootFocused = this.adapter.isFocused();
+      const ownerDocument = this.adapter.getOwnerDocument ?
+          this.adapter.getOwnerDocument() :
+          document;
+      const childHasFocus = ownerDocument.activeElement &&
+          this.adapter.isElementInContainer(ownerDocument.activeElement);
+      if (isRootFocused || childHasFocus) {
         this.adapter.restoreFocus();
-      }, numbers.TOUCH_EVENT_WAIT_MS);
-    }
+      }
+    }, numbers.TOUCH_EVENT_WAIT_MS);
   }
 
   private hasBit(corner: Corner, bit: CornerBit): boolean {
