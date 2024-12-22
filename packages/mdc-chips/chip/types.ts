@@ -56,6 +56,12 @@ export interface MDCChipAnimationEventDetail {
 }
 
 /**
+ * MDCChipAnimationEventDetail is the custom event for the animation event.
+ */
+ export type ActionAnimationEvent =
+  CustomEvent<MDCChipAnimationEventDetail>;
+
+/**
  * MDCChipActionInteractionEvent is the custom event for the interaction event.
  */
 export type ActionInteractionEvent =
