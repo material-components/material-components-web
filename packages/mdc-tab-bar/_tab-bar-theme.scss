@@ -199,12 +199,12 @@ $light-theme: (
       map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...),
       $resolvers
     );
-  }
 
-  .mdc-tab-indicator {
-    @include tab-indicator-theme.theme-styles(
-      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
-    );
+    .mdc-tab-indicator {
+      @include tab-indicator-theme.theme-styles(
+        map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+      );
+    }
   }
 }
 
@@ -234,12 +234,12 @@ $light-theme: (
       map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...),
       $resolvers
     );
-  }
 
-  .mdc-tab-indicator {
-    @include tab-indicator-theme.theme-styles(
-      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
-    );
+    .mdc-tab-indicator {
+      @include tab-indicator-theme.theme-styles(
+        map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+      );
+    }
   }
 }
 

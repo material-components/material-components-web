@@ -299,6 +299,8 @@ $custom-property-prefix-secondary: 'secondary-navigation-tab';
 
   @include _icon-size(map.get($theme, with-icon-icon-size));
 
+  @include _icon-size(map.get($theme, with-icon-icon-size));
+
   @include _active-icon-color(
     (
       default: map.get($theme, with-icon-active-icon-color),
@@ -583,9 +585,11 @@ $custom-property-prefix-secondary: 'secondary-navigation-tab';
 }
 
 @mixin _icon-size($size) {
-  @include theme.property('width', $size);
-  @include theme.property('height', $size);
-  @include theme.property('font-size', $size);
+  .mdc-tab__icon {
+    @include theme.property('width', $size);
+    @include theme.property('height', $size);
+    @include theme.property('font-size', $size);
+  }
 }
 
 @mixin _label-text-font-family($font-family) {
