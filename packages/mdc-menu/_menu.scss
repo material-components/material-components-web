@@ -35,6 +35,7 @@
 @use '@material/theme/theme';
 @use '@material/theme/custom-properties';
 @use './menu-custom-properties';
+@use '@material/typography/typography';
 @use './variables';
 @use '@material/menu-surface/menusurface-theme';
 
@@ -147,6 +148,17 @@
   }
   // postcss-bem-linter: end
 
+  .mdc-menu__selection-group-title {
+    @include feature-targeting.targets($feat-structure) {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  .mdc-menu__selection-group-title-text {
+    @include typography.overflow-ellipsis($query);
+  }
+
   .mdc-menu-item--selected .mdc-menu__selection-group-icon {
     @include feature-targeting.targets($feat-structure) {
       display: inline;
@@ -199,5 +211,39 @@
       $min-width
     );
     @include theme.property(min-width, $min-width-custom-property);
+  }
+}
+
+@mixin selection-group-title-spacing(
+  $leading,
+  $trailing: $leading,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-menu__selection-group-title {
+      @include rtl.reflexive-property(margin, $leading, $trailing);
+    }
+  }
+}
+
+@mixin selection-group-title-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-menu__selection-group-title {
+      @include theme.property(height, $height);
+    }
+  }
+}
+
+@mixin selection-group-title-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-menu__selection-group-title {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
   }
 }
