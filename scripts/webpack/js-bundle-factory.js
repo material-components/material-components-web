@@ -28,7 +28,7 @@
 'use strict';
 
 const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 class JsBundleFactory {
   constructor({
@@ -78,9 +78,11 @@ class JsBundleFactory {
       },
     };
 
-    const uglifyOptions = {
-      output: {
-        comments: false, // Removes repeated @license comments and other code comments.
+    const terserOptions = {
+      terserOptions: {
+        output: {
+          comments: false, // Removes repeated @license comments and other code comments.
+        },
       },
       sourceMap: true,
     };
@@ -129,7 +131,7 @@ class JsBundleFactory {
       },
       optimization: {
         minimize: this.env_.isProd(),
-        minimizer: [new UglifyJSPlugin({uglifyOptions})],
+        minimizer: [new TerserPlugin({terserOptions})],
       },
       plugins: [
         ...commonPlugins,
