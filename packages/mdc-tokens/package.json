@@ -1,7 +1,7 @@
 {
   "name": "@material/tokens",
   "description": "Material Components for the web mixins for Material Design tokens",
-  "version": "14.0.0",
+  "version": "14.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,6 +15,6 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@material/elevation": "^14.0.0"
+    "@material/elevation": "^14.1.0"
   }
 }
