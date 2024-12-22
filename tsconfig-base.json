@@ -17,7 +17,7 @@
     "preserveConstEnums": true,
     "pretty": true,
     "skipLibCheck": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "strict": true,
     "stripInternal": true,
     "target": "es5",
