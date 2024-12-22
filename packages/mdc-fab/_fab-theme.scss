@@ -168,6 +168,17 @@ $custom-property-prefix: 'fab';
       pressed: map.get($theme, pressed-container-elevation),
     )
   );
+  @include _lowered-container-elevation(
+    map.get($resolvers, elevation),
+    map.get($theme, container-shadow-color),
+    map.get($theme, container-surface-tint-layer-color),
+    (
+      default: map.get($theme, lowered-container-elevation),
+      hover: map.get($theme, lowered-hover-container-elevation),
+      focus: map.get($theme, lowered-focus-container-elevation),
+      pressed: map.get($theme, lowered-pressed-container-elevation),
+    )
+  );
   @include _container-height(map.get($theme, container-height));
   @include _container-width(map.get($theme, container-width));
   @include icon-size(map.get($theme, icon-size));
@@ -345,6 +356,49 @@ $custom-property-prefix: 'fab';
       $elevation: state.get-default-state($map),
       $shadow-color: $shadow-color
     );
+  }
+}
+
+@mixin _lowered-container-elevation(
+  $resolver,
+  $shadow-color,
+  $container-color,
+  $map
+) {
+  &.mdc-fab--lowered:not(:disabled) {
+    @include elevation-theme.with-resolver(
+      $resolver,
+      $elevation: state.get-default-state($map),
+      $shadow-color: $shadow-color
+    );
+    @include elevation-theme.overlay-container-color($container-color);
+
+    &:hover {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-hover-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
+
+    &:focus {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-focus-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
+
+    &:active {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-pressed-state($map),
+        $shadow-color: $shadow-color
+      );
+      @include elevation-theme.overlay-container-color($container-color);
+    }
   }
 }
 
