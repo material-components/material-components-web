@@ -779,7 +779,7 @@ $disabled-container-color: rgba(
   );
 
   .mdc-button__focus-ring {
-    @if $offset-value != 0 and type-of($offset-value) == 'number' {
+    @if $offset-value != 0 and meta.type-of($offset-value) == 'number' {
       @include focus-ring.focus-ring-offset(
         $offset: $offset-value,
         $query: $query

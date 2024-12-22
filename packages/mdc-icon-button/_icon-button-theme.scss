@@ -422,7 +422,7 @@ $light-theme: (
     $offset
   );
 
-  @if type-of($offset-value) == 'number' {
+  @if meta.type-of($offset-value) == 'number' {
     .mdc-icon-button__focus-ring {
       @include focus-ring.focus-ring-offset(
         $offset: $offset-value,
