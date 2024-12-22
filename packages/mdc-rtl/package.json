@@ -1,7 +1,7 @@
 {
   "name": "@material/rtl",
   "description": "Material Components for the web RTL Scss helpers",
-  "version": "14.0.0",
+  "version": "14.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -16,7 +16,7 @@
     "directory": "packages/mdc-rtl"
   },
   "dependencies": {
-    "@material/theme": "^14.0.0",
+    "@material/theme": "^14.1.0",
     "tslib": "^2.1.0"
   }
 }

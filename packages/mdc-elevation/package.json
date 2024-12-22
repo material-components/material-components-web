@@ -1,7 +1,7 @@
 {
   "name": "@material/elevation",
   "description": "Material Components for the web mixins + CSS Classes for Material Design elevation",
-  "version": "14.0.0",
+  "version": "14.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,11 +15,11 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@material/animation": "^14.0.0",
-    "@material/base": "^14.0.0",
-    "@material/feature-targeting": "^14.0.0",
-    "@material/rtl": "^14.0.0",
-    "@material/theme": "^14.0.0",
+    "@material/animation": "^14.1.0",
+    "@material/base": "^14.1.0",
+    "@material/feature-targeting": "^14.1.0",
+    "@material/rtl": "^14.1.0",
+    "@material/theme": "^14.1.0",
     "tslib": "^2.1.0"
   }
 }
